@@ -1212,10 +1212,24 @@ private:
                                 else if (!(ti->second==inferredType)) {
                                     Ty prior=ti->second;
                                     if (prior.dims==0 && inferredType.dims==0 &&
-                                        prior.boxed==inferredType.boxed &&
                                         !isPrimitiveName(prior.n) && !isPrimitiveName(inferredType.n)) {
                                         if (isSubtypeName(prior.n,inferredType.n)) ti->second=inferredType;
-                                        else if (!isSubtypeName(inferredType.n,prior.n)) return false;
+                                        else if (!isSubtypeName(inferredType.n,prior.n)) {
+                                            // Compute a conservative least common class.
+                                            // Interface intersections and parameterized
+                                            // least-containing invocations remain unsupported.
+                                            std::string common=prior.n;
+                                            int hops=0;
+                                            while (!common.empty() && ++hops<=32 &&
+                                                   !isSubtypeName(inferredType.n,common)) {
+                                                auto ci=classes.find(common);
+                                                common=(ci==classes.end() || ci->second.super.empty())
+                                                    ? std::string("Object") : ci->second.super;
+                                                if (common=="Object") break;
+                                            }
+                                            if (common.empty()) common="Object";
+                                            ti->second=mk(common);
+                                        }
                                     } else return false;
                                 }
                                 return true;
