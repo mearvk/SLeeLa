@@ -102,31 +102,31 @@ through both entry points (`sleela` and Nordshrift).
 - **Format.** `#sleela MAJOR.MINOR` (a trailing `.PATCH` is tolerated and
   ignored, since a PATCH increment introduces no grammar changes).
 - **Supported range.** The compiler advertises its range via `sleela version`;
-  it is currently **1.0 .. 1.0**. Query the exact range at any time:
+  it is currently **1.0 .. 3.2**. Query the exact range at any time:
 
   ```sh
   ./build/sleela version
-  #  Sleela 0.1.2 (...)
-  #    supported .sleela syntax: 1.0 .. 1.0 (declare per-file with '#sleela 1.0')
+  #  SLeeLa Language/Runtime 1.0121 (...)
+  #    supported .sleela syntax: 1.0 .. 3.2 (unversioned source defaults to 3.2)
   ```
 
 - **Enforcement (the normative rule).** *"A compiler must reject files whose
   declared version exceeds the compiler's supported version range."* Accordingly:
 
-  | Declared `#sleela` | Result on a 1.0 compiler | Rationale (§4.4)                              |
+  | Declared `#sleela` | Result on the current compiler | Rationale (§4.4)                              |
   |--------------------|--------------------------|-----------------------------------------------|
   | `1.0`              | **accepted**             | within range                                  |
-  | `1.9`              | **rejected**             | MINOR ahead of supported max → too new        |
-  | `2.0`              | **rejected**             | MAJOR ahead → breaking grammar not supported  |
+  | `2.0`              | **accepted**             | within the supported range                   |
+  | `3.3`              | **rejected**             | MINOR ahead of supported max → too new        |
   | `0.9`              | **rejected**             | below the supported floor → too old           |
   | `one.zero`         | **rejected**             | malformed pragma                              |
-  | *(none)*           | **accepted, with warning** | assumed `1.0` for backward compatibility     |
+  | *(none)*           | **accepted, with warning** | defaults to `3.2`                            |
 
   A rejected source exits non-zero with a descriptive diagnostic, e.g.:
 
   ```
-  sleela: prog.sleela: error: source declares Sleela syntax 2.0, which exceeds
-  this compiler's supported range (1.0 .. 1.0). Upgrade the compiler or lower
+  sleela: prog.sleela: error: source declares Sleela syntax 3.3, which exceeds
+  this compiler's supported range (1.0 .. 3.2). Upgrade the compiler or lower
   the #sleela pragma.
   ```
 
