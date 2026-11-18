@@ -1,14 +1,13 @@
-## 1.3.2-pro Pro Release Increment
+## 1.0121 Binary/Tool Release Identity
 
-Advanced the shared SLeeLa Language/Runtime release identifier for both
-`sleela` and `sleelvac` from `0.3.30-dev` to `1.3.2-pro`. The product
-release identifier is independent of the SLeeLa language syntax edition
-(`3.2`) and does not imply that every separately versioned project component
-has left development status. The historical `0.3.30` increment below is
-preserved as a record of that earlier release.
+Advanced the shared SLeeLa Language/Runtime release identity for both
+`sleela` and `sleelvac` to **1.0121**. This tool identity is independent of the
+SLeeLa language syntax edition (**3.2**), VM ABI, bytecode format, and the
+separate artifact identities recorded in `working-binaries/VERSION-IDENTITIES.md`.
+The checked-in prebuilt executables retain their recorded payload identities
+until rebuilt; source changes do not relabel an existing binary.
 
-
-**SLeeLa:** 1.3.2-pro
+**SLeeLa:** 1.0121
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
