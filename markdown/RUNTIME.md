@@ -64,19 +64,20 @@ Runtime internals may evolve without changing the documented exchange contract u
 
 **Max Rupplin — MEARVK LLC — 2026**
 
-## Language compatibility — Syntax 3.0
+## Language compatibility — Syntax 3.2
 
 The runtime consumes artifacts produced by the authoritative SLeeLa compiler;
 it does not define a separate source grammar. The current normative language
-edition is **SLeeLa Syntax 3.0**, and the shared frontend accepts source syntax
+edition is **SLeeLa Syntax 3.2**, and the shared frontend accepts source syntax
 **1.0–3.2**. Source-version resolution and parsing belong to the compiler;
 the runtime must preserve and respect the artifact's compatibility metadata.
 
-Syntax 3.0 consolidates the established 1.x/2.x surface. It does not erase
-historical feature gates or relabel source files: a construct remains subject
-to the minimum syntax version at which it was introduced. The runtime release,
+Syntax 3.0 consolidated the established 1.x/2.x surface; Syntax 3.1 and 3.2
+add the capabilities specified in `SLEELA.syntax` sections 44–46. These editions
+do not erase historical feature gates or relabel source files: a construct
+remains subject to the minimum syntax version at which it was introduced. The runtime release,
 Core ABI, bytecode/artifact format, and VM generation numbers are independently
-versioned contracts and must not be renamed to 3.0 merely because the language
-edition is 3.0. See [`SLEELA.syntax`](../SLEELA.syntax),
+versioned contracts and must not be renamed to 3.2 merely because the language
+edition is 3.2. See [`SLEELA.syntax`](../SLEELA.syntax),
 [`markdown/COMPILER.md`](COMPILER.md), and the
 [VM conformance contract](../sleela-virtual-machine/001/LANGUAGE.SPEC.md).
