@@ -16,16 +16,19 @@ envelope as an implementation:
 5. Java conformance and JDK differential programs.
 6. Native converter repeat-run/provenance checks and the explicit
    per-member-stub regression.
-7. A JDK 25 reflected-API coverage comparison against the JDK 28 tree. This
-   is a cross-tier comparison, not a claim that JDK 25 is the JDK 28 API.
+7. An exact JDK 25-to-JDK 28 reflected-API comparison, including type and
+   member additions/removals. JDK 25 is a comparison baseline only.
 8. A separate functional-equivalence diagnostic.
 
 The functional-equivalence diagnostic may exit with status 2. The campaign
 records that outcome as PARTIAL, not PASS: the JDK 28 library intentionally
 contains exact API declarations whose bodies still throw or return defaults.
-The signature index preserves generic declarations as @generic metadata and
-uses the same SLeeLa runtime type table as the primary Java API generator for
-overload indexing. One-dimensional primitive and String arrays retain their
+The campaign requires java.specification.version=28 and generates fresh
+`jdk-api.jsonl` and `jdk-signatures.jsonl` from that runtime using the bundled
+reflection tools. Those temporary reports are the authoritative JDK 28
+inputs; committed JDK 25 JSONL files are comparison baselines only. The
+signature index preserves generic declarations as @generic metadata and uses
+the same SLeeLa runtime type table as the primary Java API generator. One-dimensional primitive and String arrays retain their
 typed array forms; multidimensional and unsupported reference arrays erase to
 Any, consistently across both generators. When multiple Java
 overloads collapse to the same target signature, the audit reports the
@@ -45,9 +48,9 @@ the jdk28-validation-reports artifact. Generated files are not auto-committed;
 the patch is reviewed separately before any repository update. A successful campaign means its executable gates passed; it does
 not mean every JDK 28 API member has working behavior.
 
-Important baseline limitation: the current JDK 28 generator reads member and
-method signatures from the JDK 25 reflected JSONL index, while the JDK 28 docs
-mirror supplies the type inventory and source URLs. Therefore it does not yet
-prove complete JDK 28 member-level API coverage, and it cannot discover methods
-added to existing types after JDK 25. The audit labels the two sets separately
-and reports JDK 28 types without matching JDK 25 records or signature records.
+The JDK 28 reflection is bounded by the installed early-access build and the
+public, unqualified exports exposed by that runtime. The campaign compares
+those records with the checked-in JDK 28 documentation inventory and fails
+when a documented type lacks runtime reflection or a signature record. It
+does not fill missing JDK 28 members from JDK 25. The JDK 25 data is used only
+for the explicit cross-version comparison.
