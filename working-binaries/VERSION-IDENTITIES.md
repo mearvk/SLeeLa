@@ -58,6 +58,9 @@ The concrete identities for every inventoried payload are recorded in `binary-id
 
 - `SLEELA-BIN-1.012` — SLeeLa compiler/runtime executable artifact identity.
 - `NORDSHRIFT-BIN-1.012` — Nordshrift executable artifact identity.
+- `SLEELA-BIN-1.0121` — next source-built SLeeLa runtime artifact (`impl/build/sleela`).
+- `SLEELAVC-BIN-1.0121` — next source-built Sleelvac compiler artifact (`impl/build/sleelvac`).
+- `NORDSHRIFT-BIN-1.0121` — next source-built Nordshrift artifact (`impl/build/nordshrift`).
 - `SLEELA-UNVERSIONED-BIN-1.0121` — reserved initial identity for any
   previously unversioned SLeeLa binary discovered during inventory.
 - `NORDSHRIFT-UNVERSIONED-BIN-1.0121` — reserved initial identity for any
