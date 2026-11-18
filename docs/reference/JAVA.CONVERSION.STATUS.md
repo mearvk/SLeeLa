@@ -266,3 +266,8 @@ These are **unverified implementation changes**. At the user's direction, no CI,
 ### Generic constructor/diamond inference guard — 2026-11-18
 
 The C++ Java converter now refuses `new Type<>(...)` with `[generic-constructor-diamond]` instead of consuming `<>` and emitting a raw allocation. This closes a silent-erasure path but does **not** implement generic constructor inference, constructor overload resolution, target-type propagation or full class-bound substitution. A javac-valid refusal fixture, `GenericConstructorDiamond.java`, was added; the refusal inventory is now 25. This fixture and implementation are **NOT RUN / NOT VERIFIED** by user direction. Production remains **HOLD**.
+
+
+### Explicit generic constructor arguments — implementation note (2026-11-18)
+
+The C++ converter now parses and retains explicit type arguments in constructor allocations, validates known concrete arguments against supported simple class upper bounds, and refuses explicit generic array creation rather than erasing its type information. Added one positive fixture (`GenericConstructorExplicitArguments`) and one bound-conflict refusal fixture (`GenericConstructorBoundConflict`). The fixture inventory is 48 positive / 26 refusal, not test results. Diamond inference remains refused; full constructor overload substitution and target-type inference remain open. No build or test was run by user direction; status remains **NOT VERIFIED / HOLD**.
