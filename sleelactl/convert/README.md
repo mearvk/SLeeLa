@@ -30,7 +30,7 @@ the primitive cast matrix, compound-assignment and `++`/`--` rules, string
 conversion, context-aware identifier replacements, built-in qualification,
 and library result types. C++ overload selection consults the model for primitive
 invocation widening and considers
-fixed-arity calls before varargs, recursive reference-array covariance, known
+strict fixed-arity calls before loose boxing/unboxing applicability and varargs, recursive reference-array covariance, known
 reference subtyping, inherited overloads, direct unbounded method-variable
 inference, and most-specific parameter types. Explicit and wildcard static
 method/field imports are resolved when their owner is known. Incomparable or
@@ -86,7 +86,7 @@ The refusal rows are the `unsupported` records of the model.
 ## Status (honest)
 
 Converted and proven against a JDK (`tests/javaconv_differential_test.sh`, 22 programs plus 9 refusals and a
-stale-output check, 32 of 32 passing on 2026-11-13; in CI as `.github/workflows/java-convert.yml`). The later `IdentifierParity`, `OverloadWidening`, `ReservedIdentifiers`, `GenericIdentity`, `StaticImports`, and updated `Refs` fixtures, the `AmbiguousWideningOverload` and `BoundedGenericInference` refusal fixtures, and the overload-resolution/import changes have not yet been run:
+stale-output check, 32 of 32 passing on 2026-11-13; in CI as `.github/workflows/java-convert.yml`). The later `IdentifierParity`, `OverloadWidening`, `ReservedIdentifiers`, `GenericIdentity`, `StaticImports`, and updated `Refs` fixtures, the `AmbiguousWideningOverload` and `BoundedGenericInference` refusal fixtures, and the overload-resolution/import changes and `BoxingOverload` fixture have not yet been run:
 integer, float, char and String semantics; `String.valueOf/join/format` (literal format); native `switch`
 (fallthrough, arrow cases, switch expressions); assignment and `++`/`--` as values; enums; varargs;
 try-with-resources; `synchronized`/`volatile` under `--single-thread`; arrays of any rank; anonymous
