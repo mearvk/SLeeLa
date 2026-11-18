@@ -456,7 +456,7 @@ def main() -> int:
         print(f"SLeeLa-erasure overload collisions: {collisions}; docs types absent from JDK 28 runtime reflection: {pending_types}; known types missing signature records: {missing_signatures}")
         print(f"JDK 28 reflected types absent from the docs inventory: {reflected_not_documented}")
         print("Index coverage is declaration evidence only; fail-loud API stubs are not implemented Java behavior.")
-        return 2 if pending_types or missing_signatures else 0
+        return 2 if pending_types or missing_signatures or reflected_not_documented else 0
 
     index = ["# java_type\tmodule\tkind\tsleela_file\tjava_source\tmembers"]
     stats = {"files": 0, "with_members": 0, "pending": 0, "pending_signatures": 0, "ctors": 0, "methods": 0, "collisions": 0}
