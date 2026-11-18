@@ -78,19 +78,16 @@ RESERVED_PARAMS = dec.RESERVED | {"next"}
 
 
 def erased(t: str, tvars: set) -> str:
-    """The SLeeLa type the front end gives a Java type (for overload dedupe)."""
-    if t.endswith("..."):
-        t = t[:-3] + "[]"
-    dims = ""
-    while t.endswith("[]"):
-        dims += "[]"
-        t = t[:-2]
-    raw = t.split("<", 1)[0]
-    if raw in tvars:
-        return "Any" + dims
-    if "." in raw and raw[:1].islower():
-        return ("String" if raw == "java.lang.String" else "Any") + dims
-    return raw + dims
+    """Return the SLeeLa-visible erasure of a Java type.
+
+    Generic arguments, wildcard bounds, type variables and qualified
+    references are not runtime types in SLeeLa. Preserve primitive and String
+    distinctions, array rank, and turn Java varargs into array types.
+    """
+    text = re.sub(r"@[\\w.]+(?:\\([^()]*\\))?\\s*", "", t).strip()
+    if text.endswith("..."):
+        text = text[:-3].rstrip() + "[]"
+    return dec.erase(text)
 
 
 def tvar_names(tparams: str) -> set:
@@ -111,19 +108,30 @@ def tvar_names(tparams: str) -> set:
     return {x.strip().split(" ", 1)[0] for x in out if x.strip()}
 
 
+def generic_annotation(tparams: str) -> list:
+    """Preserve Java method type parameters as metadata, not target syntax."""
+    if not tparams:
+        return []
+    value = tparams.replace("\\\\", "\\\\\\\\").replace('"', "'")
+    return [f'  @generic("{value}")']
+
+
 def render(type_name: str, m: dict) -> str:
-    mods = m["mods"].split()
+    tvars = tvar_names(m.get("tparams", ""))
+    mods = [x for x in m["mods"].split() if x != "abstract"]
     lines = []
     if m["protected"] and not m["static"]:
         mods = [x for x in mods if x != "protected"]
         lines.append("  @JavaProtected")
+    lines.extend(generic_annotation(m.get("tparams", "")))
     params = []
     for ptype, pname in m["params"]:
         if pname in RESERVED_PARAMS:
             pname = pname + "_"
-        params.append(f"{ptype} {pname}")
-    head = " ".join(mods + ([m["tparams"]] if m["tparams"] else []) + [m["ret"], m["name"]])
-    throws = (" throws " + ", ".join(m["throws"])) if m["throws"] else ""
+        params.append(f"{erased(ptype, tvars)} {pname}")
+    ret = erased(m["ret"], tvars)
+    head = " ".join(mods + [ret, m["name"]])
+    throws = (" throws " + ", ".join(erased(x, tvars) for x in m["throws"])) if m["throws"] else ""
     jsig = type_name + "." + m["name"] + "(" + ", ".join(p[0] for p in m["params"]) + ")"
     jsig = jsig.replace('"', "'")
     if m["abstract"]:
@@ -131,7 +139,7 @@ def render(type_name: str, m: dict) -> str:
     else:
         body = f'throw new UnsupportedOperationException("not yet implemented in SLeeLa: {jsig}");'
     lines.append(f"  {head}({', '.join(params)}){throws} {{ {body} }}")
-    return "\n".join(lines)
+    return "\\n".join(lines)
 
 
 def split_top(s: str) -> list:
@@ -153,23 +161,25 @@ def split_top(s: str) -> list:
 
 
 def render_ctor(type_name: str, cls: str, m: dict) -> str:
+    tvars = tvar_names(m.get("tparams", ""))
     mods = [x for x in m["mods"].split() if x in ("public", "protected")]
     lines = []
     if m["protected"]:
         mods = [x for x in mods if x != "protected"]
         lines.append("  @JavaProtected")
+    lines.extend(generic_annotation(m.get("tparams", "")))
     params = []
     for ptype, pname in m["params"]:
         if pname in RESERVED_PARAMS:
             pname = pname + "_"
-        params.append(f"{ptype} {pname}")
+        params.append(f"{erased(ptype, tvars)} {pname}")
     head = " ".join(mods + [cls])
-    throws = (" throws " + ", ".join(m["throws"])) if m["throws"] else ""
+    throws = (" throws " + ", ".join(erased(x, tvars) for x in m["throws"])) if m["throws"] else ""
     jsig = type_name + ".<init>(" + ", ".join(p[0] for p in m["params"]) + ")"
     jsig = jsig.replace('"', "'")
     body = f'throw new UnsupportedOperationException("not yet implemented in SLeeLa: {jsig}");'
     lines.append(f"  {head}({', '.join(params)}){throws} {{ {body} }}")
-    return "\n".join(lines)
+    return "\\n".join(lines)
 
 
 IMPL_SIG = re.compile(r"^  (?:@\w+\s+)?(?:(?:public|protected|private|static|final|abstract|default|synchronized|native|strictfp) )*(?:<[^()]*> )?[A-Za-z_][\w.]*(?:<[^()]*>)?(?:\[\])* +(\w+)\s*\(([^)]*)\)", re.M)
