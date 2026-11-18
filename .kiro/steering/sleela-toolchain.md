@@ -27,8 +27,8 @@ The toolchain is **two** native executables. The committed copies in
 [`/working-binaries/`](../../working-binaries/) report:
 
 - **`sleela`** — `SLeeLa™ Language/Runtime 1.3.2-pro`, the authoritative
-  compiler/runner, **supported source syntax 1.0 – 3.1**, native C/C++ Core VM.
-  (Syntax 3.1, also written `3.01`, is SLEELA.syntax sections 44 (literal,
+  compiler/runner, **supported source syntax 1.0 – 3.2**, native C/C++ Core VM.
+  (Syntax 3.2, also written `3.01`, is SLEELA.syntax sections 44 (literal,
   initializer, labels, finally), 45 (char) and 46 (array). The committed
   `working-binaries/` were rebuilt 2026-11-17 and match the source-built
   `impl/build/sleela`.)
@@ -37,7 +37,7 @@ The toolchain is **two** native executables. The committed copies in
   `version`. (Older builds branded this binary "Sleelvac™" and capped syntax at
   2.9; the current build raises the ceiling to 3.1.)
 - **`nordshrift`** — `Nordshrift 2.7.1-dev`, the SLeeLa `.sst` transpiler driver
-  (NS-SST-0001 spec 2.2), which **drives SLeeLa source syntax up to 3.1**.
+  (NS-SST-0001 spec 2.2), which **drives SLeeLa source syntax up to 3.2**.
   Subcommands: `check <sheet.sst>`, `build <sheet.sst>`, `objects`,
   `relevance --target=java|sleela|c [Object]`, `version`, `design-activity …`.
   (The SLeeLa→Nordshrift→back *round-trip* facility lives inside the `sleela`
