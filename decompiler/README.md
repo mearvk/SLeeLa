@@ -207,12 +207,12 @@ Use the subsystem only with software you are authorized to inspect.
 <p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
-## SLeeLa source edition — Syntax 3.0
+## SLeeLa source edition — Syntax 3.2
 
 SLeeLa is the current source reconstruction target under the normative
-SLEELA.syntax **3.0** edition. The shared compiler accepts source syntax
+SLEELA.syntax **3.2** edition. The shared compiler accepts source syntax
 **1.0–3.2**. A decompiler must preserve a known original source version and
 artifact metadata; it must not automatically upgrade historical source or
-assign 3.0 to output whose constructs have not been validated against that
+assign a newer syntax version to output whose constructs have not been validated against that
 edition and their feature-specific minimum gates. Decompiler product releases
 and binary-format versions remain independent.
