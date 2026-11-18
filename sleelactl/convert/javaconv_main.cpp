@@ -300,6 +300,10 @@ private:
             } else if (fs::is_regular_file(st)) {
                 fs::create_directories(target.parent_path(), ec);
                 if (!ec) fs::copy_file(entryPath, target, fs::copy_options::overwrite_existing, ec);
+                if (!ec) {
+                    const auto sourceTime = fs::last_write_time(entryPath, ec);
+                    if (!ec) fs::last_write_time(target, sourceTime, ec);
+                }
             } else {
                 *why = "refusing special file in previous output tree: " + entryPath.string();
                 return false;
