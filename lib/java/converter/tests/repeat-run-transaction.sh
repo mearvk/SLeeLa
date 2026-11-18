@@ -4,6 +4,7 @@ set -euo pipefail
 here="$(cd "$(dirname "$0")/.." && pwd)"
 root="$(cd "$here/../../.." && pwd)"
 JCONV_IN="${JCONV_IN:-$here/tests/fixtures}"
+export JCONV_IN
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 export JCONV_OUT="$tmp/published"
