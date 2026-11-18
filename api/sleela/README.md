@@ -5,7 +5,8 @@ This directory holds versioned SLeeLa language API documentation.
 | Edition | Documentation | Notes |
 |---|---|---|
 | [3.2](3.2/README.md) | [API edition home](3.2/README.md) | Current normative language edition: typed `char` semantics and array shape/length rules, following Syntax 3.1 section 44. New snapshots are generated into this edition. |
-| [3.1](3.1/README.md) | [API edition home](3.1/README.md) | Previous edition; preserved, no longer written to. |\n| [3.0](3.0/README.md) | [API edition home](3.0/README.md) | Previous edition; preserved, no longer written to. |
+| [3.1](3.1/README.md) | [API edition home](3.1/README.md) | Previous edition; preserved, no longer written to. |
+| [3.0](3.0/README.md) | [API edition home](3.0/README.md) | Previous edition; preserved, no longer written to. |
 | [2.9](2.9/README.md) | [Historical API reference](2.9/index.html) | Previous API edition; preserved. |
 | [2.8](2.8/) | Directory | Earlier API edition. |
 | [2.6](2.6/) | Directory | Earlier API edition. |
