@@ -411,6 +411,7 @@ int main(int argc, char** argv) {
 
     std::vector<InputFile> inputs;  // sorted, immutable source snapshot
     fs::path outRoot;
+    fs::path publishRoot;
     if (!c.file.empty()) {
         if (c.out.empty()) { std::cerr << "javaconv: --file needs --out\n"; return 2; }
         inputs.push_back({fs::path(c.file), fs::path(fs::path(c.file).filename()), {}});
@@ -493,6 +494,7 @@ int main(int argc, char** argv) {
     // Work on a complete staged generation. All existing output, including
     // unowned user files, is preserved in the stage; the destination is untouched
     // until every output, manifest, provenance file and report has been written.
+    publishRoot = outRoot;
     OutputTransaction transaction(outRoot);
     std::string transactionError;
     if (!transaction.begin(&transactionError)) {
@@ -749,6 +751,11 @@ int main(int argc, char** argv) {
         }
     }
 
+    if (!transaction.commit(&transactionError)) {
+        std::cerr << "javaconv: " << transactionError << "\\n";
+        cm_free(&model);
+        return 2;
+    }
     if (!c.quiet) {
         std::cout << "javaconv: model " << model.name << " " << model.rev << ", JDK " << c.version << "\n"
                   << "  source files " << outcomes.size() << ", converted " << okFiles << " (" << emitted << " SLeeLa files), failed closed " << failed << "\n"
@@ -760,11 +767,6 @@ int main(int argc, char** argv) {
             shown++;
         }
         if (failed > shown) std::cout << "  ... " << (failed - shown) << " more in the report\n";
-    }
-    if (!transaction.commit(&transactionError)) {
-        std::cerr << "javaconv: " << transactionError << "\\n";
-        cm_free(&model);
-        return 2;
     }
     cm_free(&model);
     return failed ? 1 : 0;
