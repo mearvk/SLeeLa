@@ -1,8 +1,9 @@
 public class WildcardGeneric {
+    static class Bag<T> { }
     static class Parent { }
     static class Child extends Parent { }
 
-    static <T> T first(java.util.List<? extends T> values, T fallback) {
+    static <T> T first(Bag<? extends T> values, T fallback) {
         return fallback;
     }
 
