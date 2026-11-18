@@ -62,8 +62,8 @@
 #endif
 
 #define SL_PRODUCT  "SLeeLa"
-#define SL_RELEASE  "1.3.2-pro"
-#define SL_SYNTAX   "1.0 - 3.0"
+#define SL_RELEASE  "1.0121"
+#define SL_SYNTAX   "1.0 - 3.2"
 #define SL_TAGLINE  "THE NOW. THE INGREDIENT."
 
 /* ---- host OS identity (operating-system/ model: National -> ... ) -------- */
