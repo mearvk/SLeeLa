@@ -161,3 +161,12 @@ The initial production service should remain the **C++ `sleelactl` converter**. 
 ### Session boundary
 
 This was a repository-document and implementation-scope review through the GitHub repository interface. No local shell, compiler invocation or converter test was run as part of this focused review. The list above is a prioritized implementation/proof backlog, not a claim that these items were newly fixed or tested.
+
+
+### Generic-resolution follow-up — deferred wildcard lower bounds (2026-11-18)
+
+- Implemented deferred constraints for method-inference variables appearing inside ? super T argument positions. The resolver now retains the lower-bound relation until inference from all invocation arguments and the expected result type has completed, then checks the resolved bound against the actual type argument.
+- Added sleelactl/convert/tests/java/GenericWildcardLowerBound.java, which exercises <T> T select(List<? super T>, List<T>, T) with List<Object>, List<String>, and a String fallback. The differential harness automatically compiles and compares this fixture against the JDK.
+- Source commit: 5bad03a4ad9af7adbb2900fd1a9a1b7432275e1b; fixture commit: 05d30a7555a0c296c7feb631de69b34ca0a46276.
+- Verification status: NOT RUN / NOT PASS. The push-triggered JDK 28 workflow run was created and then cancelled by GitHub before useful job execution. No local compiler or differential suite was available through this repository-edit session. Do not count the fixture as passing until the converter build and full differential suite complete.
+- Still outstanding for this numbered milestone: complete target-type constraint propagation across all expression contexts; proper wildcard capture identities and capture conversion; intersection LUB representation and preservation; generic constructor/diamond inference and constructor overloads; remaining class-generic receiver/field/initializer contexts. Existing upper-bound-only and unique-common-supertype paths remain partial, not full JLS inference.
