@@ -92,6 +92,9 @@ class JConvRules {
      declaration and to every use in the converted unit, so it is consistent
      across all converted files. >>
   boolean isRenamedIdent(String n) {
+    if (this.model != null && this.model.loaded && this.model.renameN > 0) {
+      return this.model.renameOf(n, "all") != "";
+    }
     if (n == "print" || n == "close" || n == "record" || n == "struct") { return true; }
     if (n == "require" || n == "usualgc" || n == "usualmem" || n == "sealed") { return true; }
     if (n == "int64" || n == "int128" || n == "Sleela" || n == "yield") { return true; }
@@ -101,7 +104,10 @@ class JConvRules {
 
   String renameIdent(String n) {
     String out = n;
-    if (isRenamedIdent(n)) { out = n + "_"; }
+    if (this.model != null && this.model.loaded && this.model.renameN > 0) {
+      String mapped = this.model.renameOf(n, "all");
+      if (mapped != "") { out = mapped; }
+    } else if (isRenamedIdent(n)) { out = n + "_"; }
     < a dollar sign is not a SLeeLa identifier character >
     if (out.indexOf("$") >= 0) { out = out.replace("$", "_S_"); }
     return out;
@@ -153,9 +159,8 @@ class JConvRules {
   }
 
   boolean isPrimitive(String n) {
-    if (n == "int" || n == "long" || n == "short" || n == "byte") { return true; }
-    if (n == "char" || n == "boolean" || n == "float" || n == "double") { return true; }
     if (n == "int32") { return true; }
+    if (this.model != null && this.model.loaded && this.model.hasPrimitiveType(n)) { return true; }
     return false;
   }
 
