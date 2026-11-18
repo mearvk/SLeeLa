@@ -1816,17 +1816,27 @@ class JConvRewriter {
     if (t == "Float") { return "f"; }
     if (t == "Character") { return "c"; }
     if (t == "Boolean") { return "b"; }
-    String kind = this.rules.model.typeKind(t);
-    if (kind == "integral") {
-      if (t == "char") { return "c"; }
-      String promoted = this.rules.model.promotedType(t);
-      if (promoted == "int") { return "i"; }
-      if (promoted == "long") { return "l"; }
+    if (this.rules.model.loaded) {
+      String kind = this.rules.model.typeKind(t);
+      if (kind == "integral") {
+        if (t == "char") { return "c"; }
+        String promoted = this.rules.model.promotedType(t);
+        if (promoted == "int") { return "i"; }
+        if (promoted == "long") { return "l"; }
+        return "?";
+      }
+      if (kind == "floating") { return t == "float" ? "f" : "d"; }
+      if (kind == "boolean") { return "b"; }
+      if (kind == "text") { return "s"; }
       return "?";
     }
-    if (kind == "floating") { return t == "float" ? "f" : "d"; }
-    if (kind == "boolean") { return "b"; }
-    if (kind == "text") { return "s"; }
+    if (t == "int" || t == "short" || t == "byte") { return "i"; }
+    if (t == "long") { return "l"; }
+    if (t == "double") { return "d"; }
+    if (t == "float") { return "f"; }
+    if (t == "char") { return "c"; }
+    if (t == "String") { return "s"; }
+    if (t == "boolean") { return "b"; }
     return "?";
   }
 
