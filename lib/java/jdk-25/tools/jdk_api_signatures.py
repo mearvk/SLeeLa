@@ -87,7 +87,7 @@ def erased(t: str, tvars: set) -> str:
     text = re.sub(r"@[\w.]+(?:\([^()]*\))?\s*", "", t).strip()
     if text.endswith("..."):
         text = text[:-3].rstrip() + "[]"
-    return dec.erase(text)
+    return dec.sl_type(text)
 
 
 def tvar_names(tparams: str) -> set:
