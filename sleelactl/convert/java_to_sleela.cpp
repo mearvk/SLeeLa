@@ -1640,13 +1640,15 @@ private:
                         std::string owner = e.code;
                         size_t dot = owner.rfind('.');
                         if (dot != std::string::npos) owner = owner.substr(dot + 1);
-                        args = adaptArgs(pickMethod(owner, name, args), args);
-                        E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true);
+                        const Ty* expected = lambdaTarget_.known() ? &lambdaTarget_ : nullptr;
+                        args = adaptArgs(pickMethod(owner, name, args, 0, -1, nullptr, expected), args);
+                        E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
                         e = r;
                         continue;
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
-                    args = adaptArgs(pickMethod(recvType, name, args, 0, -1, &e.ty), args);
+                    const Ty* expected = lambdaTarget_.known() ? &lambdaTarget_ : nullptr;
+                    args = adaptArgs(pickMethod(recvType, name, args, 0, -1, &e.ty, expected), args);
                     // model 9c: a library parameter that takes a char as text
                     for (size_t ai = 0; ai < args.size(); ai++) {
                         const std::string idx = std::to_string(ai);
@@ -1655,7 +1657,7 @@ private:
                             args[ai].ty = mk("String");
                         }
                     }
-                    E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false, &e.ty);
+                    E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false, &e.ty, expected);
                     e = r;
                     continue;
                 }
@@ -1814,7 +1816,8 @@ private:
         std::string name = ident();
         if (isOp("(")) {
             std::vector<E> a = parseArgs();
-            const MethodSig* pm = pickMethod(curClass, name, a);
+            const Ty* expected = lambdaTarget_.known() ? &lambdaTarget_ : nullptr;
+            const MethodSig* pm = pickMethod(curClass, name, a, 0, -1, nullptr, expected);
             std::string qualifier;
             std::string importedOwner;
             if (!pm) {
@@ -1825,7 +1828,7 @@ private:
                 std::sort(owners.begin(), owners.end());
                 owners.erase(std::unique(owners.begin(), owners.end()), owners.end());
                 for (const auto& owner : owners) {
-                    const MethodSig* candidate = pickMethod(owner, name, a);
+                    const MethodSig* candidate = pickMethod(owner, name, a, 0, -1, nullptr, expected);
                     const bool modeled = cm_find(&M, "ret", owner.c_str(), name.c_str(), nullptr) != nullptr ||
                         cm_find(&M, "call", (owner + "." + name).c_str(), nullptr, nullptr) != nullptr;
                     if (candidate && !candidate->isStatic) continue;
@@ -1839,7 +1842,7 @@ private:
             }
             if (!pm && importedOwner.empty() && !anonStack_.empty()) {
                 const AnonCtx& ac = anonStack_.back();
-                if (const MethodSig* om = pickMethod(ac.outerClass, name, a)) {
+                if (const MethodSig* om = pickMethod(ac.outerClass, name, a, 0, -1, nullptr, expected)) {
                     pm = om;
                     if (om->isStatic) qualifier = ac.outerClass + ".";
                     else { if (ac.outerStatic) fail("outer-instance", "call of an instance method of the enclosing class from a static context"); qualifier = "outer_."; }
@@ -2178,7 +2181,7 @@ private:
     }
 
     void parseStatement() {
-        allowHoist_ = true; hoistTy_ = mk("?");
+        allowHoist_ = true; hoistTy_ = mk("?"); lambdaTarget_ = Ty();
         const Tok& t = cur();
         if (t.kind == JT_OP) {
             if (t.text == "{") {
