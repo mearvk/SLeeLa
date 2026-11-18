@@ -3119,7 +3119,7 @@ private:
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
@@ -3293,7 +3293,7 @@ private:
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames;
         }
@@ -3843,7 +3843,7 @@ private:
         InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
         }
@@ -6917,7 +6917,7 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
@@ -7091,7 +7091,7 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames;
         }
@@ -7642,7 +7642,7 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
         InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
         }
