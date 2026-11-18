@@ -1107,8 +1107,8 @@ private:
 
     bool sameErasedType(const Ty& a, const Ty& b) const {
         if (a.dims != b.dims) return false;
-        const bool av = a.n.rfind("$T$", 0) == 0;
-        const bool bv = b.n.rfind("$T$", 0) == 0;
+        const bool av = a.n.rfind("$T$", 0) == 0 || a.n.rfind("$C$", 0) == 0;
+        const bool bv = b.n.rfind("$T$", 0) == 0 || b.n.rfind("$C$", 0) == 0;
         if (av && bv) return true;
         return a.n == b.n;
     }
