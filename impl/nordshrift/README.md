@@ -207,6 +207,6 @@ Nordshrift Complete is an **authoring-level completeness** designation. It does 
 ## SLeeLa language syntax 3.1
 
 Nordshrift 2.7.1-dev uses the shared Sleelvac frontend and now reports support
-for the current SLeeLa syntax **3.1** edition (source range 1.0–3.1).
+for the current SLeeLa syntax **3.2** edition (source range 1.0–3.2).
 The Nordshrift product version and the independent NS-SST-0001 sheet-format
 version remain separate from the SLeeLa language syntax version.
