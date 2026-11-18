@@ -27,5 +27,23 @@ public class Floats {
         System.out.println(f + " " + -f);
         System.out.println("v=" + (a + 1));
         System.out.println(1e-10f * 1e-10f);
+        // Shared-model regression coverage: binary numeric promotion and the
+        // primitive cast matrix, especially conversions to/from binary32.
+        System.out.println("mixed " + (1 + 2.5f) + " " + (2L + 0.5f) + " " + (2.0 + 0.5f));
+        byte by = -7;
+        short sh2 = 32001;
+        char ch2 = 65530;
+        int in = 16777217;
+        long lo = 9007199254740993L;
+        float fl = 0.1f;
+        double db = 0.1d;
+        System.out.println("cast-a " + (short) by + " " + (char) by + " " + (float) by + " " + (double) by);
+        System.out.println("cast-b " + (byte) sh2 + " " + (char) sh2 + " " + (float) sh2 + " " + (double) sh2);
+        System.out.println("cast-c " + (byte) ch2 + " " + (short) ch2 + " " + (float) ch2 + " " + (double) ch2);
+        System.out.println("cast-d " + (byte) in + " " + (short) in + " " + (char) in + " " + (float) in);
+        System.out.println("cast-e " + (byte) lo + " " + (short) lo + " " + (char) lo + " " + (float) lo);
+        System.out.println("cast-f " + (byte) fl + " " + (short) fl + " " + (int) fl + " " + (long) fl + " " + (double) fl);
+        System.out.println("cast-g " + (byte) db + " " + (short) db + " " + (char) db + " " + (int) db + " " + (long) db + " " + (float) db);
+        System.out.println("float-unary " + (+fl) + " " + (-fl) + " " + (fl % 0.03f));
     }
 }
