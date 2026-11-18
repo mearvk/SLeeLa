@@ -1640,7 +1640,7 @@ private:
                         std::string owner = e.code;
                         size_t dot = owner.rfind('.');
                         if (dot != std::string::npos) owner = owner.substr(dot + 1);
-                        const Ty* expected = lambdaTarget_.known() ? &lambdaTarget_ : nullptr;
+                        const Ty* expected = lambdaTarget_.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &lambdaTarget_ : nullptr;
                         args = adaptArgs(pickMethod(owner, name, args, 0, -1, nullptr, expected), args);
                         E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
                         e = r;
@@ -1860,7 +1860,7 @@ private:
             r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
             if (pm) r.ty = resolvedMethod(pm).ret;
-            else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true);
+            else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true, nullptr, expected);
             else r.ty = mk("?");
             return r;
         }
