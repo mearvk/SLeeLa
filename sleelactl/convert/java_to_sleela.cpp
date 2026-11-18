@@ -118,6 +118,7 @@ private:
     std::set<std::string> typeVars;
     std::set<std::string> methodTypeVars_;
     mutable std::map<const MethodSig*, MethodSig> resolvedMethods_;
+    mutable std::vector<std::unique_ptr<MethodSig>> resolvedMethodStorage_;
     bool curIsInterface = false;
     std::vector<std::map<std::string, std::pair<std::string, Ty>>> scopes;
     std::set<std::string> usedNames;
@@ -1302,8 +1303,17 @@ private:
         if (!best && sawUnsupportedGeneric)
             throw ConvErr{cur().line,cur().col,"generic-inference",
                 "generic overload '"+cls+"."+name+"' requires a bound or generic substitution that cannot be proven, target typing, or a common-type inference rule not yet supported"};
-        if (best) resolvedMethods_[best]=bestResolved;
-        return best;
+        if (best) {
+            // A declaration can be invoked repeatedly with different inferred
+            // method/class arguments. Give each call site its own stable resolved
+            // signature instead of overwriting one declaration-keyed cache entry.
+            auto resolved=std::make_unique<MethodSig>(bestResolved);
+            const MethodSig* result=resolved.get();
+            resolvedMethodStorage_.push_back(std::move(resolved));
+            resolvedMethods_[result]=bestResolved;
+            return result;
+        }
+        return nullptr;
     }
     // Java method invocation conversion (JLS 5.3, 15.12.4.2) for a resolved target: pack the trailing
     // arguments of a variable-arity call into an array, and widen int/long arguments to double
