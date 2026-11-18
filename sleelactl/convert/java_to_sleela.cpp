@@ -450,7 +450,6 @@ private:
         consumeGenericClose();
         return args;
     }
-
     Ty parseType() {
         size_t end = scanType(p);
         if (end == (size_t)-1) fail("syntax", "expected a type but found '" + descr() + "'");
@@ -2122,15 +2121,14 @@ private:
         if (e0 == (size_t)-1) fail("syntax", "expected a type after 'new'");
         // element type without dims
         std::string name;
+        std::vector<Ty> constructedArgs;
         struct Resolve { };
         {
             if (!isIdentTok(cur())) fail("syntax", "expected a type after 'new'");
             name = ident();
             for (;;) {
-                std::vector<Ty> constructedArgs;
                 if (isOp("<")) {
-                    // Preserve explicit constructor type arguments for bound checks.
-                    // Diamond remains fail-closed until target/argument inference exists.
+                    // Keep explicit arguments for class-bound validation. Diamond inference remains refused.
                     if (isOpAt(p + 1, ">"))
                         fail("generic-constructor-diamond", "diamond inference for constructor allocation is not yet implemented; use explicit type arguments or retain this source as a refusal");
                     constructedArgs = parseGenericArguments();
@@ -2150,8 +2148,7 @@ private:
                     const Ty& actual = constructedArgs[ai];
                     if (!actual.known() || actual.wildcard || actual.dims != 0) continue;
                     for (std::string boundName : bounds->second) {
-                        if (boundName.empty() || boundName.find('<') != std::string::npos ||
-                            boundName.find('
+                        if (boundName.empty() || boundName.find('<') != std::string::npos || boundName.find('
             // new T[a][b]..[] (syntax 3.1 multi-dimensional creation) or new T[]..{...} (initializer)
             std::vector<std::string> sized;
             int rank = 0;
@@ -4436,7 +4433,7 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
                         const size_t dot = boundName.rfind('.');
                         if (dot != std::string::npos) boundName = boundName.substr(dot + 1);
                         auto nested = nestedMap_.find(boundName);
-                        if (nested != nestedMap_.end() && nested->second != "\x01") boundName = nested->second;
+                        if (nested != nestedMap_.end() && nested->second != "\\x01") boundName = nested->second;
                         if (!isSubtypeName(actual.n, boundName))
                             fail("generic-type", "type argument '" + actual.n + "' does not satisfy the declared bound '" + boundName + "' of " + name);
                     }
