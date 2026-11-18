@@ -317,5 +317,5 @@ made them possible, and no endorsement by any institution is implied.
 
 **Advantage™** — a trademark of the SLeeLa project, MEARVK LLC. Part of the
 SLeeLa™ standard library; built, checked, and run by **Sleelvac™** /
-**SLeeLa™ Language/Runtime 1.3.2-pro**. Rendered in the customary red where the
+**SLeeLa™ Language/Runtime 1.0121**. Rendered in the customary red where the
 toolchain prints its product identity to a terminal. SLeeLa — MEARVK LLC — 2026.
