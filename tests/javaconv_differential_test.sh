@@ -124,12 +124,12 @@ if javac -d "$tmp/project-generic/cls" "$tmp/project-generic/src/Box.java" "$tmp
    "$conv" --jdk "$tmp/project-generic/src" --out "$tmp/project-generic/sl" --quiet; then
   (cd "$tmp/project-generic/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-generic/actual.out"
   if diff -u "$tmp/project-generic/expected.out" "$tmp/project-generic/actual.out" > "$tmp/project-generic/diff"; then
-    printf 'PASS  %-12s cross-file class-generic substitution identical to the JDK\\n' "project-generic"; pass=$((pass+1))
+    printf 'PASS  %-12s cross-file class-generic substitution identical to the JDK\n' "project-generic"; pass=$((pass+1))
   else
-    printf 'FAIL  project-generic\\n'; head -40 "$tmp/project-generic/diff"; fail=$((fail+1))
+    printf 'FAIL  project-generic\n'; head -40 "$tmp/project-generic/diff"; fail=$((fail+1))
   fi
 else
-  printf 'FAIL  project-generic (project build or conversion failed)\\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
+  printf 'FAIL  project-generic (project build or conversion failed)\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
 fi
 
 # duplicate simple declarations must never be resolved by source traversal order
@@ -185,10 +185,10 @@ if javac -d "$tmp/project-inherited/cls" "$tmp/project-inherited/src/"*.java 2> 
    "$conv" --jdk "$tmp/project-inherited/src" --out "$tmp/project-inherited/sl" --quiet; then
   (cd "$tmp/project-inherited/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-inherited/actual.out"
   if diff -u "$tmp/project-inherited/expected.out" "$tmp/project-inherited/actual.out" > "$tmp/project-inherited/diff"; then
-    printf 'PASS  %-12s cross-file generic superclass/interface substitution identical to the JDK\\n' "project-inherited"; pass=$((pass+1))
+    printf 'PASS  %-12s cross-file generic superclass/interface substitution identical to the JDK\n' "project-inherited"; pass=$((pass+1))
   else
-    printf 'FAIL  project-inherited\\n'; head -40 "$tmp/project-inherited/diff"; fail=$((fail+1))
+    printf 'FAIL  project-inherited\n'; head -40 "$tmp/project-inherited/diff"; fail=$((fail+1))
   fi
 else
-  printf 'FAIL  project-inherited (project build or conversion failed)\\n'; cat "$tmp/project-inherited/javac.err"; fail=$((fail+1))
+  printf 'FAIL  project-inherited (project build or conversion failed)\n'; cat "$tmp/project-inherited/javac.err"; fail=$((fail+1))
 fi
