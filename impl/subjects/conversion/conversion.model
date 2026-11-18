@@ -508,6 +508,10 @@ rename usualgc all usualgc_
 rename usualmem all usualmem_
 rename utf16 all utf16_
 rename yield all yield_
+rename spawn all spawn_
+rename sleep all sleep_
+rename structPack all structPack_
+rename structUnpack all structUnpack_
 rename next value next_
 
 # ---- 10. Result types of well-known library members. This is TYPING only; the
