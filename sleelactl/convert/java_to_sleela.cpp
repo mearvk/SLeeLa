@@ -1392,6 +1392,10 @@ private:
                 const bool variable=phase==2 && m.varargs && args.size()+1>=n;
                 if (!fixed && !variable) continue;
                 std::map<std::string,Ty> inferred;
+                // A lower-bounded wildcard can constrain a method variable that is
+                // inferred from another argument. Defer that check until all argument
+                // and target-type constraints have been collected.
+                std::vector<std::pair<Ty,Ty>> deferredLowerBounds;
                 int cost=0; bool applicable=true;
                 for (size_t i=0;i<args.size();++i) {
                     Ty target;
@@ -1445,12 +1449,17 @@ private:
                                     continue;
                                 }
                                 if (farg.wildcard==3 && farg.bound) {
-                                    // Lower-bounded wildcard does not provide an exact
-                                    // inference for its own type variable. Accept only a
-                                    // fully known, non-variable lower bound that converts
-                                    // to the actual type argument.
-                                    if (farg.bound->n.rfind("$T$",0)==0 ||
-                                        invocationCost(*farg.bound,aarg)<0) return false;
+                                    // For ? super T, retain the lower-bound constraint
+                                    // when T is not known yet. A later source/fallback
+                                    // argument (or target type) may infer T; validate
+                                    // T -> actual only after inference is complete.
+                                    std::function<bool(const Ty&)> hasVariable = [&](const Ty& value) {
+                                        if (value.n.rfind("$T$",0)==0) return true;
+                                        for (const Ty& nested:value.args) if (hasVariable(nested)) return true;
+                                        return value.bound && hasVariable(*value.bound);
+                                    };
+                                    if (hasVariable(*farg.bound)) deferredLowerBounds.push_back({*farg.bound,aarg});
+                                    else if (invocationCost(*farg.bound,aarg)<0) return false;
                                     continue;
                                 }
                                 if (!inferGeneric(farg,aarg)) return false;
@@ -1517,6 +1526,25 @@ private:
                                 return true;
                             };
                         if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
+                    }
+                }
+                if (applicable && !deferredLowerBounds.empty()) {
+                    std::function<Ty(const Ty&)> resolveDeferred = [&](const Ty& source) {
+                        Ty value=source;
+                        if (value.n.rfind("$T$",0)==0) {
+                            auto ti=inferred.find(value.n.substr(3));
+                            if (ti!=inferred.end()) { Ty resolved=ti->second; resolved.dims+=value.dims; return resolved; }
+                            value.n="?"; value.args.clear(); value.bound.reset(); return value;
+                        }
+                        for (Ty& arg:value.args) arg=resolveDeferred(arg);
+                        if (value.bound) value.bound=std::make_shared<Ty>(resolveDeferred(*value.bound));
+                        return value;
+                    };
+                    for (const auto& constraint:deferredLowerBounds) {
+                        Ty lower=resolveDeferred(constraint.first);
+                        if (!lower.known() || invocationCost(lower,constraint.second)<0) {
+                            applicable=false; break;
+                        }
                     }
                 }
                 if (!applicable || inferred.size()!=m.typeParams.size()) {
