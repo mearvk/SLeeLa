@@ -1099,7 +1099,8 @@ private:
                                 else if (!isSubtypeName(inferredType.n,prior.n)) { applicable=false; break; }
                             } else { applicable=false; break; }
                         }
-                        target=args[i].ty;
+                        target=inferred.at(variableName);
+                        target.dims+=m.params[i<n?i:n-1].dims;
                     }
                     if (args[i].lambdaPos!=(size_t)-1) {
                         if (phase<2 && m.varargs && n && i==n-1 && target.dims>0) { applicable=false; break; }
