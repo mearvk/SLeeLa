@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "464c7692a64e41766b5f055bc8ef783348c535c108effec302e63e07d49ad8ab"
+      "sha256": "2be893780c66c5fce3c2d4c849eb2877c5dfcf0cb1b09d16c6f51f81471905d1"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "d9c780567fd2dff4cc2faaa293d97f12ad1eda09bd7d8220819eda2c180ec554"
+      "sha256": "b78410da11e279e27efed08e6d919351530ce7bd7ac5e499246876c226d4cdae"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "0e5c0708b9772c9081baabc37fbae359046a7839f6daa162a2f1d2afcb2fdd69"
+      "sha256": "7646cb9dbca5d7f41b037b59a7263a699ea7eb8a4aac38984155eb4e9d297231"
     },
     {
       "path": "impl/frontend/class_relations.cpp",
@@ -559,7 +559,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "9641eea34edc2125d66e3aa0d3d7c03433fa7a50f70fd68dcd50bf4cad7b66fb"
+      "sha256": "8ad061b2e28d85402852f51b91a6c69c44c316aecc85c62135b004ca8e397005"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -675,11 +675,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "bc75bb7ac128442c78cf75da26e258dcda39e1673edb708618698ce803ba33b5"
+      "sha256": "e6ca99dea87535d5f6a91351fcffe600b4bf0d825d97cf586c9aa339ee4cfaa3"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "d0fa1906e80f4f5c53b191108d80c485d76b165a11dc3384b4a0545c561ae7b5"
+      "sha256": "66db711e2d8996bae397655ac05203189f11aac42e0fc66c7334fc6f080d1238"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -691,7 +691,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "40dc31c27ae21b24c3bf3b31b5bcb5b3ac1fcde1fedfee97342725700d5ea21e"
+      "sha256": "bd5c461255a9c17bd3aefaef66d24f72f0760244f7b31eafa8dc780548c596d4"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -707,7 +707,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "a01f6da4f3f96b319c461f4809b1d310693221cdd130ce6bbf23ea9617da4f6a"
+      "sha256": "131020678ec41f7d95ea7739c24a8d791847696c5a8e2a69d36518de0229422a"
     },
     {
       "path": "impl/frontend/wide_integer.h",
@@ -1971,7 +1971,7 @@
     },
     {
       "path": "lib/array/SLArray2D.sleela",
-      "sha256": "c6aa2c08a99ea5199d107fda6977f63219ab6b92b6a241fb8fbff2552f76ceea"
+      "sha256": "762a6fc7e49fbaa88de6ffc70b4326c388e22020cdf980df588da4220f5b5a5e"
     },
     {
       "path": "lib/array/SLDoubleArray.sleela",
@@ -3291,7 +3291,7 @@
     },
     {
       "path": "lib/char/SLChar.sleela",
-      "sha256": "0bc7d14f94d54acee538eeb367f65c4a6bdc0a6c75eb4caea221c0c33617e6b2"
+      "sha256": "16f7bf12f4eff26eed77bf5b42a1b61335b03c4010e5728c4f9548105d55c53c"
     },
     {
       "path": "lib/char/SLPackage.sleela",
