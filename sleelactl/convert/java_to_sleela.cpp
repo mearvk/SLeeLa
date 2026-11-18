@@ -949,6 +949,30 @@ private:
         return -1;
     }
 
+    // JLS 5.3 loose invocation conversion: first try the strict conversion;
+    // only then permit boxing followed by reference widening, or unboxing
+    // followed by primitive widening. Wrapper identities come from conversion.model.
+    int invocationCostLoose(const Ty& from, const Ty& to) const {
+        int strict=invocationCost(from,to);
+        if(strict>=0) return strict;
+        if(from.dims!=0 || to.dims!=0) return -1;
+        std::string primitive;
+        if(isPrimitiveName(from.n) && modelBoxed(to.n,&primitive)) {
+            if(from.n==primitive) return 4; // boxing
+            if(cm_find(&M,"widen",from.n.c_str(),primitive.c_str(),nullptr)) return 5;
+            return -1;
+        }
+        if(modelBoxed(from.n,&primitive) && isPrimitiveName(to.n)) {
+            if(primitive==to.n) return 4; // unboxing
+            if(cm_find(&M,"widen",primitive.c_str(),to.n.c_str(),nullptr)) return 5;
+        }
+        // Boxing to Object and unboxing followed by reference widening are the
+        // only additional reference cases represented by the current type model.
+        if(isPrimitiveName(from.n) && to.n=="Object" && modelBoxed(from.n,&primitive)) return 8;
+        if(modelBoxed(from.n,&primitive) && to.n=="Object") return 8;
+        return -1;
+    }
+
     bool moreSpecific(const MethodSig& a, const MethodSig& b) const {
         if (a.params.size() != b.params.size()) return false;
         bool strict = false;
@@ -1034,13 +1058,16 @@ private:
         // The supported generic subset infers unbounded method variables that occur as
         // complete parameter types (T, T[], T...). Nested generic arguments and bounds
         // remain fail-closed because this converter's Ty model erases those structures.
-        for (int phase=0;phase<2 && !best;++phase) {
+        // JLS 15.12.2 invocation phases: strict fixed arity, loose fixed arity
+        // (boxing/unboxing), then variable arity. A boxing candidate must never
+        // outrank an applicable strict invocation.
+        for (int phase=0;phase<3 && !best;++phase) {
             for (const MethodSig* mp:candidates) {
                 const MethodSig& m=*mp;
                 if (m.hasTypeParamBounds) { sawUnsupportedGeneric=true; continue; } // bounds are not yet represented in Ty
                 const size_t n=m.params.size();
-                const bool fixed=n==args.size() && (!m.varargs || phase==0);
-                const bool variable=phase==1 && m.varargs && args.size()+1>=n;
+                const bool fixed=n==args.size() && (!m.varargs || phase<2);
+                const bool variable=phase==2 && m.varargs && args.size()+1>=n;
                 if (!fixed && !variable) continue;
                 std::map<std::string,Ty> inferred;
                 int cost=0; bool applicable=true;
@@ -1061,11 +1088,11 @@ private:
                         target=args[i].ty;
                     }
                     if (args[i].lambdaPos!=(size_t)-1) {
-                        if (phase==0 && m.varargs && n && i==n-1) { applicable=false; break; }
+                        if (phase<2 && m.varargs && n && i==n-1 && target.dims>0) { applicable=false; break; }
                         if (target.dims != 0 || !functionalMethod(target.n)) { applicable=false; break; }
                         cost+=64; continue;
                     }
-                    int c=invocationCost(args[i].ty,target);
+                    int c=phase==0 ? invocationCost(args[i].ty,target) : invocationCostLoose(args[i].ty,target);
                     if(c<0){applicable=false;break;}
                     cost+=c;
                 }
