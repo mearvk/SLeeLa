@@ -3564,7 +3564,16 @@ private:
                 labels.push_back("default:");
             } else {
                 expectKw("case");
-                do { labels.push_back("case " + parseCaseLabel(selTy) + ":"); } while (acceptOp(","));
+                do {
+                    if (isKw("null")) unsup("switch-pattern");
+                    const size_t patternEnd = scanType(p);
+                    if (patternEnd != (size_t)-1 &&
+                        ((isIdentTok(at(patternEnd)) &&
+                          (isOpAt(patternEnd + 1, "->") || isOpAt(patternEnd + 1, ":") || isKwAt(patternEnd + 1, "when"))) ||
+                         isOpAt(patternEnd, "(")))
+                        unsup("switch-pattern");
+                    labels.push_back("case " + parseCaseLabel(selTy) + ":");
+                } while (acceptOp(","));
             }
             if (acceptOp("->")) arrow = true; else expectOp(":");
             // old-style stacked labels: case 1: case 2: body
