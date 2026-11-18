@@ -1825,7 +1825,12 @@ class JConvRewriter {
         if (promoted == "long") { return "l"; }
         return "?";
       }
-      if (kind == "floating") { return t == "float" ? "f" : "d"; }
+      if (kind == "floating") {
+        String promoted = this.rules.model.promotedType(t);
+        if (promoted == "float") { return "f"; }
+        if (promoted == "double") { return "d"; }
+        return "?";
+      }
       if (kind == "boolean") { return "b"; }
       if (kind == "text") { return "s"; }
       return "?";
