@@ -341,7 +341,7 @@ def member_signature_index(sig):
 
 
 def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts=None):
-    """Build JDK 28 type files using the JDK 25 reflected member baseline and overload index."""
+    """Build JDK 28 type files from the selected runtime reflection and overload index."""
     lines = []
     taken = set(dec.ENVELOPE) | HELPERS
     ctv = sg.tvar_names(sig["tparams"]) if sig else set()
@@ -355,13 +355,13 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
     budget_used += len(impl_fields)
     decl = dec.declarations(t, cls, taken | impl_fields, set(impl_methods), budget_used, bool(impl))
     if decl:
-        lines.append("  < ---- BEGIN java declarations (JDK 25 reflected member baseline; JDK 28 type inventory) ---- >")
+        lines.append("  < ---- BEGIN java declarations (selected runtime reflection; JDK 28 docs inventory) ---- >")
         lines += decl
         lines.append("  < ---- END java declarations ---- >")
     dtext = "\n".join(decl)
     declared = set(dec.FIELD_DECL.findall(dtext)) | set(dec.METHOD_DECL.findall(dtext)) | set(sg.METHOD.findall(dtext))
     if sig is None:
-        lines.append("  < ---- members pending: no JDK 25 reflected signature-index record for this type ---- >")
+        lines.append("  < ---- members pending: no reflected signature-index record for this type ---- >")
         return lines, 0, 0, 0
 
     signature_groups, collisions = member_signature_index(sig)
@@ -403,12 +403,12 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
 
     if ctors:
         lines.append("")
-        lines.append("  < ---- BEGIN java constructors (JDK 25 reflected signatures; JDK 28 type inventory) ---- >")
+        lines.append("  < ---- BEGIN java constructors (selected runtime reflection; JDK 28 docs inventory) ---- >")
         lines += ctors
         lines.append("  < ---- END java constructors ---- >")
     if meths:
         lines.append("")
-        lines.append("  < ---- BEGIN java signatures (JDK 25 reflected signatures; JDK 28 type inventory) ---- >")
+        lines.append("  < ---- BEGIN java signatures (selected runtime reflection; JDK 28 docs inventory) ---- >")
         lines.append("  << Not yet SLeeLa logic: each method returns the default value of its")
         lines.append("     Java return type. @throwable names what Java throws for it (abstract:")
         lines.append("     AbstractMethodError, else UnsupportedOperationException, plus the")
@@ -489,14 +489,14 @@ def main() -> int:
                 stats["implemented"] = stats.get("implemented", 0) + 1
         if t and sig:
             body, nc, nm, ncollisions = member_blocks(t, sig, cls, impl, api_by_name, impl_texts)
-            status = "members from JDK 25 reflection baseline (JDK 28 type inventory)"
+            status = "members from selected runtime reflection (JDK 28)"
             stats["with_members"] += 1
             stats["ctors"] += nc
             stats["methods"] += nm
             stats["collisions"] += ncollisions
         elif t:
-            body = ["  < ---- members pending: no JDK 25 reflected signature-index record for this type ---- >"]
-            status = "type identity known; member signatures pending"
+            body = ["  < ---- members pending: no reflected signature-index record for this type ---- >"]
+            status = "type identity known; member signatures pending (not found in runtime reflection)"
             stats["pending_signatures"] += 1
         else:
             body = ["  < ---- members pending: new in JDK 28, read them from the Java Source page ---- >"]
