@@ -218,7 +218,7 @@ The path-level manifest is lib/LIBRARY.SYMBOLS.md; the package summary is lib/LI
 
 Nordshrift's SLeeLa source input and output use the shared Sleelvac frontend
 contract. The current normative SLeeLa language edition is **Syntax 3.1**;
-the shared frontend accepts declared source syntax **1.0–3.1**. Source
+the shared frontend accepts declared source syntax **1.0–3.2**. Source
 version pragmas remain authoritative for each file, and constructs introduced
 in earlier editions remain subject to their historical minimum-version gates.
 
