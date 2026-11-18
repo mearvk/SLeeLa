@@ -212,7 +212,7 @@ The Challenge Manager supplies Basic, Moderate, and Advanced declared diagnostic
 
 The package build is available with `make -C lib/vm` and from the repository root with `make vm`. The Compiler Manager contract is reviewed before VM package objects are considered ready for assembly; the build does not silently change the declared VM inventory.
 
-## Language edition and VM conformance — Syntax 3.0
+## Language edition and VM conformance — Syntax 3.2
 
 All SLeeLa VM source and artifact interfaces are governed by the repository
 root [`SLEELA.syntax`](../../SLEELA.syntax). Syntax **3.2** is the current
