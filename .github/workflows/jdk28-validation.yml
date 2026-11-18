@@ -1,43 +1,18 @@
-name: JDK 28 validation campaign
+name: JDK 28 Validation Campaign
 
 on:
   push:
-    branches:
-      - work/jdk28-signature-index-generic-validation
-    paths:
-      - ".github/workflows/jdk28-validation.yml"
-      - "lib/java/jdk-25/tools/jdk_api_signatures.py"
-      - "lib/java/jdk-25/tools/test_jdk_api_signatures.py"
-      - "lib/java/jdk-28/**"
-      - "lib/java/converter/**"
-      - "examples/java/**"
-      - "tests/jdk28_functional_equivalence.py"
-      - "impl/**"
-      - "security/**"
+    branches: ["work/**"]
   pull_request:
     branches: [master, main]
-    paths:
-      - ".github/workflows/jdk28-validation.yml"
-      - "lib/java/jdk-25/tools/jdk_api_signatures.py"
-      - "lib/java/jdk-25/tools/test_jdk_api_signatures.py"
-      - "lib/java/jdk-28/**"
-      - "lib/java/converter/**"
-      - "examples/java/**"
-      - "tests/jdk28_functional_equivalence.py"
-      - "impl/**"
-      - "security/**"
   workflow_dispatch:
 
 permissions:
   contents: read
 
-concurrency:
-  group: jdk28-validation-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
   jdk28:
-    name: Complete JDK 28 API and converter validation
+    name: JDK 28 API and converter validation
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
