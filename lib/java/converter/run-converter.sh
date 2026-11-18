@@ -70,8 +70,6 @@ done
 rm -f "$log" "$JCONV_OUT/.jconv-state"
 [ "$prog" = "DONE" ] || { echo "jconv: conversion did not reach DONE; refusing publication" >&2; exit 1; }
 rm -f "$JCONV_OUT/.jconv-progress"
-rm -rf "$here/docs"
-
 python3 - "$root" "$JCONV_IN" "$JCONV_OUT" <<'PY'
 import hashlib, json, os, pathlib, sys
 root, src, out = map(pathlib.Path, sys.argv[1:])
@@ -119,4 +117,5 @@ if ! mv "$stage" "$FINAL_OUT"; then
 fi
 published=1
 [ ! -d "$backup" ] || rm -rf "$backup"
+rm -rf "$here/docs"
 echo "jconv: published complete generation at $FINAL_OUT"
