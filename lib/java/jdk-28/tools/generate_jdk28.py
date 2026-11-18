@@ -155,12 +155,14 @@ IMPL_CTOR = r"^  (?:@\w+\s+)?(?:public |protected |private )?{cls}\s*\(([^)]*)\)
 
 
 def impl_cover(impl: str, cls: str):
-    """What an implementation block already provides: method kinds, ctor arities, field names."""
+    """Implementation methods and constructors indexed by accepted parameter kinds."""
     methods = sg.impl_sigs(impl)
-    ctor_arities = {len(sg.split_top(x)) if x.strip() else 0
-                    for x in re.findall(IMPL_CTOR.format(cls=re.escape(cls)), impl, re.M)}
+    ctor_signatures = [
+        tuple(sg.kind(t, set()) for t in sg.param_types(params))
+        for params in re.findall(IMPL_CTOR.format(cls=re.escape(cls)), impl, re.M)
+    ]
     fields = set(dec.FIELD_DECL.findall(impl))
-    return methods, ctor_arities, fields
+    return methods, ctor_signatures, fields
 
 
 PRIM_INT = {"int", "long", "short", "byte", "char"}
@@ -196,7 +198,7 @@ def erase(t: str) -> str:
     t = ANNOT.sub("", t).strip()
     suffix = ""
     if t.endswith("..."):
-        suffix, t = "...", t[:-3].strip()
+        suffix, t = "[]", t[:-3].strip()
     dims = ""
     while t.endswith("[]"):
         dims, t = dims + "[]", t[:-2].strip()
@@ -318,17 +320,32 @@ def generics_record(sig, cls: str) -> str:
 '''
 
 
-def member_blocks(t, sig, cls: str, impl: str = ""):
-    """Declarations, constructors and methods for a type known to the reflected API.
+def member_signature_index(sig):
+    """Group Java declarations by their SLeeLa-erased overload key."""
+    groups = {}
+    if not sig:
+        return groups, 0
+    for member in sig.get("members", []):
+        key = (member["name"], tuple(erase(p[0]) for p in member["params"]))
+        groups.setdefault(key, []).append(member)
+    for group in groups.values():
+        group.sort(key=lambda m: (tuple(p[0] for p in m["params"]), m.get("tparams", "")))
+    collisions = sum(max(0, len(group) - 1) for group in groups.values())
+    return groups, collisions
 
-    Members already provided by the implementation block (same name and
-    accepted argument kinds, same constructor arity, same field name) are not
-    written again as stubs."""
+
+def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts=None):
+    """Build API stubs from an overload index without shadowing inherited logic."""
     lines = []
     taken = set(dec.ENVELOPE) | HELPERS
     impl_methods, impl_ctors, impl_fields = impl_cover(impl, cls)
+    if api_by_name is not None and impl_texts is not None:
+        inherited = sg.inherited_implementation_methods(t["name"], api_by_name, impl_texts)
+        for name, kinds in inherited.items():
+            impl_methods.setdefault(name, []).extend(kinds)
+
     budget_used = FIXED_FIELDS + (2 if t["kind"] == "enum" else 0) + len(t.get("components", []))
-    budget_used += len([f for f in impl_fields])
+    budget_used += len(impl_fields)
     decl = dec.declarations(t, cls, taken | impl_fields, set(impl_methods), budget_used, bool(impl))
     if decl:
         lines.append("  < ---- BEGIN java declarations (from the JDK 28 API) ---- >")
@@ -337,37 +354,46 @@ def member_blocks(t, sig, cls: str, impl: str = ""):
     dtext = "\n".join(decl)
     declared = set(dec.FIELD_DECL.findall(dtext)) | set(dec.METHOD_DECL.findall(dtext)) | set(sg.METHOD.findall(dtext))
     if sig is None:
-        return lines, 0, 0
+        return lines, 0, 0, 0
+
     ctv = sg.tvar_names(sig["tparams"])
-    has_ctor_arity = set(impl_ctors)
+    signature_groups, collisions = member_signature_index(sig)
+    blocked_ctor_arities = set()
     if t["kind"] == "enum":
-        has_ctor_arity.add(2)
+        blocked_ctor_arities.add(2)
     if t["kind"] == "record":
-        has_ctor_arity.add(len(t.get("components", [])))
+        blocked_ctor_arities.add(len(t.get("components", [])))
+
     ctors, cseen = [], set()
-    for m in sig["members"]:
-        if cls in dec.RESERVED:
-            break  # a class named by a SLeeLa keyword (String) cannot declare constructors
-        if m["name"] != "<init>" or len(m["params"]) in has_ctor_arity:
+    if cls not in dec.RESERVED:
+        for key, group in signature_groups.items():
+            if key[0] != "<init>":
+                continue
+            m = group[0]
+            if len(m["params"]) in blocked_ctor_arities:
+                continue
+            tv = ctv | sg.tvar_names(m["tparams"])
+            want = tuple(sg.kind(p[0], tv) for p in m["params"])
+            if any(sg.accepts(have, want) for have in impl_ctors):
+                continue
+            if key in cseen:
+                continue
+            cseen.add(key)
+            ctors.append(render_ctor_stub(t["name"], cls, m))
+
+    meths = []
+    for key, group in signature_groups.items():
+        if key[0] == "<init>":
             continue
-        key = tuple(erase(p[0]) for p in m["params"])
-        if key in cseen:
-            continue
-        cseen.add(key)
-        ctors.append(render_ctor_stub(t["name"], cls, m))
-    meths, mseen = [], set()
-    for m in sig["members"]:
-        if m["name"] == "<init>" or m["name"] in declared or m["name"] in taken or not dec.usable(m["name"], cls):
+        m = group[0]
+        if m["name"] in declared or m["name"] in taken or not dec.usable(m["name"], cls):
             continue
         tv = ctv | sg.tvar_names(m["tparams"])
         want = tuple(sg.kind(p[0], tv) for p in m["params"])
         if any(sg.accepts(have, want) for have in impl_methods.get(m["name"], [])):
             continue
-        key = (m["name"], tuple(erase(p[0]) for p in m["params"]))
-        if key in mseen:
-            continue
-        mseen.add(key)
         meths.append(render_stub(t["name"], m))
+
     if ctors:
         lines.append("")
         lines.append("  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >")
@@ -383,8 +409,7 @@ def member_blocks(t, sig, cls: str, impl: str = ""):
         lines.append("     java implementation block; the generator then drops the stub. >>")
         lines += meths
         lines.append("  < ---- END java signatures ---- >")
-    return lines, len(ctors), len(meths)
-
+    return lines, len(ctors), len(meths), collisions
 
 def main() -> int:
     api = {}
@@ -399,9 +424,21 @@ def main() -> int:
             sigs[s["name"]] = s
 
     index = ["# java_type\tmodule\tkind\tsleela_file\tjava_source\tmembers"]
-    stats = {"files": 0, "with_members": 0, "pending": 0, "ctors": 0, "methods": 0}
-    for module, fq, pkg, simple, rel in inventory():
-        cls = simple.split(".")[-1]
+    stats = {"files": 0, "with_members": 0, "pending": 0, "ctors": 0, "methods": 0, "collisions": 0}
+    inventory_rows = list(inventory())
+    api_by_name = {record["name"]: record for record in api.values()}
+    impl_texts = {}
+    for module, fq, pkg, simple, rel in inventory_rows:
+        existing = API_DIR / Path(module, *pkg.split("."), simple + ".sleela")
+        if existing.is_file():
+            existing_text = existing.read_text(encoding="utf-8", errors="replace")
+            impl_match = IMPL_RE.search(existing_text)
+            impl_texts[fq] = impl_match.group(0) if impl_match else ""
+        else:
+            impl_texts[fq] = ""
+
+    for module, fq, pkg, simple, rel in inventory_rows:
+        cls = simple.split(".")[-1}
         t = api.get((module, fq))
         sig = sigs.get(fq) if t else None
         src_url = ONLINE + rel.with_suffix(".html").as_posix()
@@ -418,11 +455,12 @@ def main() -> int:
                 impl = mo.group(0)
                 stats["implemented"] = stats.get("implemented", 0) + 1
         if t:
-            body, nc, nm = member_blocks(t, sig, cls, impl)
+            body, nc, nm, ncollisions = member_blocks(t, sig, cls, impl, api_by_name, impl_texts)
             status = "members from the JDK 28 API (exact signatures)"
             stats["with_members"] += 1
             stats["ctors"] += nc
             stats["methods"] += nm
+            stats["collisions"] += ncollisions
         else:
             body = ["  < ---- members pending: new in JDK 28, read them from the Java Source page ---- >"]
             status = "pending (new in JDK 28; members to be read from the Source page)"
