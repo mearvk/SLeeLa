@@ -1,6 +1,6 @@
 # SLeeLa 3.2 API edition
 
-**Current language edition:** SLeeLa syntax 3.2, also written `3.2`  
+**Current language edition:** SLeeLa syntax 3.2,   
 **Normative specification:** [`SLEELA.syntax`](../../../SLEELA.syntax), sections 44, 45 and 46  
 **Compiler gate:** `impl/frontend/version.h` — supported source syntax 1.0–3.2  
 **Java tier:** [`lib/java/JAVA.SPEC.md`](../../../lib/java/JAVA.SPEC.md) (specified apart from the language)
