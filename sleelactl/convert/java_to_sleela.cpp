@@ -1082,6 +1082,34 @@ private:
         return strict;
     }
 
+    // JLS 15.12.2.5: in the variable-arity phase, compare the effective
+    // component parameter types at the invocation's arity. Comparing the
+    // declared T[] parameters (or requiring equal declaration arity) misses
+    // cases such as m(String...) being more specific than m(Object...).
+    bool moreSpecificForInvocation(const MethodSig& a, const MethodSig& b,
+                                   size_t arity, bool variableArityPhase) const {
+        std::vector<Ty> ap=a.params, bp=b.params;
+        auto expand = [&](const MethodSig& method, std::vector<Ty>& params) -> bool {
+            if (!variableArityPhase || !method.varargs) return params.size()==arity;
+            if (params.empty() || arity+1<params.size()) return false;
+            Ty component=params.back();
+            if (component.dims<=0) return false;
+            --component.dims;
+            params.pop_back();
+            const size_t effectiveArity=std::max(arity, method.params.size());
+            while (params.size()<effectiveArity) params.push_back(component);
+            return params.size()==effectiveArity;
+        };
+        if (!expand(a,ap) || !expand(b,bp) || ap.size()!=bp.size()) return false;
+        bool strict=false;
+        for (size_t i=0;i<ap.size();++i) {
+            const int c=invocationCost(ap[i],bp[i]);
+            if (c<0) return false;
+            if (c>0) strict=true;
+        }
+        return strict;
+    }
+
     bool isSubtypeName(const std::string& from, const std::string& to, int depth = 0) const {
         if (from == to) return true;
         if (depth > 32) return false;
@@ -1437,10 +1465,10 @@ private:
                 if(!best || cost<bestCost) {
                     best=mp; bestResolved=resolved; bestCost=cost; ambiguous=false;
                 } else if(cost==bestCost && best) {
-                    if(moreSpecific(resolved,bestResolved) ||
+                    if(moreSpecificForInvocation(resolved,bestResolved,args.size(),phase==2) ||
                        (resolved.params==bestResolved.params && resolved.typeParams.empty() && !bestResolved.typeParams.empty())) {
                         best=mp; bestResolved=resolved; ambiguous=false;
-                    } else if(!moreSpecific(bestResolved,resolved) &&
+                    } else if(!moreSpecificForInvocation(bestResolved,resolved,args.size(),phase==2) &&
                               (resolved.params!=bestResolved.params || resolved.varargs!=bestResolved.varargs)) {
                         ambiguous=true;
                     }
