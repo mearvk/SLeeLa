@@ -132,6 +132,37 @@ else
   printf 'FAIL  project-generic (project build or conversion failed)\\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
 fi
 
+# Explicit package imports resolve to a project-indexed source type.
+mkdir -p "$tmp/project-package/src/model" "$tmp/project-package/src/app" "$tmp/project-package/cls" "$tmp/project-package/sl"
+cat > "$tmp/project-package/src/model/Widget.java" <<'JAVA'
+package model;
+public class Widget {
+  public int value() { return 37; }
+}
+JAVA
+cat > "$tmp/project-package/src/app/Main.java" <<'JAVA'
+package app;
+import model.Widget;
+public class Main {
+  public static void main(String[] args) {
+    Widget widget = new Widget();
+    System.out.println(widget.value());
+  }
+}
+JAVA
+if javac -d "$tmp/project-package/cls" "$tmp/project-package/src/model/Widget.java" "$tmp/project-package/src/app/Main.java" 2> "$tmp/project-package/javac.err" &&
+   java -cp "$tmp/project-package/cls" app.Main > "$tmp/project-package/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-package/src" --out "$tmp/project-package/sl" --quiet; then
+  (cd "$tmp/project-package/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-package/actual.out"
+  if diff -u "$tmp/project-package/expected.out" "$tmp/project-package/actual.out" > "$tmp/project-package/diff"; then
+    printf 'PASS  %-12s explicit package import resolves project type identically to the JDK\n' "project-package"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-package\n'; head -40 "$tmp/project-package/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-package (project build or conversion failed)\n'; cat "$tmp/project-package/javac.err"; fail=$((fail+1))
+fi
+
 # duplicate simple declarations must never be resolved by source traversal order
 mkdir -p "$tmp/duplicate/src/a" "$tmp/duplicate/src/b" "$tmp/duplicate/out"
 cat > "$tmp/duplicate/src/a/First.java" <<'JAVA'
