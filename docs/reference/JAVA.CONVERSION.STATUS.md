@@ -271,3 +271,8 @@ The C++ Java converter now refuses `new Type<>(...)` with `[generic-constructor-
 ### Explicit generic constructor arguments — implementation note (2026-11-18)
 
 The C++ converter now parses and retains explicit type arguments in constructor allocations, validates known concrete arguments against supported simple class upper bounds, and refuses explicit generic array creation rather than erasing its type information. Added one positive fixture (`GenericConstructorExplicitArguments`) and one bound-conflict refusal fixture (`GenericConstructorBoundConflict`). The fixture inventory is 48 positive / 26 refusal, not test results. Diamond inference remains refused; full constructor overload substitution and target-type inference remain open. No build or test was run by user direction; status remains **NOT VERIFIED / HOLD**.
+
+
+### Protected instance-field receiver accessibility — 2026-11-18
+
+The C++ Java converter now enforces the cross-package subclass receiver restriction for protected instance fields (JLS 6.6.2.1): a protected field declared in another package cannot be selected through a receiver statically typed as the superclass. Added a positive subclass-typed receiver case and a negative multi-source project case to `tests/javaconv_differential_test.sh`; the negative case expects javac rejection and converter `[member-access]` refusal with no output. The harness was not run by user direction. This is an accessibility increment, not package-qualified symbol identity completion. No build/test/CI was run; status remains **NOT VERIFIED / HOLD**.
