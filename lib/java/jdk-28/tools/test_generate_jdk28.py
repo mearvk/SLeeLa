@@ -85,6 +85,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
         self.assertEqual(methods, 2)
         self.assertNotIn("ready(", "\n".join(lines))
         self.assertIn("hidden(", "\n".join(lines))
+        self.assertIn("abstractHelper(", "\n".join(lines))
 
 
 if __name__ == "__main__":
