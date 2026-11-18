@@ -1080,6 +1080,22 @@ private:
         }
     }
 
+    bool receiverAsOwner(const Ty& receiver, const std::string& owner, Ty& result, int depth = 0) const {
+        if (depth > 32) return false;
+        if (receiver.n==owner) { result=receiver; return true; }
+        auto ci=classes.find(receiver.n);
+        if (ci==classes.end()) return false;
+        if (ci->second.superType.n!="?") {
+            Ty base=instantiateClassType(ci->second.superType,receiver);
+            if (receiverAsOwner(base,owner,result,depth+1)) return true;
+        }
+        for (const Ty& declaredIface:ci->second.ifaceTypes) {
+            Ty iface=instantiateClassType(declaredIface,receiver);
+            if (receiverAsOwner(iface,owner,result,depth+1)) return true;
+        }
+        return false;
+    }
+
     Ty instantiateClassType(const Ty& source, const Ty& receiver) const {
         Ty value=source;
         if (value.n.rfind("$C$",0)==0) {
@@ -1153,9 +1169,10 @@ private:
         for (int phase=0;phase<3 && !best;++phase) {
             for (const MethodSig* mp:candidates) {
                 MethodSig classResolved=*mp;
-                if (receiverType && receiverType->n==mp->owner) {
-                    for (Ty& param:classResolved.params) param=instantiateClassType(param,*receiverType);
-                    classResolved.ret=instantiateClassType(classResolved.ret,*receiverType);
+                Ty declaringReceiver;
+                if (receiverType && receiverAsOwner(*receiverType,mp->owner,declaringReceiver)) {
+                    for (Ty& param:classResolved.params) param=instantiateClassType(param,declaringReceiver);
+                    classResolved.ret=instantiateClassType(classResolved.ret,declaringReceiver);
                 } else {
                     Ty erasedReceiver; erasedReceiver.n=mp->owner;
                     for (Ty& param:classResolved.params) param=instantiateClassType(param,erasedReceiver);
@@ -3590,24 +3607,29 @@ private:
         }
         auto simple = [&](const Ty& t) { return t.n == "?" ? std::string("Any") : t.n; };
         std::string superName;
+        Ty superType;
         std::vector<std::string> ifaceNames;
+        std::vector<Ty> ifaceTypes;
         if (acceptKw("extends")) {
-            std::vector<std::string> bases;
-            bases.push_back(simple(parseType()));
-            while (acceptOp(",")) bases.push_back(simple(parseType()));
+            std::vector<Ty> bases;
+            bases.push_back(parseType());
+            while (acceptOp(",")) bases.push_back(parseType());
             if (isIface) {
-                header += " extends " + bases[0];
-                for (size_t i = 1; i < bases.size(); i++) header += ", " + bases[i];
-                ifaceNames = bases;
-            } else { header += " extends " + bases[0]; superName = bases[0]; }
+                header += " extends " + simple(bases[0]);
+                for (size_t i = 1; i < bases.size(); i++) header += ", " + simple(bases[i]);
+                for (const Ty& base:bases) { ifaceNames.push_back(simple(base)); ifaceTypes.push_back(base); }
+            } else {
+                header += " extends " + simple(bases[0]);
+                superName = simple(bases[0]); superType = bases[0];
+            }
         }
         if (acceptKw("implements")) {
-            std::vector<std::string> ifs;
-            ifs.push_back(simple(parseType()));
-            while (acceptOp(",")) ifs.push_back(simple(parseType()));
-            for (auto& x : ifs) ifaceNames.push_back(x);
-            header += " implements " + ifs[0];
-            for (size_t i = 1; i < ifs.size(); i++) header += ", " + ifs[i];
+            std::vector<Ty> ifs;
+            ifs.push_back(parseType());
+            while (acceptOp(",")) ifs.push_back(parseType());
+            for (const Ty& iface:ifs) { ifaceNames.push_back(simple(iface)); ifaceTypes.push_back(iface); }
+            header += " implements " + simple(ifs[0]);
+            for (size_t i = 1; i < ifs.size(); i++) header += ", " + simple(ifs[i]);
         }
         if (acceptKw("permits")) {   // sealed is a compile-time restriction only: no runtime behaviour to convert
             parseType();
@@ -3617,7 +3639,7 @@ private:
         ClassInit cinit;
         InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
-        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.ifaces = ifaceNames; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; }
+        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; }
         std::vector<std::string> memberLines;
         int instanceFields = 0;
         size_t beforeDiags = diags.size();
