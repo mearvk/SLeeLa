@@ -359,6 +359,8 @@ struct Program {
     // Syntax 3.1 surface the parser met (e.g. "character literal"); semantic
     // analysis rejects each one in a document declaring a syntax below 3.1.
     std::vector<std::string> syntax31Uses;
+    // Syntax 3.2 surface (typed char semantics and multidimensional arrays).
+    std::vector<std::string> syntax32Uses;
 };
 
 } // namespace sleela
