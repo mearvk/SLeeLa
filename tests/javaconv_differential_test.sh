@@ -237,6 +237,29 @@ else
   fi
 fi
 
+# package-private top-level types cannot be imported from another package.
+mkdir -p "$tmp/project-type-access/src/fixture/alpha" "$tmp/project-type-access/src/fixture/use" "$tmp/project-type-access/cls" "$tmp/project-type-access/out"
+cat > "$tmp/project-type-access/src/fixture/alpha/Hidden.java" <<'JAVA'
+package fixture.alpha;
+class Hidden { public int value() { return 1; } }
+JAVA
+cat > "$tmp/project-type-access/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+import fixture.alpha.Hidden;
+public class Main { public static void main(String[] args) { System.out.println(new Hidden().value()); } }
+JAVA
+if javac -d "$tmp/project-type-access/cls" "$tmp/project-type-access/src/fixture/alpha/Hidden.java" "$tmp/project-type-access/src/fixture/use/Main.java" 2> "$tmp/project-type-access/javac.err"; then
+  printf 'FAIL  project-type-access (javac unexpectedly accepted a non-public imported type)\n'; fail=$((fail+1))
+else
+  type_out="$("$conv" --jdk "$tmp/project-type-access/src" --out "$tmp/project-type-access/out" --quiet 2>&1)"
+  type_rc=$?
+  if [ "$type_rc" -eq 1 ] && printf '%s' "$type_out" | grep -q "\[type-access\]" && [ "$(find "$tmp/project-type-access/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+    printf 'PASS  %-12s non-public cross-package type import refused with no output\n' "type-access"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-type-access (rc=%s)\n%s\n' "$type_rc" "$type_out"; fail=$((fail+1))
+  fi
+fi
+
 # duplicate simple declarations must never be resolved by source traversal order
 mkdir -p "$tmp/duplicate/src/a" "$tmp/duplicate/src/b" "$tmp/duplicate/out"
 cat > "$tmp/duplicate/src/a/First.java" <<'JAVA'
