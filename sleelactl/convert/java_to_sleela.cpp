@@ -1636,14 +1636,16 @@ private:
                         std::string owner = e.code;
                         size_t dot = owner.rfind('.');
                         if (dot != std::string::npos) owner = owner.substr(dot + 1);
-                        const Ty* expected = lambdaTarget_.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &lambdaTarget_ : nullptr;
+                        Ty expectedType = lambdaTarget_;
+                        const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
                         args = adaptArgs(pickMethod(owner, name, args, 0, -1, nullptr, expected), args);
                         E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
                         e = r;
                         continue;
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
-                    const Ty* expected = lambdaTarget_.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &lambdaTarget_ : nullptr;
+                    Ty expectedType = lambdaTarget_;
+                    const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
                     args = adaptArgs(pickMethod(recvType, name, args, 0, -1, &e.ty, expected), args);
                     // model 9c: a library parameter that takes a char as text
                     for (size_t ai = 0; ai < args.size(); ai++) {
@@ -1812,7 +1814,8 @@ private:
         std::string name = ident();
         if (isOp("(")) {
             std::vector<E> a = parseArgs();
-            const Ty* expected = lambdaTarget_.known() ? &lambdaTarget_ : nullptr;
+            Ty expectedType = lambdaTarget_;
+            const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
             const MethodSig* pm = pickMethod(curClass, name, a, 0, -1, nullptr, expected);
             std::string qualifier;
             std::string importedOwner;
