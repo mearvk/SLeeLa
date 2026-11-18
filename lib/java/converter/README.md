@@ -108,6 +108,15 @@ Speed: about 3 seconds per Java file on the source-built VM (16 files, 13,552
 output lines in 50 s). The 4,721 public JDK 28 types are therefore a run of
 several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 
+
+## 2.1 Whole-run publication and provenance
+
+The launcher now converts inside a sibling staging directory. Existing output is copied into the stage only after rejecting symlinks and special files; the previous published directory remains untouched while batches, VM restarts, reports and generated units are written. The launcher publishes only after the converter writes the terminal `DONE` marker and the provenance manifest has been generated. Publication is a same-parent directory rename with a rollback directory; a failed run or failed publish does not replace the last successful generation. Transient progress/state files are not published.
+
+Every successful generation includes deterministic `CONVERSION-PROVENANCE.json`: SHA-256 digests for sorted Java input files, the exact conversion model bytes, native converter source files, and sorted output files. It records conversion options and a JDK identity from the source tree's `release` file or explicit `JCONV_JDK_ID`. If neither exists, identity is explicitly `unverified-source-tree`; a user label is not cryptographic proof of an official JDK archive. `JCONV_REVISION` may pin the source revision; otherwise the manifest says `working-tree-or-unpinned`. Paths are relative, timestamps and absolute checkout paths are excluded. Independently recompute every listed digest before trusting or distributing a generation.
+
+The transaction protects publication, not the converter's semantic acceptance policy: per-member stubs remain partial output and must be counted separately from complete conversions. The current native output tree is copied forward to preserve unowned files; stale-output ownership cleanup is not yet equivalent to the C++ converter's ownership manifest.
+
 ## 3. The rules (shared laws in `conversion.model`; rewrite policy in `JConvRules`)
 
 | # | Java | SLeeLa output | Why |
