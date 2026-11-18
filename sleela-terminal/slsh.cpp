@@ -5,6 +5,7 @@
 //   slsh                 interactive read-eval-print loop
 //   slsh -c "script"     run the script string
 //   slsh FILE            run the script file
+//   slsh --version       print the binary identity
 
 #include "core.hpp"
 #include "lexer.hpp"
@@ -32,6 +33,8 @@
 namespace {
 
 using namespace sleela::sh;
+
+constexpr const char* kVersion = "1.0121";
 
 pid_t g_shell_pid = 0;
 volatile sig_atomic_t g_interrupted = 0;
@@ -795,6 +798,11 @@ int repl(Environment& env) {
 } // namespace
 
 int main(int argc, char** argv) {
+    if (argc == 2 && (std::string(argv[1]) == "--version" || std::string(argv[1]) == "-V")) {
+        std::cout << "slsh " << kVersion << " (SleelaTerminal shell)\\n";
+        return 0;
+    }
+
     g_shell_pid = ::getpid();
     ::signal(SIGQUIT, sharpQuitSignalHandler);
     ::signal(SIGINT, interruptSignalHandler);
