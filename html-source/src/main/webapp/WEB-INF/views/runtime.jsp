@@ -54,7 +54,7 @@
         <h2 id="result-title">Output</h2>
         <c:if test="${not empty result}">
           <span class="result-stats">
-            <c:if test="${result.exitCode >= 0}">exit code ${result.exitCode}</c:if><c:if test="${result.exitCode >= 0 and result.millis > 0}"> &middot; </c:if><c:if test="${result.millis > 0}">${result.millis} ms</c:if>
+            <c:if test="${result.exitCode >= 0}">exit code ${result.exitCode}</c:if><c:if test="${result.exitCode >= 0 and result.vmMillis >= 0}"> &middot; </c:if><c:if test="${result.vmMillis >= 0}"><c:out value="${result.vmLabel}"/> ${result.vmMillis} ms</c:if>
           </span>
         </c:if>
       </div>

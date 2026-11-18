@@ -64,7 +64,35 @@ public final class SleelaRunner {
             this.status = s; this.exitCode = exit; this.output = out; this.millis = ms; this.truncated = trunc; this.notes = notes;
             this.vm = vm; this.why = why; this.stats = stats == null ? "" : stats;
         }
-        Result withVm(String vm, String why) { return new Result(status, exitCode, output, millis, truncated, notes, vm, why, stats); }
+        Result withVm(String vm, String why) { return new Result(status, exitCode, output, millis, truncated, notes, vm, why, stats).timed(vmMillis, vmLabel, timing); }
+        /** Time the VM itself spent on the program, in ms (-1 when unknown), and what that time covers. */
+        long vmMillis = -1;
+        String vmLabel = "VM run";
+        /** Phase breakdown for the stats box, e.g. "integrity check 3100 ms, compile 1800 ms, VM run 199 ms". */
+        String timing = "";
+        public long getVmMillis() { return vmMillis; }
+        public String getVmLabel() { return vmLabel; }
+        /**
+         * Derives the VM time from the phase marks. Premium: from the CLI's "Running ... on premium VM" line to exit (the
+         * generation VM's own run). Native: from the end of the integrity check to exit; the native CLI compiles and runs in
+         * one process with no line between the two, so that time includes the (short) compile. Standard self-check: the
+         * whole process, which is the VM binary itself. Sandbox start-up, the integrity check and the HTTP round trip are
+         * never counted.
+         */
+        Result timedFrom(boolean standard, boolean premium, boolean check, long start, long verified, long booted, long end) {
+            if (standard) return timed(ms(start, end), "VM run", "");
+            String integrity = verified != 0 ? "integrity check " + ms(start, verified) + " ms" : "";
+            if (premium && verified != 0 && booted != 0) {
+                return timed(ms(booted, end), "VM run", integrity + ", compile " + ms(verified, booted) + " ms, VM run " + ms(booted, end) + " ms");
+            }
+            if (verified != 0) {
+                String label = check ? "check" : "compile + run";
+                return timed(ms(verified, end), label, integrity + ", " + label + " " + ms(verified, end) + " ms");
+            }
+            return timed(-1, "VM run", "");
+        }
+        private static long ms(long a, long b) { return Math.max(0, (b - a) / 1_000_000L); }
+        Result timed(long vm, String label, String timing) { this.vmMillis = vm; this.vmLabel = label; this.timing = timing == null ? "" : timing; return this; }
         public String getStats() { return stats; }
         /** The output box text: VM and why on their own lines, then the program output. Built here so line breaks survive JSP whitespace trimming. */
         public String getTranscript() {
@@ -80,9 +108,10 @@ public final class SleelaRunner {
             StringBuilder sb = new StringBuilder();
             sb.append("status: ").append(status.name().toLowerCase(java.util.Locale.ROOT));
             if (exitCode >= 0) sb.append("   exit code: ").append(exitCode);
-            if (millis > 0) sb.append("   wall time: ").append(millis).append(" ms");
+            if (vmMillis >= 0) sb.append("   ").append(vmLabel).append(": ").append(vmMillis).append(" ms");
             if (truncated) sb.append("   output truncated");
             sb.append('\n');
+            if (!timing.isEmpty()) sb.append("timing: ").append(timing).append('\n');
             if (!stats.isEmpty()) sb.append(stats);
             return sb.toString().replaceAll("\\s+$", "");
         }
@@ -217,8 +246,9 @@ public final class SleelaRunner {
         if (self.status != Status.OK) notes.add(vm.getVmName() + " self-check did not pass (" + self.status + ", exit code " + self.exitCode + ").");
         String stats = prog.stats + (prog.stats.isEmpty() ? "" : "\n") + "---- " + vm.getVmName() + " self-check ----\n"
                 + (self.output.isEmpty() ? "" : self.output + "\n") + self.stats;
+        String timing = prog.timing + (self.vmMillis >= 0 ? (prog.timing.isEmpty() ? "" : "; ") + vm.getVmName() + " self-check " + self.vmMillis + " ms" : "");
         return new Result(prog.status, prog.exitCode, prog.output, prog.millis + self.millis, prog.truncated || self.truncated, notes,
-                null, null, stats.replaceAll("\\s+$", ""));
+                null, null, stats.replaceAll("\\s+$", "")).timed(prog.vmMillis, prog.vmLabel, timing);
     }
 
     private Result executeOnce(String sub, VmChoice vm, String source) {
@@ -276,17 +306,31 @@ public final class SleelaRunner {
             pb.redirectErrorStream(true);
             pb.environment().clear();
             pb.environment().put("PATH", "/usr/bin:/bin");
+            long tStart = System.nanoTime();
             Process p = pb.start();
 
             ByteArrayOutputStream buf = new ByteArrayOutputStream();
             boolean[] truncated = {false};
+            // Arrival times of the CLI's phase lines (first occurrence only, so a program printing the same text cannot
+            // move them): [0] integrity check finished, [1] premium VM boot. 0 = not seen.
+            long[] mark = new long[2];
             Thread reader = new Thread(() -> {
                 byte[] chunk = new byte[4096];
+                StringBuilder line = new StringBuilder();
                 try (InputStream in = p.getInputStream()) {
                     int n;
                     while ((n = in.read(chunk)) > 0) {
                         int room = cfg.maxOutputBytes - buf.size();
                         if (room > 0) buf.write(chunk, 0, Math.min(room, n));
+                        if (mark[1] == 0) {
+                            for (int i = 0; i < n; i++) {
+                                char ch = (char) (chunk[i] & 0xff);
+                                if (ch != '\n') { if (line.length() < 200) line.append(ch); continue; }
+                                String l = line.toString(); line.setLength(0);
+                                if (mark[0] == 0 && l.startsWith("verification: ")) mark[0] = System.nanoTime();
+                                else if (mark[0] != 0 && l.startsWith("Running ") && l.contains(" on premium VM ")) { mark[1] = System.nanoTime(); break; }
+                            }
+                        }
                         if (n > room) { truncated[0] = true; p.destroyForcibly(); break; }
                     }
                 } catch (IOException ignored) { }
@@ -295,6 +339,7 @@ public final class SleelaRunner {
             reader.start();
 
             boolean finished = p.waitFor(cfg.timeoutSeconds, TimeUnit.SECONDS);
+            long tEnd = System.nanoTime();
             if (!finished) {
                 p.descendants().forEach(ProcessHandle::destroyForcibly);
                 p.destroyForcibly();
@@ -310,7 +355,8 @@ public final class SleelaRunner {
             if (truncated[0]) notes.add("Output was cut at " + (cfg.maxOutputBytes / 1024) + " KB and the program was stopped.");
             int code = p.exitValue();
             if (code == 137 || code == 152 || code == 159) notes.add("The program hit a resource limit (CPU " + cfg.cpuSeconds + " s or memory " + (cfg.memoryBytes >> 20) + " MB).");
-            return new Result(code == 0 ? Status.OK : Status.ERROR, code, out, ms, truncated[0], notes);
+            return new Result(code == 0 ? Status.OK : Status.ERROR, code, out, ms, truncated[0], notes)
+                    .timed(-1, "VM run", "").timedFrom(standard, premium, "check".equals(sub), tStart, mark[0], mark[1], tEnd);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return new Result(Status.ERROR, -1, "", 0, false, List.of("Interrupted."));
