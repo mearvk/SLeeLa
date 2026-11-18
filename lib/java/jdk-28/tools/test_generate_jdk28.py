@@ -23,10 +23,25 @@ def method(name, params=(), ret="void", tparams="", mods="public"):
 
 
 class JDK28SignatureIndexTests(unittest.TestCase):
-    def test_varargs_are_indexed_as_array_parameters(self):
+    def test_varargs_and_arrays_follow_runtime_type_table(self):
         self.assertEqual(gen.erase("java.lang.String..."), "String[]")
         self.assertEqual(gen.erase("T..."), "Any[]")
         self.assertEqual(gen.erase("java.util.List<? extends T>"), "Any")
+        self.assertEqual(gen.erase("int[]"), "int[]")
+        self.assertEqual(gen.erase("java.lang.String[]"), "String[]")
+        self.assertEqual(gen.erase("int[][]"), "Any")
+        self.assertEqual(gen.erase("java.lang.String[][]"), "Any")
+        self.assertEqual(gen.erase("java.util.List<T>[]"), "Any[]")
+
+    def test_method_generic_metadata_is_preserved_after_erasure(self):
+        rendered = gen.render_stub(
+            "example.Box",
+            method("copy", ("T[]", "java.util.List<? super T>"), "T[]",
+                   "<T extends java.lang.Number>")
+        )
+        self.assertIn('@generic("<T extends java.lang.Number>")', rendered)
+        self.assertIn("Any[] copy(Any[] arg0, Any arg1)", rendered)
+        self.assertIn("java.lang.UnsupportedOperationException", rendered)
 
     def test_erasure_index_retains_colliding_declarations(self):
         sig = {
