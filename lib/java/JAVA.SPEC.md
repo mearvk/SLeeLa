@@ -195,8 +195,7 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   the field `outer_`; its constructors take it as a leading parameter, `new Inner(...)` inside the
   outer class passes `this`, and `Outer.this` is `outer_`. A type written with its qualifier,
   `Outer.Inner`, names `Outer__Inner` (package segments in lower case are dropped), so
-  `NumberFormat.Field extends Format.Field` extends `Format__Field`, not itself. Not converted:
-  `outer.new Inner()`, local classes declared in a method. Tests: `Nested`, `reject/QualifiedNested`.
+  `NumberFormat.Field extends Format.Field` extends `Format__Field`, not itself. Not converted: `outer.new Inner()` and local classes declared in executable blocks (`[local-type]`); these need an enclosing-instance expression or a separate lexical scope/capture environment. Tests: `Nested`, `reject/QualifiedNested`, `reject/LocalClass`.
 - Anonymous classes, lambdas and method references. Each becomes a generated top-level class
   `Top__N`: the captured local variables become constructor-initialised fields `cap_x` (Java requires
   them effectively final, so copying is exact), the enclosing object becomes `outer_`, unqualified
@@ -207,9 +206,9 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   after the call is resolved). The common JDK functional interfaces (Runnable, Supplier, Consumer,
   Function, Predicate, Comparator and the Bi/Unary/Binary forms) are known with generic parameters
   untyped. A method reference `Type::static`, `Type::instance`, `Type::new`, `this::m` and
-  `local::m` is the lambda it stands for. Refused: a lambda or anonymous class inside another one,
-  a bound method reference on an expression that is not a local, a target interface whose source
-  was not collected. Tests: `Anon`, `Functional`, `Refs`.
+  `local::m` is the lambda it stands for. Refused: a lambda or anonymous class inside another generated class (capture-chain lowering is not yet implemented),
+  a bound method reference on an expression that is not a local, and a target interface whose SAM signature
+  is not known. Tests: `Anon`, `Functional`, `Refs`, `reject/LambdaUse`.
 - Pattern matching. `x instanceof T v` declares `v` before the statement and tests
   `(x instanceof T) && ((v = (T) x) != null)`; an impure subject is held in a temporary. `case Type t ->`
   patterns and record patterns are refused. Test: `Refs`.
@@ -261,7 +260,7 @@ its body), without it they are refused (`[synchronized]`, `[volatile]`). Equival
 that really uses several threads is not claimed. Test: `Sync`.
 
 ### 4.10 Not convertible
-`native` methods (no Java body). Everything else refused is listed in section 5.
+`native` methods without a declared and verified Java-to-SLeeLa ABI binding. Everything else refused is listed in section 5.
 
 ## 5. Open items (refused today)
 
@@ -274,10 +273,10 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | Operands of unknown type after supported generic inference | target-type inference, interface-intersection least-upper-bound constraints, wildcard capture, generic constructors, and unresolved class-generic contexts remain unsupported | implement the remaining JLS 15.12 constraint solver; keep unresolved calls fail-closed |
 | A lambda or method reference whose target is a JDK interface not in the collected tree and not in the seeded list | the abstract method is unknown | collect the JDK interfaces (convert the JDK tree) |
 | Lambda or anonymous class inside another generated class | nested capture chains | capture through the enclosing generated class |
-| `outer.new Inner()`, local classes | rare forms | hoist local classes like nested ones |
+| `outer.new Inner()`, local classes | enclosing-instance expressions and lexical capture scopes are not implemented | lower qualified inner allocation and hoist local declarations with a separate capture environment (`[local-type]`) |
 | `case Type t ->` patterns, record patterns, sealed exhaustiveness | binding scope in a switch | per-arm cast declaration |
 | Records: `equals`/`hashCode` for double/float/reference components | Java's rules for those | `Double.compare` and `Objects.equals` lowering |
-| Boxed declared types (`Integer i`) | boxed values are primitives in SLeeLa; the declaration names a class | declare as `Any`, unbox at each use, keep `null` |
+| Nullable boxed values and boxed arrays | non-null scalar wrappers use primitive storage, which cannot preserve Java null or reference-array identity | introduce nullable wrapper storage and wrapper-array representation; current null paths fail closed (`[boxed-null]`) and arrays refuse (`[boxed]`) |
 | An object held in an erased generic shown as text | its run-time kind (object or primitive) is unknown at conversion | a run-time text helper that recognises primitives |
 | A nested user exception in `Throwable.toString()` | prints `Outer__Inner`, Java `Outer$Inner` | a binary-name table for hoisted types |
 | `static { }` initializer blocks | class initialization runs on first use (JLS 12.4) | a guarded static init method called on first access |
