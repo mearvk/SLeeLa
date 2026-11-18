@@ -84,6 +84,26 @@ write_file() {
 }
 have() { command -v "$1" >/dev/null 2>&1; }
 
+# safe_text: filter for anything we print that came from a tool, a log, or a remote page. The result is plain ASCII that
+# is safe to paste into a chat or ticket: CR progress redraws become lines, ANSI/OSC escapes and control bytes are dropped,
+# non-ASCII bytes are dropped, common secrets are redacted, and lines are capped at 400 characters.
+safe_text() {
+  LC_ALL=C tr '\r' '\n' \
+    | LC_ALL=C sed -E 's/\x1b\[[0-9;?]*[ -\/]*[@-~]//g; s/\x1b\][^\x07\x1b]*(\x07|\x1b\\)?//g' \
+    | LC_ALL=C tr -cd '\11\12\40-\176' \
+    | LC_ALL=C sed -E 's/(ghp_|gho_|ghs_|github_pat_|glpat-|xox[abp]-|AKIA|ASIA)[A-Za-z0-9_-]{8,}/[redacted]/g;
+                       s/((pass(word|wd)?|secret|token|api[_-]?key|authorization|credential)s?["'\'']?[[:space:]]*[=:][[:space:]]*)["'\'']?(Bearer |Basic )?[^[:space:],;"'\'']+["'\'']?/\1[redacted]/Ig' \
+    | LC_ALL=C cut -c1-400
+}
+# tail_safe FILE [LINES]: print the last LINES (default 60) of FILE through safe_text, indented, with a header.
+tail_safe() {
+  local f="$1" n="${2:-60}"
+  [ -r "$f" ] || { echo "    (no readable log at $f)"; return 0; }
+  echo "    ---- last $n lines of $f (plain text, secrets redacted) ----"
+  tail -n "$n" "$f" | safe_text | sed 's/^/    | /'
+  echo "    ---- end of log ----"
+}
+
 # read a file from a zip/jar: zip_cat ZIP ENTRY
 zip_cat() {
   if have unzip; then unzip -p "$1" "$2" 2>/dev/null
@@ -110,7 +130,7 @@ verify_page() {
   local body title
   body="$(curl -fsSLk -m 8 "$1" 2>/dev/null)" || { warn "$2: no answer from $1"; return 1; }
   if [[ "$body" == *'name="sleela-site"'* ]]; then return 0; fi
-  title="$(printf '%s' "$body" | tr '\n' ' ' | sed -n 's/.*<title>\([^<]*\)<\/title>.*/\1/p' | head -c 80)"
+  title="$(printf '%s' "$body" | tr '\n' ' ' | sed -n 's/.*<title>\([^<]*\)<\/title>.*/\1/p' | head -c 80 | safe_text)"
   warn "$2 is not the SLeeLa site (page title: '${title:-none}')"
   return 1
 }
@@ -120,7 +140,7 @@ check_runtime() {
   RUNTIME_STATUS="unknown"
   body="$(curl -fsSLk -m 8 "$1" 2>/dev/null)" || { RUNTIME_STATUS="page not reachable"; return 0; }
   if [[ "$body" == *'data-runtime-state="ready"'* ]]; then RUNTIME_STATUS="ready (sandbox self-test passed)"; return 0; fi
-  why="$(printf '%s' "$body" | tr '\n' ' ' | sed -n 's/.*The runtime is not available right now.<\/strong>[[:space:]]*<span>\([^<]*\)<\/span>.*/\1/p' | head -c 400)"
+  why="$(printf '%s' "$body" | tr '\n' ' ' | sed -n 's/.*The runtime is not available right now.<\/strong>[[:space:]]*<span>\([^<]*\)<\/span>.*/\1/p' | head -c 400 | safe_text | tr '\n' ' ')"
   RUNTIME_STATUS="DISABLED: ${why:-reason unknown}"
   warn "Runtime page is disabled: ${why:-reason unknown}"
   if [[ "$why" == *"namespace"* || "$why" == *"bwrap"* || "$why" == *"self-test"* || "$why" == *"Operation not permitted"* ]]; then
@@ -379,6 +399,7 @@ elif [ "$PREMIUM_VMS" = 1 ]; then
   elif ! run env SLEELA_SHA256_MANIFEST="$SLEELA_SRC/security/sha256-manifest.json" make -C "$SLEELA_SRC/impl" -j"$(nproc 2>/dev/null || echo 2)" libslcore >"$PVM_LOG" 2>&1; then
     PREMIUM_STATUS="not built (Core engine build failed, see $PVM_LOG)"
     warn "Premium VMs $PREMIUM_STATUS"
+    tail_safe "$PVM_LOG" 40
   else
     built=0; failed=()
     for n in 001 002 003 004 005 006 007 008 009 010 011; do
@@ -396,6 +417,7 @@ elif [ "$PREMIUM_VMS" = 1 ]; then
     if [ "${#failed[@]}" -gt 0 ]; then
       PREMIUM_STATUS="$PREMIUM_STATUS (failed: ${failed[*]}, see $PVM_LOG)"
       warn "Premium VMs: $PREMIUM_STATUS"
+      tail_safe "$PVM_LOG" 40
     fi
     echo "    premium VMs: $PREMIUM_STATUS"
   fi
@@ -404,13 +426,20 @@ fi
 if [ -z "$WAR_FILE" ]; then
   log "Building the WAR"
   WAR_FILE="$PROJECT_DIR/target/sleela-site.war"
+  WAR_LOG="$BACKUP_DIR/war-build.log"; [ "$DRY_RUN" = 1 ] && WAR_LOG=/dev/stdout
   if have mvn; then
-    run mvn -q -B -f "$PROJECT_DIR/pom.xml" -Dnobundle package
+    war_cmd=(mvn -B -ntp -Dstyle.color=never -f "$PROJECT_DIR/pom.xml" -Dnobundle package)
   elif have docker; then
-    run docker run --rm -v "$PROJECT_DIR":/src -w /src -v sleela-m2:/root/.m2 maven:3.9-eclipse-temurin-21 mvn -q -B -Dnobundle package
+    war_cmd=(docker run --rm -v "$PROJECT_DIR":/src -w /src -v sleela-m2:/root/.m2 maven:3.9-eclipse-temurin-21 mvn -B -ntp -Dstyle.color=never -Dnobundle package)
   else
     die "need Maven (mvn, with Java 11+) or Docker to build the WAR, or pass --war FILE"
   fi
+  # the raw build output goes to a log file; the screen gets a plain-text, redacted tail on failure
+  if ! run "${war_cmd[@]}" >"$WAR_LOG" 2>&1; then
+    tail_safe "$WAR_LOG" 80
+    die "WAR build failed (full log: $WAR_LOG)"
+  fi
+  [ "$DRY_RUN" = 1 ] || echo "    WAR build log: $WAR_LOG"
 fi
 if [ "$DRY_RUN" = 0 ]; then
   [ -f "$WAR_FILE" ] || die "WAR not found: $WAR_FILE"
@@ -453,7 +482,15 @@ EOF
     warn "Tomcat is healthy, but another application answers some of the site's paths."
   fi
   warn "Tomcat did not report healthy. Look at: ${TOMCAT_SERVICE:+journalctl -u $TOMCAT_SERVICE -n 100, }$CATALINA_BASE/logs/"
-  { curl -sS -m 5 "http://127.0.0.1:$TOMCAT_PORT/healthz" 2>&1 | head -5; echo; } >&2 || true
+  { curl -sS -m 5 "http://127.0.0.1:$TOMCAT_PORT/healthz" 2>&1 | head -5 | safe_text; echo; } >&2 || true
+  {
+    if [ -n "$TOMCAT_SERVICE" ] && have journalctl; then
+      echo "    ---- journalctl -u $TOMCAT_SERVICE (last 60 lines, plain text, secrets redacted) ----"
+      journalctl -u "$TOMCAT_SERVICE" -n 60 --no-pager 2>&1 | safe_text | sed 's/^/    | /'
+    fi
+    tcl="$(ls -t "$CATALINA_BASE"/logs/catalina.*.log "$CATALINA_BASE"/logs/catalina.out 2>/dev/null | head -1 || true)"
+    [ -z "$tcl" ] || tail_safe "$tcl" 60
+  } >&2 || true
   if [ "$ROLLBACK" = 1 ]; then warn "rolling Tomcat back"; "$BACKUP_DIR/restore.sh" tomcat || warn "Tomcat rollback failed; restore manually from $BACKUP_DIR"; fi
   TOMCAT_STATUS="FAILED (rolled back: $([ "$ROLLBACK" = 1 ] && echo yes || echo no))"
   return 1
