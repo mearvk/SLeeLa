@@ -3,7 +3,9 @@
 **Current binary version identity: 1.0121**
 
 The historical SleelaTerminal feature-release line remains 1.1.0; the executable
-identity is now 1.0121 under the repository-wide binary identity policy.
+identity is now 1.0121 under the repository-wide binary identity policy. The GUI
+reports this through its compiled version constant, and the shell reports it via
+`slsh --version`.
 
 SleelaTerminal™ has advanced to its first incremental feature generation beyond
 the `1.0.0` baseline. Feature release `1.1.0` records a round of user-facing
