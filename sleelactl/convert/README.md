@@ -24,7 +24,7 @@ Section, [`lib/java/JAVA.SPEC.md`](../../lib/java/JAVA.SPEC.md). Java improvemen
 
 Like `math` and `physics`, `conversion` is a subject with a model:
 `impl/subjects/conversion/conversion.model`. It holds the Java types, boxing,
-promotion and primitive widening (JLS 5.1.2), model-ranked operand classes,
+promotion and primitive widening (JLS 5.1.2), target type spellings, model-ranked operand classes,
 operator templates for `int`/`long`/`float`/`double`/`boolean`/`String`,
 the primitive cast matrix, compound-assignment and `++`/`--` rules, string
 conversion, context-aware identifier replacements, built-in qualification,
