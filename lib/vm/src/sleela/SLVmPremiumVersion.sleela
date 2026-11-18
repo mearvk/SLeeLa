@@ -27,7 +27,7 @@
 
    [VERSION NOTE 2026-11-05] This unit now declares #sleela 3.0; its
    material; document marker requires that feature gate. The current normative
-   language edition is Syntax 3.0; the shared frontend accepts 1.0..3.0. The
+   language edition is Syntax 3.2; the shared frontend accepts 1.0..3.2. The
    source pragma is intentionally not relabelled merely to match the edition. >>
 #sleela 3.0
 material;
