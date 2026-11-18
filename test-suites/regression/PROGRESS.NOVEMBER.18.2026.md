@@ -60,3 +60,9 @@ The C++ converter refuses a whole file if a required construct cannot be lowered
 ## Session boundary
 
 Repository documentation and pull-request records were updated using the GitHub repository interface. This session did not have a local repository checkout or shell execution path. No compiler build, regression command, converter run or representative program execution was performed in this session.
+
+## Post-merge correction
+
+The production qualification report PR [#376](https://github.com/mearvk/SLeeLa/pull/376) was subsequently merged at `d2b766c7280b1fb8d8b14ceb95bb84bffd1665c5`. The regression/session-record PR [#377](https://github.com/mearvk/SLeeLa/pull/377) was then merged at `9835bb53591cb27e590a4cf08be959682059f862`. Earlier statements in this progress record that #376 remained open describe the state at the time they were written and are superseded by this addendum.
+
+No validation gate is promoted to PASS by those documentation merges. Build, converter, differential, transactional/provenance, representative-execution, JDK 28, sanitizer and platform evidence remain pending/unverified.
