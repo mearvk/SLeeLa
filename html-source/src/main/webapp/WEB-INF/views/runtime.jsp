@@ -86,9 +86,10 @@
           <c:if test="${not empty result.notes}">
             <ul class="notes"><c:forEach var="n" items="${result.notes}"><li><c:out value="${n}"/></li></c:forEach></ul>
           </c:if>
-          <pre class="out" tabindex="0" aria-label="Program output"><c:out value="[VM: ${result.vm}]"/>
-<c:if test="${not empty result.why}"><c:out value="[Why this VM: ${result.why}]"/>
-</c:if><c:choose><c:when test="${not empty result.output}"><c:out value="${result.output}"/></c:when><c:when test="${result.status == 'OK'}"><c:out value="(your program printed nothing)"/></c:when></c:choose></pre>
+          <h3 class="out-title">Program output</h3>
+          <pre class="out" tabindex="0" aria-label="Program output"><c:out value="${result.transcript}"/></pre>
+          <h3 class="out-title">VM statistics</h3>
+          <pre class="out stats" tabindex="0" aria-label="VM statistics"><c:out value="${result.statsTranscript}"/></pre>
         </c:otherwise>
       </c:choose>
     </section>

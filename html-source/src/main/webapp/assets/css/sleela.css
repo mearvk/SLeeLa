@@ -191,6 +191,8 @@ textarea.code-input:focus { outline: 2px solid var(--accent); outline-offset: 1p
 pre.out { background: #000; color: #d7ffe9; border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; overflow: auto; max-height: 420px;
   font: 13.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
 :root[data-theme="light"] pre.out { background: #0B0F0F; }
+.out-title { margin: 14px 0 6px; font-size: .95rem; color: var(--fg-dim); font-weight: 600; }
+pre.out.stats { color: #cfe3ff; max-height: 320px; font-size: 12.5px; }
 .split.runtime { grid-template-columns: minmax(0, 1fr) 300px; }
 .side.info { position: static; max-height: none; font-size: 14.5px; }
 .side.info ul { margin: 4px 0 10px; padding-left: 18px; }

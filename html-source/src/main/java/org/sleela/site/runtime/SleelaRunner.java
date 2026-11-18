@@ -46,16 +46,46 @@ public final class SleelaRunner {
         public final String vm;
         /** One line on why that VM differs from or improves on the others; null when not applicable. */
         public final String why;
+        /** VM and engine lines (memory manager, integrity check, artifact, VM boot, self-check), kept out of the program output. */
+        public final String stats;
         Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes) {
             this(s, exit, out, ms, trunc, notes, null);
+        }
+        Result(Status s, int exit, String[] outAndStats, long ms, boolean trunc, List<String> notes) {
+            this(s, exit, outAndStats[0], ms, trunc, notes, null, null, outAndStats[1]);
         }
         Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes, String vm) {
             this(s, exit, out, ms, trunc, notes, vm, null);
         }
         Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes, String vm, String why) {
-            this.status = s; this.exitCode = exit; this.output = out; this.millis = ms; this.truncated = trunc; this.notes = notes; this.vm = vm; this.why = why;
+            this(s, exit, out, ms, trunc, notes, vm, why, "");
         }
-        Result withVm(String vm, String why) { return new Result(status, exitCode, output, millis, truncated, notes, vm, why); }
+        Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes, String vm, String why, String stats) {
+            this.status = s; this.exitCode = exit; this.output = out; this.millis = ms; this.truncated = trunc; this.notes = notes;
+            this.vm = vm; this.why = why; this.stats = stats == null ? "" : stats;
+        }
+        Result withVm(String vm, String why) { return new Result(status, exitCode, output, millis, truncated, notes, vm, why, stats); }
+        public String getStats() { return stats; }
+        /** The output box text: VM and why on their own lines, then the program output. Built here so line breaks survive JSP whitespace trimming. */
+        public String getTranscript() {
+            StringBuilder sb = new StringBuilder();
+            if (vm != null) sb.append("[VM: ").append(vm).append("]\n");
+            if (why != null && !why.isEmpty()) sb.append("[Why this VM: ").append(why).append("]\n");
+            if (!output.isEmpty()) sb.append(output);
+            else if (status == Status.OK) sb.append("(your program printed nothing)");
+            return sb.toString().replaceAll("\\s+$", "");
+        }
+        /** The stats box text: run summary, then the VM and engine lines. */
+        public String getStatsTranscript() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("status: ").append(status.name().toLowerCase(java.util.Locale.ROOT));
+            if (exitCode >= 0) sb.append("   exit code: ").append(exitCode);
+            if (millis > 0) sb.append("   wall time: ").append(millis).append(" ms");
+            if (truncated) sb.append("   output truncated");
+            sb.append('\n');
+            if (!stats.isEmpty()) sb.append(stats);
+            return sb.toString().replaceAll("\\s+$", "");
+        }
         public String getWhy() { return why; }
         public String getStatus() { return status.name(); }
         public int getExitCode() { return exitCode; }
@@ -68,7 +98,9 @@ public final class SleelaRunner {
     }
 
     /** Startup lines the compiler prints for every run; hidden from visitors. */
-    private static final Pattern NOISE = Pattern.compile("^(\\[(memory-manager|security|defender)\\].*|verification: PASS.*)$");
+    private static final Pattern NOISE = Pattern.compile("^\\[defender\\].*$");
+    /** Engine and VM lines shown in the stats box instead of the program output. */
+    private static final Pattern STATS = Pattern.compile("^(\\[(memory-manager|security)\\].*|verification: .*|sleelvac: .* -> .*\\(runnable Sleela Core artifact\\)|Running .* on premium VM .*)$");
 
     private final RuntimeConfig cfg;
     private final LibUnits libs;
@@ -111,7 +143,7 @@ public final class SleelaRunner {
         if (!Files.isRegularFile(cfg.home.resolve("tools/verify-before-execution.py"))) return "tools/verify-before-execution.py is missing from " + cfg.home + ".";
         Result r = execute("run", VmChoice.catalog(cfg.home).get(0), "#sleela 2.2\nclass SelfTest { void main() { print(\"selftest-ok\"); } }\n");
         if (r.status == Status.OK && r.output.contains("selftest-ok")) return null;
-        String why = r.output.isBlank() ? String.join(" ", r.notes) : r.output.trim();
+        String why = !r.output.isBlank() ? r.output.trim() : !r.stats.isBlank() ? r.stats.trim() : String.join(" ", r.notes);
         if (why.length() > 300) why = why.substring(0, 300) + "...";
         return "The sandbox self-test failed (" + r.status + "): " + why;
     }
@@ -171,7 +203,7 @@ public final class SleelaRunner {
     /**
      * Runs one action. A standard VM (idea-vm-NNN) is a self-check program layered on the same native core, not an engine
      * that takes a program, so for a standard run the visitor program runs on the native engine first (its print output is
-     * shown), and then the standard VM's own self-check runs and its output is appended under a labelled divider.
+     * shown), and then the standard VM's own self-check runs and goes into the stats under a labelled divider.
      */
     Result execute(String sub, VmChoice vm, String source) {
         if (!"run".equals(sub) || vm.tier != VmChoice.Tier.STANDARD) return executeOnce(sub, vm, source);
@@ -180,12 +212,13 @@ public final class SleelaRunner {
         Result self = executeOnce("run", vm, "");
         List<String> notes = new ArrayList<>();
         notes.add("Your program ran on the native core that " + vm.getVmName() + " is built on (" + vm.getVmName()
-                + " does not load programs itself). Its output is first; the " + vm.getVmName() + " self-check follows.");
+                + " does not load programs itself). The " + vm.getVmName() + " self-check is in VM statistics.");
         notes.addAll(prog.notes);
         if (self.status != Status.OK) notes.add(vm.getVmName() + " self-check did not pass (" + self.status + ", exit code " + self.exitCode + ").");
-        String out = (prog.output.isEmpty() ? "(your program printed nothing)" : prog.output)
-                + "\n\n---- " + vm.getVmName() + " self-check ----\n" + self.output;
-        return new Result(prog.status, prog.exitCode, out, prog.millis + self.millis, prog.truncated || self.truncated, notes);
+        String stats = prog.stats + (prog.stats.isEmpty() ? "" : "\n") + "---- " + vm.getVmName() + " self-check ----\n"
+                + (self.output.isEmpty() ? "" : self.output + "\n") + self.stats;
+        return new Result(prog.status, prog.exitCode, prog.output, prog.millis + self.millis, prog.truncated || self.truncated, notes,
+                null, null, stats.replaceAll("\\s+$", ""));
     }
 
     private Result executeOnce(String sub, VmChoice vm, String source) {
@@ -268,7 +301,7 @@ public final class SleelaRunner {
                 p.waitFor(5, TimeUnit.SECONDS);
             }
             reader.join(2000);
-            String out = clean(buf.toString(StandardCharsets.UTF_8));
+            String[] out = clean(buf.toString(StandardCharsets.UTF_8));
             long ms = (System.nanoTime() - t0) / 1_000_000L;
             if (!finished) {
                 notes.add("Stopped after " + cfg.timeoutSeconds + " seconds.");
@@ -289,13 +322,14 @@ public final class SleelaRunner {
         }
     }
 
-    static String clean(String raw) {
-        StringBuilder sb = new StringBuilder();
+    /** Splits raw process output into {program output, stats}. The [defender] line names server paths and is dropped. */
+    static String[] clean(String raw) {
+        StringBuilder out = new StringBuilder(), stats = new StringBuilder();
         for (String line : raw.split("\r?\n", -1)) {
             if (NOISE.matcher(line).matches()) continue;
-            sb.append(line).append('\n');
+            (STATS.matcher(line).matches() ? stats : out).append(line).append('\n');
         }
-        return sb.toString().replaceAll("\\s+$", "");
+        return new String[] {out.toString().replaceAll("\\s+$", ""), stats.toString().replaceAll("\\s+$", "")};
     }
 
     private static void deleteTree(Path dir) {
