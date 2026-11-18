@@ -438,7 +438,7 @@ def main() -> int:
             impl_texts[fq] = ""
 
     for module, fq, pkg, simple, rel in inventory_rows:
-        cls = simple.split(".")[-1}
+        cls = simple.split(".")[-1]
         t = api.get((module, fq))
         sig = sigs.get(fq) if t else None
         src_url = ONLINE + rel.with_suffix(".html").as_posix()
@@ -518,7 +518,8 @@ class {cls} {{
     stats["modules"] = len(counts) + len(NO_PACKAGE_MODULES)
     print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with API members, "
           f"{stats['pending']} pending; {stats['ctors']} constructors, {stats['methods']} methods; "
-          f"{stats['modules']} module folders; {stats.get('implemented', 0)} files with SLeeLa logic")
+          f"{stats['modules']} module folders; {stats.get('implemented', 0)} files with SLeeLa logic; "
+          f"{stats['collisions']} Java overloads collapsed by SLeeLa erasure")
     return 0
 
 
