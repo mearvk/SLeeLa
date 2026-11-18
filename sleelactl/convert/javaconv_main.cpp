@@ -242,6 +242,14 @@ int main(int argc, char** argv) {
         for (const char* op : {"+", "-"})
             if (!cm_find(&model, "unop", "float", op, nullptr)) { std::cerr << "missing float unop " << op << "\n"; missing++; }
         if (!cm_find(&model, "promote", "float", nullptr, nullptr)) { std::cerr << "missing float unary promotion\n"; missing++; }
+        if (!cm_find(&model, "incr", "float", nullptr, nullptr)) { std::cerr << "missing float increment law\n"; missing++; }
+        for (const char* op : {"+", "-", "*", "/", "%"})
+            if (!cm_find(&model, "compound", "float", op, nullptr)) { std::cerr << "missing float compound " << op << "\n"; missing++; }
+        if (!cm_find(&model, "widen", "int", "float", nullptr) ||
+            !cm_find(&model, "widen", "long", "float", nullptr) ||
+            !cm_find(&model, "widen", "float", "double", nullptr)) {
+            std::cerr << "missing float widening law\n"; missing++;
+        }
         if (!cm_find(&model, "cast", "double", "float", nullptr) ||
             !cm_find(&model, "cast", "float", "int", nullptr) ||
             !cm_find(&model, "cast", "float", "long", nullptr)) {
