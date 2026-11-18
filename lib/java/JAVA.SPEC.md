@@ -179,10 +179,14 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   Test: `Varargs`.
 - A call to a method whose name is a SLeeLa built-in (`read`, `write`, `accept`, `lock`, `send`, `join`, ...) is qualified with
   its owner class or `this.` (list: `qualify` rows in `impl/subjects/conversion/conversion.model`). Test: `Bounds` (a method named `read`).
-- Name mapping. `close()` is a SLeeLa built-in; the tier names the Java method `closeResource()`
-  in declarations and calls. Java members named like a SLeeLa reserved word or built-in
-  (`record`, `native`, `struct`, `join`, `spawn`, `sleep`, ...) are refused; local variables with
-  those names are renamed with a trailing `_`.
+- Name mapping is declared by the shared `rename` rows in
+  `impl/subjects/conversion/conversion.model`. Java `close()` maps to
+  `closeResource()`; the `next` replacement is value-context only, so
+  `it.next()` remains a method call. Other reserved identifier replacements
+  use their model-provided spelling. The C++ converter still fails closed for
+  reserved member declarations it cannot safely rewrite; the SLeeLa-native
+  converter applies the shared member policy. Built-in method calls are
+  qualified by the shared `qualify` rows.
 - `public static void main(String[] args)` becomes `static void main()` with
   `String[] args = new String[0];`.
 - Nested and inner types. A nested class, interface, enum or record is hoisted to a top-level type
