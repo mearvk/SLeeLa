@@ -970,7 +970,11 @@ private:
             return cm_find(&M, "widen", from.n.c_str(), to.n.c_str(), nullptr) ? 1 : -1;
         }
         if (from.n == to.n) {
-            if (to.args.empty()) return 0;
+            if (to.args.empty()) return 0; // widening to a raw type
+            if (from.args.empty()) {
+                for (const Ty& arg:to.args) if (arg.wildcard!=1) return -1;
+                return 0; // a raw type is safely assignable to List<?>-style targets
+            }
             if (from.args.size()!=to.args.size()) return -1;
             for (size_t gi=0;gi<to.args.size();++gi) {
                 const Ty& actualArg=from.args[gi];
@@ -1043,7 +1047,7 @@ private:
     bool isSubtypeName(const std::string& from, const std::string& to, int depth = 0) const {
         if (from == to) return true;
         if (depth > 32) return false;
-        if (to == "Object") return true;
+        if (to == "Object" && !isPrimitiveName(from)) return true;
         auto it=classes.find(from);
         if (it==classes.end()) return to=="Object";
         if (!it->second.super.empty() && isSubtypeName(it->second.super,to,depth+1)) return true;
