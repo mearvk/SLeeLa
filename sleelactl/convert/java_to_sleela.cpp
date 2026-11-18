@@ -1086,7 +1086,19 @@ private:
                         inferredType.dims-=target.dims;
                         auto ti=inferred.find(variableName);
                         if (ti==inferred.end()) inferred[variableName]=inferredType;
-                        else if (!(ti->second==inferredType)) { applicable=false; break; }
+                        else if (!(ti->second==inferredType)) {
+                            // For repeated reference constraints, retain the more
+                            // specific common class when one argument type extends
+                            // the other. Unrelated interfaces/intersections and
+                            // primitive numeric LUBs remain unsupported.
+                            Ty prior=ti->second;
+                            if (prior.dims==0 && inferredType.dims==0 &&
+                                prior.boxed==inferredType.boxed &&
+                                !isPrimitiveName(prior.n) && !isPrimitiveName(inferredType.n)) {
+                                if (isSubtypeName(prior.n,inferredType.n)) ti->second=inferredType;
+                                else if (!isSubtypeName(inferredType.n,prior.n)) { applicable=false; break; }
+                            } else { applicable=false; break; }
+                        }
                         target=args[i].ty;
                     }
                     if (args[i].lambdaPos!=(size_t)-1) {
