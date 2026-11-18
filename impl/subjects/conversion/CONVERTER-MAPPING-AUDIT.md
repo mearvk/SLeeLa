@@ -84,8 +84,9 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   closed when supported candidates remain incomparable. This is a meaningful
   partial JLS implementation, not full Java overload resolution.
 - Direct unbounded method-variable inference now binds `T`, `T[]`, and `T...`
-  from known argument types and substitutes the selected parameter/return
-  signature. Repeated reference constraints can merge when one known class is a
+  from known argument types (boxing scalar primitive arguments into model-declared
+  wrapper types, as Java generic inference requires) and substitutes the selected
+  parameter/return signature. Repeated reference constraints can merge when one known class is a
   subtype of the other; unrelated reference types, numeric LUBs and null-only
   inference are rejected. Bounds, nested generic arguments, class-generic
   substitution, target-type inference, wrapper inheritance and conversions not
