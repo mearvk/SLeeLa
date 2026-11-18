@@ -1900,8 +1900,22 @@ private:
                     r.ty = mk("?");
                     if (e.ty.dims == 0) if (const FieldInfo* fi = findField(e.ty.n, name)) {
                         Ty declaringReceiver;
-                        r.ty = fieldDeclaringReceiver(e.ty,name,declaringReceiver)
-                            ? instantiateClassType(fi->ty,declaringReceiver) : mk("?");
+                        if (fieldDeclaringReceiver(e.ty,name,declaringReceiver)) {
+                            auto ownerInfo = classes.find(declaringReceiver.n);
+                            // JLS 6.6.2.1: across packages, a protected instance
+                            // member accessed from a subclass must be selected
+                            // through an expression whose type is that subclass
+                            // (or one of its subclasses), not through a Base-typed
+                            // reference. Subclass membership alone is insufficient.
+                            if (fi->visibility == "protected" && ownerInfo != classes.end() &&
+                                ownerInfo->second.packageName != packageName_ &&
+                                isSubtypeName(curClass, declaringReceiver.n) &&
+                                !isSubtypeName(e.ty.n, curClass))
+                                fail("member-access", "protected instance field '" + declaringReceiver.n + "." + name +
+                                     "' cannot be selected through receiver type '" + e.ty.n +
+                                     "' from subclass '" + curClass + "'");
+                            r.ty = instantiateClassType(fi->ty,declaringReceiver);
+                        } else r.ty = mk("?");
                     }
                 }
                 e = r;
