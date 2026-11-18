@@ -11,7 +11,7 @@ syntax 1.0 – 3.1**. Keep new/edited `.sleela` code within these rules.
 ## Compiler choice
 
 - The prebuilt `working-binaries/sleela` is current: it reports
-  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.1**, so it
+  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.2**, so it
   checks and runs the whole tree (including `#sleela 2.x`, `#sleela 3.0` and
   `#sleela 3.1` files). Use it directly:
 
