@@ -2,9 +2,27 @@
 
 # Java to SLeeLa Conversion: Overall Status
 
+## Verification refresh — 2026-11-18
+
+**Inspected master:** `3478f4856d044b615ff2e999ca5730a80eedd394`. **Release decision: HOLD.** Current verification metadata does not establish a passing production build or Java behavioral equivalence.
+
+- SHA-256 manifest/provenance regeneration: **UNVERIFIED**.
+- Runtime and C++ converter clean builds: **UNVERIFIED**; no completed current-master build logs inspected.
+- Model 1.5.0 self-check and result-type row check: **PENDING**.
+- Positive differential and refusal suites: **PENDING**; PR #378 Java converter and regression jobs are queued, not passed.
+- SLeeLa-native per-member stub policy and repeat-run/transaction/provenance tests: **UNVERIFIED**.
+- Representative Java execution comparisons: **UNVERIFIED**.
+- JDK 28 API/signature campaign: **PENDING**.
+- Windows 10+/MinGW-w64 and macOS host qualification: **PENDING**; their portability jobs are queued.
+
+PR [#378](https://github.com/mearvk/SLeeLa/pull/378) remains open/unmerged. Its head `6f7fc49723eed52dfbbe9827c047944c1787e43c` is 4 commits ahead and 9 behind current master; its divergence consists only of four workflow-file changes. The four associated runs ([portability](https://github.com/mearvk/SLeeLa/actions/runs/44405716080), [Java converter](https://github.com/mearvk/SLeeLa/actions/runs/44405716173), [regression](https://github.com/mearvk/SLeeLa/actions/runs/44405715950), [JDK 28](https://github.com/mearvk/SLeeLa/actions/runs/44405715986)) were queued/pending on that PR head, not on current master. No current-master workflow run was found during this check.
+
+This refresh records repository/workflow state only. It does not convert historical 2026-11-13 measurements into current evidence and does not claim any build or test was executed.
+
+
 ## Current master and production qualification update (2026-11-18)
 
-**Master baseline:** `c00fd2f3ed760a2a840cecd02a02daec032b6453`.  
+**Master baseline inspected:** `3478f4856d044b615ff2e999ca5730a80eedd394` (verification refresh 2026-11-18)..  
 **Merged work:** [PR #375](https://github.com/mearvk/SLeeLa/pull/375), merged 2026-11-18.  
 **Release decision:** **HOLD — current production qualification has not completed.**
 
