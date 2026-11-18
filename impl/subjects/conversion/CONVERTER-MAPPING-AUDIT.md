@@ -76,7 +76,7 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
 - Class type variables and nested generic arguments are still erased to unknown (`?`).
   Method-level type variables are retained as signature metadata for the direct
   unbounded forms `T`, `T[]`, and `T...`.
-- `pickMethod` now evaluates fixed-arity applicability before variable arity,
+- `pickMethod` now evaluates strict fixed-arity, loose fixed-arity (boxing/unboxing), and variable-arity applicability in Java invocation-phase order,
   uses identity, model-driven primitive widening, known reference-subtype and
   recursive reference-array conversions, walks inherited class/interface
   methods, collapses overridden signatures, and selects among supported
