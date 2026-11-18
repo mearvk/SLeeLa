@@ -16,6 +16,8 @@ mkdir -p "$(dirname "$JCONV_OUT")"
 case "$JCONV_OUT" in /*) ;; *) JCONV_OUT="$(cd "$(dirname "$JCONV_OUT")" && pwd)/$(basename "$JCONV_OUT")";; esac
 FINAL_OUT="$JCONV_OUT"
 export JCONV_OUT
+if find "$JCONV_IN" -type l -print -quit | grep -q .; then echo "jconv: refusing symlink in Java source tree" >&2; exit 2; fi
+if find "$JCONV_IN" ! -type d ! -type f -print -quit | grep -q .; then echo "jconv: refusing special file in Java source tree" >&2; exit 2; fi
 
 if [ -L "$JCONV_OUT" ]; then echo "jconv: refusing symlink output root" >&2; exit 2; fi
 parent="$(dirname "$JCONV_OUT")"
