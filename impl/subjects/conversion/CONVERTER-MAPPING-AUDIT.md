@@ -40,7 +40,8 @@ qualification now query the model. The native converter's `JConvModel` reads
 type, promotion, operator, cast, widening, rename and qualification records;
 `JConvRewriter` and `JConvExpr` consume the applicable rows. This is an
 implementation change, not a test result: the updated native and C++ differential
-suites have not yet been run.
+suites have not yet been run. The trusted build and important-file SHA-256 manifests
+also need regeneration from a full checkout before the verified build gate is used.
 
 ## 2. Identifier and converter parity
 
