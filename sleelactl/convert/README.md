@@ -38,7 +38,7 @@ method/field imports are resolved when their owner is known. Incomparable or
 unsupported candidates fail closed. The SLeeLa `JConvModel` loads the same type, promotion, operator, cast, widening,
 rename and qualification rows (with matching built-in defaults where required).
 The native expression pass uses the shared rows for integral and binary32 promotion,
-float rounding, primitive casts and text conversion. Method type variables (`T`, `T[]`, `T...`, and nested forms such as `Holder<T>`) are inferred from argument types; simple upper bounds are validated, and wildcard arguments use conservative extends/super compatibility. Class type variables are substituted for parameterized direct receivers and field reads. Generic inheritance through parameterized supertypes, intersection bounds, wildcard capture, and target-type inference remain fail-closed. Explicit and wildcard
+float rounding, primitive casts and text conversion. Method type variables (`T`, `T[]`, `T...`, and nested forms such as `Holder<T>`) are inferred from argument types; simple upper bounds are validated, and wildcard arguments use conservative extends/super compatibility. Class type variables are substituted through parameterized receiver, superclass, and interface paths for method calls and inherited field reads. Common known superclass inference is supported; interface-intersection LUBs, intersection bounds, wildcard capture, and target-type inference remain fail-closed. Explicit and wildcard
 static imports resolve when their owner/method is present in the shared model or
 collected source signatures; competing owners fail closed. The int laws are
 executed by `lib/java/JavaOperands.sleela` (verified against a JDK by
@@ -74,10 +74,10 @@ The refusal rows are the `unsupported` records of the model.
 
 `tests/javaconv_differential_test.sh` (also `make -C sleelactl/convert test`):
 
-- `tests/java/*.java` (33 fixtures currently present) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
+- `tests/java/*.java` (34 fixtures currently present) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
   identical: Anon, Basics, Bounds, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested,
   ObjectText, Operands (191 lines of int/long/double/narrowing results), Records, Refs, Resources, Shapes, Strings,
-  Switches, Sync, Varargs, IdentifierParity, OverloadWidening, ReservedIdentifiers, GenericIdentity, BoxingOverload, GenericCommonReference, NestedGenericInference, BoundedGeneric, ClassGenericReceiver, WildcardGeneric, StaticImports. The new generic fixtures and the updated `Refs` overload/method-reference fixture were changed after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
+  Switches, Sync, Varargs, IdentifierParity, OverloadWidening, ReservedIdentifiers, GenericIdentity, BoxingOverload, GenericCommonReference, NestedGenericInference, BoundedGeneric, ClassGenericReceiver, InheritedGenericReceiver, WildcardGeneric, StaticImports. The new generic fixtures and the updated `Refs` overload/method-reference fixture were changed after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
 - `tests/reject/*.java` (11 programs) must be refused with the construct named on their `// expect:` line
   and write nothing.
 - stale output: a file converted on one run and failing closed on the next leaves no `.sleela` behind.
@@ -95,7 +95,7 @@ instance initializer blocks after `super(...)`); members inherited from library 
 nested type names (`Format.Field` is `Format__Field`); library objects shown as text through `toString()`;
 `char` arguments of `StringBuilder.append`/`insert` as text.
 
-Not converted (refused with a located diagnostic): operands of unknown type (generic inheritance, wildcard capture, intersection bounds and target-type inference remain unsupported),
+Not converted (refused with a located diagnostic): operands of unknown type (interface-intersection inference, wildcard capture, intersection bounds and target-type inference remain unsupported),
 lambdas whose target interface is unknown, nested capture chains,
 `outer.new Inner()`, local classes, switch type patterns, `static { }` blocks, `Object` methods on a type
 that does not declare them, `native`. The list with reasons is section 5
