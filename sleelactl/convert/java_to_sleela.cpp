@@ -339,7 +339,10 @@ private:
                     } else if (t.kind != JT_IDENT) return npos;
                     i++;
                 } while (d > 0);
-                if (d < 0) return npos;
+                // A recursive scan of an inner type argument may encounter a
+                // combined >> or >>> token that also closes its enclosing type.
+                // The remaining close is consumed by the caller's generic parser.
+                if (d < 0) return i;
             }
             if (isOpAt(i, ".") && isIdentTok(at(i + 1))) { i += 2; continue; }
             break;
