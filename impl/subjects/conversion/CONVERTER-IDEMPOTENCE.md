@@ -99,10 +99,17 @@ converter; unrelated files must remain untouched.
   rather than wall-clock values, so identical inputs do not vary by run date.
 - Per-file output-open and staged-publication failures are now reported as
   failed files rather than successful conversions.
-- **Not yet complete:** the SLeeLa-native converter has no SHA-256 provenance
-  manifest for source/model/converter/output bytes, and its per-file publication
-  is not a whole-run transaction. Its batch script still resets transient
-  progress state for a fresh run.
+- Implemented in the launcher: sibling whole-run staging, preservation of the
+  prior published directory until `DONE`, symlink/special-file refusal in the
+  prior output tree, deterministic SHA-256 provenance for sorted inputs, exact
+  model bytes, native converter sources and outputs, and same-parent rename
+  publication with rollback on publish failure.
+- Remaining: the native converter still lacks an ownership manifest for safe
+  stale-output deletion; existing outputs are copied forward. JDK identity is
+  marked unverified unless a source `release` file or explicit `JCONV_JDK_ID`
+  is present. `JCONV_REVISION` must be supplied to bind the manifest to a
+  declared source revision. No runtime/test result is claimed for this launcher
+  change yet.
 - Its per-member-stub policy remains a different acceptance result from the
   C++ converter's per-file fail-closed policy. Reports must keep these outcomes
   distinct; a stubbed output is not a complete mapping.
@@ -137,8 +144,10 @@ source snapshot:
 1. Complete whole-run transactional staging/publication in the C++ converter.
 2. Add a repeat-run/mtime regression test for both converter output paths and
    validate the C++ provenance manifest against independently computed hashes.
-3. Give the SLeeLa-native converter source/model/converter/output SHA-256
-   provenance, then stage and publish its whole-run manifest.
+3. Add native ownership tracking and safe stale-output cleanup without deleting
+   unowned files; test interrupted batch/resume and publication rollback.
 4. Pin the exact JDK 28 source archive/revision used for the conformance corpus.
-5. Run both converters independently; report complete, partial/stubbed,
+5. Complete native overload-aware project indexing and generic invocation
+   inference to close the documented semantic-parity gap.
+6. Run both converters independently; report complete, partial/stubbed,
    refused, and infrastructure-failed counts separately.
