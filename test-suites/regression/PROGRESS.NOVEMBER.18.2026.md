@@ -213,3 +213,12 @@ PR #372 was not merged wholesale. Its lower-bound inference implementation overl
 - Added `sleelactl/convert/tests/reject/GenericConstructorDiamond.java`, a javac-valid source fixture with a generic constructor and assignment target. Updated the refusal inventory from 24 to 25.
 - This is a correctness guard, not completion of generic constructor inference. The next implementation must retain explicit/diamond type arguments, resolve constructor overloads, infer class variables from arguments and target context, substitute declared bounds, and validate the resulting constraints before emission.
 - **Verification: NOT RUN by user direction.** No build, self-check, JDK fixture, differential test or CI was run. The new fixture is inventory only; production remains HOLD.
+
+
+### Explicit generic constructor arguments and class-bound validation (2026-11-18)
+
+- Reused the converter's generic-argument parser for `new Type<...>(...)`, rather than skipping angle-bracket contents. Explicit type arguments are now retained at the allocation site and checked against the collected class upper-bound metadata using the same supported simple-bound rules used by declared type references.
+- Diamond allocation remains explicitly refused with `[generic-constructor-diamond]`; full constructor inference, target-type propagation and constructor overload substitution are still outstanding. Explicit generic array creation is refused with `[generic-array]` rather than emitted with erased type information.
+- Added `GenericConstructorExplicitArguments.java` as a positive differential fixture and `GenericConstructorBoundConflict.java` as a fail-closed bound-conflict fixture. Inventory is now 48 positive and 26 refusal fixtures; these are file counts, not passing results.
+- The source parser helper is shared by ordinary type references and explicit constructor arguments, preserving nested generic parsing and wildcard syntax consistently.
+- **Verification: NOT RUN by user direction.** No build, self-check, javac/differential run, or CI was started. Production remains HOLD.
