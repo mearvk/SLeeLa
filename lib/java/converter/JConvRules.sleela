@@ -160,8 +160,9 @@ class JConvRules {
 
   boolean isPrimitive(String n) {
     if (n == "int32") { return true; }
-    if (this.model != null && this.model.loaded && this.model.hasPrimitiveType(n)) { return true; }
-    return false;
+    if (this.model != null && this.model.loaded) { return this.model.hasPrimitiveType(n); }
+    return n == "int" || n == "long" || n == "short" || n == "byte" ||
+      n == "char" || n == "boolean" || n == "float" || n == "double";
   }
 
   < the Java zero value of an element type, as SLeeLa source text >
