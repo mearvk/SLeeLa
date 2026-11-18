@@ -357,6 +357,7 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
     dtext = "\n".join(decl)
     declared = set(dec.FIELD_DECL.findall(dtext)) | set(dec.METHOD_DECL.findall(dtext)) | set(sg.METHOD.findall(dtext))
     if sig is None:
+        lines.append("  < ---- members pending: no exact signature-index record for this type ---- >")
         return lines, 0, 0, 0
 
     signature_groups, collisions = member_signature_index(sig)
@@ -441,14 +442,15 @@ def main() -> int:
         wildcard_members = sum("?" in " ".join([p[0] for p in member.get("params", [])] + [member.get("ret", "")]) for member in members)
         varargs_members = sum(any(p[0].endswith("...") for p in member.get("params", [])) for member in members)
         pending_types = len(names - api_names)
+        missing_signatures = len((names & api_names) - set(sigs))
         print(f"JDK 28 signature index: {len(indexed)} indexed types, {len(members)} Java members")
         print(f"generic classes: {generic_classes}; generic members: {generic_members}; wildcard members: {wildcard_members}; varargs members: {varargs_members}")
-        print(f"SLeeLa-erasure overload collisions: {collisions}; JDK 28 types pending reflected member data: {pending_types}")
+        print(f"SLeeLa-erasure overload collisions: {collisions}; new JDK 28 types pending reflected member data: {pending_types}; known types missing signature records: {missing_signatures}")
         print("Index coverage is declaration evidence only; fail-loud API stubs are not implemented Java behavior.")
         return 0
 
     index = ["# java_type\tmodule\tkind\tsleela_file\tjava_source\tmembers"]
-    stats = {"files": 0, "with_members": 0, "pending": 0, "ctors": 0, "methods": 0, "collisions": 0}
+    stats = {"files": 0, "with_members": 0, "pending": 0, "pending_signatures": 0, "ctors": 0, "methods": 0, "collisions": 0}
     inventory_rows = list(inventory())
     api_by_name = {record["name"]: record for record in api.values()}
     impl_texts = {}
@@ -478,13 +480,17 @@ def main() -> int:
             if mo:
                 impl = mo.group(0)
                 stats["implemented"] = stats.get("implemented", 0) + 1
-        if t:
+        if t and sig:
             body, nc, nm, ncollisions = member_blocks(t, sig, cls, impl, api_by_name, impl_texts)
             status = "members from the JDK 28 API (exact signatures)"
             stats["with_members"] += 1
             stats["ctors"] += nc
             stats["methods"] += nm
             stats["collisions"] += ncollisions
+        elif t:
+            body = ["  < ---- members pending: no exact signature-index record for this type ---- >"]
+            status = "type identity known; member signatures pending"
+            stats["pending_signatures"] += 1
         else:
             body = ["  < ---- members pending: new in JDK 28, read them from the Java Source page ---- >"]
             status = "pending (new in JDK 28; members to be read from the Source page)"
@@ -514,7 +520,7 @@ class {cls} {{
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(text, encoding="utf-8")
         stats["files"] += 1
-        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "api" if t else "pending"]))
+        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "api" if t and sig else "signature-pending" if t else "pending"]))
     (OUT / "INDEX.tsv").write_text("\n".join(index) + "\n", encoding="utf-8")
 
     # Every documented module has a folder, as online (docs/api/<module>/module-summary.html).
@@ -541,7 +547,8 @@ class {cls} {{
     (OUT / "MODULES.tsv").write_text("\n".join(mods) + "\n", encoding="utf-8")
     stats["modules"] = len(counts) + len(NO_PACKAGE_MODULES)
     print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with API members, "
-          f"{stats['pending']} pending; {stats['ctors']} constructors, {stats['methods']} methods; "
+          f"{stats['pending']} new types pending, {stats['pending_signatures']} known types missing signatures; "
+          f"{stats['ctors']} constructors, {stats['methods']} methods; "
           f"{stats['modules']} module folders; {stats.get('implemented', 0)} files with SLeeLa logic; "
           f"{stats['collisions']} Java overloads collapsed by SLeeLa erasure")
     return 0
