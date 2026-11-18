@@ -133,6 +133,42 @@ else
   printf 'FAIL  project-generic (project build or conversion failed)\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
 fi
 
+# package identity and wildcard/nested imports across source packages.
+mkdir -p "$tmp/project-package/src/fixture/alpha" "$tmp/project-package/src/fixture/use" "$tmp/project-package/cls" "$tmp/project-package/sl"
+cat > "$tmp/project-package/src/fixture/alpha/AlphaBase.java" <<'JAVA'
+package fixture.alpha;
+public class AlphaBase {
+  public int value() { return 20; }
+  public static class Nested {
+    public int value() { return 22; }
+  }
+}
+JAVA
+cat > "$tmp/project-package/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+import fixture.alpha.*;
+import fixture.alpha.AlphaBase.Nested;
+public class Main {
+  public static void main(String[] args) {
+    AlphaBase base = new AlphaBase();
+    Nested nested = new Nested();
+    System.out.println(base.value() + nested.value());
+  }
+}
+JAVA
+if javac -d "$tmp/project-package/cls" "$tmp/project-package/src/fixture/alpha/AlphaBase.java" "$tmp/project-package/src/fixture/use/Main.java" 2> "$tmp/project-package/javac.err" &&
+   java -cp "$tmp/project-package/cls" fixture.use.Main > "$tmp/project-package/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-package/src" --out "$tmp/project-package/sl" --quiet; then
+  (cd "$tmp/project-package/sl" && timeout 300 "$sleela" run fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-package/actual.out"
+  if diff -u "$tmp/project-package/expected.out" "$tmp/project-package/actual.out" > "$tmp/project-package/diff"; then
+    printf 'PASS  %-12s package-qualified project index, wildcard import and nested single-type import match the JDK\n' "package-import"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-package\n'; head -40 "$tmp/project-package/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-package (project build or conversion failed)\n'; cat "$tmp/project-package/javac.err"; fail=$((fail+1))
+fi
+
 # duplicate simple declarations must never be resolved by source traversal order
 mkdir -p "$tmp/duplicate/src/a" "$tmp/duplicate/src/b" "$tmp/duplicate/out"
 cat > "$tmp/duplicate/src/a/First.java" <<'JAVA'
