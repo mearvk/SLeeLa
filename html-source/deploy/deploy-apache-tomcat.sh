@@ -126,9 +126,9 @@ http_ok() {  # http_ok URL [expected-substring]
   [ -z "${2:-}" ] || [[ "$body" == *"$2"* ]]
 }
 # verify_page URL LABEL: the page must be the SLeeLa site (meta sleela-site), not another app on the same path
-verify_page() {
+verify_page() {  # verify_page URL LABEL [timeout-seconds]
   local body title
-  body="$(curl -fsSLk -m 8 "$1" 2>/dev/null)" || { warn "$2: no answer from $1"; return 1; }
+  body="$(curl -fsSLk -m "${3:-8}" "$1" 2>/dev/null)" || { warn "$2: no answer from $1"; return 1; }
   if [[ "$body" == *'name="sleela-site"'* ]]; then return 0; fi
   title="$(printf '%s' "$body" | tr '\n' ' ' | sed -n 's/.*<title>\([^<]*\)<\/title>.*/\1/p' | head -c 80 | safe_text)"
   warn "$2 is not the SLeeLa site (page title: '${title:-none}')"
@@ -138,7 +138,9 @@ verify_page() {
 check_runtime() {
   local body why
   RUNTIME_STATUS="unknown"
-  body="$(curl -fsSLk -m 8 "$1" 2>/dev/null)" || { RUNTIME_STATUS="page not reachable"; return 0; }
+  # The first GET of /runtime runs the sandbox self-test synchronously (SHA-256 integrity check of the compiler tree, then a
+  # bwrap run), cached for 60 s. That can take well over 8 s, so allow up to 120 s here.
+  body="$(curl -fsSLk -m 120 "$1" 2>/dev/null)" || { RUNTIME_STATUS="page did not answer within 120 s (self-test slow or failing; see the Tomcat log)"; warn "Runtime page: $RUNTIME_STATUS"; return 0; }
   if [[ "$body" == *'data-runtime-state="ready"'* ]]; then RUNTIME_STATUS="ready (sandbox self-test passed)"; return 0; fi
   why="$(printf '%s' "$body" | tr '\n' ' ' | sed -n 's/.*The runtime is not available right now.<\/strong>[[:space:]]*<span>\([^<]*\)<\/span>.*/\1/p' | head -c 400 | safe_text | tr '\n' ' ')"
   RUNTIME_STATUS="DISABLED: ${why:-reason unknown}"
@@ -470,18 +472,21 @@ EOF
   if [ -n "$TOMCAT_SERVICE" ]; then run systemctl start "$TOMCAT_SERVICE"; fi
   [ "$DRY_RUN" = 1 ] && { TOMCAT_STATUS="dry-run"; return 0; }
   if wait_http "http://127.0.0.1:$TOMCAT_PORT/healthz" '"status":"ok"'; then
-    local bad=0 pth
-    for pth in / /examples/ /runtime; do
-      verify_page "http://127.0.0.1:$TOMCAT_PORT$pth" "Tomcat $pth" || bad=1
+    # /runtime is checked by check_runtime below: it is optional and slow on its first hit, so it never triggers a rollback
+    local bad=0 badpaths="" pth
+    for pth in / /examples/; do
+      verify_page "http://127.0.0.1:$TOMCAT_PORT$pth" "Tomcat $pth" || { bad=1; badpaths="$badpaths $pth"; }
     done
     if [ "$bad" = 0 ]; then
       TOMCAT_STATUS="ok  http://127.0.0.1:$TOMCAT_PORT/"
       check_runtime "http://127.0.0.1:$TOMCAT_PORT/runtime"
       return 0
     fi
-    warn "Tomcat is healthy, but another application answers some of the site's paths."
+    warn "Tomcat is healthy, but these site paths are not answered by the SLeeLa site:$badpaths"
+  else
+    warn "Tomcat did not report healthy on /healthz within ${HEALTH_TIMEOUT}s."
   fi
-  warn "Tomcat did not report healthy. Look at: ${TOMCAT_SERVICE:+journalctl -u $TOMCAT_SERVICE -n 100, }$CATALINA_BASE/logs/"
+  warn "Tomcat deploy failed. Look at: ${TOMCAT_SERVICE:+journalctl -u $TOMCAT_SERVICE -n 100, }$CATALINA_BASE/logs/"
   { curl -sS -m 5 "http://127.0.0.1:$TOMCAT_PORT/healthz" 2>&1 | head -5 | safe_text; echo; } >&2 || true
   {
     if [ -n "$TOMCAT_SERVICE" ] && have journalctl; then
