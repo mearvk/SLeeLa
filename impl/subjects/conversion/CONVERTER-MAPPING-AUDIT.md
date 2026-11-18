@@ -87,8 +87,9 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   from known argument types and substitutes the selected parameter/return
   signature. Repeated variables currently require the same inferred type; null-only
   inference is rejected. Bounds, nested generic arguments, class-generic
-  substitution, target-type inference, boxing/unboxing, unchecked conversions,
-  wildcard capture, intersection constraints, and full JLS specificity remain
+  substitution, target-type inference, wrapper inheritance and conversions not
+  represented by the model, unchecked conversions, wildcard capture, intersection
+  constraints, and full JLS specificity remain
   incomplete. A method type variable inside a generic argument is not inferred.
 - Lambda arguments are deferred until a selected method supplies a known
   functional-interface target. The target must resolve to a collected or
