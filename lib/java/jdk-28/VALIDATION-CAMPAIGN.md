@@ -40,3 +40,10 @@ java-convert converter's fail-closed per-file contract.
 CI uploads detailed logs and the summary as the jdk28-validation-reports
 artifact. A successful campaign means its executable gates passed; it does
 not mean every JDK 28 API member has working behavior.
+
+Important baseline limitation: the current JDK 28 generator reads member and
+method signatures from the JDK 25 reflected JSONL index, while the JDK 28 docs
+mirror supplies the type inventory and source URLs. Therefore it does not yet
+prove complete JDK 28 member-level API coverage, and it cannot discover methods
+added to existing types after JDK 25. The audit labels the two sets separately
+and reports JDK 28 types without matching JDK 25 records or signature records.
