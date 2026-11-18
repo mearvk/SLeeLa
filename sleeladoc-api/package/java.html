@@ -139519,7 +139519,7 @@
 <h2 class="section" data-u="jconvmodel">JConvModel <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvModel.sleela)</span></h2>
 <div data-u="jconvmodel jconvmodel">
 <h3 id="JConvModel">JConvModel <span class="pill">class</span></h3>
-<p class="desc">the Java-to-SLeeLa conversion model, read as data. It loads impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL), the same model that sleelactl java-convert reads, and answers the questions the typed pass of JConvRewriter asks: the result type of a library member (ret rows), the type of a library field (field rows), the SLeeLa function of an int shift, division and remainder (binop int rows), the 32-bit wrap (the cast long int row) and the string conversion template of a double, char or reference (tostr rows), every cast row, and the chartext rows (a library parameter that takes a char as text). The `widen` rows are also read so both converter implementations share primitive invocation-conversion facts. When the file is missing the built-in defaults below are used and the report says so.</p>
+<p class="desc">the Java-to-SLeeLa conversion model, read as data. It loads impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL), the same model that sleelactl java-convert reads. It indexes type and numeric rank rows, unary promotion, binary/unary operator templates, primitive casts, widening, context-aware identifier replacements, built-in qualification, library result/field types, and primitive/reference text conversion. The typed expression pass queries these shared laws rather than maintaining a second primitive-semantics table. The `widen` rows are also read so both converter implementations share primitive invocation-conversion facts. When the file is missing the built-in defaults below are used and the report says so.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -139531,6 +139531,26 @@
 <tr><td><code>widenFrom</code></td><td><span class="sig">String[] widenFrom</span></td><td class="desc">JLS 5.1.2 primitive widening edges from the shared conversion model</td></tr>
 <tr><td><code>widenTo</code></td><td><span class="sig">String[] widenTo</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>widenN</code></td><td><span class="sig">int widenN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>renameNames</code></td><td><span class="sig">String[] renameNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>renameContexts</code></td><td><span class="sig">String[] renameContexts</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>renameValues</code></td><td><span class="sig">String[] renameValues</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>renameN</code></td><td><span class="sig">int renameN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>binopClasses</code></td><td><span class="sig">String[] binopClasses</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>binopOps</code></td><td><span class="sig">String[] binopOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>binopTpls</code></td><td><span class="sig">String[] binopTpls</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>binopN</code></td><td><span class="sig">int binopN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unopClasses</code></td><td><span class="sig">String[] unopClasses</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unopOps</code></td><td><span class="sig">String[] unopOps</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unopTpls</code></td><td><span class="sig">String[] unopTpls</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unopN</code></td><td><span class="sig">int unopN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeNames</code></td><td><span class="sig">String[] typeNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeTargets</code></td><td><span class="sig">String[] typeTargets</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeKinds</code></td><td><span class="sig">String[] typeKinds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeRanks</code></td><td><span class="sig">int[] typeRanks</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeN</code></td><td><span class="sig">int typeN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>promoteFrom</code></td><td><span class="sig">String[] promoteFrom</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>promoteTo</code></td><td><span class="sig">String[] promoteTo</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>promoteN</code></td><td><span class="sig">int promoteN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>retKeys</code></td><td><span class="sig">String[] retKeys</span></td><td class="desc">ret rows: &quot;Owner.member&quot; to the result type (open addressing)</td></tr>
 <tr><td><code>retVals</code></td><td><span class="sig">String[] retVals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>fieldKeys</code></td><td><span class="sig">String[] fieldKeys</span></td><td class="desc">field rows: &quot;Owner.name&quot; to the type</td></tr>
@@ -139539,6 +139559,7 @@
 <tr><td><code>shrInt</code></td><td><span class="sig">String shrInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>ushrInt</code></td><td><span class="sig">String ushrInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tostrDouble</code></td><td><span class="sig">String tostrDouble</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tostrFloat</code></td><td><span class="sig">String tostrFloat</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tostrChar</code></td><td><span class="sig">String tostrChar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tostrRef</code></td><td><span class="sig">String tostrRef</span></td><td class="desc">tostr reference: a reference shown through its toString() (null is &quot;null&quot;)</td></tr>
 <tr><td><code>divInt</code></td><td><span class="sig">String divInt</span></td><td class="desc">binop int / and %, and cast long int (the 32-bit wrap)</td></tr>
@@ -139566,6 +139587,14 @@
 <tr><td><code>fieldsAt</code></td><td><span class="sig">String[] fieldsAt(JConvSource src, int a, int b, int n)</span></td><td class="desc">the whitespace-separated fields of source units a .. b-1: up to n, the last one keeps the rest</td></tr>
 <tr><td><code>startsAt</code></td><td><span class="sig">boolean startsAt(JConvSource src, int a, String word)</span></td><td class="desc">true when source units a .. start with the given ASCII word followed by a space</td></tr>
 <tr><td><code>load</code></td><td><span class="sig">boolean load(String file)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>targetType</code></td><td><span class="sig">String targetType(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeKind</code></td><td><span class="sig">String typeKind(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>numericRank</code></td><td><span class="sig">int numericRank(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>promotedType</code></td><td><span class="sig">String promotedType(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>renameOf</code></td><td><span class="sig">String renameOf(String name, String context)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>binopTemplate</code></td><td><span class="sig">String binopTemplate(String cls, String op)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unopTemplate</code></td><td><span class="sig">String unopTemplate(String cls, String op)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasPrimitiveType</code></td><td><span class="sig">boolean hasPrimitiveType(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>canWiden</code></td><td><span class="sig">boolean canWiden(String from, String to)</span></td><td class="desc">true when the shared model permits Java primitive widening from -&gt; to</td></tr>
 <tr><td><code>parseIndex</code></td><td><span class="sig">int parseIndex(String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>castTemplate</code></td><td><span class="sig">String castTemplate(String from, String to)</span></td><td class="desc">the template of the cast row from -&gt; to, or &quot;&quot; (no row, or a plain assignment &quot;=&quot;)</td></tr>
@@ -139753,7 +139782,7 @@
 <h2 class="section" data-u="jconvrules">JConvRules <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvRules.sleela)</span></h2>
 <div data-u="jconvrules jconvrules">
 <h3 id="JConvRules">JConvRules <span class="pill">class</span></h3>
-<p class="desc">the single table of functional and declarative decisions the converter makes when it turns Java source into SLeeLa source. Every rename, type mapping, modifier rule, built-in collision and unsupported construct is decided here, so a revision of the conversion is a revision of this class. The reasons for each rule are in lib/java/converter/README.md (section 3).</p>
+<p class="desc">the native converter&#x27;s source-rewrite policy. Shared semantic laws (primitive types, promotion, casts, operators, identifier replacements, and built-in qualification) are read from conversion.model through JConvModel; this class applies the native converter&#x27;s per-member and syntax policy, modifier rules and unsupported-construct decisions. The reasons for each rule are in lib/java/converter/README.md (section 3).</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -301830,7 +301859,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-16 00:48 UTC.
+<code>/lib</code> tree on 2026-11-18 11:24 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
