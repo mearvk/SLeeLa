@@ -36,6 +36,7 @@
 #   call <java owner.method> <sleela call template>   ($args)
 #   qualify <name>                               (a VM built-in call name: an own method of that
 #                                                 name is called qualified, this.m() / Owner.m())
+#   rename <name> <context> <replacement>         (context: all | value; value-only preserves next())
 #   unsupported <construct> <reason>             (diagnostic text, fail closed)
 #
 # Template variables: $a $b operands, $t target type, $recv receiver, $args
