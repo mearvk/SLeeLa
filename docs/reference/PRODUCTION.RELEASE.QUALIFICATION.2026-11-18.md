@@ -1,8 +1,36 @@
 # SLeeLa Production Release Qualification Report
 
+## Verification refresh — 2026-11-18 (master 3478f4856d04)
+
+**Decision remains: HOLD.** This refresh records repository and workflow metadata inspected after the earlier report baseline; it does not claim that queued jobs passed.
+
+| Gate | Latest observed result |
+|---|---|
+| 1. Master baseline | Confirmed: `3478f4856d044b615ff2e999ca5730a80eedd394`. |
+| 2. SHA-256 integrity and provenance | UNVERIFIED: no regenerated current-checkout manifest or provenance artifact inspected. |
+| 3. Runtime and converter builds | UNVERIFIED: no completed current-master build logs inspected. |
+| 4. Conversion model and JDK 28 signatures | PENDING: no completed self-check or JDK 28 campaign artifact inspected. |
+| 5. Differential and refusal suites | PENDING: Java converter and regression workflow jobs remain queued. Historical 32/32 is not current evidence. |
+| 6. Native per-member policy and transactions | UNVERIFIED: no completed policy, repeat-run, transactional-publication, or provenance test results inspected. |
+| 7. Representative Java execution | UNVERIFIED: no current-baseline Java-reference/SLeeLa output comparisons inspected. |
+| 8. JDK 28 and platform qualification | PENDING: JDK 28, Linux, Windows 10+/MinGW-w64, and macOS jobs are queued/pending, not passed. |
+
+### Workflow and branch evidence
+
+PR [#378](https://github.com/mearvk/SLeeLa/pull/378) remains open and unmerged. Its head is `6f7fc49723eed52dfbbe9827c047944c1787e43c`; its recorded base is `622d28ce4912d2002689032f3a5a7f7a8c365aa3`. Comparing that branch with current master reports **4 commits ahead / 9 behind**, with only four workflow files changed: `.github/workflows/java-convert.yml`, `.github/workflows/jdk28-validation.yml`, `.github/workflows/regression-set.yml`, and `.github/workflows/root-build-install.yml`. Do not merge it without reconciling the divergence.
+
+Observed runs, all on PR head `6f7fc497...` rather than current master:
+- [Native C/C++ portability](https://github.com/mearvk/SLeeLa/actions/runs/44405716080): Linux, Windows 10+/MinGW-w64, macOS jobs queued.
+- [Java converter](https://github.com/mearvk/SLeeLa/actions/runs/44405716173): differential job queued.
+- [Regression set](https://github.com/mearvk/SLeeLa/actions/runs/44405715950): sanitizer and Linux/macOS/Windows jobs queued.
+- [JDK 28 validation](https://github.com/mearvk/SLeeLa/actions/runs/44405715986): API/converter job pending.
+
+No workflow run was found for the inspected current master SHA at the time of this refresh. The branch tip and run states are point-in-time observations; rerun or recheck before release. No build, test, or representative program execution is claimed by this documentation update.
+
+
 **Assessment date:** 2026-11-18  
 **Repository:** `mearvk/SLeeLa`  
-**Baseline:** `master` at `c00fd2f3ed760a2a840cecd02a02daec032b6453` (JDK 28 signature-index and validation-campaign merge)  
+**Baseline inspected:** `master` at `3478f4856d044b615ff2e999ca5730a80eedd394` (2026-11-18 verification refresh) at `c00fd2f3ed760a2a840cecd02a02daec032b6453` (JDK 28 signature-index and validation-campaign merge)  
 **Decision:** **HOLD — not production-qualified**  
 **Scope:** Java-to-SLeeLa conversion, Java API signature generation, JDK 28 validation, compiler acceptance, representative execution, refusal accounting, and release evidence.
 
