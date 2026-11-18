@@ -726,6 +726,8 @@ private:
             p++;
             
             if (!isLvalueCode(e)) fail("syntax", "the left side of an assignment must be a variable, field or array element");
+            struct TargetRestore { Ty& slot; Ty saved; ~TargetRestore() { slot=saved; } } restore{lambdaTarget_,lambdaTarget_};
+            lambdaTarget_=e.ty;
             E rhs = parseExpr();
             std::string text = assignText(e, op, rhs);
             E r;
