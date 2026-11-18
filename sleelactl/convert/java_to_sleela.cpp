@@ -1118,39 +1118,63 @@ private:
                     if (variable && n && i>=n-1) target=mk(m.params.back().n,m.params.back().dims-1);
                     else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
+                    std::function<bool(const Ty&,const Ty&)> inferGeneric =
+                        [&](const Ty& formal, const Ty& actual) -> bool {
+                            if (formal.n.rfind("$T$",0)==0) {
+                                const int variableDims=formal.dims;
+                                if (actual.dims < variableDims || !actual.known() || actual.n=="null") return false;
+                                Ty inferredType=actual;
+                                inferredType.dims-=variableDims;
+                                if (inferredType.dims==0 && isPrimitiveName(inferredType.n)) {
+                                    std::string wrapper;
+                                    if (!modelWrapperForPrimitive(inferredType.n,&wrapper)) return false;
+                                    inferredType.n=wrapper;
+                                    inferredType.boxed=true;
+                                }
+                                const std::string variableName=formal.n.substr(3);
+                                auto ti=inferred.find(variableName);
+                                if (ti==inferred.end()) inferred[variableName]=inferredType;
+                                else if (!(ti->second==inferredType)) {
+                                    Ty prior=ti->second;
+                                    if (prior.dims==0 && inferredType.dims==0 &&
+                                        prior.boxed==inferredType.boxed &&
+                                        !isPrimitiveName(prior.n) && !isPrimitiveName(inferredType.n)) {
+                                        if (isSubtypeName(prior.n,inferredType.n)) ti->second=inferredType;
+                                        else if (!isSubtypeName(inferredType.n,prior.n)) return false;
+                                    } else return false;
+                                }
+                                return true;
+                            }
+                            if (formal.args.empty()) return true;
+                            if (formal.n!=actual.n || formal.dims!=actual.dims ||
+                                formal.args.size()!=actual.args.size()) return false;
+                            for (size_t ai=0;ai<formal.args.size();++ai) {
+                                const Ty& farg=formal.args[ai];
+                                const Ty& aarg=actual.args[ai];
+                                if (farg.wildcard==1) continue; // unbounded wildcard
+                                if (farg.wildcard==2 && farg.bound) {
+                                    if (!inferGeneric(*farg.bound,aarg)) return false;
+                                    continue;
+                                }
+                                if (farg.wildcard==3 && farg.bound) {
+                                    // Lower-bounded wildcard does not provide an exact
+                                    // inference for its own type variable. Accept only a
+                                    // fully known, non-variable lower bound that converts
+                                    // to the actual type argument.
+                                    if (farg.bound->n.rfind("$T$",0)==0 ||
+                                        invocationCost(*farg.bound,aarg)<0) return false;
+                                    continue;
+                                }
+                                if (!inferGeneric(farg,aarg)) return false;
+                            }
+                            return true;
+                        };
+                    if (!inferGeneric(target,args[i].ty)) { applicable=false; break; }
                     if (target.n.rfind("$T$",0)==0) {
-                        const int variableDims=target.dims;
-                        if (args[i].lambdaPos!=(size_t)-1 || !args[i].ty.known() || args[i].ty.n == "null") { applicable=false; break; }
-                        const std::string variableName=target.n.substr(3);
-                        if (args[i].ty.dims < target.dims) { applicable=false; break; }
-                        Ty inferredType=args[i].ty;
-                        inferredType.dims-=target.dims;
-                        // Java type arguments cannot be primitive. Generic
-                        // inference boxes a scalar primitive into its wrapper;
-                        // an array whose component would be primitive is not T[].
-                        if (inferredType.dims==0 && isPrimitiveName(inferredType.n)) {
-                            std::string wrapper;
-                            if (!modelWrapperForPrimitive(inferredType.n,&wrapper)) { applicable=false; break; }
-                            inferredType.n=wrapper;
-                            inferredType.boxed=true;
-                        }
-                        auto ti=inferred.find(variableName);
-                        if (ti==inferred.end()) inferred[variableName]=inferredType;
-                        else if (!(ti->second==inferredType)) {
-                            // For repeated reference constraints, retain the more
-                            // specific common class when one argument type extends
-                            // the other. Unrelated interfaces/intersections and
-                            // primitive numeric LUBs remain unsupported.
-                            Ty prior=ti->second;
-                            if (prior.dims==0 && inferredType.dims==0 &&
-                                prior.boxed==inferredType.boxed &&
-                                !isPrimitiveName(prior.n) && !isPrimitiveName(inferredType.n)) {
-                                if (isSubtypeName(prior.n,inferredType.n)) ti->second=inferredType;
-                                else if (!isSubtypeName(inferredType.n,prior.n)) { applicable=false; break; }
-                            } else { applicable=false; break; }
-                        }
-                        target=inferred.at(variableName);
-                        target.dims+=variableDims;
+                        auto ti=inferred.find(target.n.substr(3));
+                        if (ti==inferred.end()) { applicable=false; break; }
+                        target=ti->second;
+                        target.dims+=m.params[i<n?i:n-1].dims;
                     }
                     if (args[i].lambdaPos!=(size_t)-1) {
                         if (phase<2 && m.varargs && n && i==n-1 && target.dims>0) { applicable=false; break; }
@@ -1184,11 +1208,14 @@ private:
                     sawUnsupportedGeneric=true; continue;
                 }
                 MethodSig resolved=m;
-                auto instantiate=[&](Ty t) {
+                std::function<Ty(const Ty&)> instantiate = [&](const Ty& source) {
+                    Ty t=source;
                     if (t.n.rfind("$T$",0)==0) {
                         auto it=inferred.find(t.n.substr(3));
                         if (it!=inferred.end()) { Ty value=it->second; value.dims+=t.dims; return value; }
                     }
+                    for (Ty& arg:t.args) arg=instantiate(arg);
+                    if (t.bound) t.bound=std::make_shared<Ty>(instantiate(*t.bound));
                     return t;
                 };
                 for (Ty& t:resolved.params) t=instantiate(t);
