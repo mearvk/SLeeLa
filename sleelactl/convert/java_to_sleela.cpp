@@ -969,7 +969,21 @@ private:
         if (isPrimitiveName(from.n) && isPrimitiveName(to.n)) {
             return cm_find(&M, "widen", from.n.c_str(), to.n.c_str(), nullptr) ? 1 : -1;
         }
-        if (from.n == to.n) return 0;
+        if (from.n == to.n) {
+            if (to.args.empty()) return 0;
+            if (from.args.size()!=to.args.size()) return -1;
+            for (size_t gi=0;gi<to.args.size();++gi) {
+                const Ty& actualArg=from.args[gi];
+                const Ty& formalArg=to.args[gi];
+                if (formalArg.wildcard==1) continue;
+                if (formalArg.wildcard==2 && formalArg.bound) {
+                    if (invocationCost(actualArg,*formalArg.bound,depth+1)<0) return -1;
+                } else if (formalArg.wildcard==3 && formalArg.bound) {
+                    if (invocationCost(*formalArg.bound,actualArg,depth+1)<0) return -1;
+                } else if (!(actualArg==formalArg)) return -1;
+            }
+            return 0;
+        }
         auto it = classes.find(from.n);
         if (it != classes.end()) {
             if (!it->second.super.empty()) {
@@ -1172,12 +1186,22 @@ private:
                             return true;
                         };
                     if (!inferGeneric(target,args[i].ty)) { applicable=false; break; }
+                    std::function<Ty(const Ty&)> applyInference = [&](const Ty& source) {
+                        Ty value=source;
+                        if (value.n.rfind("$T$",0)==0) {
+                            auto ti=inferred.find(value.n.substr(3));
+                            if (ti!=inferred.end()) { Ty resolved=ti->second; resolved.dims+=value.dims; return resolved; }
+                        }
+                        for (Ty& arg:value.args) arg=applyInference(arg);
+                        if (value.bound) value.bound=std::make_shared<Ty>(applyInference(*value.bound));
+                        return value;
+                    };
                     if (directTypeVariable) {
                         auto ti=inferred.find(target.n.substr(3));
                         if (ti==inferred.end()) { applicable=false; break; }
                         target=ti->second;
                         target.dims+=directVariableDims;
-                    }
+                    } else target=applyInference(target);
                     if (args[i].lambdaPos!=(size_t)-1) {
                         if (phase<2 && m.varargs && n && i==n-1 && target.dims>0) { applicable=false; break; }
                         if (target.dims != 0 || !functionalMethod(target.n)) { applicable=false; break; }
