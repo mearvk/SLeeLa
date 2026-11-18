@@ -1,6 +1,6 @@
 # Java-to-SLeeLa converter mapping audit
 
-Date: 2026-11-14  
+Date: 2026-11-18  
 Scope: C++ converter (`sleelactl/convert`), SLeeLa-native converter
 (`lib/java/converter`), and their shared subject
 (`impl/subjects/conversion/conversion.model`). This audit does not authorize
@@ -10,6 +10,8 @@ changes to the compiler, VM, or general runtime.
 
 - **Implemented and shared** — both converters consume the same rule and have
   evidence that exercises it.
+- **Implemented, pending verification** — both implementations now read the shared
+  data, but the changed fixtures or full differential suite have not yet run.
 - **Implemented, duplicated** — behavior exists, but the implementations or
   tables can drift.
 - **Implemented, converter-specific** — one converter has a lowering or
@@ -22,44 +24,42 @@ changes to the compiler, VM, or general runtime.
 
 | Area | Current finding | Status | Required next step |
 |---|---|---|---|
-| Primitive type inventory | The model lists all eight Java primitives, but the C++ translator also hard-codes operand classes and numeric ranks. | Implemented, duplicated | Make type class/rank/promotion decisions model-driven. |
-| `float` | C++ has a dedicated `JavaFloat.f32` path for arithmetic, comparisons, casts and increments. The model does not declare `promote float`, float binary-operation rows, or float cast rows. | Implemented, converter-specific | Express the supported float laws in the model and have both converters consume them. |
-| Numeric promotion | The model has byte/short/char/int/long/double promotion rows, but no float promotion row. Mixed numeric promotion is partly hard-coded in C++. | Partial | Cover JLS binary numeric promotion, including float and all widening paths. |
-| Casts and widening | The model has int/long/double casts, but the C++ translator special-cases float and some coercions. | Implemented, duplicated | Audit every primitive source/target pair and make the model authoritative. |
-| Compound assignment | The model lists int/long/double/text/boolean cases; float is currently handled by C++ special paths rather than a float row. | Partial | Verify narrowing, promotion, and one-time lvalue evaluation for every supported operator. |
+| Primitive type inventory | `type` rows provide primitive class and numeric rank; both C++ and native type classifiers now read the model, with `promote` rows supplying unary promotion. | Implemented, pending verification | Run the C++ self-check and cross-converter primitive fixtures. |
+| `float` | Model 1.5.0 declares unary promotion, arithmetic/comparison and unary operator templates, primitive casts, increment/decrement, and text conversion. C++ consumes the rows; native expression rewriting now tracks `f`, rounds operands/results, and reads the float text/cast rows. | Implemented, pending verification | Differentially test mixed numeric promotion, literal conversion, casts, compounds and text formatting; native compound float assignment remains partial. |
+| Numeric promotion | `promote` and `type` rows now drive C++ operand classes/ranks; native type classification reads the same rows and its merge path checks model widening edges, including float. | Implemented, pending verification | Exercise every numeric promotion pair against a real JDK. |
+| Casts and widening | Model 1.5.0 supplies all numeric primitive source/target cast pairs; C++ implicit coercion requires a `widen` row and applies the matching `cast` template. Native explicit cast rewriting now selects templates by source and target kind. | Implemented, pending verification | Differentially verify all 7×7 numeric casts, including NaN, infinities, saturation and narrowing. |
+| Compound assignment | Float `compound` rows are now declared and consumed by C++; native float assignment initializers and simple assignments round to binary32, but native compound-float lowering is not yet implemented. | Partial | Add native compound-float lowering and test one-time lvalue evaluation and narrowing. |
 | Boxing/unboxing | The model lists a subset of wrapper classes; C++ rejects boxed types in declarations/casts and treats some wrappers as primitive operands. | Partial | Define wrapper coverage and fail-closed rules consistently. |
 | Library result types | The shared model has extensive `ret` and `field` rows. | Implemented, shared data | Verify provenance/version against JDK 28, overload-sensitive results, and generic substitutions. |
-| Built-in call qualification | The model has `qualify` rows, but C++ still has a separate `builtin_names.h` table. | Implemented, duplicated | Remove the second authority or mechanically verify exact set equality. |
-| String conversion | `tostr` and `chartext` rows exist; native and C++ implementations read different subsets. | Partial parity | Test all text-conversion call sites and null/reference behavior in both converters. |
+| Built-in call qualification | Both converters now read `qualify` rows from the model; the C++ include and runtime use of `builtin_names.h` have been removed. The model also includes `close`, `connect` and `send`. | Implemented, pending verification | Verify every collision fixture and keep the model inventory synchronized with compiler built-ins. |
+| String conversion | C++ reads primitive `tostr` rows including float; native `JConvModel` reads generic `tostr` rows and the expression pass uses `tostrFloat` for binary32 values. | Implemented, pending verification | Differentially test primitive, reference, null, char and boxed text conversion. |
 
-Important observation: the C++ README says the translator has no Java semantic
-rules of its own, but `classOf`, `rankOf`, float lowering, and portions of
-coercion/promotion currently encode behavior in C++. The documentation should
-not claim full model authority until those paths are data-driven or explicitly
-documented as converter mechanics.
+Implementation update (2026-11-18): the C++ translator's `classOf`, `rankOf`,
+float lowering, primitive coercion, identifier replacement and built-in
+qualification now query the model. The native converter's `JConvModel` reads
+type, promotion, operator, cast, widening, rename and qualification records;
+`JConvRewriter` and `JConvExpr` consume the applicable rows. This is an
+implementation change, not a test result: the updated native and C++ differential
+suites have not yet been run.
 
 ## 2. Identifier and converter parity
 
-The collision audit records 13 problematic Java identifiers. The native
-converter already globally renames `require`, `usualgc`, `usualmem`,
-`int64`, and `int128`; the C++ reserved-name set did not. This pass adds
-those five names to the C++ set and adds a differential regression input at
-`sleelactl/convert/tests/java/ReservedIdentifiers.java`.
+The collision audit's replacement policy is now represented by `rename` rows
+in the shared model. Both converters consume the same `all` mappings; the
+context-only `next` rule is marked `value` so `next()` invocations remain
+ordinary Java method calls. C++ built-in qualification also reads `qualify`
+rows directly; the duplicate generated header has been retired.
 
 Remaining identifier work:
 
-- Move rename policy into shared model data rather than keeping
-  `kSleelaReserved` and `JConvRules.isRenamedIdent` as independent lists.
-- Preserve context: `next` is unsafe as a variable but must remain intact for
-  calls such as `it.next()`.
-- Rename `connect` and `send` only when they are declarations in the
-  converted program; do not rename calls to library APIs.
+- Confirm the `all` versus `value` context policy on declarations, locals,
+  fields, parameters and every use site in both converters.
+- Confirm `close`'s special `closeResource` mapping remains distinct from the
+  generic trailing-underscore replacements.
 - Preserve the entry-point name `main` where the target execution contract
-  requires it, while addressing the measured collision for other method uses.
-- Compare the C++ built-in qualification list with the model's `qualify`
-  rows. The C++ `builtin_names.h` remains a second copy.
-- Add cross-converter fixtures for declarations, locals, fields, parameters,
-  qualified calls, library calls, nested types, and entry points.
+  requires it.
+- Add/extend cross-converter fixtures for declarations, locals, fields,
+  parameters, qualified calls, library calls, nested types and entry points.
 
 The C++ converter fails closed per compilation unit. The SLeeLa-native
 converter intentionally emits per-member throwing stubs. These are different
@@ -105,13 +105,14 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
 - It tracks type variables for erasure and recognizes many generic syntax
   shapes, but its per-type method table is keyed by method name. Overloads
   with differing return types collapse to an unknown return type.
-- It now loads the shared primitive `widen` rows into `JConvModel`, exposes
-  `canWiden` through `JConvRules`, and keeps matching defaults when the model
-  file is unavailable. `JConvExpr.promote` and `JConvExpr.merge` now use that query for `char` to
-  `int` unary/binary promotion and the supported int/char/long widening paths
-  to `long`/`double`. Cast decisions and some primitive-kind distinctions are
-  still represented by native kind rules. Its member table also
-  erases overloads by name and does not implement generic invocation inference.
+- `JConvModel` now loads shared `type`, `promote`, `binop`, `unop`, `cast`,
+  `widen`, `rename`, `qualify` and `tostr` rows. `JConvRewriter` uses the model
+  for primitive classification and promotion; `JConvExpr` distinguishes
+  binary32 from binary64, applies model float-rounding templates to arithmetic,
+  assignments, casts and text conversion, and selects explicit cast rows by
+  source and target. Native float compound-assignment lowering remains partial.
+  Its member table still erases overloads by name and does not implement
+  generic invocation inference.
 - It does not currently provide a project-wide generic type substitution and
   overload-resolution phase comparable to the C++ symbol table.
 - The expression pass can use model return rows, but those rows do not by
@@ -172,11 +173,11 @@ creation time. Do not count an unknown-target stub as successful conversion.
 
 ## Immediate work queue
 
-1. Complete the primitive-law audit and move float, all promotion, and cast
-   decisions into the shared model; the native expression pass currently uses
-   shared widening only for the supported integer/long/double promotion paths.
-2. Consolidate identifier rename and built-in qualification data, retaining
-   context-sensitive rename categories.
+1. Shared primitive type/rank/promotion, float, cast, identifier replacement and
+   built-in qualification implementation is now in model 1.5.0; add differential
+   coverage and run the C++ self-check before calling it verified.
+2. Complete native compound-float assignment and test the `next` value-only
+   mapping, `closeResource` special case and built-in qualification parity.
 3. Complete C++ invocation applicability and specificity beyond the current
    supported subset: boxing/unboxing, bounded/class/nested generic inference,
    wildcard capture, and the remaining JLS ambiguity rules. Add focused
