@@ -57,12 +57,16 @@ bin/sleelactl run   java-convert --self-check
 Exit 0: everything converted. Exit 1: some files failed closed (see
 `CONVERSION-REPORT.md/.json` in the output). Exit 2: usage/IO (including a file that cannot be written).
 
-A re-run into the same output directory first removes the files the previous run wrote (listed in
-`<out>/.javaconv-emitted`), so a file that now fails closed leaves no stale conversion behind. Only files
-in that list are deleted. Inputs and emitted paths are sorted; unchanged converted files and reports are
-written only when their bytes differ, making repeated runs stable and preserving mtimes. Each run also
-writes `CONVERSION-PROVENANCE.json` with SHA-256 digests for every immutable input, the exact model bytes,
-the converter source inputs, and each emitted output; the manifest omits timestamps and absolute paths.
+Each run is a directory-level transaction. The converter creates a sibling staging directory, copies the
+previous output tree without following symlinks, and writes converted files, the ownership manifest,
+provenance and reports only into that stage. It publishes the complete generation by renaming the old
+directory aside and renaming the stage into place; if staging or publication fails, the previous output
+generation is restored or left untouched. Unowned files are preserved and are never overwritten. Symlinks
+and special files in the previous output tree are rejected rather than followed. Re-runs remove only stale
+files listed in `<out>/.javaconv-emitted`. Inputs and emitted paths are sorted; unchanged converted files
+and reports are written only when their bytes differ, preserving mtimes. Each run writes
+`CONVERSION-PROVENANCE.json` with SHA-256 digests for immutable inputs, exact model bytes, converter source
+inputs and emitted outputs; the manifest omits timestamps and absolute paths.
 
 ## Fail closed
 
@@ -74,11 +78,11 @@ The refusal rows are the `unsupported` records of the model.
 
 `tests/javaconv_differential_test.sh` (also `make -C sleelactl/convert test`):
 
-- `tests/java/*.java` (34 fixtures currently present) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
+- `tests/java/*.java` (44 differential fixtures currently present) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
   identical: Anon, Basics, Bounds, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested,
   ObjectText, Operands (191 lines of int/long/double/narrowing results), Records, Refs, Resources, Shapes, Strings,
   Switches, Sync, Varargs, IdentifierParity, OverloadWidening, ReservedIdentifiers, GenericIdentity, BoxingOverload, GenericCommonReference, NestedGenericInference, BoundedGeneric, ClassGenericReceiver, InheritedGenericReceiver, WildcardGeneric, StaticImports. The new generic fixtures and the updated `Refs` overload/method-reference fixture were changed after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
-- `tests/reject/*.java` (11 programs) must be refused with the construct named on their `// expect:` line
+- `tests/reject/*.java` (19 programs) must be refused with the construct named on their `// expect:` line
   and write nothing.
 - stale output: a file converted on one run and failing closed on the next leaves no `.sleela` behind.
 
