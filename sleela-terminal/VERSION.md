@@ -103,9 +103,9 @@ The third component is intentionally named **Forgotten** for SLeeLa project term
 
 ## Version Source
 
-`VERSION.md` is the initial canonical human-readable version record for SleelaTerminal. Other project files should reference or reproduce `1.0.0` consistently rather than independently inventing a release number.
+`VERSION.md` is the canonical human-readable record for both the historical feature-release line (`1.1.0`) and the current binary identity (`1.0121`). The GUI executable embeds `1.0121`; the shell exposes the same identity through `slsh --version`. Product feature version and binary artifact identity are separate fields.
 
-When automated version propagation is introduced, it should use this document as the documented release baseline and establish a single machine-readable source without changing the meaning of the three components.
+Automated version propagation should read the binary identity from the machine-readable registry while preserving the meaning of the three-component feature-release line.
 
 ---
 
