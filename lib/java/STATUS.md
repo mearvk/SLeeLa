@@ -416,9 +416,10 @@ differential tests (17 in total), all unchanged.
 ## 11. Converting Java source: `lib/java/converter` (2026-11-13)
 
 A SLeeLa program that walks a Java source tree (for example a JDK `src.zip`)
-and writes one SLeeLa file per type, nested types as `Outer.Inner.sleela`. All
-Java-to-SLeeLa decisions are in `converter/JConvRules.sleela`; the full rule
-table, the stub reasons and the reproduction steps are in
+and writes one SLeeLa file per type, nested types as `Outer.Inner.sleela`. Shared
+semantic laws are read from `impl/subjects/conversion/conversion.model` through
+`JConvModel`; `JConvRules` applies the native rewrite policy. The stub reasons and
+reproduction steps are in
 [`converter/README.md`](converter/README.md). It writes outside `lib/java`
 and refuses to write into `jdk-28/`, so it does not change the numbers in
 section 1.
