@@ -485,7 +485,7 @@ rename assert all assert_
 rename arrayLength all arrayLength_
 rename arrayNew all arrayNew_
 rename arraySet all arraySet_
-rename close all close_
+rename close all closeResource
 rename enum all enum_
 rename instanceof all instanceof_
 rename int128 all int128_
