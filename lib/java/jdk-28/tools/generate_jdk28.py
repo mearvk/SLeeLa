@@ -420,18 +420,21 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate or audit the JDK 28 API signature index.")
-    parser.add_argument("--audit", action="store_true", help="report JDK 28 inventory coverage against JDK 25 reflected signatures without rewriting files")
+    parser.add_argument("--audit", action="store_true", help="report JDK 28 inventory coverage against selected reflected API data")
+    parser.add_argument("--api-jsonl", default=os.environ.get("JDK28_API_JSONL", str(LIBJAVA / "api" / "jdk-api.jsonl")))
+    parser.add_argument("--signatures-jsonl", default=os.environ.get("JDK28_SIGNATURES_JSONL", str(LIBJAVA / "api" / "jdk-signatures.jsonl")))
     args = parser.parse_args()
+    api_path, signatures_path = Path(args.api_jsonl), Path(args.signatures_jsonl)
     api = {}
-    for l in (LIBJAVA / "api" / "jdk-api.jsonl").read_text(encoding="utf-8").splitlines():
+    for l in api_path.read_text(encoding="utf-8").splitlines():
         if l.strip():
             t = json.loads(l)
             api[(t["module"], t["name"])] = t
     sigs = {}
-    for l in (LIBJAVA / "api" / "jdk-signatures.jsonl").read_text(encoding="utf-8").splitlines():
+    for l in signatures_path.read_text(encoding="utf-8").splitlines():
         if l.strip():
-            s = json.loads(l)
-            sigs[s["name"]] = s
+            record = json.loads(l)
+            sigs[record["name"]] = record
 
     if args.audit:
         rows = list(inventory())
