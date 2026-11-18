@@ -178,7 +178,7 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   `new T[]{...}`. A call to a varargs method of a type whose source was not collected is not packed.
   Test: `Varargs`.
 - A call to a method whose name is a SLeeLa built-in (`read`, `write`, `accept`, `lock`, `send`, `join`, ...) is qualified with
-  its owner class or `this.` (list: `sleelactl/convert/builtin_names.h`). Test: `Bounds` (a method named `read`).
+  its owner class or `this.` (list: `qualify` rows in `impl/subjects/conversion/conversion.model`). Test: `Bounds` (a method named `read`).
 - Name mapping. `close()` is a SLeeLa built-in; the tier names the Java method `closeResource()`
   in declarations and calls. Java members named like a SLeeLa reserved word or built-in
   (`record`, `native`, `struct`, `join`, `spawn`, `sleep`, ...) are refused; local variables with
