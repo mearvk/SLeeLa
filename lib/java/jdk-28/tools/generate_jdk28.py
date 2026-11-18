@@ -501,7 +501,7 @@ def main() -> int:
             status = "type identity known; member signatures pending (not found in runtime reflection)"
             stats["pending_signatures"] += 1
         else:
-            body = ["  < ---- members pending: new in JDK 28, read them from the Java Source page ---- >"]
+            body = ["  < ---- members pending: type is in the JDK 28 docs inventory but absent from runtime reflection ---- >"]
             status = "pending (new in JDK 28; members to be read from the Source page)"
             stats["pending"] += 1
         nested = ""
@@ -555,7 +555,7 @@ class {cls} {{
         mods.append(f"{module}\t0\tlib/java/jdk-28/{module}/\t{url}\t{evidence}")
     (OUT / "MODULES.tsv").write_text("\n".join(mods) + "\n", encoding="utf-8")
     stats["modules"] = len(counts) + len(NO_PACKAGE_MODULES)
-    print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with JDK 25 reflected members, "
+    print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with JDK 28 reflected members, "
           f"{stats['pending']} new types pending, {stats['pending_signatures']} known types missing signatures; "
           f"{stats['ctors']} constructors, {stats['methods']} methods; "
           f"{stats['modules']} module folders; {stats.get('implemented', 0)} files with SLeeLa logic; "
