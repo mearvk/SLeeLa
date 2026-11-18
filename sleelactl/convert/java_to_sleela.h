@@ -27,7 +27,8 @@ namespace javaconv {
 struct Ty {
     std::string n = "?";  // "?" unknown; "null"; "type:<name>" for a type used as a qualifier
     int dims = 0;
-    bool operator==(const Ty& o) const { return n == o.n && dims == o.dims; }
+    bool boxed = false; // wrapper reference type; emitted as its primitive representation
+    bool operator==(const Ty& o) const { return n == o.n && dims == o.dims && boxed == o.boxed; }
     bool known() const { return n != "?" && n.rfind("$T$", 0) != 0; }
 };
 
