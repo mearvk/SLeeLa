@@ -1,7 +1,7 @@
 # SLeeLa Daily Engineering TODO — Top-Down Numerical Drilldown
 
 **Project:** SLeeLa  
-**Version line:** 1.3.2-pro  
+**Version line:** 1.0121 (language syntax 3.2)  
 **Method:** Top-down numerical engineering closure  
 **Rule:** A requirement advances only when implementation is followed by executable evidence.
 
