@@ -175,6 +175,7 @@ cat > "$tmp/project-protected/src/fixture/alpha/Base.java" <<'JAVA'
 package fixture.alpha;
 public class Base {
   protected int value() { return 31; }
+  protected int data = 31;
 }
 JAVA
 cat > "$tmp/project-protected/src/fixture/child/Child.java" <<'JAVA'
@@ -182,6 +183,7 @@ package fixture.child;
 import fixture.alpha.Base;
 public class Child extends Base {
   public int expose() { return value(); }
+  public int exposeData(Child other) { return data + other.data; }
 }
 JAVA
 cat > "$tmp/project-protected/src/fixture/use/Main.java" <<'JAVA'
@@ -190,6 +192,7 @@ import fixture.child.Child;
 public class Main {
   public static void main(String[] args) {
     System.out.println(new Child().expose());
+    System.out.println(new Child().exposeData(new Child()));
   }
 }
 JAVA
@@ -204,6 +207,33 @@ if javac -d "$tmp/project-protected/cls" "$tmp/project-protected/src/fixture/alp
   fi
 else
   printf 'FAIL  project-protected (project build or conversion failed)\n'; cat "$tmp/project-protected/javac.err"; fail=$((fail+1))
+fi
+
+# a subclass in another package may not select a protected instance field
+# through a Base-typed receiver (JLS 6.6.2.1), even though it may use this
+# or a receiver whose static type is the subclass.
+mkdir -p "$tmp/project-protected-receiver/src/fixture/alpha" "$tmp/project-protected-receiver/src/fixture/child" "$tmp/project-protected-receiver/cls" "$tmp/project-protected-receiver/out"
+cat > "$tmp/project-protected-receiver/src/fixture/alpha/Base.java" <<'JAVA'
+package fixture.alpha;
+public class Base { protected int data = 31; }
+JAVA
+cat > "$tmp/project-protected-receiver/src/fixture/child/ChildBad.java" <<'JAVA'
+package fixture.child;
+import fixture.alpha.Base;
+public class ChildBad extends Base {
+  public int invalid(Base other) { return other.data; }
+}
+JAVA
+if javac -d "$tmp/project-protected-receiver/cls" "$tmp/project-protected-receiver/src/fixture/alpha/Base.java" "$tmp/project-protected-receiver/src/fixture/child/ChildBad.java" 2> "$tmp/project-protected-receiver/javac.err"; then
+  printf 'FAIL  protected-receiver (javac unexpectedly accepted Base-typed protected field receiver)\\n'; fail=$((fail+1))
+else
+  receiver_out="$("$conv" --jdk "$tmp/project-protected-receiver/src" --out "$tmp/project-protected-receiver/out" --quiet 2>&1)"
+  receiver_rc=$?
+  if [ "$receiver_rc" -eq 1 ] && printf '%s' "$receiver_out" | grep -q "\\[member-access\\]" && [ "$(find "$tmp/project-protected-receiver/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+    printf 'PASS  %-12s cross-package protected field through Base receiver refused with no output\\n' "protected-receiver"; pass=$((pass+1))
+  else
+    printf 'FAIL  protected-receiver (rc=%s)\\n%s\\n' "$receiver_rc" "$receiver_out"; fail=$((fail+1))
+  fi
 fi
 
 # package-private members and top-level types are not visible across packages.
