@@ -417,7 +417,7 @@ private:
     std::string emitType(const Ty& t) const {
         std::string n = t.n;
         if (t.boxed) { std::string primitive; if (modelBoxed(n,&primitive)) n=primitive; }
-        if (n == "?" || n.rfind("$T$", 0) == 0) n = "Any";
+        if (n == "?" || n.rfind("$T$", 0) == 0 || n.rfind("$C$", 0) == 0) n = "Any";
         else {
             const cm_rec* tr = cm_find(&M, "type", n.c_str(), nullptr, nullptr);
             if (tr && tr->f[1][0]) n = tr->f[1];
@@ -1072,6 +1072,26 @@ private:
         }
     }
 
+    Ty instantiateClassType(const Ty& source, const Ty& receiver) const {
+        Ty value=source;
+        if (value.n.rfind("$C$",0)==0) {
+            auto ci=classes.find(receiver.n);
+            if (ci!=classes.end()) {
+                const std::string variable=value.n.substr(3);
+                for (size_t i=0;i<ci->second.typeParams.size() && i<receiver.args.size();++i) {
+                    if (ci->second.typeParams[i]==variable) {
+                        Ty result=receiver.args[i]; result.dims+=value.dims; return result;
+                    }
+                }
+            }
+            value.n="?"; value.boxed=false; value.args.clear(); value.bound.reset();
+            return value;
+        }
+        for (Ty& arg:value.args) arg=instantiateClassType(arg,receiver);
+        if (value.bound) value.bound=std::make_shared<Ty>(instantiateClassType(*value.bound,receiver));
+        return value;
+    }
+
     const MethodSig& resolvedMethod(const MethodSig* method) const {
         auto it = resolvedMethods_.find(method);
         return it == resolvedMethods_.end() ? *method : it->second;
@@ -1091,7 +1111,7 @@ private:
         return true;
     }
 
-    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1) const {
+    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1, const Ty* receiverType = nullptr) const {
         if (depth > 32) return nullptr;
         std::vector<const MethodSig*> all;
         collectNamedMethods(cls,name,all);
@@ -1124,7 +1144,16 @@ private:
         // outrank an applicable strict invocation.
         for (int phase=0;phase<3 && !best;++phase) {
             for (const MethodSig* mp:candidates) {
-                const MethodSig& m=*mp;
+                MethodSig classResolved=*mp;
+                if (receiverType && receiverType->n==mp->owner) {
+                    for (Ty& param:classResolved.params) param=instantiateClassType(param,*receiverType);
+                    classResolved.ret=instantiateClassType(classResolved.ret,*receiverType);
+                } else {
+                    Ty erasedReceiver; erasedReceiver.n=mp->owner;
+                    for (Ty& param:classResolved.params) param=instantiateClassType(param,erasedReceiver);
+                    classResolved.ret=instantiateClassType(classResolved.ret,erasedReceiver);
+                }
+                const MethodSig& m=classResolved;
 
                 const size_t n=m.params.size();
                 const bool fixed=n==args.size() && (!m.varargs || phase<2);
@@ -1356,12 +1385,12 @@ private:
         fail("object-method", "java.lang.Object." + name + " on " + recvType + ", which does not declare it, has no SLeeLa equivalent yet");
     }
 
-    E callResult(const std::string& recvType, const std::string& name, const std::vector<E>& args, std::string code, bool staticCall) {
+    E callResult(const std::string& recvType, const std::string& name, const std::vector<E>& args, std::string code, bool staticCall, const Ty* receiverType = nullptr) {
         E r;
         r.code = code;
         r.pure = false;
         (void)staticCall;
-        if (const MethodSig* m = pickMethod(recvType, name, args)) {
+        if (const MethodSig* m = pickMethod(recvType, name, args, 0, -1, receiverType)) {
             r.ty = resolvedMethod(m).ret;
             return r;
         }
@@ -1441,7 +1470,7 @@ private:
                         continue;
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
-                    args = adaptArgs(pickMethod(recvType, name, args), args);
+                    args = adaptArgs(pickMethod(recvType, name, args, 0, -1, &e.ty), args);
                     // model 9c: a library parameter that takes a char as text
                     for (size_t ai = 0; ai < args.size(); ai++) {
                         const std::string idx = std::to_string(ai);
@@ -1450,7 +1479,7 @@ private:
                             args[ai].ty = mk("String");
                         }
                     }
-                    E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false);
+                    E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false, &e.ty);
                     e = r;
                     continue;
                 }
