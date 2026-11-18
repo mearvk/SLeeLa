@@ -3240,7 +3240,8 @@ private:
         std::string name = nestPrefix + simpleName;
         typeVars.clear();
         std::vector<std::string> tparams;
-        skipTypeParams(&tparams);
+        std::map<std::string,std::vector<std::string>> classTparamBounds;
+        skipTypeParams(&tparams, nullptr, &classTparamBounds);
         curClass = name;
         curIsInterface = false;
         curSimple_ = nested ? simpleName : "";
@@ -3269,7 +3270,7 @@ private:
             if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
-            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
             MethodSig ts; ts.name = "toString"; ts.ret = mk("String"); ci.methods.push_back(ts);
