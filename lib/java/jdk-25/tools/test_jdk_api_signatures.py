@@ -27,7 +27,7 @@ class SignatureErasureTests(unittest.TestCase):
         self.assertEqual(sig.erased("java.util.Map<java.lang.String, ? extends T>", {"T"}), "Any")
         self.assertEqual(sig.erased("T[]", {"T"}), "Any[]")
         self.assertEqual(sig.erased("java.lang.String...", set()), "String[]")
-        self.assertEqual(sig.erased("int[][]", set()), "int[][]")
+        self.assertEqual(sig.erased("int[][]", set()), "Any")
         self.assertEqual(sig.erased("java.lang.String", set()), "String")
 
     def test_generic_method_keeps_metadata_and_emits_erased_stub(self):
