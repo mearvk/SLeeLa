@@ -1162,6 +1162,9 @@ private:
                                 return true;
                             }
                             if (formal.args.empty()) return true;
+                            // A null expression is compatible with every reference
+                            // instantiation but contributes no inference constraint.
+                            if (actual.n=="null" && actual.dims==0) return true;
                             if (formal.n!=actual.n || formal.dims!=actual.dims ||
                                 formal.args.size()!=actual.args.size()) return false;
                             for (size_t ai=0;ai<formal.args.size();++ai) {
