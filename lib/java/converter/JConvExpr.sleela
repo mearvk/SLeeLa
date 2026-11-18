@@ -24,7 +24,7 @@ class JConvExpr {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. The laws it
      applies are JLS 15.17 to 15.19 and 5.1.11, as rows of conversion.model. >>
-  String metaVersion = "0.5.0";
+  String metaVersion = "0.6.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-13";
