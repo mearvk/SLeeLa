@@ -83,16 +83,7 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   most-specific candidates. It fails
   closed when supported candidates remain incomparable. This is a meaningful
   partial JLS implementation, not full Java overload resolution.
-- Direct unbounded method-variable inference now binds `T`, `T[]`, and `T...`
-  from known argument types (boxing scalar primitive arguments into model-declared
-  wrapper types, as Java generic inference requires) and substitutes the selected
-  parameter/return signature. Repeated reference constraints can merge when one known class is a
-  subtype of the other; unrelated reference types, numeric LUBs and null-only
-  inference are rejected. Bounds, nested generic arguments, class-generic
-  substitution, target-type inference, wrapper inheritance and conversions not
-  represented by the model, unchecked conversions, wildcard capture, intersection
-  constraints, and full JLS specificity remain
-  incomplete. A method type variable inside a generic argument is not inferred.
+- Method-variable inference binds direct `T`, `T[]`, and `T...` forms, plus nested invariant forms such as `Holder<T>` and `List<? extends T>`. Scalar primitive arguments are boxed into model-declared wrappers. Repeated reference constraints merge when one known class is a subtype of the other. Simple declared upper bounds are checked after inference; unbounded, `? extends`, and `? super` generic arguments receive conservative compatibility checks. Class-generic substitution is supported for a parameterized receiver when the declaring class is the receiver itself, including fields and method return/parameter signatures. Unrelated reference types, numeric least-upper-bound inference, null-only inference, intersection bounds, inherited generic-supertype substitution, target-type inference, wrapper inheritance, unchecked conversions, wildcard capture with inference variables in lower bounds, and full JLS specificity remain incomplete.
 - Lambda arguments are deferred until a selected method supplies a known
   functional-interface target. The target must resolve to a collected or
   seeded interface with exactly one distinct abstract instance-method signature
@@ -183,9 +174,9 @@ creation time. Do not count an unknown-target stub as successful conversion.
 2. Complete native compound-float assignment and test the `next` value-only
    mapping, `closeResource` special case and built-in qualification parity.
 3. Complete C++ invocation applicability and specificity beyond the current
-   supported subset: boxing/unboxing, bounded/class/nested generic inference,
-   wildcard capture, and the remaining JLS ambiguity rules. Add focused
-   differential fixtures before claiming broader coverage.
+   supported subset: generic inheritance, target typing, intersection-bound and
+   wildcard-capture constraints, wrapper inheritance, and the remaining JLS
+   ambiguity rules. Add focused differential fixtures before claiming broader coverage.
 4. Extend the SLeeLa-native signature index toward overload-aware resolution,
    add generic SAM substitution, and implement the same direct generic method
    inference subset as C++.
