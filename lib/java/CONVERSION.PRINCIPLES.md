@@ -108,7 +108,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | Field defaults and initialization order | default value on every field; field initializers and instance `{ }` blocks after `super(...)` | converter | `Init` |
 | `close()` | mapped to `closeResource()` in declarations and calls | converter `mapMember` | `Resources` |
 | A method named like a SLeeLa built-in (`read`, `write`, `accept`, `lock`, ...) | calls qualified with the owner class or `this.` | converter, shared `qualify` model rows | `Bounds` |
-| Reserved or built-in member names | refused; locals renamed | converter | `Varargs` (a method named `join` was caught); no refusal test |
+| Reserved or built-in member names | shared `rename` rows; C++ fails closed for reserved member declarations, native applies member mappings; locals use model replacements | converter + `conversion.model` | collision inventory; differential fixtures pending |
 | Packages, imports | dropped; library members resolve through `import java.jdk-N;` | converter | all |
 
 ### 2.7 Concurrency and policy
