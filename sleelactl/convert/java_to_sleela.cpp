@@ -3722,6 +3722,8 @@ private:
                 }
             }
         } catch (const ConvErr& e) { diag(e); return; }
+        if (isKw("module") || (isKw("open") && isKwAt(p + 1, "module")))
+            unsup("module-declaration");
         while (!atEof()) {
             if (acceptOp(";")) continue;
             size_t before = p;
@@ -3804,7 +3806,7 @@ private:
         else if (isKw("enum")) { parseEnum(nestPrefix); return; }
         else if (isKw("record") && isIdentTok(at(p + 1))) { parseRecord(nestPrefix, outerName, nestedStatic); return; }
         else if (isKw("record")) unsup("nested");
-        else if (isOp("@")) unsup("nested");
+        else if (isOp("@")) unsup("annotation-type");
         else fail("syntax", "expected a class or interface declaration but found '" + descr() + "'");
         curIsInterface = isIface;
         const std::string simpleName = ident();
