@@ -11,7 +11,6 @@ extern "C" {
 }
 
 #include <cctype>
-#include "builtin_names.h"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
@@ -48,12 +47,6 @@ const std::set<std::string> kModifiers = {"public", "private", "protected", "sta
                                           "synchronized", "volatile", "transient", "native", "strictfp",
                                           "default", "sealed"};
 // SLeeLa words that are legal Java identifiers but would collide in SLeeLa.
-const std::set<std::string> kSleelaReserved = {"struct", "material", "spark", "int32", "record", "close", "native",
-                                               "Any", "print", "enum", "interface", "super", "yield", "throw",
-                                               "instanceof", "switch", "synchronized", "assert",
-                                               "join", "spawn", "sleep", "arrayLength", "arrayNew", "arraySet", "structPack", "structUnpack",
-                                               "require", "usualgc", "usualmem", "int64", "int128"};
-
 struct Tok {
     jt_kind kind = JT_EOF;
     std::string text;
@@ -245,32 +238,38 @@ private:
         return r != nullptr;
     }
 
-    // Operand class used to select binop/unop rows.
+    // Operand class, numeric rank and unary promotion are data in conversion.model.
     std::string classOf(const Ty& t) const {
         if (t.dims > 0) return "reference";
         if (t.n == "?") return "unknown";
         if (t.n == "null") return "reference";
-        std::string n = t.n;
-        std::string prim;
+        std::string n = t.n, prim;
         if (modelBoxed(n, &prim)) n = prim;
-        if (n == "float") return "float";
-        if (n == "boolean") return "boolean";
-        if (n == "byte" || n == "short" || n == "char" || n == "int") return "int";
-        if (n == "long") return "long";
-        if (n == "double") return "double";
-        if (n == "String") return "text";
-        return "reference";
+        const cm_rec* tr = cm_find(&M, "type", n.c_str(), nullptr, nullptr);
+        if (!tr) return "reference";
+        const std::string kind = tr->f[2];
+        if (kind == "integral") {
+            const cm_rec* pr = cm_find(&M, "promote", n.c_str(), nullptr, nullptr);
+            return pr ? pr->f[1] : "unknown";
+        }
+        if (kind == "floating" || kind == "boolean") return n;
+        if (kind == "text") return "text";
+        if (kind == "reference") return "reference";
+        return "unknown";
     }
-    static int rankOf(const std::string& c) { return c == "int" ? 1 : c == "long" ? 2 : c == "float" ? 3 : c == "double" ? 4 : 0; }
+    int rankOf(const std::string& c) const {
+        const cm_rec* tr = cm_find(&M, "type", c.c_str(), nullptr, nullptr);
+        return tr ? std::atoi(tr->f[3]) : 0;
+    }
     bool isPrimTy(const Ty& t) const { return t.dims == 0 && kPrim.count(t.n) > 0; }
     bool isNumericCls(const std::string& c) const { return rankOf(c) > 0; }
 
-    // ---------------------------------------------------------- idents ----
-    static std::string safeName(const std::string& n) {
-        // `next` is a contextual VM word: in value position it evaluates to 1.
-        // Rename variables/fields, but keep a method named next() callable.
-        if (n == "next") return "next_";
-        return kSleelaReserved.count(n) ? n + "_" : n;
+    // Identifier replacements are shared data. The value-only next rule keeps
+    // a Java method invocation named next() intact.
+    std::string safeName(const std::string& n) const {
+        const cm_rec* r = cm_find(&M, "rename", n.c_str(), "value", nullptr);
+        if (!r) r = cm_find(&M, "rename", n.c_str(), "all", nullptr);
+        return r ? r->f[2] : n;
     }
     void pushScope() { scopes.emplace_back(); }
     void popScope() { scopes.pop_back(); }
@@ -406,29 +405,19 @@ private:
     E lit(const std::string& code, const Ty& ty) { E e; e.code = code; e.ty = ty; return e; }
 
     E coerce(const E& v, const Ty& target) {
-        // Implicit widening on assignment/return: int/long -> double must become a
-        // real double (otherwise a later '/' would divide as integers).
-        if (target.dims == 0 && target.n == "float" && v.ty.dims == 0) {
-            std::string c = classOf(v.ty);
-            if (c == "int" || c == "long") {   // int/long -> float rounds to 24 bits (JLS 5.1.2)
-                E r = v;
-                r.code = "JavaFloat.f32((double) " + paren(v.code) + ")";
-                r.ty = mk("float");
-                r.isLitInt = false;
-                return r;
-            }
-        }
-        if (target.dims == 0 && target.n == "double" && v.ty.dims == 0) {
-            std::string c = classOf(v.ty);
-            if (c == "int" || c == "long" || c == "float") {
-                E r = v;
-                r.code = v.isLitInt ? std::to_string(v.iv) + ".0" : "(double) " + paren(v.code);
-                r.ty = mk("double");
-                r.isLitInt = false;
-                return r;
-            }
-        }
-        return v;
+        // Only model-declared primitive widening is implicit. The same cast
+        // template is used for assignments, arguments and return expressions.
+        if (v.ty.dims != 0 || target.dims != 0) return v;
+        std::string from = v.ty.n, boxed;
+        if (modelBoxed(from, &boxed)) from = boxed;
+        if (!cm_find(&M, "widen", from.c_str(), target.n.c_str(), nullptr)) return v;
+        const cm_rec* c = cm_find(&M, "cast", from.c_str(), target.n.c_str(), nullptr);
+        if (!c) fail("model", "widening conversion has no cast template: " + from + " -> " + target.n);
+        E r = v;
+        if (std::string(c->f[2]) != "=") r.code = subst(c->f[2], paren(v.code), "");
+        r.ty = target;
+        r.isLitInt = false;
+        return r;
     }
     static std::string paren(const std::string& c) {
         bool simple = true;
@@ -471,7 +460,6 @@ private:
             return toStringOwner(x.ty.n) + ".javaText(" + x.code + ")";
         }
         if (x.ty.dims == 0 && kPrim.count(x.ty.n)) {
-            if (x.ty.n == "float") return "JavaFloat.text(" + x.code + ")";
             const cm_rec* r = cm_find(&M, "tostr", x.ty.n.c_str(), nullptr, nullptr);
             if (r) return subst(r->f[1], x.code, "");
         }
@@ -548,19 +536,6 @@ private:
         } else {
             fail("model", "no operand class for " + ca + " " + op + " " + cb);
         }
-        if (cls == "float") {
-            // binary32 arithmetic (JLS 15.17-15.20): do the operation in double, then round to 24 bits.
-            // For + - * / and %, rounding the double result equals the correctly rounded binary32
-            // result because a double has more than 2*24+2 significant bits.
-            E fx = toClass(a, "float"), fy = toClass(b, "float");
-            if (op == "+" || op == "-" || op == "*" || op == "/" || op == "%") {
-                r.code = "JavaFloat.f32((" + fx.code + " " + op + " " + fy.code + "))";
-                r.ty = mk("float");
-                return r;
-            }
-            if (isCmp) { r.code = "(" + fx.code + " " + op + " " + fy.code + ")"; r.ty = mk("boolean"); return r; }
-            fail("model", "no binary32 rule for operator '" + op + "'");
-        }
         const char* tpl = tplBinop(cls, op);
         if (!tpl) fail("model", "the conversion model has no rule for '" + op + "' on operand class '" + cls + "'");
         E x = isShift ? a : toClass(a, cls);
@@ -568,7 +543,7 @@ private:
         r.code = subst(tpl, x.code, y.code);
         if (isCmp || isLogic) r.ty = mk("boolean");
         else if (cls == "int") r.ty = mk("int");
-        else if (cls == "long" || cls == "double" || cls == "boolean") r.ty = mk(cls);
+        else if (cls == "long" || cls == "float" || cls == "double" || cls == "boolean") r.ty = mk(cls);
         else r.ty = mk("?");
         return r;
     }
@@ -577,13 +552,11 @@ private:
         E r;
         r.pure = a.pure;
         std::string c = classOf(a.ty);
-        const bool isF = (c == "float");
-        if (isF) c = "double";
         if (c == "unknown") unsup("untyped");
         const char* tpl = tplUnop(c, op);
         if (!tpl) fail("model", "the conversion model has no rule for unary '" + op + "' on operand class '" + c + "'");
         r.code = subst(tpl, a.code, "");
-        r.ty = isF ? mk("float") : (c == "boolean") ? mk("boolean") : mk(c);
+        r.ty = (c == "boolean") ? mk("boolean") : mk(c);
         return r;
     }
 
@@ -595,23 +568,12 @@ private:
             if (to.n == "boolean") { r.code = a.code; return r; }
             std::string from = classOf(a.ty);
             if (from == "unknown") unsup("untyped");
-            if (to.n == "float") {   // (float): round to binary32
-                if (from == "float") { r.code = a.code; return r; }
-                r.code = (from == "double") ? "JavaFloat.f32(" + a.code + ")" : "JavaFloat.f32((double) " + paren(a.code) + ")";
-                return r;
-            }
-            if (from == "float") from = "double";   // a float is held as a double: the double conversion rows apply
-            const cm_rec* c = cm_find(&M, "cast", from.c_str(), to.n.c_str(), nullptr);
+            std::string source = a.ty.n, boxed;
+            if (modelBoxed(source, &boxed)) source = boxed;
+            const cm_rec* c = cm_find(&M, "cast", source.c_str(), to.n.c_str(), nullptr);
             if (!c) fail("model", "the conversion model has no cast from '" + from + "' to '" + to.n + "'");
             if (std::string(c->f[2]) == "=") {
                 r.code = a.code;
-                // Syntax 3.1 shows a value of static type char as text in a String context; a Java
-                // (int)/(long) cast of a char is a number, so it must drop the char type explicitly.
-                if (a.ty.dims == 0 && a.ty.n == "char" && (to.n == "int" || to.n == "long")) {
-                    r.code = "(" + to.n + ") " + paren(a.code);
-                    r.isLitInt = false;
-                    return r;
-                }
                 // a plain int->int/long cast of a literal stays a literal
                 r.isLitInt = a.isLitInt && to.n == "int";
                 r.iv = a.iv;
@@ -1696,15 +1658,12 @@ private:
         if (!lv.pure) fail("side-effecting-lvalue", "++/-- on an operand with side effects would evaluate it twice");
         std::string c = classOf(lv.ty);
         if (c == "unknown") unsup("untyped");
-        const bool isF = (c == "float");
-        if (isF) c = "double";
         const cm_rec* r = cm_find(&M, "incr", c.c_str(), nullptr, nullptr);
         if (!r) fail("model", "the conversion model has no ++/-- rule for operand class '" + c + "'");
         std::string both = r->f[1];
         size_t sep = both.find(" ;; ");
         std::string up = both.substr(0, sep), down = sep == std::string::npos ? both : both.substr(sep + 4);
         std::string val = subst(inc ? up : down, lv.code, "");
-        if (isF) val = "JavaFloat.f32(" + val + ")";
         // narrow back to byte/short/char as Java does
         if (lv.ty.dims == 0 && (lv.ty.n == "byte" || lv.ty.n == "short" || lv.ty.n == "char")) {
             E tmp; tmp.code = val; tmp.ty = mk("int");
@@ -1722,7 +1681,7 @@ private:
         std::string bop = op.substr(0, op.size() - 1);
         std::string cls = classOf(lhs.ty);
         if (cls == "unknown") unsup("untyped");
-        if (!cm_find(&M, "compound", (cls == "float" ? "double" : cls).c_str(), bop.c_str(), nullptr))
+        if (!cm_find(&M, "compound", cls.c_str(), bop.c_str(), nullptr))
             fail("model", "the conversion model has no compound-assignment rule for '" + op + "' on '" + cls + "'");
         E combined = emitBinary(bop, lhs, rhs);
         E store = combined;
@@ -3021,9 +2980,11 @@ private:
     // with Java fallthrough, a default anywhere, and break/continue (SLEELA.syntax 44.4). Arrow cases
     // become a case followed by an implicit break. A switch expression is hoisted: a temporary is
     // declared, a native switch assigns it in each arm, and the temporary is the value.
-    // Java member names that collide with SLeeLa built-ins are renamed consistently in declarations and calls.
-    // close() is the Munction reach-handle built-in, so the Java tier calls it closeResource().
-    static bool isBuiltinCallName(const std::string& n) { for (const char* const* b = kBuiltinCallNames; *b; ++b) if (n == *b) return true; return false; }
+    // Built-in qualification is declared by conversion.model; no compiled-in
+    // list can drift from the VM inventory.
+    bool isBuiltinCallName(const std::string& n) const {
+        return cm_find(&M, "qualify", n.c_str(), nullptr, nullptr) != nullptr;
+    }
     static std::string mapMember(const std::string& n) { return n == "close" ? "closeResource" : n; }
     bool lastVarargs_ = false;
     std::string yieldVar_;
