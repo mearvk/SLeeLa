@@ -113,6 +113,12 @@ run_gate "java-differential" bash "$root/examples/java/differential/run-differen
 run_gate "converter-repeat-transaction" env SLEELA_BIN="$bin" bash "$root/lib/java/converter/tests/repeat-run-transaction.sh"
 run_gate "converter-per-member-stub-policy" env SLEELA_BIN="$bin" bash "$root/lib/java/converter/tests/per-member-stub-policy.sh"
 run_gate "jdk28-tier-coverage-comparison" python3 "$root/lib/java/jdk-25/tools/jdk_api_coverage.py" --tier jdk-28 --markdown "$report_dir/COVERAGE-JDK28-REFERENCE.md"
+run_gate "jdk25-to-jdk28-reflection-diff" python3 "$root/lib/java/jdk-28/tools/compare_jdk25_jdk28.py" \
+  --jdk25-api "$root/lib/java/jdk-25/api/jdk-api.jsonl" \
+  --jdk25-signatures "$root/lib/java/jdk-25/api/jdk-signatures.jsonl" \
+  --jdk28-api "$JDK28_API_JSONL" \
+  --jdk28-signatures "$JDK28_SIGNATURES_JSONL" \
+  --markdown "$report_dir/CROSS-VERSION-JDK25-JDK28.md"
 
 # The functional gate is deliberately separate: the JDK 28 tree contains many
 # exact API declarations whose bodies are still fail-loud stubs. Exit 2 is an
