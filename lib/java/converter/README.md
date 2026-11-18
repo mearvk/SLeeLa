@@ -40,7 +40,7 @@ same folders. Run on the JDK sources (the `<module>/<package>/<Type>.java` layou
 of a JDK `src.zip`), it produces the JDK 28 type tree as converted SLeeLa:
 `java.base/java/util/Optional.java` becomes `java.base/java/util/Optional.sleela`.
 
-Shared Java semantic laws live in `impl/subjects/conversion/conversion.model`.
+Shared Java semantic laws and target type spellings live in `impl/subjects/conversion/conversion.model`.
 `JConvModel.sleela` reads that data for both converter implementations;
 `JConvRules.sleela` applies the native converter's source-rewrite policy. Type
 classification, primitive promotion, operator/cast templates, identifier
