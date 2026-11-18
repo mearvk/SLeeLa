@@ -212,3 +212,9 @@ Not run for this page (`.kiro/steering/validation-cadence.md`): the long suites 
 compile check, the hand-converted `examples/java/differential` suite, conformance programs). The second
 converter, `lib/java/converter` (SLeeLa, per-member stubs, 0.7.0), was not re-measured; its last numbers
 are in its README.
+
+## Post-merge repository status (2026-11-18)
+
+The production qualification report is now present on `master` through [PR #376](https://github.com/mearvk/SLeeLa/pull/376), merged at `d2b766c7280b1fb8d8b14ceb95bb84bffd1665c5`. The regression ledger and continuation note are present through [PR #377](https://github.com/mearvk/SLeeLa/pull/377), merged at `9835bb53591cb27e590a4cf08be959682059f862`. The current documentation baseline is `9835bb53591cb27e590a4cf08be959682059f862`; this is not a validation result.
+
+The current-master runtime/C++ builds, current differential fixtures, native converter per-member stub and transactional provenance tests, representative Java executions, and JDK 28 reflection/signature/conformance/functional campaign remain **NOT RUN or PENDING** in the available evidence. Historical November 13 and 17 results remain historical. Generated API envelopes and fail-loud stubs remain nonfunctional contracts. Release decision: **HOLD**.
