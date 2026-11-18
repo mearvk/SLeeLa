@@ -72,6 +72,10 @@ javac -d "$reflection_classes" \
   "$root/lib/java/jdk-25/tools/ApiSignatures.java"
 java -cp "$reflection_classes" ApiDump > "$reflection_dir/jdk-api.jsonl" 2> "$reflection_dir/api-dump.stderr.log"
 java -cp "$reflection_classes" ApiSignatures > "$reflection_dir/jdk-signatures.jsonl" 2> "$reflection_dir/signature-dump.stderr.log"
+if grep -q '^REFLECTION_ERROR' "$reflection_dir/api-dump.stderr.log" "$reflection_dir/signature-dump.stderr.log"; then
+  echo "JDK 28 reflection reported incomplete type/member data; see $reflection_dir/*.stderr.log" >&2
+  exit 1
+fi
 python3 - "$reflection_dir/jdk-api.jsonl" "$reflection_dir/jdk-signatures.jsonl" <<'PY'
 import json, sys
 for path in sys.argv[1:]:
