@@ -2,15 +2,28 @@
 
 # Java to SLeeLa Conversion: Overall Status
 
-**As of:** 2026-11-13. **Branches:** `master` and `main` (same content; see section 7).
+**Historical measurements:** 2026-11-13. **Current model implementation:** 2026-11-18 on `master`.
 **Subject:** `sleelactl java-convert` (the C/C++ converter in `sleelactl/convert`), the conversion
-model `impl/subjects/conversion/conversion.model` (revision **1.3.0**), and the Java tier under
+model `impl/subjects/conversion/conversion.model` (revision **1.5.0**, implementation updated 2026-11-18), and the Java tier under
 `lib/java` that converted programs run on.
 
 This page records **measured** status only. Every number below comes from a run on the date shown;
 nothing is projected. The rules are in `.kiro/steering/java-to-sleela-conversion.md`, the
 specification in `lib/java/JAVA.SPEC.md`, the principles and the done/open ledger in
 `CONVERSION.PRINCIPLES.md`. Where those and this page disagree, those win and this page is stale.
+
+## Current implementation note (2026-11-18)
+
+The shared conversion model has been consolidated to revision **1.5.0**. Primitive
+type classification, numeric ranks, unary promotion, the complete 7×7 numeric
+primitive cast matrix, binary32 operator/cast/text rules, identifier replacement
+contexts, and built-in call qualification are now represented in the model.
+Both the C++ converter and SLeeLa-native converter read the relevant rows.
+The C++ self-check has been extended to require these records.
+
+**Verification status:** these model/converter changes have not yet been built or
+run through the C++ or native differential suites. The 32/32 and 420/884 results
+below remain historical results from 2026-11-13; they do not validate model 1.5.0.
 
 ## 1. Summary
 
