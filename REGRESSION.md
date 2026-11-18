@@ -196,3 +196,9 @@ The C++ converter remains fail-closed at whole-file scope. The SLeeLa-native con
 ### Session tooling boundary
 
 Repository files and pull requests were updated through the GitHub repository interface. This session did not have a local checkout or shell execution path for the repository, so no build, compiler invocation, program execution or regression command was run. This limitation is recorded rather than substituting estimates or historical results.
+
+## November 18 repository follow-up — merged documentation state
+
+After the initial status entry above, PR [#376](https://github.com/mearvk/SLeeLa/pull/376) (production release qualification report) and PR [#377](https://github.com/mearvk/SLeeLa/pull/377) (regression status and session continuation record) were both merged into `master`. The recorded merge commit for #377 is `9835bb53591cb27e590a4cf08be959682059f862`; #376's merge commit is `d2b766c7280b1fb8d8b14ceb95bb84bffd1665c5`.
+
+This updates the earlier time-qualified statement that #376 was still open. It does **not** change the validation evidence: current-master build, converter execution, JDK 28 campaign, representative Java execution and native/platform qualification remain unverified until raw current-run artifacts are collected. Production release remains **HOLD**.
