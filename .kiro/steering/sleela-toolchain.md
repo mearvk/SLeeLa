@@ -26,12 +26,10 @@ the integrity-gated source build.
 The toolchain is **two** native executables. The committed copies in
 [`/working-binaries/`](../../working-binaries/) report:
 
-- **`sleela`** — `SLeeLa™ Language/Runtime 1.3.2-pro`, the authoritative
-  compiler/runner, **supported source syntax 1.0 – 3.2**, native C/C++ Core VM.
-  (Syntax 3.2, also written `3.01`, is SLEELA.syntax sections 44 (literal,
-  initializer, labels, finally), 45 (char) and 46 (array). The committed
-  `working-binaries/` were rebuilt 2026-11-17 and match the source-built
-  `impl/build/sleela`.)
+- **`sleela`** — committed payload reports `SLeeLa™ Language/Runtime 1.3.2-pro`
+  and supports source syntax **1.0 – 3.1**. It is stale relative to the current
+  source tree; rebuild it before relying on Syntax 3.2. Source builds now use
+  tool identity **1.0121** and accept syntax **1.0 – 3.2**.
   Subcommands: `check <f>`, `run <f>`, `compile <f...> -o <out>`,
   `validate-artifact <f>`, `nordshrift [--emit|--roundtrip] [--target=…] <f>`,
   `version`. (Older builds branded this binary "Sleelvac™" and capped syntax at
