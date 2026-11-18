@@ -224,16 +224,36 @@ int main(int argc, char** argv) {
 
     if (c.selfCheck) {
         std::cout << "model " << model.name << " " << model.rev << " (" << modelPath.string() << ")\n"
-                  << "  types=" << cm_count(&model, "type") << " binop=" << cm_count(&model, "binop")
-                  << " unop=" << cm_count(&model, "unop") << " cast=" << cm_count(&model, "cast")
+                  << "  types=" << cm_count(&model, "type") << " promote=" << cm_count(&model, "promote")
+                  << " binop=" << cm_count(&model, "binop") << " unop=" << cm_count(&model, "unop")
+                  << " cast=" << cm_count(&model, "cast") << " widen=" << cm_count(&model, "widen")
+                  << " rename=" << cm_count(&model, "rename") << " qualify=" << cm_count(&model, "qualify")
                   << " compound=" << cm_count(&model, "compound") << " ret=" << cm_count(&model, "ret")
                   << " unsupported=" << cm_count(&model, "unsupported") << "\n";
-        // every int-width operator must have a template (the equivalence laws)
+        // Required primitive operator laws and model-driven identifier maps.
         static const char* const need[] = {"+", "-", "*", "/", "%", "<<", ">>", ">>>"};
         int missing = 0;
         for (const char* op : need)
             for (const char* cls : {"int", "long"})
                 if (!cm_find(&model, "binop", cls, op, nullptr)) { std::cerr << "missing binop " << cls << " " << op << "\n"; missing++; }
+        static const char* const floatOps[] = {"+", "-", "*", "/", "%", "<", "<=", ">", ">=", "==", "!="};
+        for (const char* op : floatOps)
+            if (!cm_find(&model, "binop", "float", op, nullptr)) { std::cerr << "missing float binop " << op << "\n"; missing++; }
+        for (const char* op : {"+", "-"})
+            if (!cm_find(&model, "unop", "float", op, nullptr)) { std::cerr << "missing float unop " << op << "\n"; missing++; }
+        if (!cm_find(&model, "promote", "float", nullptr, nullptr)) { std::cerr << "missing float unary promotion\n"; missing++; }
+        if (!cm_find(&model, "cast", "double", "float", nullptr) ||
+            !cm_find(&model, "cast", "float", "int", nullptr) ||
+            !cm_find(&model, "cast", "float", "long", nullptr)) {
+            std::cerr << "missing binary32 cast law\n"; missing++;
+        }
+        if (!cm_find(&model, "tostr", "float", nullptr, nullptr)) { std::cerr << "missing float text law\n"; missing++; }
+        if (!cm_find(&model, "rename", "next", "value", nullptr) ||
+            !cm_find(&model, "rename", "close", "all", nullptr)) {
+            std::cerr << "missing identifier mapping law\n"; missing++;
+        }
+        for (const char* name : {"close", "connect", "send"})
+            if (!cm_find(&model, "qualify", name, nullptr, nullptr)) { std::cerr << "missing built-in qualification " << name << "\n"; missing++; }
         cm_free(&model);
         return missing ? 1 : 0;
     }
