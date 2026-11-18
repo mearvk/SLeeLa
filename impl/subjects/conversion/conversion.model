@@ -9505,7 +9505,7 @@ call array.length arrayLength($recv)
 
 # ---- 12. Constructs the converter refuses, with the reason it states.
 unsupported float float arithmetic rounds to IEEE binary32 at every step; SLeeLa has no binary32 operator set, so equivalence cannot be guaranteed
-unsupported lambda lambdas need the linear lowering of lib/java/jdk-28/LOWERING.md (design draft, not implemented in the converter)
+unsupported lambda a lambda target without a known single abstract method or a nested generated-class capture chain cannot be lowered safely
 unsupported methodref method references need the linear lowering of lib/java/jdk-28/LOWERING.md
 unsupported synchronized synchronized blocks have no SLeeLa form
 unsupported enum enum declarations are listed in SLEELA.syntax 43.5 as not supported
