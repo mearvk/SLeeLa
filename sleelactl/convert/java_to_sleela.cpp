@@ -1079,6 +1079,7 @@ private:
                     else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
                     if (target.n.rfind("$T$",0)==0) {
+                        const int variableDims=target.dims;
                         if (args[i].lambdaPos!=(size_t)-1 || !args[i].ty.known() || args[i].ty.n == "null") { applicable=false; break; }
                         const std::string variableName=target.n.substr(3);
                         if (args[i].ty.dims < target.dims) { applicable=false; break; }
@@ -1100,7 +1101,7 @@ private:
                             } else { applicable=false; break; }
                         }
                         target=inferred.at(variableName);
-                        target.dims+=m.params[i<n?i:n-1].dims;
+                        target.dims+=variableDims;
                     }
                     if (args[i].lambdaPos!=(size_t)-1) {
                         if (phase<2 && m.varargs && n && i==n-1 && target.dims>0) { applicable=false; break; }
