@@ -1,11 +1,11 @@
 # working-binaries
 
-Prebuilt native SLeeLa toolchain binaries, kept here for quick access. Artifact identities are separate from product versions; see [VERSION-IDENTITIES.md](VERSION-IDENTITIES.md).
+Prebuilt native SLeeLa toolchain binaries, kept here for quick access. Current source builds use release identity **1.0121** and accept source syntax **1.0 – 3.2**. The committed payloads below are older artifacts and must be rebuilt before claiming Syntax 3.2 support. Artifact identities are separate from product versions; see [VERSION-IDENTITIES.md](VERSION-IDENTITIES.md).
 
 | Binary | Product version | Artifact identity | What it is | Size |
 |--------|-----------------|-------------------|-------------|------|
-| `sleela` | `1.3.2-pro` | `SLEELA-BIN-1.012` | the authoritative SLeeLa compiler/runner. **Committed binary currently reports source syntax 1.0 – 3.1; Syntax 3.2 source support requires rebuild**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~3.0 MB |
-| `nordshrift` | `2.7.1-dev` | `NORDSHRIFT-BIN-1.012` | the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); committed binary currently drives SLeeLa source syntax up to 3.1; rebuild required for 3.2. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.6 MB |
+| `sleela` | `1.3.2-pro` | `SLEELA-BIN-1.012` | the authoritative SLeeLa compiler/runner. **Committed binary is stale and does not yet support the full Syntax 3.2 feature set; rebuild required**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~3.0 MB |
+| `nordshrift` | `2.7.1-dev` | `NORDSHRIFT-BIN-1.012` | the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); committed binary is stale relative to the current Syntax 3.2 source tree; rebuild required. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.6 MB |
 
 ## Important caveats
 
@@ -58,7 +58,7 @@ edition: character literals, array initializers, labeled `break`/`continue`,
 specifications (sections 45, 46) were present in the source snapshot but had not yet been
 split into the Syntax 3.2 gate; the committed executable must be rebuilt before those features
 are advertised as Syntax 3.2. The Java-tier runtime changes through
-SLEELA.syntax 43.7 and 37.5. Checked at that build: `version` reported source syntax 1.0 – 3.1,
+SLEELA.syntax 43.7 and 37.5. Checked at that build: `version` reported the former 3.1 ceiling,
 and a `#sleela 3.1` program using a char literal, an array initializer and
 `a.length` checks and runs (the previous copy could not).
 Rebuilt again 2026-11-13 for a VM performance fix, same versions: the plain String
@@ -129,8 +129,8 @@ Checked: 211/211 regression tests (with mutation testing) with
 
 Reported versions:
 
-- `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.1)
-- `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; committed binary supports SLeeLa source through 3.1; rebuild required for 3.2)
+- `sleela` — committed payload `SLeeLa™ Language/Runtime 1.3.2-pro`; current source build identity `1.0121` (syntax 1.0 – 3.2)
+- `nordshrift` — committed payload `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2); current source tree drives syntax through 3.2; rebuild required
 
 SHA-256 of the committed copies (these hashes identify the old payloads; they must change when rebuilt binaries are committed):
 
