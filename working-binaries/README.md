@@ -4,8 +4,8 @@ Prebuilt native SLeeLa toolchain binaries, kept here for quick access.
 
 | Binary | What it is | Size |
 |--------|------------|------|
-| `sleela` | `SLeeLa™ Language/Runtime 1.3.2-pro` — the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.1**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~3.0 MB |
-| `nordshrift` | `Nordshrift 2.7.1-dev` — the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.1. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.6 MB |
+| `sleela` | `SLeeLa™ Language/Runtime 1.3.2-pro` — the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.2**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~3.0 MB |
+| `nordshrift` | `Nordshrift 2.7.1-dev` — the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.2. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.6 MB |
 
 ## Important caveats
 
@@ -56,7 +56,7 @@ Rebuilt 2026-11-13 (`sleela` and `nordshrift`) from `impl/` at the syntax 3.1 (3
 edition: character literals, array initializers, labeled `break`/`continue`,
 `finally` on abrupt exit (SLEELA.syntax section 44), the `char` and array
 specifications (sections 45, 46), and the Java-tier runtime changes through
-SLEELA.syntax 43.7 and 37.5. Checked: `version` reports source syntax 1.0 – 3.1,
+SLEELA.syntax 43.7 and 37.5. Checked: `version` reports source syntax 1.0 – 3.2,
 and a `#sleela 3.1` program using a char literal, an array initializer and
 `a.length` checks and runs (the previous copy could not).
 Rebuilt again 2026-11-13 for a VM performance fix, same versions: the plain String
@@ -128,7 +128,7 @@ Checked: 211/211 regression tests (with mutation testing) with
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.1)
-- `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; drives SLeeLa up to 3.1)
+- `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; drives SLeeLa up to 3.2)
 
 SHA-256 of the committed copies:
 
