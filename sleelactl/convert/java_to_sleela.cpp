@@ -421,9 +421,7 @@ private:
         else if (qual.empty()) t.n = resolveTypeName(name);
         else t.n = qual + "__" + name;
         // Validate concrete class type arguments against simple declared upper
-        // bounds once the whole-project symbol pass has populated ClassInfo.
-        // Bounds containing unresolved variables/parameterized expressions remain
-        // deferred rather than being approximated as raw simple-name checks.
+        // bounds after the whole-project signature pass has populated ClassInfo.
         if (pass == 2 && !t.args.empty()) {
             auto declaration = classes.find(t.n);
             if (declaration != classes.end()) {
@@ -434,8 +432,8 @@ private:
                     const Ty& actual = t.args[ai];
                     if (!actual.known() || actual.wildcard || actual.dims != 0) continue;
                     for (std::string boundName : bounds->second) {
-                        if (boundName.empty()) continue;
-                        if (boundName.find('<') != std::string::npos || boundName.find('
+                        if (boundName.empty() || boundName.find('<') != std::string::npos ||
+                            boundName.find('
         // wrapper storage to the primitive representation used by SLeeLa. Wrapper
         // arrays still require a distinct reference-array representation.
         if (qual.empty() && modelBoxed(t.n)) {
@@ -1274,9 +1272,8 @@ private:
                 const bool variable=phase==2 && m.varargs && args.size()+1>=n;
                 if (!fixed && !variable) continue;
                 std::map<std::string,Ty> inferred;
-                // A formal ? super T contributes the constraint T <: A when
-                // the actual invariant type argument is A. Keep it until all
-                // argument and target-type constraints have inferred T.
+                // A formal ? super T contributes T <: A for actual argument A.
+                // Defer the constraint until other arguments/target typing infer T.
                 std::map<std::string,std::vector<Ty>> lowerWildcardUpperConstraints;
                 int cost=0; bool applicable=true;
                 for (size_t i=0;i<args.size();++i) {
@@ -1331,18 +1328,17 @@ private:
                                     continue;
                                 }
                                 if (farg.wildcard==3 && farg.bound) {
-                                    // For List<? super T> with an actual List<A>, Java
-                                    // constrains T to be a subtype of A. This is not an
-                                    // exact inference for T; collect it and validate it
-                                    // after constraints from other arguments/target typing.
+                                    // For List<? super T> with actual List<A>, Java
+                                    // constrains T to be a subtype of A. It is not an
+                                    // exact inference; validate after all constraints.
                                     if (farg.bound->n.rfind("$T$",0)==0 && farg.bound->dims==0) {
                                         if (!aarg.known() || aarg.n=="null" || aarg.wildcard!=0)
                                             return false;
                                         lowerWildcardUpperConstraints[farg.bound->n.substr(3)].push_back(aarg);
                                         continue;
                                     }
-                                    // More deeply nested lower-bound expressions need
-                                    // a full constraint formula; do not approximate them.
+                                    // Nested lower-bound formulas require full constraint
+                                    // reduction and are deliberately not approximated.
                                     if (farg.bound->n.find("$T$")!=std::string::npos ||
                                         invocationCost(*farg.bound,aarg)<0) return false;
                                     continue;
@@ -1413,8 +1409,8 @@ private:
                         if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
                     }
                 }
-                // Resolve deferred ? super constraints only after all formal
-                // arguments and the target result type have contributed inference.
+                // Resolve deferred ? super constraints after all argument and
+                // target-result constraints have had a chance to infer each variable.
                 if (applicable) for (const auto& constraint : lowerWildcardUpperConstraints) {
                     auto value=inferred.find(constraint.first);
                     if (value==inferred.end()) { applicable=false; break; }
@@ -4221,8 +4217,7 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
 }
 
 }  // namespace javaconv
-) != std::string::npos)
-                            continue;
+) != std::string::npos) continue;
                         const size_t dot = boundName.rfind('.');
                         if (dot != std::string::npos) boundName = boundName.substr(dot + 1);
                         auto nested = nestedMap_.find(boundName);
@@ -5072,9 +5067,8 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
                 const bool variable=phase==2 && m.varargs && args.size()+1>=n;
                 if (!fixed && !variable) continue;
                 std::map<std::string,Ty> inferred;
-                // A formal ? super T contributes the constraint T <: A when
-                // the actual invariant type argument is A. Keep it until all
-                // argument and target-type constraints have inferred T.
+                // A formal ? super T contributes T <: A for actual argument A.
+                // Defer the constraint until other arguments/target typing infer T.
                 std::map<std::string,std::vector<Ty>> lowerWildcardUpperConstraints;
                 int cost=0; bool applicable=true;
                 for (size_t i=0;i<args.size();++i) {
@@ -5129,18 +5123,17 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
                                     continue;
                                 }
                                 if (farg.wildcard==3 && farg.bound) {
-                                    // For List<? super T> with an actual List<A>, Java
-                                    // constrains T to be a subtype of A. This is not an
-                                    // exact inference for T; collect it and validate it
-                                    // after constraints from other arguments/target typing.
+                                    // For List<? super T> with actual List<A>, Java
+                                    // constrains T to be a subtype of A. It is not an
+                                    // exact inference; validate after all constraints.
                                     if (farg.bound->n.rfind("$T$",0)==0 && farg.bound->dims==0) {
                                         if (!aarg.known() || aarg.n=="null" || aarg.wildcard!=0)
                                             return false;
                                         lowerWildcardUpperConstraints[farg.bound->n.substr(3)].push_back(aarg);
                                         continue;
                                     }
-                                    // More deeply nested lower-bound expressions need
-                                    // a full constraint formula; do not approximate them.
+                                    // Nested lower-bound formulas require full constraint
+                                    // reduction and are deliberately not approximated.
                                     if (farg.bound->n.find("$T$")!=std::string::npos ||
                                         invocationCost(*farg.bound,aarg)<0) return false;
                                     continue;
@@ -5211,8 +5204,8 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
                         if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
                     }
                 }
-                // Resolve deferred ? super constraints only after all formal
-                // arguments and the target result type have contributed inference.
+                // Resolve deferred ? super constraints after all argument and
+                // target-result constraints have had a chance to infer each variable.
                 if (applicable) for (const auto& constraint : lowerWildcardUpperConstraints) {
                     auto value=inferred.find(constraint.first);
                     if (value==inferred.end()) { applicable=false; break; }
@@ -7598,9 +7591,8 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
             topLevelName_ = name; anonCounter_ = 0; pendingTypes_.clear(); innerMode_ = false;
         }
         std::vector<std::string> tparams;
-        bool classTparamsBounded = false;
         std::map<std::string,std::vector<std::string>> classTparamBounds;
-        skipTypeParams(&tparams, &classTparamsBounded, &classTparamBounds);
+        skipTypeParams(&tparams, nullptr, &classTparamBounds);
         std::string header = std::string(isIface ? "interface " : "class ") + name;
         if (!tparams.empty()) {
             header += "<";
