@@ -77,7 +77,9 @@ int main(void) {
     SLTerminalHandle terminal = 0;
 #ifdef _WIN32
     /* Explicitly exit the shell after writing its marker. */
-    const char* command = "cmd.exe /D /C \"echo terminal-ok & exit 0\"";
+    /* Keep the child alive briefly after echo so ConPTY can render and
+     * flush the final marker frame before the process exits. */
+    const char* command = "cmd.exe /D /C \"echo terminal-ok & ping -n 2 127.0.0.1 >NUL\"";
     SLTerminalReadContext read_context;
     HANDLE reader;
     DWORD wait_result;
