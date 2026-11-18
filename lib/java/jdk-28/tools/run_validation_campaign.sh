@@ -58,6 +58,8 @@ export SLEELA_HOME="$root" SLEELA_LIB="$root/lib" SLEELA_BIN="$bin"
 run_gate "jdk28-inventory" python3 "$root/lib/java/jdk-28/tools/validate_jdk28.py"
 run_gate "jdk-signature-index-tests" python3 -m unittest discover -s "$root/lib/java/jdk-25/tools" -p "test_jdk_api_signatures.py"
 run_gate "jdk-signature-index-audit" python3 "$root/lib/java/jdk-25/tools/jdk_api_signatures.py" --audit
+run_gate "jdk28-generator-tests" python3 -m unittest discover -s "$root/lib/java/jdk-28/tools" -p "test_generate_jdk28.py"
+run_gate "jdk28-generator-syntax" python3 -m py_compile "$root/lib/java/jdk-28/tools/generate_jdk28.py" "$root/lib/java/jdk-25/tools/jdk_api_signatures.py"
 run_gate "java-library-manifest" python3 "$root/lib/java/validate.py"
 run_gate "jdk28-api-envelope-contract" python3 "$root/tests/jdk28_functional_equivalence.py"
 run_gate "jdk28-compiler-check" env SLEELA_BIN="$bin" REPORT="$report_dir/CHECK-REPORT.txt" bash "$root/lib/java/jdk-28/tools/check_jdk28.sh" "${JDK28_CHECK_JOBS:-8}"
