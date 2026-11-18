@@ -93,7 +93,7 @@ class Hello {
 
 The compiler resolves a declared version to one of: **accept**, **warn**
 (no pragma → assume the floor), or **reject**. On a compiler whose supported
-range is `1.0 .. 3.1`:
+range is `1.0 .. 3.2`:
 
 | Declared `#sleela` | Result | Rationale |
 |--------------------|--------|-----------|
