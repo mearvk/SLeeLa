@@ -488,7 +488,7 @@ def main() -> int:
             stats["methods"] += nm
             stats["collisions"] += ncollisions
         elif t:
-            body = ["  < ---- members pending: no exact signature-index record for this type ---- >"]
+            body = ["  < ---- members pending: no JDK 25 reflected signature-index record for this type ---- >"]
             status = "type identity known; member signatures pending"
             stats["pending_signatures"] += 1
         else:
@@ -546,7 +546,7 @@ class {cls} {{
         mods.append(f"{module}\t0\tlib/java/jdk-28/{module}/\t{url}\t{evidence}")
     (OUT / "MODULES.tsv").write_text("\n".join(mods) + "\n", encoding="utf-8")
     stats["modules"] = len(counts) + len(NO_PACKAGE_MODULES)
-    print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with API members, "
+    print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with JDK 25 reflected members, "
           f"{stats['pending']} new types pending, {stats['pending_signatures']} known types missing signatures; "
           f"{stats['ctors']} constructors, {stats['methods']} methods; "
           f"{stats['modules']} module folders; {stats.get('implemented', 0)} files with SLeeLa logic; "
