@@ -42,8 +42,9 @@ converter (README: `lib/java/converter/README.md`). It is separate from
   rules, context-aware renames and built-in qualification. The C++ loader
   (`sleelactl/convert/conv_model.c`) fails closed on an unknown row kind: add
   each new kind to its `fields_for` table. The current 0.7.9/model 1.5.0 changes
-  still need the native sample regression and C++ differential suites; do not
-  describe them as verified until those runs pass.
+  still need the native sample regression and C++ differential suites; the trusted
+  SHA-256 manifests also need regeneration from a full checkout. Do not describe
+  these changes as verified until those steps pass.
 - **Regression after any converter change (about 3 min):** convert the 17-file JDK
   sample and the samples, then diff against the previous output. Each
   `samples/<dir>/<Name>.java` has a `<Name>.java.expected.txt` from OpenJDK. Convert
