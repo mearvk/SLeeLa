@@ -1,0 +1,51 @@
+#sleela 3.2
+class ArrayND {
+  void main() {
+    int[][] g = new int[3][4];
+    print(g.length + " " + g[0].length);
+    for (int i = 0; i < g.length; i++) {
+      for (int j = 0; j < g[i].length; j++) { g[i][j] = i * 10 + j; }
+    }
+    print(g[2][3]);
+    print(g[1][2]);
+    double[][] d = new double[2][2];
+    print(d[1][1] / 2 + 1);
+    boolean[][] b = new boolean[1][2];
+    print(b[0][1]);
+    String[][] s = new String[2][3];
+    print(s[1][2] == null);
+    int[][][] c = new int[2][3][4];
+    c[1][2][3] = 7;
+    print(c[1][2][3] + " " + c.length + c[0].length + c[0][0].length);
+    int[][] jag = new int[3][];
+    print(jag.length);
+    print(jag[0] == null);
+    jag[0] = new int[2];
+    jag[1] = new int[5];
+    print(jag[0].length + jag[1].length);
+    int[][] lit = {{1, 2}, {3, 4, 5}};
+    print(lit[1].length + " " + lit[1][2]);
+    int[][] copy = new int[2][2];
+    copy[0][0] = 1;
+    int[][] alias = copy;
+    alias[0][0] = 9;
+    print(copy[0][0]);
+    int[][] big = new int[200][50];
+    print(big.length * big[0].length);
+    char[][] cg = new char[2][2];
+    cg[0][1] = 'x';
+    print(cg[0][1]);
+    int[] ar = new int[5];
+    print(ar.length);
+    print(new int[7].length);
+    int[][] viaNew = new int[][]{{7, 8}, {9}};
+    print(viaNew[0][1] + viaNew[1][0]);
+    int total = 0;
+    for (int k = 0; k < 300; k++) {
+      int[][] t = new int[40][40];
+      t[39][39] = k;
+      total = total + t[39][39];
+    }
+    print(total);
+  }
+}
