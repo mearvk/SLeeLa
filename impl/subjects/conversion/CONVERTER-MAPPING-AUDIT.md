@@ -73,9 +73,10 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
 
 - The symbol table is project-wide and stores methods, fields, inheritance,
   interfaces, parameter types, return types, static status and varargs.
-- Class type variables and nested generic arguments are still erased to unknown (`?`).
-  Method-level type variables are retained as signature metadata for the direct
-  unbounded forms `T`, `T[]`, and `T...`.
+- Class type variables are retained symbolically as `$C$T`; generic arguments
+  (including nested types and wildcard bounds) are parsed into the type model.
+  Parameterized receiver, superclass, and interface paths substitute class
+  variables into method signatures and inherited field reads.
 - `pickMethod` now evaluates strict fixed-arity, loose fixed-arity (boxing/unboxing), and variable-arity applicability in Java invocation-phase order,
   uses identity, model-driven primitive widening, known reference-subtype and
   recursive reference-array conversions, walks inherited class/interface
@@ -83,7 +84,7 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   most-specific candidates. It fails
   closed when supported candidates remain incomparable. This is a meaningful
   partial JLS implementation, not full Java overload resolution.
-- Method-variable inference binds direct `T`, `T[]`, and `T...` forms, plus nested invariant forms such as `Holder<T>` and `List<? extends T>`. Scalar primitive arguments are boxed into model-declared wrappers. Repeated reference constraints merge when one known class is a subtype of the other. Simple declared upper bounds are checked after inference; unbounded, `? extends`, and `? super` generic arguments receive conservative compatibility checks. Class-generic substitution follows parameterized superclass and interface paths for method signatures, and resolves inherited generic fields. Repeated reference constraints can use a known common superclass; unrelated types without a known common class fall back conservatively to `Object`. Interface-intersection least-upper-bound inference, parameterized least-containing invocations, null-only inference, intersection bounds, target-type inference, wrapper inheritance, unchecked conversions, wildcard capture with inference variables in lower bounds, and full JLS specificity remain incomplete.
+- Method-variable inference binds direct `T`, `T[]`, and `T...` forms, plus nested invariant forms such as `Holder<T>` and wildcard-extended forms such as `List<? extends T>`. Scalar primitive arguments are boxed into model-declared wrappers. Simple declared upper bounds are checked after inference; intersection bounds are refused. Unbounded, `? extends`, and `? super` generic arguments receive conservative compatibility checks. Repeated reference constraints merge along known subtype paths and use a conservative common-class result when a shared superclass is known. Interface-intersection least-upper-bound inference, parameterized least-containing invocations, null-only inference, target-type inference, wrapper inheritance, unchecked conversions, wildcard capture with inference variables in lower bounds, and full JLS specificity remain incomplete.
 - Lambda arguments are deferred until a selected method supplies a known
   functional-interface target. The target must resolve to a collected or
   seeded interface with exactly one distinct abstract instance-method signature
