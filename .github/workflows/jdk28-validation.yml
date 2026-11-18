@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: jdk28-validation-${{ github.head_ref || github.ref }}
+  group: jdk28-validation-${{ github.event.pull_request.head.ref || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
