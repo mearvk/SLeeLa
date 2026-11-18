@@ -236,3 +236,21 @@ are in its README.
 The production qualification report is now present on `master` through [PR #376](https://github.com/mearvk/SLeeLa/pull/376), merged at `d2b766c7280b1fb8d8b14ceb95bb84bffd1665c5`. The regression ledger and continuation note are present through [PR #377](https://github.com/mearvk/SLeeLa/pull/377), merged at `9835bb53591cb27e590a4cf08be959682059f862`. The current documentation baseline is `9835bb53591cb27e590a4cf08be959682059f862`; this is not a validation result.
 
 The current-master runtime/C++ builds, current differential fixtures, native converter per-member stub and transactional provenance tests, representative Java executions, and JDK 28 reflection/signature/conformance/functional campaign remain **NOT RUN or PENDING** in the available evidence. Historical November 13 and 17 results remain historical. Generated API envelopes and fail-loud stubs remain nonfunctional contracts. Release decision: **HOLD**.
+
+
+## Verification refresh — current master `0efee0beeee62f883b369c54dc55cf9f620ae308` (2026-11-18)
+
+This is the latest repository/CI inspection and supersedes the earlier run-state snapshot above.
+
+- **Gate 1 — baseline: CONFIRMED.** Current `master` is `0efee0beeee62f883b369c54dc55cf9f620ae308`.
+- **Gate 2 — manifest impact: PASS, limited to change-impact.** From baseline `3478f4856d044b615ff2e999ca5730a80eedd394`, five commits changed only `comparison/ARITHMETIC.SPEED.001.md` and the two verification-status documents. No protected source input from the manifest generator's scanned directories or explicit file list changed. Do not regenerate the manifest solely for this delta. The byte-level `verify-before-execution.py` command was not run, so direct digest verification remains outstanding.
+- **Gate 3 — builds: NOT VERIFIED.** No completed current-master runtime/compiler/converter build log inspected.
+- **Gate 4 — model/JDK 28 signatures: PENDING.** No completed current-master model self-check or JDK 28 campaign artifact.
+- **Gate 5 — differential/refusal suites: PENDING.** Java-converter and regression jobs are queued/pending, not passed.
+- **Gate 6 — native per-member policy/transaction/provenance/repeat-run: UNVERIFIED.** No completed current-baseline evidence inspected.
+- **Gate 7 — representative Java execution: UNVERIFIED.** No current JDK-reference versus SLeeLa output comparison inspected.
+- **Gate 8 — JDK 28 and platform builds: PENDING.** Current-master native portability run [44417706501](https://github.com/mearvk/SLeeLa/actions/runs/44417706501) has Linux, Windows 10+/MinGW-w64 and macOS jobs all queued. No current-master JDK 28 or full Java/regression/root-build result was found.
+
+PR [#378](https://github.com/mearvk/SLeeLa/pull/378) remains open and unmerged; its validation head is 4 commits ahead and 14 behind current master, with only four workflow-file changes. Its queued runs do not qualify the current master. The current master combined status has no status entries yet.
+
+**Release decision: HOLD.** Only the baseline identity and manifest change-impact review are confirmed. Direct SHA-256 verification and gates 3–8 still need actual execution and archived evidence. Historical November 13 measurements remain historical and are not promoted to current results.
