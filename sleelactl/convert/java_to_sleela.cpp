@@ -385,6 +385,10 @@ private:
                         else if (acceptKw("super")) { arg.wildcard=3; arg.bound=std::make_shared<Ty>(parseType()); }
                         else arg.wildcard=1;
                     } else arg=parseType();
+                    if (arg.wildcard==0 && arg.dims==0 && isPrimitiveName(arg.n))
+                        fail("generic-type", "Java generic type arguments cannot be primitive types");
+                    if (arg.bound && arg.bound->dims==0 && isPrimitiveName(arg.bound->n))
+                        fail("generic-type", "Java wildcard bounds cannot be primitive types");
                     genericArgs.push_back(arg);
                     if (acceptOp(",")) continue;
                     if (!isGenericClose()) fail("generic-type", "expected ',' or '>' in generic type arguments");
