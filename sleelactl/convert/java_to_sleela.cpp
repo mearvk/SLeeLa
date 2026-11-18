@@ -1304,6 +1304,8 @@ private:
                     if (other==inferred.end()) {
                         const size_t dot=boundName.rfind('.');
                         if (dot!=std::string::npos) boundName=boundName.substr(dot+1);
+                        auto nested=nestedMap_.find(boundName);
+                        if (nested!=nestedMap_.end() && nested->second!="\\x01") boundName=nested->second;
                     }
                     const bool arrayBound=value->second.dims>0 &&
                         (boundName=="Object" || boundName=="Cloneable" || boundName=="Serializable");
