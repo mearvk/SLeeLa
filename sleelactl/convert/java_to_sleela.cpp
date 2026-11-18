@@ -1084,7 +1084,7 @@ private:
         for (int phase=0;phase<3 && !best;++phase) {
             for (const MethodSig* mp:candidates) {
                 const MethodSig& m=*mp;
-                if (m.hasTypeParamBounds) { sawUnsupportedGeneric=true; continue; } // bounds are not yet represented in Ty
+
                 const size_t n=m.params.size();
                 const bool fixed=n==args.size() && (!m.varargs || phase<2);
                 const bool variable=phase==2 && m.varargs && args.size()+1>=n;
@@ -1143,6 +1143,24 @@ private:
                     if (!m.typeParams.empty()) sawUnsupportedGeneric=true;
                     continue;
                 }
+                // Validate simple declared upper bounds after inference. A bound
+                // involving an intersection or a type that the symbol index cannot
+                // prove is intentionally rejected rather than guessed.
+                for (const auto& bound : m.typeParamBounds) {
+                    auto value=inferred.find(bound.first);
+                    if (value==inferred.end() || bound.second.empty() || bound.second=="&") {
+                        applicable=false; break;
+                    }
+                    auto other=inferred.find(bound.second);
+                    const std::string boundName=other==inferred.end()?bound.second:other->second.n;
+                    if (value->second.dims!=0 || !isSubtypeName(value->second.n,boundName)) {
+                        applicable=false; break;
+                    }
+                }
+                if (!applicable) { sawUnsupportedGeneric=true; continue; }
+                if (m.hasTypeParamBounds && m.typeParamBounds.size()!=m.typeParams.size()) {
+                    sawUnsupportedGeneric=true; continue;
+                }
                 MethodSig resolved=m;
                 auto instantiate=[&](Ty t) {
                     if (t.n.rfind("$T$",0)==0) {
@@ -1171,7 +1189,7 @@ private:
             "multiple applicable overloads of '"+cls+"."+name+"' remain incomparable under supported Java invocation conversions"};
         if (!best && sawUnsupportedGeneric)
             throw ConvErr{cur().line,cur().col,"generic-inference",
-                "generic overload '"+cls+"."+name+"' requires bounds, nested generic substitution, target typing, or a common-type inference rule not yet supported"};
+                "generic overload '"+cls+"."+name+"' requires a bound or generic substitution that cannot be proven, target typing, or a common-type inference rule not yet supported"};
         if (best) resolvedMethods_[best]=bestResolved;
         return best;
     }
