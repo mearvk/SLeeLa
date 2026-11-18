@@ -248,11 +248,11 @@ private:
         const cm_rec* tr = cm_find(&M, "type", n.c_str(), nullptr, nullptr);
         if (!tr) return "reference";
         const std::string kind = tr->f[2];
-        if (kind == "integral") {
+        if (kind == "integral" || kind == "floating") {
             const cm_rec* pr = cm_find(&M, "promote", n.c_str(), nullptr, nullptr);
             return pr ? pr->f[1] : "unknown";
         }
-        if (kind == "floating" || kind == "boolean") return n;
+        if (kind == "boolean") return n;
         if (kind == "text") return "text";
         if (kind == "reference") return "reference";
         return "unknown";
