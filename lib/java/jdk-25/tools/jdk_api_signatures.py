@@ -412,8 +412,9 @@ def main() -> int:
             changed += 1
             if not args.check:
                 path.write_text(new, encoding="utf-8")
-    print(f"signatures: {total} exact Java method signatures, {ctors} constructors ({abstract} abstract, {total - abstract} awaiting logic); "
-          f"files {'to update' if args.check else 'updated'}: {changed}")
+    print(f"signature stubs: {total} methods, {ctors} constructors; {abstract} abstract and {total - abstract} concrete methods.")
+    print(f"erasure-collapsed Java overloads: {collision_total}; these remain fail-loud API stubs, not implemented behavior.")
+    print(f"files changed or requiring update: {changed}")
     return 1 if args.check and changed else 0
 
 
