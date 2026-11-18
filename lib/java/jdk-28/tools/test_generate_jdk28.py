@@ -43,6 +43,21 @@ class JDK28SignatureIndexTests(unittest.TestCase):
         self.assertIn("Any[] copy(Any[] arg0, Any arg1)", rendered)
         self.assertIn("java.lang.UnsupportedOperationException", rendered)
 
+    def test_jdk25_and_jdk28_generators_share_erasure_keys(self):
+        record = {
+            "tparams": "<T>",
+            "members": [
+                method("convert", ("java.lang.String[]", "int[][]", "T[]")),
+            ],
+        }
+        groups, _ = gen.member_signature_index(record)
+        member_record = record["members"][0]
+        self.assertEqual(
+            next(iter(groups)),
+            sig_key := __import__("jdk_api_signatures").signature_key(member_record, {"T"})
+        )
+        self.assertEqual(sig_key, ("convert", ("String[]", "Any", "Any[]")))
+
     def test_erasure_index_retains_colliding_declarations(self):
         sig = {
             "members": [
