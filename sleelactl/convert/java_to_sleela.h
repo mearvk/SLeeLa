@@ -36,7 +36,7 @@ struct Ty {
         if (bool(bound) != bool(o.bound)) return false;
         return !bound || *bound == *o.bound;
     }
-    bool known() const { return n != "?" && n.rfind("$T$", 0) != 0; }
+    bool known() const { return n != "?" && n.rfind("$T$", 0) != 0 && n.rfind("$C$", 0) != 0; }
 };
 
 struct MethodSig {
