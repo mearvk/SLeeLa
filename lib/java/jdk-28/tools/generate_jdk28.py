@@ -35,6 +35,7 @@ Idempotent: rewrites every generated file. usage: python3 lib/java/jdk-28/tools/
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -412,6 +413,9 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
     return lines, len(ctors), len(meths), collisions
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Generate or audit the JDK 28 API signature index.")
+    parser.add_argument("--audit", action="store_true", help="report JDK 28 signature coverage without rewriting files")
+    args = parser.parse_args()
     api = {}
     for l in (LIBJAVA / "api" / "jdk-api.jsonl").read_text(encoding="utf-8").splitlines():
         if l.strip():
@@ -422,6 +426,25 @@ def main() -> int:
         if l.strip():
             s = json.loads(l)
             sigs[s["name"]] = s
+
+    if args.audit:
+        rows = list(inventory())
+        names = {fq for _module, fq, _pkg, _simple, _rel in rows}
+        api_names = {record["name"] for record in api.values()}
+        indexed = [sigs[name] for name in sorted(names) if name in sigs and name in api_names]
+        members = [m for record in indexed for m in record.get("members", [])]
+        groups = [group for record in indexed for group in member_signature_index(record)[0].values()]
+        collisions = sum(max(0, len(group) - 1) for group in groups)
+        generic_classes = sum(bool(record.get("tparams")) for record in indexed)
+        generic_members = sum(bool(member.get("tparams")) for member in members)
+        wildcard_members = sum("?" in " ".join([p[0] for p in member.get("params", [])] + [member.get("ret", "")]) for member in members)
+        varargs_members = sum(any(p[0].endswith("...") for p in member.get("params", [])) for member in members)
+        pending_types = len(names - api_names)
+        print(f"JDK 28 signature index: {len(indexed)} indexed types, {len(members)} Java members")
+        print(f"generic classes: {generic_classes}; generic members: {generic_members}; wildcard members: {wildcard_members}; varargs members: {varargs_members}")
+        print(f"SLeeLa-erasure overload collisions: {collisions}; JDK 28 types pending reflected member data: {pending_types}")
+        print("Index coverage is declaration evidence only; fail-loud API stubs are not implemented Java behavior.")
+        return 0
 
     index = ["# java_type\tmodule\tkind\tsleela_file\tjava_source\tmembers"]
     stats = {"files": 0, "with_members": 0, "pending": 0, "ctors": 0, "methods": 0, "collisions": 0}
