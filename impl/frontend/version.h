@@ -6,12 +6,11 @@
 #include <string>
 namespace sleela {
 struct SyntaxVersion { int major=0, minor=0; std::string str() const { return std::to_string(major)+"."+std::to_string(minor); } bool operator<(const SyntaxVersion&o)const{return major!=o.major?major<o.major:minor<o.minor;} bool operator>(const SyntaxVersion&o)const{return o<*this;} bool operator==(const SyntaxVersion&o)const{return major==o.major&&minor==o.minor;} bool operator<=(const SyntaxVersion&o)const{return !(*this>o);} bool operator>=(const SyntaxVersion&o)const{return !(*this<o);} };
-// Supported source-syntax range the toolchain drives: 1.0 .. 3.2. The edition after 3.0 is
-// 3.1, written `#sleela 3.01` or `#sleela 3.1` (the minor is an integer, so a leading zero is
-// accepted). Syntax 3.1 (sections 44, 45 and 46 of SLEELA.syntax) adds the character literal
-// with the char type specification (typed char, char shown as text, char promotion), the array
-// specification (array initializer, a.length, multi-dimensional creation new T[a][b]), labeled
-// statements with labeled break/continue, and return/break/continue through finally.
+// Supported source-syntax range the toolchain drives: 1.0 .. 3.2. Syntax 3.1 (`#sleela 3.1`, section 44) adds character literals, array initializers,
+// labeled statements, and finally execution on abrupt completion. Syntax 3.2
+// (sections 45 and 46) formalizes typed char behavior and array semantics,
+// including multidimensional creation (`new T[a][b]`) and `a.length`.
+// `#sleela 3.01` is accepted as the same numeric version as 3.1; it is not 3.2.
 // Previously: 1.0 .. 3.0. Features
 // introduced in later minors are still gated individually (a 1.0 source that
 // uses, e.g., network built-ins errors with "requires #sleela 1.1"), but the
