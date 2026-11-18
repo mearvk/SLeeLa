@@ -28,7 +28,7 @@ impl/build/sleela version
 ```
 
 ```
-SLeeLa™ Language/Runtime 1.3.2-pro (supported source syntax 1.0 – 3.1; native C/C++ Core VM)
+SLeeLa™ Language/Runtime 1.3.2-pro (supported source syntax 1.0 – 3.2; native C/C++ Core VM)
 ```
 
 Use `sleela run` for subject programs. `sleela check` does not load subjects: checking a program that uses `math.sqrt` reports `Semantic error: use of undeclared variable 'math'`.
