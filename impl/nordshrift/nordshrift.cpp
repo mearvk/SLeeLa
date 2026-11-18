@@ -55,7 +55,7 @@ using namespace nordshrift;
 static bool nsRailsBannersEnabled(){const char*v=std::getenv("SLEELA_RAILS");return v&&(std::string(v)=="1"||std::string(v)=="true"||std::string(v)=="yes");}
 
 static const char* kVersion =
-    "Nordshrift 2.7.1-dev (NS-SST-0001 spec 2.2; drives SLeeLa source syntax up to 3.1; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
+    "Nordshrift 2.7.1-dev (NS-SST-0001 spec 2.2; drives SLeeLa source syntax up to 3.2; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<
