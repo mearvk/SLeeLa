@@ -52,7 +52,7 @@ type short short integral 2
 type char char integral 2
 type int int integral 3
 type long long integral 4
-type float float floating 5
+type float double floating 5
 type double double floating 6
 type void void void -
 type String String text -
