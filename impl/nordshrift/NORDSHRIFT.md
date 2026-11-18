@@ -214,10 +214,10 @@ The compiler and Nordshrift use the same recursive /lib discovery path; the VM-f
 
 The path-level manifest is lib/LIBRARY.SYMBOLS.md; the package summary is lib/LIBRARY.INDEX.md.
 
-## SLeeLa source-language compatibility — Syntax 3.1
+## SLeeLa source-language compatibility — Syntax 3.2
 
 Nordshrift's SLeeLa source input and output use the shared Sleelvac frontend
-contract. The current normative SLeeLa language edition is **Syntax 3.1**;
+contract. The current normative SLeeLa language edition is **Syntax 3.2**;
 the shared frontend accepts declared source syntax **1.0–3.2**. Source
 version pragmas remain authoritative for each file, and constructs introduced
 in earlier editions remain subject to their historical minimum-version gates.
@@ -226,6 +226,6 @@ This does **not** change the version of the SST control-sheet language.
 NS-SST-0001, the Nordshrift product release, and SLeeLa source syntax are
 independent versioned contracts. Nordshrift must preserve source-version
 metadata when resolving or emitting SLeeLa and must not claim that a generated
-source file is 3.0 unless its constructs satisfy the 3.0 edition and all
-applicable feature gates. See SLEELA.syntax, SST-2.0.model, and
+source file is 3.2 unless its constructs satisfy the 3.2 edition and all
+applicable feature gates; preserve a lower declared edition when appropriate. See SLEELA.syntax, SST-2.0.model, and
 markdown/COMPILER.md.
