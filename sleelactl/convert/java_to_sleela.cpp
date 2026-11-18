@@ -181,6 +181,24 @@ private:
         return false;
     }
 
+    std::string resolveQualifiedTypeName(const std::string& qualified) const {
+        for (const auto& entry : classes) {
+            std::string dotted = entry.first;
+            for (size_t pos = 0; (pos = dotted.find("__", pos)) != std::string::npos; )
+                dotted.replace(pos, 2, ".");
+            const std::string full = entry.second.packageName.empty() ? dotted : entry.second.packageName + "." + dotted;
+            if (full == qualified) {
+                if (entry.second.ambiguous)
+                    throw ConvErr{cur().line, cur().col, "type-ambiguous", "qualified type '" + qualified + "' has duplicate project declarations"};
+                if (!typeAccessible(entry.first, entry.second))
+                    throw ConvErr{cur().line, cur().col, "type-access", "type '" + qualified + "' is not accessible from package '" + packageName_ + "'"};
+                return entry.first;
+            }
+        }
+        const size_t dot = qualified.rfind('.');
+        return dot == std::string::npos ? qualified : qualified.substr(dot + 1);
+    }
+
     std::string resolveTypeName(const std::string& n) const {
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
@@ -419,8 +437,23 @@ private:
             if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); }
         }
         std::string name = ident();
-        // A type-qualified name Outer.Inner names the hoisted type Outer__Inner.
+        // A package-qualified type such as a.b.Widget is resolved by its full
+        // source identity before nested member-type segments are hoisted.
         std::string qual;
+        if (!name.empty() && std::islower((unsigned char)name[0])) {
+            std::string packagePrefix = name;
+            while (isOp(".") && isIdentTok(at(p + 1))) {
+                const std::string next = at(p + 1).text;
+                if (!next.empty() && std::isupper((unsigned char)next[0])) {
+                    p++;
+                    name = resolveQualifiedTypeName(packagePrefix + "." + ident());
+                    break;
+                }
+                p++;
+                packagePrefix += "." + ident();
+            }
+        }
+        // A type-qualified name Outer.Inner names the hoisted type Outer__Inner.
         int depth = 0;
         std::vector<Ty> genericArgs;
         for (;;) {
