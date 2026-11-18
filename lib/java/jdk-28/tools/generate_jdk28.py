@@ -450,11 +450,13 @@ def main() -> int:
         varargs_members = sum(any(p[0].endswith("...") for p in member.get("params", [])) for member in members)
         pending_types = len(names - api_names)
         missing_signatures = len((names & api_names) - set(sigs))
+        reflected_not_documented = len(api_names - names)
         print(f"JDK 28 inventory cross-indexed with JDK 28 runtime reflection: {len(indexed)} types, {len(members)} Java members")
         print(f"generic classes: {generic_classes}; generic members: {generic_members}; wildcard members: {wildcard_members}; varargs members: {varargs_members}")
         print(f"SLeeLa-erasure overload collisions: {collisions}; docs types absent from JDK 28 runtime reflection: {pending_types}; known types missing signature records: {missing_signatures}")
+        print(f"JDK 28 reflected types absent from the docs inventory: {reflected_not_documented}")
         print("Index coverage is declaration evidence only; fail-loud API stubs are not implemented Java behavior.")
-        return 0
+        return 2 if pending_types or missing_signatures else 0
 
     index = ["# java_type\tmodule\tkind\tsleela_file\tjava_source\tmembers"]
     stats = {"files": 0, "with_members": 0, "pending": 0, "pending_signatures": 0, "ctors": 0, "methods": 0, "collisions": 0}
