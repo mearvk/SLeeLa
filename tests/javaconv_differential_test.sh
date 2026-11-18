@@ -207,7 +207,7 @@ else
 fi
 
 # package-private members and top-level types are not visible across packages.
-mkdir -p "$tmp/project-access/src/fixture/alpha" "$tmp/project-access/src/fixture/use" "$tmp/project-access/out"
+mkdir -p "$tmp/project-access/src/fixture/alpha" "$tmp/project-access/src/fixture/use" "$tmp/project-access/cls" "$tmp/project-access/out"
 cat > "$tmp/project-access/src/fixture/alpha/Visible.java" <<'JAVA'
 package fixture.alpha;
 public class Visible {
