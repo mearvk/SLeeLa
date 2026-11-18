@@ -14,6 +14,7 @@ export JCONV_IN
 JCONV_OUT="${JCONV_OUT:-$PWD/jdk28-converted}"
 mkdir -p "$(dirname "$JCONV_OUT")"
 case "$JCONV_OUT" in /*) ;; *) JCONV_OUT="$(cd "$(dirname "$JCONV_OUT")" && pwd)/$(basename "$JCONV_OUT")";; esac
+FINAL_OUT="$JCONV_OUT"
 export JCONV_OUT
 
 if [ -L "$JCONV_OUT" ]; then echo "jconv: refusing symlink output root" >&2; exit 2; fi
@@ -24,7 +25,7 @@ backup="$parent/.${base}.jconv-backup.$$"
 published=0
 cleanup() {
   rc=$?
-  if [ "$published" -eq 0 ] && [ -d "$backup" ] && [ ! -e "$JCONV_OUT" ]; then mv "$backup" "$JCONV_OUT" || true; fi
+  if [ "$published" -eq 0 ] && [ -d "$backup" ] && [ ! -e "$FINAL_OUT" ]; then mv "$backup" "$FINAL_OUT" || true; fi
   [ -d "$stage" ] && rm -rf "$stage"
   exit "$rc"
 }
@@ -106,12 +107,12 @@ manifest = {
 (out / "CONVERSION-PROVENANCE.json").write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n")
 PY
 
-if [ -e "$JCONV_OUT" ]; then mv "$JCONV_OUT" "$backup"; fi
-if ! mv "$stage" "$JCONV_OUT"; then
-  [ ! -d "$backup" ] || mv "$backup" "$JCONV_OUT"
+if [ -e "$FINAL_OUT" ]; then mv "$FINAL_OUT" "$backup"; fi
+if ! mv "$stage" "$FINAL_OUT"; then
+  [ ! -d "$backup" ] || mv "$backup" "$FINAL_OUT"
   echo "jconv: publication failed; previous generation restored" >&2
   exit 1
 fi
 published=1
 [ ! -d "$backup" ] || rm -rf "$backup"
-echo "jconv: published complete generation at $JCONV_OUT"
+echo "jconv: published complete generation at $FINAL_OUT"
