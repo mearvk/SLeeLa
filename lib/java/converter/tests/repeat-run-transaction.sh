@@ -3,10 +3,7 @@
 set -euo pipefail
 here="$(cd "$(dirname "$0")/.." && pwd)"
 root="$(cd "$here/../../.." && pwd)"
-if [ -z "${JCONV_IN:-}" ]; then
-  echo "usage: JCONV_IN=/path/to/java/source/tree [SLEELA_BIN=/path/to/sleela] $0" >&2
-  exit 2
-fi
+JCONV_IN="${JCONV_IN:-$here/tests/fixtures}"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 export JCONV_OUT="$tmp/published"
