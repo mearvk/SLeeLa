@@ -28,7 +28,14 @@ struct Ty {
     std::string n = "?";  // "?" unknown; "null"; "type:<name>" for a type used as a qualifier
     int dims = 0;
     bool boxed = false; // wrapper reference type; emitted as its primitive representation
-    bool operator==(const Ty& o) const { return n == o.n && dims == o.dims && boxed == o.boxed; }
+    int wildcard = 0; // 0 exact, 1 ?, 2 ? extends, 3 ? super
+    std::vector<Ty> args; // invariant generic arguments; emitted with erasure
+    std::shared_ptr<Ty> bound; // wildcard bound, when present
+    bool operator==(const Ty& o) const {
+        if (n != o.n || dims != o.dims || boxed != o.boxed || wildcard != o.wildcard || args != o.args) return false;
+        if (bool(bound) != bool(o.bound)) return false;
+        return !bound || *bound == *o.bound;
+    }
     bool known() const { return n != "?" && n.rfind("$T$", 0) != 0; }
 };
 
