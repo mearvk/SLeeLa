@@ -109,13 +109,13 @@ Recent additions to the language, drivers, and standard library:
   (ISA 157), which also backs a general **`sleep(<ms>)`** built-in callable
   anywhere; the pause is implemented portably (`nanosleep` / `Sleep`). Specified
   in [`SLEELA.syntax` §32](SLEELA.syntax); API reference in
-  [`api/sleela/3.2/LOOP_TIMING_API.md`](api/sleela/3.2/LOOP_TIMING_API.md);
+  [`api/sleela/3.0/LOOP_TIMING_API.md`](api/sleela/3.0/LOOP_TIMING_API.md);
   runnable
   [`examples/loop-timing-annotation-demo.sleela`](examples/loop-timing-annotation-demo.sleela).
   A session-additions index (including this, the native `OP_BIGMUL`
   big-integer multiply, and the standalone **[local-generator](local-generator/README.md)**
   and **[pi-generator](pi-generator/README.md)** tools) lives at
-  [`api/sleela/3.2/SESSION-ADDITIONS-API.md`](api/sleela/3.2/SESSION-ADDITIONS-API.md).
+  [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](api/sleela/3.0/SESSION-ADDITIONS-API.md).
   The three generated API surfaces
   ([`sleeladoc-api/`](sleeladoc-api/README.md),
   [`docs/api/`](docs/api/README.md), and the immutable
