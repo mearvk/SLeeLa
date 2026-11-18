@@ -197,6 +197,7 @@ def erase(t: str) -> str:
     erases to Any; java.lang.String erases to String; primitives stay; Java
     varargs become the equivalent one-dimensional array parameter."""
     t = ANNOT.sub("", t).strip()
+    # Java varargs have exactly one array dimension at the call boundary.
     suffix = ""
     if t.endswith("..."):
         suffix, t = "[]", t[:-3].strip()
@@ -205,12 +206,15 @@ def erase(t: str) -> str:
         dims, t = dims + "[]", t[:-2].strip()
     raw = t.split("<", 1)[0].strip()
     if raw in PRIMS:
-        base = raw
+        canonical = raw
     elif raw in ("java.lang.String", "String"):
-        base = "String"
+        canonical = "java.lang.String"
     else:
-        base = "Any"
-    return base + dims + suffix
+        canonical = "Any"
+    # Use the same target-type table as the primary Java API generator.
+    # In particular, SLeeLa has typed one-dimensional primitive/String arrays;
+    # multidimensional arrays and arrays of other references erase to Any.
+    return dec.sl_type(canonical + dims + suffix)
 
 
 def params_of(m) -> str:
