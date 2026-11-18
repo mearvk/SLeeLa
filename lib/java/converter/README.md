@@ -32,6 +32,14 @@ whole-file refusal of `sleelactl java-convert`. Where both converters share a la
 model record. The C++ translator is fail-closed when a required row is absent;
 the native converter retains its documented per-member stub policy.
 
+The policy has an executable regression: run
+`bash lib/java/converter/tests/per-member-stub-policy.sh` after building the
+runtime. It checks that a type containing one unsupported switch-expression
+member still emits its supported sibling, retains a fail-loud stub for the
+unsupported member, and records a nonzero stub count in CONVERSION-REPORT.tsv.
+This is a best-effort conversion contract, not a claim of whole-file or
+whole-JDK behavioral equivalence.
+
 ## 1. What it is
 
 A SLeeLa program that walks a Java source tree recursively and writes the
