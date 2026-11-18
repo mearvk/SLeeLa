@@ -111,6 +111,8 @@ private:
     std::map<std::string, std::string> importedTypes_;
     std::map<std::string, std::vector<std::string>> staticImports_;
     std::vector<std::string> staticWildcardImports_;
+    std::vector<std::string> wildcardTypeImports_;
+    std::string packageName_;
     int pendingGenericClosers_ = 0;
 
     // per-type / per-method state
@@ -167,18 +169,75 @@ private:
     };
     static constexpr const char* kInitMarker = "@@FIELDINIT@@";
     std::string curSimple_;         // the source name of the class being parsed (constructors are written with it)
+    bool typeAccessible(const std::string& key, const ClassInfo& info) const {
+        auto host = [](const std::string& n) {
+            const size_t p = n.find("__");
+            return p == std::string::npos ? n : n.substr(0, p);
+        };
+        if (info.typeVisibility == "public") return true;
+        if (info.typeVisibility == "private") return host(key) == host(curClass);
+        if (info.packageName == packageName_) return true;
+        if (info.typeVisibility == "protected") return isSubtypeName(curClass, host(key));
+        return false;
+    }
+
+    std::string resolveQualifiedTypeName(const std::string& qualified) const {
+        for (const auto& entry : classes) {
+            std::string dotted = entry.first;
+            for (size_t pos = 0; (pos = dotted.find("__", pos)) != std::string::npos; )
+                dotted.replace(pos, 2, ".");
+            const std::string full = entry.second.packageName.empty() ? dotted : entry.second.packageName + "." + dotted;
+            if (full == qualified) {
+                if (entry.second.ambiguous)
+                    throw ConvErr{cur().line, cur().col, "type-ambiguous", "qualified type '" + qualified + "' has duplicate project declarations"};
+                if (!typeAccessible(entry.first, entry.second))
+                    throw ConvErr{cur().line, cur().col, "type-access", "type '" + qualified + "' is not accessible from package '" + packageName_ + "'"};
+                return entry.first;
+            }
+        }
+        const size_t dot = qualified.rfind('.');
+        return dot == std::string::npos ? qualified : qualified.substr(dot + 1);
+    }
+
     std::string resolveTypeName(const std::string& n) const {
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
             throw ConvErr{cur().line, cur().col, "import-ambiguous", "the simple type name '" + n + "' is imported from more than one package"};
-        auto projectType = classes.find(n);
-        if (projectType != classes.end() && projectType->second.ambiguous)
-            throw ConvErr{cur().line, cur().col, "type-ambiguous",
-                "the simple type name '" + n + "' is declared by multiple source units; package-qualified resolution is not yet available"};
-        auto it = nestedMap_.find(n);
-        if (it == nestedMap_.end()) return n;
-        if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
-        return it->second;
+        if (im != importedTypes_.end()) {
+            for (const auto& entry : classes) {
+                std::string dotted = entry.first;
+                for (size_t pos = 0; (pos = dotted.find("__", pos)) != std::string::npos; )
+                    dotted.replace(pos, 2, ".");
+                const std::string full = entry.second.packageName.empty() ? dotted : entry.second.packageName + "." + dotted;
+                if (full == im->second) {
+                    if (entry.second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the imported type '" + im->second + "' has duplicate declarations"};
+                    if (!typeAccessible(entry.first, entry.second))
+                        throw ConvErr{cur().line, cur().col, "type-access", "type '" + im->second + "' is not accessible from package '" + packageName_ + "'"};
+                    return entry.first;
+                }
+            }
+            return n;
+        }
+        auto local = classes.find(n);
+        if (local != classes.end() && local->second.packageName == packageName_) {
+            if (local->second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the type '" + n + "' has duplicate declarations in package '" + packageName_ + "'"};
+            return n;
+        }
+        bool wildcardMatch = false;
+        for (const auto& pkg : wildcardTypeImports_)
+            if (local != classes.end() && local->second.packageName == pkg) wildcardMatch = true;
+        if (wildcardMatch) {
+            if (local->second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the wildcard-imported type '" + n + "' has duplicate declarations"};
+            if (!typeAccessible(n, local->second))
+                throw ConvErr{cur().line, cur().col, "type-access", "type '" + n + "' is not accessible from package '" + packageName_ + "'"};
+            return n;
+        }
+        if (local != classes.end() && local->second.ambiguous)
+            throw ConvErr{cur().line, cur().col, "type-ambiguous", "the simple type name '" + n + "' is declared by multiple source units and cannot be selected by this compilation unit"};
+        auto nested = nestedMap_.find(n);
+        if (nested == nestedMap_.end()) return n;
+        if (nested->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
+        return nested->second;
     }
     // ---------------------------------------------------------- tokens ----
     const Tok& cur() const { return T[p]; }
@@ -378,8 +437,25 @@ private:
             if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); }
         }
         std::string name = ident();
-        // A type-qualified name Outer.Inner names the hoisted type Outer__Inner.
+        // A package-qualified type such as a.b.Widget is resolved by its full
+        // source identity before nested member-type segments are hoisted.
         std::string qual;
+        bool resolvedQualifiedBase = false;
+        if (!name.empty() && std::islower((unsigned char)name[0])) {
+            std::string packagePrefix = name;
+            while (isOp(".") && isIdentTok(at(p + 1))) {
+                const std::string next = at(p + 1).text;
+                if (!next.empty() && std::isupper((unsigned char)next[0])) {
+                    p++;
+                    name = resolveQualifiedTypeName(packagePrefix + "." + ident());
+                    resolvedQualifiedBase = true;
+                    break;
+                }
+                p++;
+                packagePrefix += "." + ident();
+            }
+        }
+        // A type-qualified name Outer.Inner names the hoisted type Outer__Inner.
         int depth = 0;
         std::vector<Ty> genericArgs;
         for (;;) {
@@ -404,8 +480,10 @@ private:
                 consumeGenericClose();
             }
             if (isOp(".") && isIdentTok(at(p + 1))) {
-                if (!name.empty() && std::isupper((unsigned char)name[0])) qual = qual.empty() ? resolveTypeName(name) : qual + "__" + name;
-                else qual.clear();
+                if (!name.empty() && std::isupper((unsigned char)name[0])) {
+                    qual = qual.empty() ? (resolvedQualifiedBase ? name : resolveTypeName(name)) : qual + "__" + name;
+                    resolvedQualifiedBase = false;
+                } else qual.clear();
                 p++;
                 name = ident();
                 genericArgs.clear();
@@ -418,6 +496,7 @@ private:
         t.args = genericArgs;
         if (qual.empty() && methodTypeVars_.count(name)) t.n = "$T$" + name;
         else if (qual.empty() && typeVars.count(name)) t.n = "$C$" + name;
+        else if (qual.empty() && resolvedQualifiedBase) t.n = name;
         else if (qual.empty()) t.n = resolveTypeName(name);
         else t.n = qual + "__" + name;
         // Preserve wrapper identity for overload resolution, while emitType lowers
@@ -1237,14 +1316,35 @@ private:
         return true;
     }
 
+    bool memberAccessible(const std::string& owner, const std::string& visibility) const {
+        if (visibility == "public") return true;
+        auto it = classes.find(owner);
+        if (it == classes.end()) return true;
+        auto host = [](const std::string& n) {
+            const size_t p = n.find("__");
+            return p == std::string::npos ? n : n.substr(0, p);
+        };
+        if (visibility == "private") return host(owner) == host(curClass);
+        if (it->second.packageName == packageName_) return true;
+        if (visibility == "protected") return isSubtypeName(curClass, owner);
+        return false;
+    }
+
     const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1, const Ty* receiverType = nullptr, const Ty* expectedResultType = nullptr) const {
         if (depth > 32) return nullptr;
         std::vector<const MethodSig*> all;
         collectNamedMethods(cls,name,all);
         std::vector<const MethodSig*> candidates;
+        bool sawInaccessible = false;
         // Collapse overrides with the same erased signature, retaining the declaration
         // from the most-derived owner. Distinct overloads remain separate candidates.
         for (const MethodSig* m:all) {
+            if (!memberAccessible(m->owner, m->visibility)) { sawInaccessible = true; continue; }
+            if (m->visibility == "protected" && receiverType) {
+                auto ownerInfo = classes.find(m->owner);
+                if (ownerInfo != classes.end() && ownerInfo->second.packageName != packageName_ &&
+                    !isSubtypeName(receiverType->n, curClass)) { sawInaccessible = true; continue; }
+            }
             if (invocationKind >= 0 && m->isStatic != (invocationKind == 1)) continue;
             bool merged=false;
             for (size_t i=0;i<candidates.size();++i) {
@@ -1478,6 +1578,8 @@ private:
         }
         if(ambiguous) throw ConvErr{cur().line,cur().col,"overload-ambiguous",
             "multiple applicable overloads of '"+cls+"."+name+"' remain incomparable under supported Java invocation conversions"};
+        if (!best && sawInaccessible)
+            throw ConvErr{cur().line,cur().col,"member-access","no accessible overload of '"+cls+"."+name+"' is visible from package '"+packageName_+"'"};
         if (!best && sawUnsupportedGeneric)
             throw ConvErr{cur().line,cur().col,"generic-inference",
                 "generic overload '"+cls+"."+name+"' requires a bound or generic substitution that cannot be proven, target typing, or a common-type inference rule not yet supported"};
@@ -1550,7 +1652,11 @@ private:
         auto it = classes.find(cls);
         if (it == classes.end() || depth > 32) return nullptr;
         auto f = it->second.fields.find(name);
-        if (f != it->second.fields.end()) return &f->second;
+        if (f != it->second.fields.end()) {
+            if (!memberAccessible(cls, f->second.visibility))
+                throw ConvErr{cur().line,cur().col,"member-access","field '"+cls+"."+name+"' is not accessible from package '"+packageName_+"'"};
+            return &f->second;
+        }
         if (!it->second.super.empty()) if (const FieldInfo* s = findField(it->second.super, name, depth + 1)) return s;
         for (const auto& i : it->second.ifaces) if (const FieldInfo* s = findField(i, name, depth + 1)) return s;
         return nullptr;
@@ -3067,12 +3173,14 @@ private:
         return isOpAt(j, "{") || isKwAt(j, "implements");
     }
 
+    struct Mods { std::set<std::string> set; bool has(const char* s) const { return set.count(s) > 0; } };
+
     // ---- record (JLS 8.10) -------------------------------------------------------------------
     // A record is lowered to a class with one field per component, the canonical constructor (a
     // compact constructor runs its body first), one accessor per component, and the generated
     // toString() "Name[a=1, b=2]" and, when every component is a primitive or a String,
     // equals(Object) and, for int-like, long, boolean and String components, hashCode().
-    void parseRecord(const std::string& nestPrefix, const std::string& outerName, bool nestedStatic) {
+    void parseRecord(const std::string& nestPrefix, const std::string& outerName, bool nestedStatic, const Mods& typeMods) {
         InitScope noHoist(this, nullptr);
         expectKw("record");
         const bool nested = !nestPrefix.empty();
@@ -3109,6 +3217,7 @@ private:
         if (pass == 1) {
             if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
@@ -3255,7 +3364,7 @@ private:
     // instance per constant (a constant with a body is an instance of a generated subclass), a
     // static values array, and values()/valueOf()/name()/ordinal()/toString()/compareTo().
     // A bare constant name in a case label is resolved by parseCaseLabel.
-    void parseEnum(const std::string& nestPrefix = "") {
+    void parseEnum(const std::string& nestPrefix = "", const Mods& typeMods = Mods()) {
         InitScope noHoist(this, nullptr);
         expectKw("enum");
         typeVars.clear();
@@ -3283,6 +3392,7 @@ private:
         if (pass == 1) {
             if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
             ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames;
         }
         size_t beforeDiags = diags.size();
@@ -3459,7 +3569,16 @@ private:
                 labels.push_back("default:");
             } else {
                 expectKw("case");
-                do { labels.push_back("case " + parseCaseLabel(selTy) + ":"); } while (acceptOp(","));
+                do {
+                    if (isKw("null")) unsup("switch-pattern");
+                    const size_t patternEnd = scanType(p);
+                    if (patternEnd != (size_t)-1 &&
+                        ((isIdentTok(at(patternEnd)) &&
+                          (isOpAt(patternEnd + 1, "->") || isOpAt(patternEnd + 1, ":") || isKwAt(patternEnd + 1, "when"))) ||
+                         isOpAt(patternEnd, "(")))
+                        unsup("switch-pattern");
+                    labels.push_back("case " + parseCaseLabel(selTy) + ":");
+                } while (acceptOp(","));
             }
             if (acceptOp("->")) arrow = true; else expectOp(":");
             // old-style stacked labels: case 1: case 2: body
@@ -3551,7 +3670,13 @@ private:
     }
 
     // ---------------------------------------------------------- members ----
-    struct Mods { std::set<std::string> set; bool has(const char* s) const { return set.count(s) > 0; } };
+    std::string visibilityOf(const Mods& mods) const {
+        if (mods.has("public")) return "public";
+        if (mods.has("protected")) return "protected";
+        if (mods.has("private")) return "private";
+        return "package";
+    }
+
 
     Mods parseModifiers() {
         Mods m;
@@ -3651,9 +3776,15 @@ private:
         importedTypes_.clear();
         staticImports_.clear();
         staticWildcardImports_.clear();
+        wildcardTypeImports_.clear();
+        packageName_.clear();
         size_t guard = 0;
         try {
-            if (isKw("package")) { while (!isOp(";") && !atEof()) p++; p++; }
+            if (isKw("package")) {
+                p++;
+                while (!isOp(";") && !atEof()) { packageName_ += cur().text; p++; }
+                if (isOp(";")) p++;
+            }
             while (isKw("import")) {
                 p++;
                 bool isStatic = acceptKw("static");
@@ -3679,7 +3810,9 @@ private:
                             staticImports_[full.substr(dot+1)].push_back(owner);
                         }
                     }
-                } else if (full.size() > 2 && full.compare(full.size()-2,2,".*") != 0) {
+                } else if (full.size() > 2 && full.compare(full.size()-2,2,".*") == 0) {
+                    wildcardTypeImports_.push_back(full.substr(0, full.size()-2));
+                } else if (!full.empty()) {
                     size_t dot = full.rfind('.');
                     std::string simple = dot == std::string::npos ? full : full.substr(dot+1);
                     auto it = importedTypes_.find(simple);
@@ -3688,6 +3821,8 @@ private:
                 }
             }
         } catch (const ConvErr& e) { diag(e); return; }
+        if (isKw("module") || (isKw("open") && isKwAt(p + 1, "module")))
+            unsup("module-declaration");
         while (!atEof()) {
             if (acceptOp(";")) continue;
             size_t before = p;
@@ -3767,10 +3902,10 @@ private:
         bool isIface = false;
         if (isKw("class")) p++;
         else if (isKw("interface")) { p++; isIface = true; }
-        else if (isKw("enum")) { parseEnum(nestPrefix); return; }
-        else if (isKw("record") && isIdentTok(at(p + 1))) { parseRecord(nestPrefix, outerName, nestedStatic); return; }
+        else if (isKw("enum")) { parseEnum(nestPrefix, mods); return; }
+        else if (isKw("record") && isIdentTok(at(p + 1))) { parseRecord(nestPrefix, outerName, nestedStatic, mods); return; }
         else if (isKw("record")) unsup("nested");
-        else if (isOp("@")) unsup("nested");
+        else if (isOp("@")) unsup("annotation-type");
         else fail("syntax", "expected a class or interface declaration but found '" + descr() + "'");
         curIsInterface = isIface;
         const std::string simpleName = ident();
@@ -3832,6 +3967,7 @@ private:
         if (pass == 1) {
             if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.packageName = packageName_; ci.typeVisibility = visibilityOf(mods);
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
         }
         std::vector<std::string> memberLines;
@@ -3981,7 +4117,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = mk("void");
             if (pass == 1) {
-                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
+                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.owner = cls; ms.visibility = visibilityOf(mods); ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
@@ -4028,7 +4164,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.visibility = visibilityOf(mods); ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
@@ -4080,7 +4216,7 @@ private:
             while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; ft.dims++; }
             if (cm_find(&M, "rename", name.c_str(), "all", nullptr))
                 fail("reserved-member", "a field named '" + name + "' collides with a SLeeLa reserved word");
-            FieldInfo fi; fi.ty = ft; fi.isStatic = isStatic || isIface;
+            FieldInfo fi; fi.ty = ft; fi.isStatic = isStatic || isIface; fi.visibility = isIface ? "public" : visibilityOf(mods);
             if (pass == 1) ci.fields[name] = fi;
             std::string decl = std::string((isStatic || isIface) ? "static " : "") + emitType(ft) + " " + name;
             // JLS 4.12.5: a field starts at the default value of its type. SLeeLa leaves it null, which

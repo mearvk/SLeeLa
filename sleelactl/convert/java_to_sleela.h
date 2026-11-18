@@ -50,10 +50,13 @@ struct MethodSig {
     bool varargs = false;   // the last parameter is T... (its type is stored as T[])
     bool isAbstract = false; // declared without a body (an interface method, or abstract)
     std::string owner;       // the class that declares it
+    std::string visibility = "package";
 };
-struct FieldInfo { Ty ty; bool isStatic = false; };
+struct FieldInfo { Ty ty; bool isStatic = false; std::string visibility = "package"; };
 struct ClassInfo {
     std::string sourceName;           // source unit that contributed this declaration
+    std::string packageName;          // declared Java package (empty for the unnamed package)
+    std::string typeVisibility = "package";
     bool ambiguous = false;           // duplicate simple name across project units: fail closed
     std::map<std::string, FieldInfo> fields;
     std::vector<MethodSig> methods;
