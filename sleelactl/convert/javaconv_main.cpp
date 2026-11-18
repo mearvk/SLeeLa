@@ -759,7 +759,7 @@ int main(int argc, char** argv) {
     if (!c.quiet) {
         std::cout << "javaconv: model " << model.name << " " << model.rev << ", JDK " << c.version << "\n"
                   << "  source files " << outcomes.size() << ", converted " << okFiles << " (" << emitted << " SLeeLa files), failed closed " << failed << "\n"
-                  << "  output " << outRoot.string() << " (CONVERSION-REPORT.md / .json)\n";
+                  << "  output " << publishRoot.string() << " (CONVERSION-REPORT.md / .json)\n";
         size_t shown = 0;
         for (auto& o : outcomes) {
             if (o.ok || shown >= 20) continue;
