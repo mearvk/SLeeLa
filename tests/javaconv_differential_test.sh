@@ -132,6 +132,37 @@ else
   printf 'FAIL  project-generic (project build or conversion failed)\\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
 fi
 
+# Explicit package imports resolve to a project-indexed source type.
+mkdir -p "$tmp/project-package/src/model" "$tmp/project-package/src/app" "$tmp/project-package/cls" "$tmp/project-package/sl"
+cat > "$tmp/project-package/src/model/Widget.java" <<'JAVA'
+package model;
+public class Widget {
+  public int value() { return 37; }
+}
+JAVA
+cat > "$tmp/project-package/src/app/Main.java" <<'JAVA'
+package app;
+import model.Widget;
+public class Main {
+  public static void main(String[] args) {
+    Widget widget = new Widget();
+    System.out.println(widget.value());
+  }
+}
+JAVA
+if javac -d "$tmp/project-package/cls" "$tmp/project-package/src/model/Widget.java" "$tmp/project-package/src/app/Main.java" 2> "$tmp/project-package/javac.err" &&
+   java -cp "$tmp/project-package/cls" app.Main > "$tmp/project-package/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-package/src" --out "$tmp/project-package/sl" --quiet; then
+  (cd "$tmp/project-package/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-package/actual.out"
+  if diff -u "$tmp/project-package/expected.out" "$tmp/project-package/actual.out" > "$tmp/project-package/diff"; then
+    printf 'PASS  %-12s explicit package import resolves project type identically to the JDK\n' "project-package"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-package\n'; head -40 "$tmp/project-package/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-package (project build or conversion failed)\n'; cat "$tmp/project-package/javac.err"; fail=$((fail+1))
+fi
+
 # duplicate simple declarations must never be resolved by source traversal order
 mkdir -p "$tmp/duplicate/src/a" "$tmp/duplicate/src/b" "$tmp/duplicate/out"
 cat > "$tmp/duplicate/src/a/First.java" <<'JAVA'
@@ -149,6 +180,22 @@ if [ "$duplicate_rc" -eq 1 ] && printf '%s' "$duplicate_out" | grep -q "\[type-a
   printf 'PASS  %-12s ambiguous project-wide simple name refused\n' "duplicate-type"; pass=$((pass+1))
 else
   printf 'FAIL  duplicate-type (rc=%s)\n%s\n' "$duplicate_rc" "$duplicate_out"; fail=$((fail+1))
+fi
+
+# Duplicate declarations in the same compilation unit are ambiguous too;
+# sourceName alone must not make a second declaration look like a re-visit.
+mkdir -p "$tmp/duplicate-same/src" "$tmp/duplicate-same/out"
+cat > "$tmp/duplicate-same/src/Duplicate.java" <<'JAVA'
+class Repeated { int first() { return 1; } }
+class Repeated { int second() { return 2; } }
+class DuplicateUse { Repeated value; }
+JAVA
+same_duplicate_out="$("$conv" --jdk "$tmp/duplicate-same/src" --out "$tmp/duplicate-same/out" --quiet 2>&1)"
+same_duplicate_rc=$?
+if [ "$same_duplicate_rc" -eq 1 ] && printf '%s' "$same_duplicate_out" | grep -q "\[type-ambiguous\]"; then
+  printf 'PASS  %-12s duplicate declaration in one source unit refused\n' "duplicate-same-unit"; pass=$((pass+1))
+else
+  printf 'FAIL  duplicate-same-unit (rc=%s)\n%s\n' "$same_duplicate_rc" "$same_duplicate_out"; fail=$((fail+1))
 fi
 
 echo "javaconv differential: pass=$pass fail=$fail"

@@ -171,13 +171,21 @@ private:
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
             throw ConvErr{cur().line, cur().col, "import-ambiguous", "the simple type name '" + n + "' is imported from more than one package"};
-        auto projectType = classes.find(n);
+        // The project symbol table is keyed by source-level simple name. An
+        // explicit package-qualified import therefore resolves to that indexed
+        // simple name, rather than leaking "pkg.Type" into member lookup.
+        std::string simple = n;
+        if (im != importedTypes_.end()) {
+            const size_t dot = im->second.rfind('.');
+            if (dot != std::string::npos) simple = im->second.substr(dot + 1);
+        }
+        auto projectType = classes.find(simple);
         if (projectType != classes.end() && projectType->second.ambiguous)
             throw ConvErr{cur().line, cur().col, "type-ambiguous",
-                "the simple type name '" + n + "' is declared by multiple source units; package-qualified resolution is not yet available"};
-        auto it = nestedMap_.find(n);
-        if (it == nestedMap_.end()) return n;
-        if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
+                "the simple type name '" + simple + "' is declared by multiple source units; package-qualified identity is not yet available"};
+        auto it = nestedMap_.find(simple);
+        if (it == nestedMap_.end()) return simple;
+        if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + simple + "' is used by several nested types"};
         return it->second;
     }
     // ---------------------------------------------------------- tokens ----
@@ -420,6 +428,30 @@ private:
         else if (qual.empty() && typeVars.count(name)) t.n = "$C$" + name;
         else if (qual.empty()) t.n = resolveTypeName(name);
         else t.n = qual + "__" + name;
+        // Validate concrete class type arguments against simple declared upper
+        // bounds after the whole-project signature pass has populated ClassInfo.
+        if (pass == 2 && !t.args.empty()) {
+            auto declaration = classes.find(t.n);
+            if (declaration != classes.end()) {
+                const ClassInfo& genericClass = declaration->second;
+                for (size_t ai = 0; ai < genericClass.typeParams.size() && ai < t.args.size(); ++ai) {
+                    auto bounds = genericClass.typeParamBounds.find(genericClass.typeParams[ai]);
+                    if (bounds == genericClass.typeParamBounds.end()) continue;
+                    const Ty& actual = t.args[ai];
+                    if (!actual.known() || actual.wildcard || actual.dims != 0) continue;
+                    for (std::string boundName : bounds->second) {
+                        if (boundName.empty() || boundName.find('<') != std::string::npos ||
+                            boundName.find('$') != std::string::npos) continue;
+                        const size_t dot = boundName.rfind('.');
+                        if (dot != std::string::npos) boundName = boundName.substr(dot + 1);
+                        auto nested = nestedMap_.find(boundName);
+                        if (nested != nestedMap_.end() && nested->second != "\x01") boundName = nested->second;
+                        if (!isSubtypeName(actual.n, boundName))
+                            fail("generic-type", "type argument '" + actual.n + "' does not satisfy the declared bound '" + boundName + "' of " + t.n);
+                    }
+                }
+            }
+        }
         // Preserve wrapper identity for overload resolution, while emitType lowers
         // wrapper storage to the primitive representation used by SLeeLa. Wrapper
         // arrays still require a distinct reference-array representation.
@@ -1259,6 +1291,9 @@ private:
                 const bool variable=phase==2 && m.varargs && args.size()+1>=n;
                 if (!fixed && !variable) continue;
                 std::map<std::string,Ty> inferred;
+                // A formal ? super T contributes T <: A for actual argument A.
+                // Defer the constraint until other arguments/target typing infer T.
+                std::map<std::string,std::vector<Ty>> lowerWildcardUpperConstraints;
                 int cost=0; bool applicable=true;
                 for (size_t i=0;i<args.size();++i) {
                     Ty target;
@@ -1312,11 +1347,18 @@ private:
                                     continue;
                                 }
                                 if (farg.wildcard==3 && farg.bound) {
-                                    // Lower-bounded wildcard does not provide an exact
-                                    // inference for its own type variable. Accept only a
-                                    // fully known, non-variable lower bound that converts
-                                    // to the actual type argument.
-                                    if (farg.bound->n.rfind("$T$",0)==0 ||
+                                    // For List<? super T> with actual List<A>, Java
+                                    // constrains T to be a subtype of A. It is not an
+                                    // exact inference; validate after all constraints.
+                                    if (farg.bound->n.rfind("$T$",0)==0 && farg.bound->dims==0) {
+                                        if (!aarg.known() || aarg.n=="null" || aarg.wildcard!=0)
+                                            return false;
+                                        lowerWildcardUpperConstraints[farg.bound->n.substr(3)].push_back(aarg);
+                                        continue;
+                                    }
+                                    // Nested lower-bound formulas require full constraint
+                                    // reduction and are deliberately not approximated.
+                                    if (farg.bound->n.find("$T$")!=std::string::npos ||
                                         invocationCost(*farg.bound,aarg)<0) return false;
                                     continue;
                                 }
@@ -1385,6 +1427,19 @@ private:
                             };
                         if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
                     }
+                }
+                // Resolve deferred ? super constraints after argument and target
+                // result constraints have had a chance to infer each variable.
+                if (applicable) for (const auto& constraint : lowerWildcardUpperConstraints) {
+                    auto value=inferred.find(constraint.first);
+                    if (value==inferred.end()) { applicable=false; break; }
+                    for (const Ty& upper : constraint.second) {
+                        if (value->second.dims!=upper.dims ||
+                            !isSubtypeName(value->second.n,upper.n)) {
+                            applicable=false; break;
+                        }
+                    }
+                    if (!applicable) break;
                 }
                 if (!applicable || inferred.size()!=m.typeParams.size()) {
                     if (!m.typeParams.empty()) sawUnsupportedGeneric=true;
@@ -3079,7 +3134,7 @@ private:
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
@@ -3253,7 +3308,7 @@ private:
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames;
         }
@@ -3760,7 +3815,8 @@ private:
             topLevelName_ = name; anonCounter_ = 0; pendingTypes_.clear(); innerMode_ = false;
         }
         std::vector<std::string> tparams;
-        skipTypeParams(&tparams);
+        std::map<std::string,std::vector<std::string>> classTparamBounds;
+        skipTypeParams(&tparams, nullptr, &classTparamBounds);
         std::string header = std::string(isIface ? "interface " : "class ") + name;
         if (!tparams.empty()) {
             header += "<";
@@ -3802,9 +3858,9 @@ private:
         InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
-            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
         }
         std::vector<std::string> memberLines;
         int instanceFields = 0;
