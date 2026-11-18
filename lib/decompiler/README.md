@@ -219,6 +219,6 @@ For SLeeLa input, the decompiler treats the source pragma and artifact metadata
 as evidence. Syntax **3.0** is the current reconstruction edition, not a
 license to upgrade historical source automatically. Preserve the original
 declared source version when reconstructing an identifiable source file; use a
-3.0 declaration only when the emitted constructs are valid under Syntax 3.0
+3.2 declaration only when the emitted constructs are valid under Syntax 3.2
 and their individual feature gates. If the original version cannot be
 established, report that uncertainty rather than inventing a version.
