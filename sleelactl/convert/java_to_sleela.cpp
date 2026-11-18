@@ -1401,6 +1401,22 @@ private:
         for (const auto& i : it->second.ifaces) if (const FieldInfo* s = findField(i, name, depth + 1)) return s;
         return nullptr;
     }
+    bool fieldDeclaringReceiver(const Ty& receiver, const std::string& name,
+                                Ty& declaringReceiver, int depth = 0) const {
+        if (depth>32) return false;
+        auto it=classes.find(receiver.n);
+        if (it==classes.end()) return false;
+        if (it->second.fields.count(name)) { declaringReceiver=receiver; return true; }
+        if (it->second.superType.n!="?") {
+            Ty base=instantiateClassType(it->second.superType,receiver);
+            if (fieldDeclaringReceiver(base,name,declaringReceiver,depth+1)) return true;
+        }
+        for (const Ty& declaredIface:it->second.ifaceTypes) {
+            Ty iface=instantiateClassType(declaredIface,receiver);
+            if (fieldDeclaringReceiver(iface,name,declaringReceiver,depth+1)) return true;
+        }
+        return false;
+    }
 
     // A method of java.lang.Object (equals, hashCode, getClass ...) called on a type of this tree that
     // neither declares it nor has a library ancestor: SLeeLa has no such method, so the converted call
@@ -1551,7 +1567,11 @@ private:
                     r.code = paren(e.code) + "." + name;
                     r.pure = e.pure;
                     r.ty = mk("?");
-                    if (e.ty.dims == 0) if (const FieldInfo* fi = findField(e.ty.n, name)) r.ty = instantiateClassType(fi->ty,e.ty);
+                    if (e.ty.dims == 0) if (const FieldInfo* fi = findField(e.ty.n, name)) {
+                        Ty declaringReceiver;
+                        r.ty = fieldDeclaringReceiver(e.ty,name,declaringReceiver)
+                            ? instantiateClassType(fi->ty,declaringReceiver) : mk("?");
+                    }
                 }
                 e = r;
                 continue;
