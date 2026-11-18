@@ -11,7 +11,7 @@ compiler (**Sleelvac™**) authoritative: syntax, parsing, and diagnostics come
 from the real compiler, never a second grammar (see
 [`../SLEELA.IDE.CONTRACT.md`](../SLEELA.IDE.CONTRACT.md)).
 
-## Features (v0.3.0-dev)
+## Features (v1.012)
 
 **Editor**
 - Recognizes `.sleela` source files (branded Slick-Black / brand-green icon).
