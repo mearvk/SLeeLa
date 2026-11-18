@@ -57,7 +57,7 @@ static Type typeOf(const std::string& n){
  if(n=="double"){return{Kind::Double,{},{}};}
  // Java primitives without a distinct VM slot (syntax 3.0 Java signature
  // surface): char, byte and short ride the integer slot, float the double slot.
- if(n=="char"){return{Kind::Int,"char",{}};}   // syntax 3.1: the name marks the static type char (an integer for every check)
+ if(n=="char"){return{Kind::Int,"char",{}};}   // syntax 3.2: the name marks the static type char (an integer-backed value)
  if(n=="byte"||n=="short"){return{Kind::Int,{},{}};}
  if(n=="float"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
