@@ -1125,17 +1125,10 @@ private:
         }
         if (minimal.size()==1) return minimal.front();
 
-        // Multiple incomparable minima need an intersection type. Until Ty and
-        // the SLeeLa emitter can represent that form, preserve the class bound.
-        std::string commonClass=a;
-        int hops=0;
-        while (!commonClass.empty() && ++hops<=32 && !isSubtypeName(b,commonClass)) {
-            auto it=classes.find(commonClass);
-            commonClass=(it==classes.end() || it->second.super.empty())
-                ? std::string("Object") : it->second.super;
-            if (commonClass=="Object") break;
-        }
-        return commonClass.empty() ? std::string("Object") : commonClass;
+        // Multiple incomparable minima are a true intersection LUB. Ty cannot
+        // yet carry that set of bounds, so return no result and let inference
+        // fail closed rather than silently erase an interface constraint.
+        return std::string();
     }
 
     void collectNamedMethods(const std::string& cls, const std::string& name,
@@ -1291,6 +1284,7 @@ private:
                                         if (isSubtypeName(prior.n,inferredType.n)) ti->second=inferredType;
                                         else if (!isSubtypeName(inferredType.n,prior.n)) {
                                             const std::string common=leastCommonReferenceName(prior.n,inferredType.n);
+                                            if (common.empty()) return false;
                                             ti->second=mk(common);
                                         }
                                     } else return false;
