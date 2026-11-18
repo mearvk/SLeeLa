@@ -56,6 +56,42 @@ if [ ! -x "$bin" ]; then
 fi
 export SLEELA_HOME="$root" SLEELA_LIB="$root/lib" SLEELA_BIN="$bin"
 
+# Build the authoritative API inventory from the actual JDK 28 runtime.
+# JDK 25 files remain a comparison baseline only; they are never substituted
+# for the JDK 28 reflection output in this campaign.
+java_spec="$(java -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java.specification.version = //p' | head -n 1)"
+if [ "$java_spec" != "28" ]; then
+  echo "JDK 28 is required for this campaign; detected java.specification.version=$java_spec" >&2
+  exit 2
+fi
+reflection_dir="$report_dir/jdk28-reflection"
+reflection_classes="$reflection_dir/classes"
+mkdir -p "$reflection_classes"
+javac -d "$reflection_classes" \
+  "$root/lib/java/jdk-25/tools/ApiDump.java" \
+  "$root/lib/java/jdk-25/tools/ApiSignatures.java"
+java -cp "$reflection_classes" ApiDump > "$reflection_dir/jdk-api.jsonl" 2> "$reflection_dir/api-dump.stderr.log"
+java -cp "$reflection_classes" ApiSignatures > "$reflection_dir/jdk-signatures.jsonl" 2> "$reflection_dir/signature-dump.stderr.log"
+python3 - "$reflection_dir/jdk-api.jsonl" "$reflection_dir/jdk-signatures.jsonl" <<'PY'
+import json, sys
+for path in sys.argv[1:]:
+    with open(path, encoding="utf-8") as stream:
+        rows = [json.loads(line) for line in stream if line.strip()]
+    if not rows:
+        raise SystemExit(f"JDK 28 reflection produced no records: {path}")
+    print(f"{path}: {len(rows)} reflected records")
+api = [json.loads(line) for line in open(sys.argv[1], encoding="utf-8") if line.strip()]
+sigs = [json.loads(line) for line in open(sys.argv[2], encoding="utf-8") if line.strip()]
+api_names = {row["name"] for row in api}
+sig_names = {row["name"] for row in sigs}
+missing = sorted(api_names - sig_names)
+if missing:
+    raise SystemExit(f"JDK 28 signature reflection omitted {len(missing)} reflected types; first: {missing[:10]}")
+print(f"JDK 28 reflection parity: {len(api_names)} API types have signature records")
+PY
+export JDK28_API_JSONL="$reflection_dir/jdk-api.jsonl"
+export JDK28_SIGNATURES_JSONL="$reflection_dir/jdk-signatures.jsonl"
+
 run_gate "jdk-signature-index-tests" python3 -m unittest discover -s "$root/lib/java/jdk-25/tools" -p "test_jdk_api_signatures.py"
 run_gate "jdk-signature-index-audit" python3 "$root/lib/java/jdk-25/tools/jdk_api_signatures.py" --audit
 run_gate "jdk28-generator-tests" python3 -m unittest discover -s "$root/lib/java/jdk-28/tools" -p "test_generate_jdk28.py"
