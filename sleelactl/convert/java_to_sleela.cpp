@@ -171,6 +171,10 @@ private:
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
             throw ConvErr{cur().line, cur().col, "import-ambiguous", "the simple type name '" + n + "' is imported from more than one package"};
+        auto projectType = classes.find(n);
+        if (projectType != classes.end() && projectType->second.ambiguous)
+            throw ConvErr{cur().line, cur().col, "type-ambiguous",
+                "the simple type name '" + n + "' is declared by multiple source units; package-qualified resolution is not yet available"};
         auto it = nestedMap_.find(n);
         if (it == nestedMap_.end()) return n;
         if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
@@ -2985,6 +2989,8 @@ private:
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
+            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
@@ -3156,7 +3162,11 @@ private:
         }
         expectOp("{");
         ClassInfo& ci = classes[name];
-        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames; }
+        if (pass == 1) {
+            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames;
+        }
         size_t beforeDiags = diags.size();
 
         struct Const { std::string name; std::vector<E> args; std::string sub; std::vector<std::string> subLines; int subFields = 0; };
@@ -3701,7 +3711,11 @@ private:
         ClassInit cinit;
         InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
-        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; }
+        if (pass == 1) {
+            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
+        }
         std::vector<std::string> memberLines;
         int instanceFields = 0;
         size_t beforeDiags = diags.size();
