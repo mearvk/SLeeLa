@@ -1409,8 +1409,8 @@ private:
                         if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
                     }
                 }
-                // Resolve deferred ? super constraints after all argument and
-                // target-result constraints have had a chance to infer each variable.
+                // Resolve deferred ? super constraints after argument and target
+                // result constraints have had a chance to infer each variable.
                 if (applicable) for (const auto& constraint : lowerWildcardUpperConstraints) {
                     auto value=inferred.find(constraint.first);
                     if (value==inferred.end()) { applicable=false; break; }
@@ -4221,7 +4221,7 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
                         const size_t dot = boundName.rfind('.');
                         if (dot != std::string::npos) boundName = boundName.substr(dot + 1);
                         auto nested = nestedMap_.find(boundName);
-                        if (nested != nestedMap_.end() && nested->second != "\\x01") boundName = nested->second;
+                        if (nested != nestedMap_.end() && nested->second != "\x01") boundName = nested->second;
                         if (!isSubtypeName(actual.n, boundName))
                             fail("generic-type", "type argument '" + actual.n + "' does not satisfy the declared bound '" + boundName + "' of " + t.n);
                     }
@@ -5204,8 +5204,8 @@ void collect(const std::string& src, const cm_model& model, const Options& opt, 
                         if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
                     }
                 }
-                // Resolve deferred ? super constraints after all argument and
-                // target-result constraints have had a chance to infer each variable.
+                // Resolve deferred ? super constraints after argument and target
+                // result constraints have had a chance to infer each variable.
                 if (applicable) for (const auto& constraint : lowerWildcardUpperConstraints) {
                     auto value=inferred.find(constraint.first);
                     if (value==inferred.end()) { applicable=false; break; }
