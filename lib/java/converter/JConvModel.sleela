@@ -2,13 +2,12 @@
    Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
    Definition: the Java-to-SLeeLa conversion model, read as data. It loads
    impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL),
-   the same model that sleelactl java-convert reads, and answers the questions
-   the typed pass of JConvRewriter asks: the result type of a library member
-   (ret rows), the type of a library field (field rows), the SLeeLa function
-   of an int shift, division and remainder (binop int rows), the 32-bit wrap
-   (the cast long int row) and the string conversion template of a double,
-   char or reference (tostr rows), every cast row, and the chartext rows (a
-   library parameter that takes a char as text). The `widen` rows are also read so both converter implementations share primitive invocation-conversion facts. When the
+   the same model that sleelactl java-convert reads. It indexes type and numeric
+   rank rows, unary promotion, binary/unary operator templates, primitive casts,
+   widening, context-aware identifier replacements, built-in qualification,
+   library result/field types, and primitive/reference text conversion. The
+   typed expression pass queries these shared laws rather than maintaining a
+   second primitive-semantics table. The `widen` rows are also read so both converter implementations share primitive invocation-conversion facts. When the
    file is missing the built-in defaults below are used and the report says so. >>
 #sleela 3.0
 material;
