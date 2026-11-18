@@ -154,11 +154,11 @@ IMPL_RE = re.compile(r"^  < ---- BEGIN java implementation.*?^  < ---- END java 
 IMPL_CTOR = r"^  (?:@\w+\s+)?(?:public |protected |private )?{cls}\s*\(([^)]*)\)"
 
 
-def impl_cover(impl: str, cls: str):
+def impl_cover(impl: str, cls: str, class_tvars: set | None = None):
     """Implementation methods and constructors indexed by accepted parameter kinds."""
     methods = sg.impl_sigs(impl)
     ctor_signatures = [
-        tuple(sg.kind(t, set()) for t in sg.param_types(params))
+        tuple(sg.kind(t, class_tvars or set()) for t in sg.param_types(params))
         for params in re.findall(IMPL_CTOR.format(cls=re.escape(cls)), impl, re.M)
     ]
     fields = set(dec.FIELD_DECL.findall(impl))
@@ -193,8 +193,8 @@ def erase(t: str) -> str:
     """The SLeeLa generics method (SLEELA.syntax 16.3, 38.1): erasure.
 
     A type variable or any parameterized / package-qualified reference type
-    erases to Any; java.lang.String erases to String; primitives stay; array
-    and varargs suffixes are kept on the erased element type."""
+    erases to Any; java.lang.String erases to String; primitives stay; Java
+    varargs become the equivalent one-dimensional array parameter."""
     t = ANNOT.sub("", t).strip()
     suffix = ""
     if t.endswith("..."):
@@ -338,7 +338,8 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
     """Build API stubs from an overload index without shadowing inherited logic."""
     lines = []
     taken = set(dec.ENVELOPE) | HELPERS
-    impl_methods, impl_ctors, impl_fields = impl_cover(impl, cls)
+    ctv = sg.tvar_names(sig["tparams"]) if sig else set()
+    impl_methods, impl_ctors, impl_fields = impl_cover(impl, cls, ctv)
     if api_by_name is not None and impl_texts is not None:
         inherited = sg.inherited_implementation_methods(t["name"], api_by_name, impl_texts)
         for name, kinds in inherited.items():
@@ -356,7 +357,6 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
     if sig is None:
         return lines, 0, 0, 0
 
-    ctv = sg.tvar_names(sig["tparams"])
     signature_groups, collisions = member_signature_index(sig)
     blocked_ctor_arities = set()
     if t["kind"] == "enum":
