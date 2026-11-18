@@ -78,7 +78,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
             "example.Child": {"name": "example.Child", "kind": "class", "super": None, "interfaces": ["example.Ready"]},
             "example.Ready": {"name": "example.Ready", "kind": "interface", "super": None, "interfaces": []},
         }
-        impl_texts = {"example.Ready": "  public default boolean ready(int value) { return true; }\n  private void hidden(int value) { }\\n  public abstract void abstractHelper(int value);"}
+        impl_texts = {"example.Ready": "  public default boolean ready(int value) { return true; }\n  private void hidden(int value) { }\n  public abstract void abstractHelper(int value);"}
         lines, constructors, methods, collisions = gen.member_blocks(
             t, sig, "Child", "", api, impl_texts
         )
