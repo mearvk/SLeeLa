@@ -55,7 +55,7 @@ Recent additions to the language, drivers, and standard library:
   JDK 28 source surfaces). Specification: [`lib/java/JAVA.SPEC.md`](lib/java/JAVA.SPEC.md);
   ledger: [`CONVERSION.PRINCIPLES.md`](docs/reference/CONVERSION.PRINCIPLES.md); measured
   status: [`JAVA.CONVERSION.STATUS.md`](docs/reference/JAVA.CONVERSION.STATUS.md).
-- **Syntax 3.1 (also written 3.01).** The current language edition adds
+- **Syntax 3.2.** The current language edition adds
   [`SLEELA.syntax`](SLEELA.syntax) §44 (character literals, array initializers,
   labeled `break` / `continue`, and `return` / `break` / `continue` that run
   `finally`), §45 (the `char` specification, with the `SLChar` library) and §46
@@ -312,7 +312,7 @@ interactive deployment workflow and all installation options, see
 ## V. Language and Runtime
 The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). Compiler/tool version and source syntax version are distinct: the source compiler accepts syntax **1.0 – 3.1**, and the committed `working-binaries/` toolchain (rebuilt 2026-11-13) reports the same range. The new API build is produced by `make api-docs`.
 
-- **Syntax 3.01 (the same edition as 3.1; the minor is an integer).** §44 character literals, array initializers, labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`; §45 the `char` specification; §46 the array specification (`a.length`, `new T[a][b]`).
+- **Syntax 3.2.** §44 character literals, array initializers, labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`; §45 the `char` specification; §46 the array specification (`a.length`, `new T[a][b]`).
 - **Syntax 3.0** consolidates the 1.0–2.9 surface into the current normative edition, preserving all feature-specific minimum gates. It adds the **`pure` and `gasoline` document markers** (§30) — a pair of bare, contextual, declarative-only Preonems that mean nearly the same thing, each marking the document's standing by its own honesty; method and constructor overload resolution (§40) and `this(...)`/`super(...)` delegation (§43.6); Java support (§43); and host-authorized Native Drive (§36). Below 3.0, a class that declares more than one constructor is rejected.
 - **Syntax 2.9** adds **`@mix` consequent fields** (§28): a class may declare multiple same-named instance fields when each carries `@mix`, understood as one indexed group (top-down `1,2,3,…` or manual `@mix(1,2,3,...)` whose index count must match the group).
 - **Carried forward:** the base-2 signed/unsigned wide-integer families `int32`..`int16777216` (§24) and `uint32`..`uint16777216` (§25) over the earlier `long`/`int64`/`int128` (§21); **keyword supporter documents** (§22); and the **Preonems** — the declarative-only document markers `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), `object`/`field` (§26), `pure`/`gasoline` (§30), and `artifact` (§35, legislature-grade standing graded unto time and space), collectively titled the Preonems (§26.1).
