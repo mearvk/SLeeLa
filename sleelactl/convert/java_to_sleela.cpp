@@ -966,8 +966,8 @@ private:
             // Java arrays are covariant in reference components. Strip one rank and
             // compare component types recursively: int[][] is Object[] (its elements
             // are int[] references), but int[] is not Object[].
-            Ty fromComponent=mk(from.n,from.dims-1);
-            Ty toComponent=mk(to.n,to.dims-1);
+            Ty fromComponent=from; fromComponent.dims--;
+            Ty toComponent=to; toComponent.dims--;
             if (fromComponent.dims==0 && isPrimitiveName(fromComponent.n)) {
                 return fromComponent==toComponent ? 0 : -1;
             }
