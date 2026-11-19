@@ -291,3 +291,8 @@ Explicit allocation type arguments are now retained in the constructed expressio
 ## Main-work continuation pointer — 2026-11-18
 
 The active implementation sequence, current `master` baseline, merged package/generic-resolution work, unmerged lower-bound patch reconciliation, and remaining semantic priorities are tracked in [CONVERTER.MAIN-WORK.PROGRESS.2026-11-18.md](CONVERTER.MAIN-WORK.PROGRESS.2026-11-18.md). CI and execution evidence remain deferred/unverified; release remains **HOLD**.
+
+
+### Qualified type identity fail-closed guard — 2026-11-18
+
+The Java converter's package-qualified type resolver now refuses a fully qualified source type when its simple suffix matches an indexed project declaration but the complete package identity does not. This prevents a name such as `fixture.missing.Widget` from silently binding to an unrelated indexed `fixture.alpha.Widget`. Exact indexed qualified matches still pass through duplicate-declaration and accessibility checks; qualified types with no colliding project simple name retain the existing subject-model path for external/JDK types. A javac-negative / converter-refusal / no-output regression fixture was added. The fixture and implementation have **not been executed**; no build, test, or CI result is claimed.

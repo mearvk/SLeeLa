@@ -415,5 +415,33 @@ else
   printf 'FAIL  duplicate-same-unit (rc=%s)\n%s\n' "$same_duplicate_rc" "$same_duplicate_out"; fail=$((fail+1))
 fi
 
+
+# a fully qualified name must not fall back to an unrelated project type with
+# the same simple name in a different package.
+mkdir -p "$tmp/qualified-mismatch/src/fixture/alpha" "$tmp/qualified-mismatch/src/fixture/use" "$tmp/qualified-mismatch/cls" "$tmp/qualified-mismatch/out"
+cat > "$tmp/qualified-mismatch/src/fixture/alpha/Widget.java" <<'JAVA'
+package fixture.alpha;
+public class Widget { public int value() { return 7; } }
+JAVA
+cat > "$tmp/qualified-mismatch/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+public class Main {
+  public static void main(String[] args) {
+    System.out.println(new fixture.missing.Widget().value());
+  }
+}
+JAVA
+if javac -d "$tmp/qualified-mismatch/cls" "$tmp/qualified-mismatch/src/fixture/alpha/Widget.java" "$tmp/qualified-mismatch/src/fixture/use/Main.java" 2> "$tmp/qualified-mismatch/javac.err"; then
+  printf 'FAIL  qualified-mismatch (javac unexpectedly accepted a nonexistent package type)\\n'; fail=$((fail+1))
+else
+  qualified_out="$("$conv" --jdk "$tmp/qualified-mismatch/src" --out "$tmp/qualified-mismatch/out" --quiet 2>&1)"
+  qualified_rc=$?
+  if [ "$qualified_rc" -eq 1 ] && printf '%s' "$qualified_out" | grep -q "\\[type-qualified-not-found\\]" && [ "$(find "$tmp/qualified-mismatch/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+    printf 'PASS  %-12s wrong-package qualified type refused instead of simple-name fallback\\n' "qualified-mismatch"; pass=$((pass+1))
+  else
+    printf 'FAIL  qualified-mismatch (rc=%s)\\n%s\\n' "$qualified_rc" "$qualified_out"; fail=$((fail+1))
+  fi
+fi
+
 echo "javaconv differential: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]
