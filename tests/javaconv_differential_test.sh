@@ -451,6 +451,31 @@ else
   printf 'FAIL  transaction (could not establish initial generation)\n'; fail=$((fail+1))
 fi
 
+# a public nested type is not accessible when an enclosing type is package-private.
+mkdir -p "$tmp/enclosing-access/src/fixture/hidden" "$tmp/enclosing-access/src/fixture/use" "$tmp/enclosing-access/cls" "$tmp/enclosing-access/out"
+cat > "$tmp/enclosing-access/src/fixture/hidden/HiddenOuter.java" <<'JAVA'
+package fixture.hidden;
+class HiddenOuter {
+  public static class PublicNested { }
+}
+JAVA
+cat > "$tmp/enclosing-access/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+import fixture.hidden.HiddenOuter.PublicNested;
+public class Main { PublicNested value; }
+JAVA
+if javac -d "$tmp/enclosing-access/cls" "$tmp/enclosing-access/src/fixture/hidden/HiddenOuter.java" "$tmp/enclosing-access/src/fixture/use/Main.java" 2> "$tmp/enclosing-access/javac.err"; then
+  printf 'FAIL  enclosing-access (javac unexpectedly accepted an inaccessible enclosing type)\\n'; fail=$((fail+1))
+else
+  enclosing_out="$("$conv" --jdk "$tmp/enclosing-access/src" --out "$tmp/enclosing-access/out" --quiet 2>&1)"
+  enclosing_rc=$?
+  if [ "$enclosing_rc" -eq 1 ] && printf '%s' "$enclosing_out" | grep -q "\\[type-access\\]" && [ "$(find "$tmp/enclosing-access/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+    printf 'PASS  %-12s inaccessible enclosing type blocks access to public nested type\\n' "enclosing-access"; pass=$((pass+1))
+  else
+    printf 'FAIL  enclosing-access (rc=%s)\\n%s\\n' "$enclosing_rc" "$enclosing_out"; fail=$((fail+1))
+  fi
+fi
+
 # duplicate declarations in the same compilation unit must be refused too
 mkdir -p "$tmp/duplicate-same/src" "$tmp/duplicate-same/out"
 cat > "$tmp/duplicate-same/src/Duplicate.java" <<'JAVA'
