@@ -78,18 +78,18 @@ The refusal rows are the `unsupported` records of the model.
 
 `tests/javaconv_differential_test.sh` (also `make -C sleelactl/convert test`):
 
-- `tests/java/*.java` (48 differential fixtures currently present) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
+- `tests/java/*.java` (49 differential fixtures currently present) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
   identical: Anon, Basics, Bounds, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested,
   ObjectText, Operands (191 lines of int/long/double/narrowing results), Records, Refs, Resources, Shapes, Strings,
-  Switches, Sync, Varargs, IdentifierParity, OverloadWidening, ReservedIdentifiers, GenericIdentity, BoxingOverload, GenericCommonReference, NestedGenericInference, BoundedGeneric, ClassGenericReceiver, InheritedGenericReceiver, WildcardGeneric, StaticImports, BoundedClassType, LowerBoundWildcardInference, GenericWildcardLowerBound, GenericConstructorExplicitArguments. The new generic fixtures and the updated `Refs` overload/method-reference fixture were changed after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
-- `tests/reject/*.java` (26 programs) must be refused with the construct named on their `// expect:` line
+  Switches, Sync, Varargs, IdentifierParity, OverloadWidening, ReservedIdentifiers, GenericIdentity, BoxingOverload, GenericCommonReference, NestedGenericInference, BoundedGeneric, ClassGenericReceiver, InheritedGenericReceiver, WildcardGeneric, StaticImports, BoundedClassType, LowerBoundWildcardInference, GenericWildcardLowerBound, GenericConstructorExplicitArguments, GenericConstructorClassSubstitution. The new generic fixtures and the updated `Refs` overload/method-reference fixture were changed after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
+- `tests/reject/*.java` (27 programs) must be refused with the construct named on their `// expect:` line
   and write nothing.
 - stale output: a file converted on one run and failing closed on the next leaves no `.sleela` behind.
 
 ## Status (honest)
 
 Converted and proven against a JDK (`tests/javaconv_differential_test.sh`, 22 programs plus 9 refusals and a
-stale-output check, 32 of 32 passing on 2026-11-13; in CI as `.github/workflows/java-convert.yml`). The later `IdentifierParity`, `OverloadWidening`, `ReservedIdentifiers`, `GenericIdentity`, `StaticImports`, and updated `Refs` fixtures, the `AmbiguousWideningOverload` and `BoundedGenericInference` refusal fixtures, and the overload-resolution/import changes, class-bound and deferred wildcard-lower-bound fixtures, the generic-constructor-diamond and generic-constructor-bound refusal fixtures, and the `BoxingOverload`, `GenericCommonReference`, `BoundedGeneric`, `NestedGenericInference`, `ClassGenericReceiver`, and `WildcardGeneric` fixtures have not yet been run:
+stale-output check, 32 of 32 passing on 2026-11-13; in CI as `.github/workflows/java-convert.yml`). The later `IdentifierParity`, `OverloadWidening`, `ReservedIdentifiers`, `GenericIdentity`, `StaticImports`, and updated `Refs` fixtures, the `AmbiguousWideningOverload` and `BoundedGenericInference` refusal fixtures, and the overload-resolution/import changes, class-bound and deferred wildcard-lower-bound fixtures, the generic-constructor-diamond and generic-constructor-bound refusal fixtures, the constructor class-substitution fixtures, and the `BoxingOverload`, `GenericCommonReference`, `BoundedGeneric`, `NestedGenericInference`, `ClassGenericReceiver`, and `WildcardGeneric` fixtures have not yet been run:
 integer, float, char and String semantics; `String.valueOf/join/format` (literal format); native `switch`
 (fallthrough, arrow cases, switch expressions); assignment and `++`/`--` as values; enums; varargs;
 try-with-resources; `synchronized`/`volatile` under `--single-thread`; arrays of any rank; anonymous
@@ -132,3 +132,8 @@ The following Java source forms are explicitly refused with construct-specific d
 - Annotation interface declarations.
 
 This is not a claim of complete JLS accessibility or Java language coverage. In particular, protected field receiver checks, all nested-type access combinations, static nested-type wildcard imports, module readability, and the remaining preview/newer Java constructs still require dedicated implementation and JDK differential fixtures.
+
+
+### Generic constructor class substitution (implementation only; 2026-11-18)
+
+Explicit allocation type arguments are now carried into the constructed expression's `Ty` and passed as the receiver type to constructor overload selection. This lets the existing class-type substitution machinery instantiate constructor parameter types before applicability and argument adaptation. If a class declares constructors but no constructor remains applicable after substitution, conversion fails closed with `[constructor-resolution]`. Explicit generic arguments on anonymous-class allocation remain refused with `[generic-constructor]` until that path has equivalent semantics. Added `GenericConstructorClassSubstitution.java` (positive) and `GenericConstructorClassSubstitutionConflict.java` (negative); fixture inventory is 49 positive / 27 refusal. No build, javac, differential test, or CI was run; this is NOT VERIFIED and production remains HOLD.
