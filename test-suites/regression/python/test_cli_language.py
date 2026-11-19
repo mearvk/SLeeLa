@@ -113,7 +113,7 @@ class ProgramTestCase(unittest.TestCase):
         if rs.sleela_binary() is None:
             raise unittest.SkipTest("no sleela binary (build impl/build/sleela or use working-binaries/)")
 
-    def run_program(self, source: str, name: str = "Prog", expect_rc: int = 0, syntax: str = "3.1"):
+    def run_program(self, source: str, name: str = "Prog", expect_rc: int = 0, syntax: str = rs.SYNTAX):
         d = rs.fresh_dir(name)
         path = rs.write_program(d, f"{name}.sleela", f"#sleela {syntax}\n{source}")
         cp = rs.run_sleela(["run", path.name], cwd=d)
@@ -446,8 +446,8 @@ class Ex {
             fields = "\n".join(f"    int f{i};" for i in range(n))
             return f"class Wide {{\n{fields}\n    void main() {{ print(\"ok\"); }}\n}}"
         d = rs.fresh_dir("wide")
-        ok = rs.write_program(d, "Wide64.sleela", "#sleela 3.1\n" + source(64).replace("Wide", "Wide64"))
-        bad = rs.write_program(d, "Wide65.sleela", "#sleela 3.1\n" + source(65).replace("Wide", "Wide65"))
+        ok = rs.write_program(d, "Wide64.sleela", rs.HEADER + source(64).replace("Wide", "Wide64"))
+        bad = rs.write_program(d, "Wide65.sleela", rs.HEADER + source(65).replace("Wide", "Wide65"))
         for mode in ("check", "run"):
             self.assertEqual(rs.run_sleela([mode, ok.name], cwd=d).returncode, 0, f"64 fields must be accepted by {mode}")
         results = {m: rs.run_sleela([m, bad.name], cwd=d) for m in ("check", "run")}
@@ -481,9 +481,9 @@ class Pe {
 
     def test_string_compound_assignment_other_than_plus_is_still_rejected(self):
         d = rs.fresh_dir("strminus")
-        p = rs.write_program(d, "Sm.sleela", '#sleela 3.1\nclass Sm { void main() { String s = "a"; s -= 1; print(s); } }')
+        p = rs.write_program(d, "Sm.sleela", rs.HEADER + 'class Sm { void main() { String s = "a"; s -= 1; print(s); } }')
         self.assertNotEqual(rs.run_sleela(["run", p.name], cwd=d).returncode, 0)
-        p = rs.write_program(d, "Si.sleela", '#sleela 3.1\nclass Si { void main() { int n = 1; n += "x"; print(n); } }')
+        p = rs.write_program(d, "Si.sleela", rs.HEADER + 'class Si { void main() { int n = 1; n += "x"; print(n); } }')
         self.assertNotEqual(rs.run_sleela(["run", p.name], cwd=d).returncode, 0)
 
 
@@ -507,7 +507,7 @@ class ArrayText(ProgramTestCase):
 
     def run_bounded(self, source: str, name: str):
         d = rs.fresh_dir(name)
-        rs.write_program(d, f"{name}.sleela", "#sleela 3.1\n" + source)
+        rs.write_program(d, f"{name}.sleela", rs.HEADER + source)
         try:
             cp = rs.run_sleela(["run", f"{name}.sleela"], cwd=d, timeout=60)
         except subprocess.TimeoutExpired:

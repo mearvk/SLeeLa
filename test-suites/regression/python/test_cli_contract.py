@@ -1,6 +1,6 @@
 """Command-line contract of the `sleela` compiler/runtime.
 
-Covers: version/syntax gating (SL-META-0001 section 4.4), the syntax 3.1
+Covers: version/syntax gating (SL-META-0001 section 4.4), the syntax 3.1 and 3.2
 fixtures, subcommand error handling, the fail-closed SHA-256 execution gate,
 and the persistent artifact format (`compile`, `validate-artifact`, `run`).
 Fixtures are the ones committed under impl/tests/; they are copied into scratch
@@ -38,7 +38,7 @@ def run_fixture(directory: Path, name: str, mode: str = "run"):
 
 class VersionGating(NeedsCompiler):
     """impl/tests/version/run_version_tests.sh, as a table with exit-code assertions."""
-    ACCEPTED = ["syntax_1_0", "syntax_1_2", "syntax_1_3", "syntax_1_4", "syntax_3_0", "syntax_3_1", "syntax_3_01",
+    ACCEPTED = ["syntax_1_0", "syntax_1_2", "syntax_1_3", "syntax_1_4", "syntax_3_0", "syntax_3_1", "syntax_3_01", "syntax_3_2",
                 "syntax_missing", "material_2_5", "memory_2_5", "wide_integers", "int_double_widening",
                 "determine_2_6", "pure_3_0", "gasoline_3_0"]
     REJECTED = ["syntax_0_9", "too_new", "minor_ahead", "material_too_early", "memory_too_early",
@@ -69,7 +69,7 @@ class VersionGating(NeedsCompiler):
         low = rs.diagnostics(run_fixture(self.dir, "syntax_0_9.sleela"))
         high = rs.diagnostics(run_fixture(self.dir, "minor_ahead.sleela"))
         self.assertIn("1.0", low)
-        self.assertIn("3.1", high)
+        self.assertIn(rs.SYNTAX, high)       # the diagnostic names the ceiling
 
     def test_version_command_states_the_supported_range(self):
         cp = rs.run_sleela(["version"], cwd=self.dir)
@@ -77,7 +77,7 @@ class VersionGating(NeedsCompiler):
         banner = cp.stdout
         self.assertIn("SLeeLa", banner)
         self.assertIn("supported source syntax 1.0", banner)
-        self.assertIn("3.1", banner)
+        self.assertIn(rs.SYNTAX, banner)
 
     def test_unknown_pragma_edition_does_not_change_the_result_of_check(self):
         cp = run_fixture(self.dir, "syntax_1_3.sleela", "check")
@@ -86,27 +86,18 @@ class VersionGating(NeedsCompiler):
         self.assertIn("1.3", cp.stdout)
 
 
-class Syntax31Fixtures(NeedsCompiler):
-    """impl/tests/syntax31: char literals, array initialisers, multi-dimensional
-    arrays, labelled statements, finally on abrupt completion, and the 3.0
-    gates that must reject them."""
-    REJECT = {
-        "gate_length_in_3_0": ("check", "the array length member requires #sleela 3.1"),
-        "gate_nd_in_3_0": ("check", "multi-dimensional array creation requires #sleela 3.1"),
-        "bad_nd_sized_after_unsized": ("check", "array dimension expression after an empty"),
-        "bad_nd_negative": ("run", "negative array size"),
-        "bad_length_assign": ("check", "the array length is read-only"),
-        "bad_length_incr": ("check", "the array length is read-only"),
-        "gate_char_in_3_0": ("check", "character literal requires #sleela 3.1"),
-        "gate_label_in_3_0": ("check", "labeled statement requires #sleela 3.1"),
-        "gate_arrayinit_in_3_0": ("check", "array initializer requires #sleela 3.1"),
-        "bad_label": ("check", "break to undefined label 'nowhere'"),
-    }
+class EditionFixtures:
+    """Shared driver for an impl/tests/syntaxNN directory: every fixture either has
+    <name>.expected.txt (it must run and print exactly that) or is in REJECT (it must be
+    refused with the stated message). Mirrors impl/tests/syntaxNN/run_syntaxNN_tests.sh.
+    A mixin (not a TestCase), so the loader does not collect it on its own."""
+    SUBDIR = ""
+    REJECT: dict = {}
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.src = TESTS / "syntax31"
+        cls.src = TESTS / cls.SUBDIR
 
     def fixture_dir(self, label):
         d = rs.fresh_dir(label)
@@ -117,14 +108,15 @@ class Syntax31Fixtures(NeedsCompiler):
     def test_every_fixture_is_covered_by_this_table_or_has_expected_output(self):
         names = {p.stem for p in self.src.glob("*.sleela")}
         covered = set(self.REJECT) | {p.name[: -len(".expected.txt")] for p in self.src.glob("*.expected.txt")}
-        self.assertEqual(names - covered, set(), "new syntax31 fixture without an expectation")
+        self.assertEqual(names - covered, set(), f"new {self.SUBDIR} fixture without an expectation")
+        self.assertEqual(set(self.REJECT) - names, set(), f"{self.SUBDIR}: table names a fixture that does not exist")
 
     def test_programs_produce_their_expected_output(self):
         names = sorted(p.name[: -len(".expected.txt")] for p in self.src.glob("*.expected.txt"))
-        self.assertGreaterEqual(len(names), 5)
+        self.assertGreaterEqual(len(names), 3)
 
         def one(name):
-            d = self.fixture_dir("s31-" + name)
+            d = self.fixture_dir(f"{self.SUBDIR}-" + name)
             cp = run_fixture(d, name + ".sleela")
             return name, cp, (self.src / f"{name}.expected.txt").read_text().splitlines()
         for name, cp, want in parallel(one, names):
@@ -134,11 +126,37 @@ class Syntax31Fixtures(NeedsCompiler):
     def test_gates_and_malformed_programs_are_rejected_with_the_documented_message(self):
         def one(item):
             name, (mode, message) = item
-            d = self.fixture_dir("s31g-" + name)
+            d = self.fixture_dir(f"{self.SUBDIR}g-" + name)
             return name, message, run_fixture(d, name + ".sleela", mode)
         for name, message, cp in parallel(one, sorted(self.REJECT.items())):
             self.assertNotEqual(cp.returncode, 0, f"{name} must be rejected")
             self.assertIn(message, cp.stdout + cp.stderr, name)
+
+
+class Syntax31Fixtures(EditionFixtures, NeedsCompiler):
+    """impl/tests/syntax31: char literals, array initialisers, labelled statements, finally on
+    abrupt completion, and the 3.0 gates that must reject them."""
+    SUBDIR = "syntax31"
+    REJECT = {
+        "gate_char_in_3_0": ("check", "character literal requires #sleela 3.1"),
+        "gate_label_in_3_0": ("check", "labeled statement requires #sleela 3.1"),
+        "gate_arrayinit_in_3_0": ("check", "array initializer requires #sleela 3.1"),
+        "bad_label": ("check", "break to undefined label 'nowhere'"),
+    }
+
+
+class Syntax32Fixtures(EditionFixtures, NeedsCompiler):
+    """impl/tests/syntax32: typed char text, multi-dimensional arrays, `a.length`, the lib/array and
+    lib/char packages, and the 3.1 gates that must reject the 3.2 features."""
+    SUBDIR = "syntax32"
+    REJECT = {
+        "gate_length_in_3_1": ("check", "the array length member requires #sleela 3.2"),
+        "gate_nd_in_3_1": ("check", "multi-dimensional array creation requires #sleela 3.2"),
+        "bad_nd_sized_after_unsized": ("check", "array dimension expression after an empty"),
+        "bad_nd_negative": ("run", "negative array size"),
+        "bad_length_assign": ("check", "the array length is read-only"),
+        "bad_length_incr": ("check", "the array length is read-only"),
+    }
 
 
 class CommandLineErrors(NeedsCompiler):
@@ -146,11 +164,11 @@ class CommandLineErrors(NeedsCompiler):
     def setUpClass(cls):
         super().setUpClass()
         cls.dir = rs.fresh_dir("cli")
-        rs.write_program(cls.dir, "Ok.sleela", '#sleela 3.1\nclass Ok { void main() { print("hi"); } }')
-        rs.write_program(cls.dir, "Syn.sleela", '#sleela 3.1\nclass Syn { void main() { print("hi" } }')
-        rs.write_program(cls.dir, "Sem.sleela", "#sleela 3.1\nclass Sem { void main() { print(undefinedVar); } }")
-        rs.write_program(cls.dir, "NoMain.sleela", "#sleela 3.1\nclass NoMain { void f() { } }")
-        rs.write_program(cls.dir, "Side.sleela", '#sleela 3.1\nclass Side { void main() { print("SIDE-EFFECT"); } }')
+        rs.write_program(cls.dir, "Ok.sleela", rs.HEADER + 'class Ok { void main() { print("hi"); } }')
+        rs.write_program(cls.dir, "Syn.sleela", rs.HEADER + 'class Syn { void main() { print("hi" } }')
+        rs.write_program(cls.dir, "Sem.sleela", rs.HEADER + "class Sem { void main() { print(undefinedVar); } }")
+        rs.write_program(cls.dir, "NoMain.sleela", rs.HEADER + "class NoMain { void f() { } }")
+        rs.write_program(cls.dir, "Side.sleela", rs.HEADER + 'class Side { void main() { print("SIDE-EFFECT"); } }')
 
     def test_no_arguments_and_unknown_subcommand_are_usage_errors(self):
         self.assertEqual(rs.run_sleela([], cwd=self.dir).returncode, 2)
@@ -199,7 +217,7 @@ class ExecutionGate(NeedsCompiler):
     def setUpClass(cls):
         super().setUpClass()
         cls.dir = rs.fresh_dir("gate")
-        rs.write_program(cls.dir, "G.sleela", '#sleela 3.1\nclass G { void main() { print("RAN"); } }')
+        rs.write_program(cls.dir, "G.sleela", rs.HEADER + 'class G { void main() { print("RAN"); } }')
         import json
         good = json.loads(rs.fast_manifest().read_text())
         bad = json.loads(json.dumps(good))
@@ -320,7 +338,7 @@ class Artifacts(NeedsCompiler):
         self.assertNotIn("ART-OK", cp.stdout)
 
     def test_compile_failure_leaves_no_artifact(self):
-        rs.write_program(self.dir, "broken.sleela", "#sleela 3.1\nclass B { void main() { print( } }")
+        rs.write_program(self.dir, "broken.sleela", rs.HEADER + "class B { void main() { print( } }")
         cp = rs.run_sleela(["compile", "broken.sleela", "-o", "broken.out"], cwd=self.dir)
         self.assertNotEqual(cp.returncode, 0)
         self.assertFalse((self.dir / "broken.out").exists())

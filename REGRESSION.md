@@ -125,6 +125,14 @@ Final result: full set 211 tests, 0 failed, 206 s, against the rebuilt `working-
 - Windows and macOS builds of the POSIX-only suites (see above).
 - The C target has no objects; the Java target has no arrays or objects.
 
+## Syntax 3.2 follow-up (19 November 2026)
+
+Master moved 706 commits (ChatGPT session, no shell). On arrival the integrity manifest did not match 14 files and
+13 of 209 fast regression tests failed, because 3.2 now gates `a.length` and `new T[a][b]`. After review the manifest
+was regenerated, a stale Nordshrift fixture fixed, the regression set moved to the current edition, and
+`working-binaries/` rebuilt as `1.0121` (syntax 1.0 – 3.2). Full set: 214 tests, 0 failed. Details:
+`test-suites/regression/PROGRESS.NOVEMBER.18.2026.md`, "Follow-up with a shell".
+
 ## Verification pass (before the repair)
 
 On `master` at `17814fc4` with the then-committed binary: fast set 111/111 (81 s), full set 113/113 (155 s); the compiler rebuilt from `impl/` was byte-identical to `working-binaries/sleela`; `check-manifest` OK. This matched `test-suites/regression/PROGRESS.NOVEMBER.17.2026.md`.

@@ -1,7 +1,7 @@
 # Binary version identities
 
 **Registry edition:** 1.0121  
-**Effective date:** 2026-11-18  
+**Effective date:** 2026-11-19  
 **Repository:** `mearvk/SLeeLa`
 
 This registry separates a shipped binary's artifact identity from the product
@@ -49,18 +49,18 @@ The 1.0121 assignments are registry identities. They do not alter byte payloads.
 The class and data artifacts should be regenerated from their owning sources when
 those projects next build. The old IntelliJ JAR is explicitly not represented as
 rebuilt: its source build identity is 1.012, while the committed JAR still needs
-replacement. The two SLeeLa toolchain binaries remain product-versioned and
-must be rebuilt to carry the current Syntax 3.2 source gate.
+replacement. The two SLeeLa toolchain binaries were rebuilt from the Syntax 3.2 source tree on
+2026-11-19 and now carry `SLEELA-BIN-1.0121` and `NORDSHRIFT-BIN-1.0121` (see below).
 
 ## New identities
 
 The concrete identities for every inventoried payload are recorded in `binary-identities.json`; this section names the primary toolchain identities:
 
-- `SLEELA-BIN-1.012` — SLeeLa compiler/runtime executable artifact identity.
-- `NORDSHRIFT-BIN-1.012` — Nordshrift executable artifact identity.
-- `SLEELA-BIN-1.0121` — next source-built SLeeLa runtime artifact (`impl/build/sleela`).
+- `SLEELA-BIN-1.012` — the previous `working-binaries/sleela` payload (`1.3.2-pro`, syntax up to 3.1); superseded.
+- `NORDSHRIFT-BIN-1.012` — the previous `working-binaries/nordshrift` payload; superseded.
+- `SLEELA-BIN-1.0121` — current `working-binaries/sleela`, built from `impl/` (`1.0121`, syntax 1.0 – 3.2), SHA-256 `7608bd9cc3a85628ec28c81f490c38c876003349447281c286cc19788ae70483`.
 - `SLEELAVC-BIN-1.0121` — next source-built Sleelvac compiler artifact (`impl/build/sleelvac`).
-- `NORDSHRIFT-BIN-1.0121` — next source-built Nordshrift artifact (`impl/build/nordshrift`).
+- `NORDSHRIFT-BIN-1.0121` — current `working-binaries/nordshrift`, built from `impl/` (`2.7.1-dev`, drives syntax up to 3.2), SHA-256 `21f3740dd6d4a18f4e5506346a62a4e23418063a8f617c96b96607f2d4199507`.
 - `SLEELA-TERMINAL-GUI-BIN-1.0121` — next GUI executable (`sleela-terminal/build/SleelaTerminal`).
 - `SLEELA-TERMINAL-SHELL-BIN-1.0121` — shell executable (`sleela-terminal/build/slsh`), exposed by `slsh --version`.
 - `SLEELA-UNVERSIONED-BIN-1.0121` — reserved initial identity for any
@@ -69,3 +69,11 @@ The concrete identities for every inventoried payload are recorded in `binary-id
   previously unversioned Nordshrift binary discovered during inventory.
 
 The 1.0121 identities are assigned to the inventoried unversioned artifacts. Any newly discovered unversioned binary must receive a concrete name, path, platform, architecture, SHA-256, and 1.0121 identity before publication. SHA-256 values must be computed from the actual payload at build time; Git blob SHA-1 values are not substitutes.
+
+## Rebuild record (2026-11-19)
+
+Both toolchain payloads were rebuilt on Linux x86-64 (GCC 11.5) from `master` after the integrity manifest was
+regenerated and `make check-manifest` printed OK. The checks this policy requires before a Syntax 3.2 claim:
+`make test-version`, `impl/tests/syntax32/run_syntax32_tests.sh` (and `syntax31`), `make test-opcode-registry`,
+`make test-runtime`, `make test-osls-vm` and `make test-sleela` all pass, as do `test-nordshrift`
+(+ `-compiler`, `-semantic`, `-compat`, `-e2e`) and the full regression set (214 tests, with mutation testing).

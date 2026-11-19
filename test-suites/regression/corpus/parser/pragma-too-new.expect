@@ -4,4 +4,4 @@ expect: reject
 command: check
 message: exceeds this compiler's supported range
 reference: impl/frontend/version.cpp
-note: One minor above the ceiling.
+note: One minor above the ceiling (3.2), so 3.3.

@@ -245,3 +245,25 @@ PR #372 was not merged wholesale. Its lower-bound inference implementation overl
 - `parseNew()` now retains every dotted segment in the allocated type name and resolves the complete qualified name through the package-aware type resolver. This supports indexed package-qualified top-level allocations and fully qualified nested allocations rather than silently replacing the prefix with the final identifier.
 - Extended the existing cross-package package-import harness fixture with `new fixture.alpha.AlphaBase()` and `new fixture.alpha.AlphaBase.Nested()` plus fully qualified declarations, so the future authorized differential run will compare these against javac.
 - This is a resolver-use improvement, not the canonical-key migration. `SymbolTable::classes` remains keyed by simple/hoisted names; same-simple-name declarations in distinct packages still cannot retain separate metadata. No build/test/CI was run by user direction; production remains HOLD.
+
+
+---
+
+## Follow-up with a shell (19 November 2026)
+
+**Master observed:** `2eec3c06` (706 commits after the November 17 record).
+
+| Gate | Result |
+|---|---|
+| Committed integrity manifest | FAILED on arrival: 14 files changed after `367ebfdc` (version strings, 3.1 to 3.2 comments, an absolute `cmd.exe` path in `terminal_platform_smoke.c`, `lib/array` and `lib/char` headers, four `lib/java/converter` classes). Reviewed; no unexpected content. Manifest regenerated; `make check-manifest` OK. |
+| Runtime and Nordshrift build | PASS (`impl/build/sleela` reports `1.0121`, syntax 1.0 – 3.2) |
+| `test-nordshrift-compat` | FAILED on arrival: `compat-new.sst` declared 3.3 but its source `src/compat-new/main.sleela` still said `#sleela 3.2`, which is now in range. Source moved to 3.3; PASS. |
+| Regression set, fast, first run | 13 of 209 failed. Ten used `a.length` or `new T[a][b]` under `#sleela 3.1` (3.2 now gates them), two expected 3.1 as the ceiling, one was the manifest. |
+| Regression set updated | The suites read the current edition from `impl/frontend/version.h` (`regression_support.SYNTAX`/`HEADER`); the 3.1 and 3.2 fixture tables are separate (`Syntax31Fixtures`, `Syntax32Fixtures`); `syntax_3_2` is an accepted version; `PARSE-PRAGMA-FUTURE` uses 3.3. |
+| `working-binaries/` | Rebuilt: `SLEELA-BIN-1.0121`, `NORDSHRIFT-BIN-1.0121`; `binary-identities.json`, `VERSION-IDENTITIES.md`, README and the toolchain steering doc updated. |
+| Policy checks before a 3.2 claim | `test-version`, syntax 3.1 and 3.2 fixture scripts, `test-opcode-registry`, `test-runtime`, `test-osls-vm`, `test-sleela`, `test-nordshrift` (+ `-compiler`, `-semantic`, `-compat`, `-e2e`), `test-syntax-1.8`: all PASS. |
+| Full regression set (with mutation testing), `working-binaries/sleela` | **214 tests, 0 failed, 0 skipped, 357 s** |
+
+Platform: Linux x86-64, GCC 11.5. Windows and macOS were not built. The converter, JDK 28, Java differential and
+transactional gates listed in the "Next steps" above were not run in this follow-up; the production HOLD stands
+for those.

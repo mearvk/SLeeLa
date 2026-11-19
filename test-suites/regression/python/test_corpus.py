@@ -84,7 +84,7 @@ def file_cases() -> List[Case]:
     return out
 
 
-HEADER = "#sleela 3.1\n"
+HEADER = rs.HEADER
 
 
 def program(body: str) -> str:
@@ -151,7 +151,7 @@ GENERATED = [
         "A 50,000-character identifier runs end to end.", command="run", output="1",
         ref="impl/frontend/driver.cpp (loadReferencedLibraryUnits)", defect="REGEX-STACK-OVERFLOW"),
     gen("PARSE-OK-CRLF", "parser-acceptance", "accept",
-        lambda: '#sleela 3.1\r\npublic class A {\r\n  void main() {\r\n    print("ok");\r\n  }\r\n}\r\n',
+        lambda: rs.HEADER.rstrip("\n") + '\r\npublic class A {\r\n  void main() {\r\n    print("ok");\r\n  }\r\n}\r\n',
         "A file with Windows line endings is the same program. Generated because the repository normalizes text files to LF.",
         command="run", output="ok", ref="impl/frontend/lexer.cpp"),
     gen("LIMIT-MANY-CLASSES", "resource-limits", "accept",

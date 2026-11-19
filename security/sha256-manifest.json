@@ -503,7 +503,7 @@
     },
     {
       "path": "impl/core/terminal_platform_smoke.c",
-      "sha256": "458fde6f3f5cdac850c543fc8af387ee8bf8281605d9eb0b5cd01beed7c33602"
+      "sha256": "3a1c94ac503ea294e93fc904d7bbaa0ea07f725c7e119da1a40932978de5df1e"
     },
     {
       "path": "impl/core/thread_platform_smoke.c",
@@ -559,7 +559,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "8ad061b2e28d85402852f51b91a6c69c44c316aecc85c62135b004ca8e397005"
+      "sha256": "abe460493e0cac0af5918f051c597a39d2814d24e79a0890edd59d020ad8ce4b"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -575,7 +575,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "eb56ecd22b072271a68d672cea0f3f8f8e1c7f09d72c78484651ce7c728e4539"
+      "sha256": "9d6b6ab83a3797bb367a6fa9ff1ebcd1cc33dcfcd83767077b02f43a06e5760b"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -691,7 +691,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "bd5c461255a9c17bd3aefaef66d24f72f0760244f7b31eafa8dc780548c596d4"
+      "sha256": "039ac0eab65bdf2acedcc814008211ddb69b4253775491a36a10b37533c28761"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -775,7 +775,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "992a77bbf25c83e465488e8edf6babbe3056def4dd27ea8c939e3ef6388d85f0"
+      "sha256": "e2f2b4f20d61cbe87c1e74209533b35b91b15f2abd2aec6a058937064c83ad8c"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -1983,7 +1983,7 @@
     },
     {
       "path": "lib/array/SLPackage.sleela",
-      "sha256": "010951e94924d5e601c7bf97c4e42dbed70e733dc2551b6fa7f2376daaba69e8"
+      "sha256": "30cf497ac5b80ac5f17cb5ecff8c4b543b700cfd4aab8b9a9cd669383de955e1"
     },
     {
       "path": "lib/array/SLRefArray.sleela",
@@ -3295,7 +3295,7 @@
     },
     {
       "path": "lib/char/SLPackage.sleela",
-      "sha256": "c096c13d3cfb81edc0a21a659403c7c8e1b5f6fea8604cbc95ae46c55d568bfb"
+      "sha256": "fb7a6a7bc4bdf9f0a7d7c07e267f46168bfe0562623b7759c7538a4a3d282d17"
     },
     {
       "path": "lib/character-recognition/SLCharacterRecognition.sleela",
@@ -9471,7 +9471,7 @@
     },
     {
       "path": "lib/java/converter/JConvExpr.sleela",
-      "sha256": "66ee58bf611a159ecfabfedc8cb2900d99155a18fdbb5eeca3742f756441aa4d"
+      "sha256": "176589a5188916539d62b904dc737383900ff24b51f7b9243039b2874e654d2d"
     },
     {
       "path": "lib/java/converter/JConvLambda.sleela",
@@ -9487,7 +9487,7 @@
     },
     {
       "path": "lib/java/converter/JConvModel.sleela",
-      "sha256": "6404ce2c78ae0311a124b06311176b68d64c70a1b9f97ba912e9019bd6d5ec94"
+      "sha256": "c55a72bb91519b2fb2f306ae86776e22d5e68a9a5813ed3a2fc5ac5a86fe0a20"
     },
     {
       "path": "lib/java/converter/JConvOuter.sleela",
@@ -9499,11 +9499,11 @@
     },
     {
       "path": "lib/java/converter/JConvRewriter.sleela",
-      "sha256": "7f5d6024a6c3341164c9e6c8b0bd873c4cef3c89edb3190ede6b0d2d458e735b"
+      "sha256": "3889aa993141a97a5ccd4575399869b4cc0b6a26f5103601187edb9f94e32964"
     },
     {
       "path": "lib/java/converter/JConvRules.sleela",
-      "sha256": "0d7913a445dbd041fc3e79282043abeb9adeb541c7f0ac663f7ab0feb71483d1"
+      "sha256": "f66248f068e93118a0efc33f14e83fac7e6fdf32e4725ddbee336c4558e4c4da"
     },
     {
       "path": "lib/java/converter/JConvSource.sleela",
@@ -73459,7 +73459,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "e790937e0f121761179f0ae258a8aecdc998aed341f90d34ba933d3d5373a40b"
+      "sha256": "56893fa2a671d2e64b8c058ebf18f6a7677215bb07b107f2139a230de30bc96b"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",
@@ -73883,7 +73883,7 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmPremiumVersion.sleela",
-      "sha256": "114aece8051978f3bfffe6168bf3f7c9e43400434e0aa80d2f8373bf5206ed0c"
+      "sha256": "d132fa56f50b7aeb8b3e2f439b5322d4be5c7938c350dc32ca1f3925aa2a9f89"
     },
     {
       "path": "lib/vm/src/sleela/SLVmProfile.sleela",
@@ -73915,7 +73915,7 @@
     },
     {
       "path": "lib/vm/src/sleela/SLVmVersion.sleela",
-      "sha256": "642ba2beaf9255873ebeac362c5dd18e94a47d6dd13ebf7aba3970c0d89a4bde"
+      "sha256": "115767fbf518ee2728c8f22c6719b3ddd36be2d412fe4b8b05e4c15334b3770c"
     },
     {
       "path": "lib/vm/src/sleela_vm_builder.cpp",

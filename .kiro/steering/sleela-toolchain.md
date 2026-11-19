@@ -26,14 +26,14 @@ the integrity-gated source build.
 The toolchain is **two** native executables. The committed copies in
 [`/working-binaries/`](../../working-binaries/) report:
 
-- **`sleela`** — committed payload reports `SLeeLa™ Language/Runtime 1.3.2-pro`
-  and supports source syntax only through **3.1**. It is stale relative to the current
-  source tree; rebuild it before relying on Syntax 3.2. Source builds now use
-  tool identity **1.0121** and accept syntax **1.0 – 3.2**.
+- **`sleela`** — `SLeeLa™ Language/Runtime 1.0121`, the authoritative compiler/runner,
+  **supported source syntax 1.0 – 3.2** (rebuilt from `impl/` on 2026-11-19; artifact
+  identity `SLEELA-BIN-1.0121`). Syntax 3.2 gates `a.length`, `new T[a][b]` and typed char
+  text, which were 3.1 features in earlier builds.
   Subcommands: `check <f>`, `run <f>`, `compile <f...> -o <out>`,
   `validate-artifact <f>`, `nordshrift [--emit|--roundtrip] [--target=…] <f>`,
   `version`. (Older builds branded this binary "Sleelvac™" and capped syntax at
-  2.9; the current build raises the ceiling to 3.1.)
+  2.9; the current build raises the ceiling to 3.2.)
 - **`nordshrift`** — `Nordshrift 2.7.1-dev`, the SLeeLa `.sst` transpiler driver
   (NS-SST-0001 spec 2.2), which **drives SLeeLa source syntax up to 3.2**.
   Subcommands: `check <sheet.sst>`, `build <sheet.sst>`, `objects`,

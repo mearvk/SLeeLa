@@ -33,6 +33,21 @@ LOGS = BUILD / "logs"
 SCRATCH = BUILD / "scratch" / f"run-{os.getpid()}"
 
 CORE = ROOT / "impl" / "core"
+
+
+def _current_syntax() -> str:
+    """The ceiling of the supported range, read from impl/frontend/version.h, so the CLI suites write
+    programs for the current edition (features move between editions: 3.2 took `a.length` and
+    `new T[a][b]` from 3.1)."""
+    text = (ROOT / "impl" / "frontend" / "version.h").read_text(encoding="utf-8")
+    m = re.search(r"range the toolchain drives:\s*\d+\.\d+\s*\.\.\s*(\d+\.\d+)", text)
+    if not m:
+        raise RuntimeError("supported syntax range not found in impl/frontend/version.h")
+    return m.group(1)
+
+
+SYNTAX = _current_syntax()          # e.g. "3.2"
+HEADER = f"#sleela {SYNTAX}\n"      # pragma line for programs the suites generate
 FRONTEND = ROOT / "impl" / "frontend"
 
 CC = os.environ.get("CC", "cc")
