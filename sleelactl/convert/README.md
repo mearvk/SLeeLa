@@ -142,3 +142,8 @@ Explicit allocation type arguments are now carried into the constructed expressi
 ### Qualified constructor allocation type names (implementation only; 2026-11-18)
 
 `new` parsing now retains the complete dotted type name rather than discarding package/enclosing-type segments. Indexed qualified names are resolved through the package-aware resolver, including nested types such as `fixture.alpha.AlphaBase.Nested`; unindexed library names continue to fall back to their terminal type name for model resolution. The package-import differential harness now also includes fully qualified top-level and nested allocations. This does not complete canonical symbol identity: the underlying project class store is still simple/hoisted-name keyed and same-simple-name declarations across packages cannot coexist reliably. No build or test was run; NOT VERIFIED / HOLD.
+
+
+### Overload-resolution status (implementation only; 2026-11-18)
+
+The resolver separates strict fixed-arity, loose fixed-arity (boxing/unboxing), and variable-arity applicability phases. The latest selection correction compares applicable candidates by instantiated parameter specificity rather than using aggregate conversion distance as a tie-breaker; variable-arity specificity uses effective component parameters. This remains partial: maximal-candidate selection across three or more candidates, complete generic/poly-expression inference, method-reference adaptation, and comprehensive inherited/boxing/unboxing/varargs differential coverage remain open. No build, test, javac run, or CI was performed for this change. **NOT VERIFIED; production HOLD.**
