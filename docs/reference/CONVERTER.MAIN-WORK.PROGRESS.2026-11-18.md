@@ -55,3 +55,8 @@ Port/reconcile those changes selectively onto current master after reviewing the
 - Do not start CI, builds, or test campaigns until explicitly requested.
 - Do not report fixtures as passes merely because they were added.
 - Keep the C++ whole-file refusal counts, SLeeLa-native stub counts, implemented-member counts, and behaviorally verified counts separate.
+
+
+## Incremental implementation completed in source — qualified type fail-closed guard
+
+A focused resolver correction was prepared on branch `work/java-qualified-type-fail-closed-2026-11-18`: exact package-qualified matches retain their existing accessibility/duplicate checks, while a nonmatching qualified name whose simple suffix exists in the project index now raises `[type-qualified-not-found]` rather than falling back to that unrelated simple-name declaration. A differential refusal fixture checks javac rejection, the converter diagnostic, and absence of generated SLeeLa files. This reduces accidental cross-package binding but **does not implement canonical package-qualified symbol storage or allow same-simple-name package declarations to coexist**. No build/test/CI was run per the user's hold.
