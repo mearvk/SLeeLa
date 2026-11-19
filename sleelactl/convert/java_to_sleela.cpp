@@ -111,6 +111,8 @@ private:
     std::map<std::string, std::string> importedTypes_;
     std::map<std::string, std::vector<std::string>> staticImports_;
     std::vector<std::string> staticWildcardImports_;
+    std::map<std::string, std::vector<std::string>> staticNestedTypeImports_;
+    std::vector<std::string> staticWildcardTypeOwners_;
     std::vector<std::string> wildcardTypeImports_;
     std::string packageName_;
     int pendingGenericClosers_ = 0;
@@ -245,6 +247,40 @@ private:
         }
         if (local != classes.end() && local->second.ambiguous)
             throw ConvErr{cur().line, cur().col, "type-ambiguous", "the simple type name '" + n + "' is declared by multiple source units and cannot be selected by this compilation unit"};
+        // A static import of Outer.Nested imports a type, not a static member.
+        // Resolve it before the legacy simple-name nested index, which deliberately
+        // reports collisions across unrelated enclosing types.
+        std::vector<std::string> staticNestedMatches;
+        auto explicitNested = staticNestedTypeImports_.find(n);
+        if (explicitNested != staticNestedTypeImports_.end()) {
+            for (const std::string& qualified : explicitNested->second) {
+                const std::string resolved = resolveQualifiedTypeName(qualified);
+                if (resolved != n) staticNestedMatches.push_back(resolved);
+            }
+        }
+        for (const auto& entry : classes) {
+            const ClassInfo& info = entry.second;
+            if (!info.isStaticNested || info.enclosingType.empty()) continue;
+            const size_t sep = entry.first.rfind("__");
+            if (sep == std::string::npos || entry.first.substr(sep + 2) != n) continue;
+            auto owner = classes.find(info.enclosingType);
+            if (owner == classes.end()) continue;
+            std::string ownerDotted = info.enclosingType;
+            for (size_t pos = 0; (pos = ownerDotted.find("__", pos)) != std::string::npos; )
+                ownerDotted.replace(pos, 2, ".");
+            const std::string ownerQualified = owner->second.packageName.empty()
+                ? ownerDotted : owner->second.packageName + "." + ownerDotted;
+            if (std::find(staticWildcardTypeOwners_.begin(), staticWildcardTypeOwners_.end(), ownerQualified)
+                    == staticWildcardTypeOwners_.end()) continue;
+            if (!typeAccessible(entry.first, info))
+                throw ConvErr{cur().line, cur().col, "type-access", "statically imported nested type '" + ownerQualified + "." + n + "' is not accessible"};
+            staticNestedMatches.push_back(entry.first);
+        }
+        std::sort(staticNestedMatches.begin(), staticNestedMatches.end());
+        staticNestedMatches.erase(std::unique(staticNestedMatches.begin(), staticNestedMatches.end()), staticNestedMatches.end());
+        if (staticNestedMatches.size() > 1)
+            throw ConvErr{cur().line, cur().col, "import-ambiguous", "the static nested type name '" + n + "' is imported from more than one owner"};
+        if (staticNestedMatches.size() == 1) return staticNestedMatches.front();
         auto nested = nestedMap_.find(n);
         if (nested == nestedMap_.end()) return n;
         if (nested->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
@@ -3917,6 +3953,8 @@ private:
         importedTypes_.clear();
         staticImports_.clear();
         staticWildcardImports_.clear();
+        staticNestedTypeImports_.clear();
+        staticWildcardTypeOwners_.clear();
         wildcardTypeImports_.clear();
         packageName_.clear();
         size_t guard = 0;
@@ -3939,16 +3977,22 @@ private:
                 if (isStatic) {
                     if (full.size() > 2 && full.compare(full.size()-2,2,".*") == 0) {
                         std::string owner = full.substr(0,full.size()-2);
+                        staticWildcardTypeOwners_.push_back(owner);
                         size_t ownerDot = owner.rfind('.');
                         if (ownerDot != std::string::npos) owner = owner.substr(ownerDot+1);
                         staticWildcardImports_.push_back(owner);
                     } else {
                         size_t dot = full.rfind('.');
                         if (dot != std::string::npos && dot + 1 < full.size()) {
-                            std::string owner = full.substr(0,dot);
+                            std::string qualifiedOwner = full.substr(0,dot);
+                            std::string owner = qualifiedOwner;
                             size_t ownerDot = owner.rfind('.');
                             if (ownerDot != std::string::npos) owner = owner.substr(ownerDot+1);
-                            staticImports_[full.substr(dot+1)].push_back(owner);
+                            const std::string member = full.substr(dot+1);
+                            staticImports_[member].push_back(owner);
+                            // If the imported member is a declared member type, retain
+                            // its fully qualified owner identity for type-name lookup.
+                            staticNestedTypeImports_[member].push_back(qualifiedOwner + "." + member);
                         }
                     }
                 } else if (full.size() > 2 && full.compare(full.size()-2,2,".*") == 0) {
@@ -4110,7 +4154,7 @@ private:
             if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.packageName = packageName_; ci.typeVisibility = visibilityOf(mods);
-            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; ci.enclosingType = nested ? outerName : ""; ci.isStaticNested = nested && nestedStatic;
         }
         std::vector<std::string> memberLines;
         int instanceFields = 0;
