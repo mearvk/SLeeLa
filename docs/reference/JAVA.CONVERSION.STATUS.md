@@ -296,3 +296,8 @@ The active implementation sequence, current `master` baseline, merged package/ge
 ### Qualified type identity fail-closed guard — 2026-11-18
 
 The Java converter's package-qualified type resolver now refuses a fully qualified source type when its simple suffix matches an indexed project declaration but the complete package identity does not. This prevents a name such as `fixture.missing.Widget` from silently binding to an unrelated indexed `fixture.alpha.Widget`. Exact indexed qualified matches still pass through duplicate-declaration and accessibility checks; qualified types with no colliding project simple name retain the existing subject-model path for external/JDK types. A javac-negative / converter-refusal / no-output regression fixture was added. The fixture and implementation have **not been executed**; no build, test, or CI result is claimed.
+
+
+### Current-master source reassessment — 2026-11-19
+
+The earlier PR #372 lower-bound checklist is superseded by a fresh source review: current master already contains deferred `? super T` inference constraints (including recursive variable detection and post-inference validation), method and class upper-bound retention/validation, same-unit duplicate detection, and package-qualified explicit-import matching. PR #372 remains stale/open and must not be merged wholesale. These are source-presence findings only; tests remain deferred and unverified. Canonical package-qualified declaration storage is still incomplete: the primary class map is simple-name/hoisted-name keyed, and colliding declarations are marked ambiguous rather than retained independently. See the main-work progress document for the safe migration design.
