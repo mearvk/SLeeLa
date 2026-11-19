@@ -100,3 +100,14 @@ No build, test, or CI was run for this reassessment.
 - PR #372 remains stale and must not be merged wholesale. Its advertised lower-bound and class-bound behavior is substantially present in current source; review its remaining fixtures individually before porting anything.
 - User CI hold remains active. No builds, tests, or CI runs were started for this final handoff. Release qualification remains **HOLD**.
 
+
+
+## Software-only continuation — static nested imports (2026-11-18)
+
+- Added explicit enclosing-type identity to each collected member type, including static nested types; retained the existing non-static `innerOf` constructor/outer-instance behavior.
+- Added separate import state for static nested member types. `import static package.Outer.Nested;` now resolves the nested declaration as a type, and `import static package.Outer.*;` searches static member types by their fully qualified enclosing owner rather than the globally ambiguous simple-name nested index.
+- Kept existing static member import handling for fields and methods intact. The existing static-member owner list remains compatible with its previous simple-owner lookup path.
+- Added JDK differential coverage for static nested wildcard and single-type imports in `tests/javaconv_differential_test.sh`.
+- Updated `sleelactl/convert/README.md` to distinguish implementation from verification.
+- **Not addressed yet:** independent canonical declaration storage for same-simple-name top-level/member types across packages. `SymbolTable::classes` is still keyed by simple/hoisted names, so the full project-wide type identity migration remains the primary blocker. Full protected nested-type and nest-access audit also remains open.
+- **Verification:** no build, test, compiler invocation, or CI was run, per user instruction. These changes are implementation-only and unverified; do not report the new fixture as passing.
