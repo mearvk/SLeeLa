@@ -172,6 +172,57 @@ else
   printf 'FAIL  project-package (project build or conversion failed)\n'; cat "$tmp/project-package/javac.err"; fail=$((fail+1))
 fi
 
+# static imports may import member types as well as static fields/methods.
+# Exercise both on-demand and single-member forms, using fully qualified owner identity.
+mkdir -p "$tmp/project-static-nested/src/fixture/alpha" "$tmp/project-static-nested/src/fixture/use" "$tmp/project-static-nested/cls" "$tmp/project-static-nested/sl"
+cat > "$tmp/project-static-nested/src/fixture/alpha/Container.java" <<'JAVA'
+package fixture.alpha;
+public class Container {
+  public static class Entry {
+    public int value() { return 17; }
+  }
+  public static class Token {
+    public int value() { return 19; }
+  }
+}
+JAVA
+cat > "$tmp/project-static-nested/src/fixture/use/WildcardMain.java" <<'JAVA'
+package fixture.use;
+import static fixture.alpha.Container.*;
+public class WildcardMain {
+  public static void main(String[] args) {
+    Entry entry = new Entry();
+    Token token = new Token();
+    System.out.println(entry.value() + token.value());
+  }
+}
+JAVA
+cat > "$tmp/project-static-nested/src/fixture/use/SingleMain.java" <<'JAVA'
+package fixture.use;
+import static fixture.alpha.Container.Entry;
+public class SingleMain {
+  public static void main(String[] args) {
+    Entry entry = new Entry();
+    System.out.println(entry.value());
+  }
+}
+JAVA
+if javac -d "$tmp/project-static-nested/cls" "$tmp/project-static-nested/src/fixture/alpha/Container.java" "$tmp/project-static-nested/src/fixture/use/WildcardMain.java" "$tmp/project-static-nested/src/fixture/use/SingleMain.java" 2> "$tmp/project-static-nested/javac.err" &&
+   java -cp "$tmp/project-static-nested/cls" fixture.use.WildcardMain > "$tmp/project-static-nested/expected-wildcard.out" 2>&1 &&
+   java -cp "$tmp/project-static-nested/cls" fixture.use.SingleMain > "$tmp/project-static-nested/expected-single.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-static-nested/src" --out "$tmp/project-static-nested/sl" --quiet; then
+  (cd "$tmp/project-static-nested/sl" && timeout 300 "$sleela" run fixture/use/WildcardMain.sleela 2>&1 | filter) > "$tmp/project-static-nested/actual-wildcard.out"
+  (cd "$tmp/project-static-nested/sl" && timeout 300 "$sleela" run fixture/use/SingleMain.sleela 2>&1 | filter) > "$tmp/project-static-nested/actual-single.out"
+  if diff -u "$tmp/project-static-nested/expected-wildcard.out" "$tmp/project-static-nested/actual-wildcard.out" > "$tmp/project-static-nested/diff-wildcard" &&
+     diff -u "$tmp/project-static-nested/expected-single.out" "$tmp/project-static-nested/actual-single.out" > "$tmp/project-static-nested/diff-single"; then
+    printf 'PASS  %-12s static nested wildcard and single-type imports match the JDK\\n' "static-nested"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-static-nested\\n'; head -40 "$tmp/project-static-nested/diff-wildcard"; head -40 "$tmp/project-static-nested/diff-single"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-static-nested (javac or conversion failed)\\n'; cat "$tmp/project-static-nested/javac.err"; fail=$((fail+1))
+fi
+
 # protected inherited members remain accessible to a cross-package subclass.
 mkdir -p "$tmp/project-protected/src/fixture/alpha" "$tmp/project-protected/src/fixture/child" "$tmp/project-protected/src/fixture/use" "$tmp/project-protected/cls" "$tmp/project-protected/sl"
 cat > "$tmp/project-protected/src/fixture/alpha/Base.java" <<'JAVA'
