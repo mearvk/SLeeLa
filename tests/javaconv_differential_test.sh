@@ -215,12 +215,12 @@ if javac -d "$tmp/project-static-nested/cls" "$tmp/project-static-nested/src/fix
   (cd "$tmp/project-static-nested/sl" && timeout 300 "$sleela" run fixture/use/SingleMain.sleela 2>&1 | filter) > "$tmp/project-static-nested/actual-single.out"
   if diff -u "$tmp/project-static-nested/expected-wildcard.out" "$tmp/project-static-nested/actual-wildcard.out" > "$tmp/project-static-nested/diff-wildcard" &&
      diff -u "$tmp/project-static-nested/expected-single.out" "$tmp/project-static-nested/actual-single.out" > "$tmp/project-static-nested/diff-single"; then
-    printf 'PASS  %-12s static nested wildcard and single-type imports match the JDK\\n' "static-nested"; pass=$((pass+1))
+    printf 'PASS  %-12s static nested wildcard and single-type imports match the JDK\n' "static-nested"; pass=$((pass+1))
   else
-    printf 'FAIL  project-static-nested\\n'; head -40 "$tmp/project-static-nested/diff-wildcard"; head -40 "$tmp/project-static-nested/diff-single"; fail=$((fail+1))
+    printf 'FAIL  project-static-nested\n'; head -40 "$tmp/project-static-nested/diff-wildcard"; head -40 "$tmp/project-static-nested/diff-single"; fail=$((fail+1))
   fi
 else
-  printf 'FAIL  project-static-nested (javac or conversion failed)\\n'; cat "$tmp/project-static-nested/javac.err"; fail=$((fail+1))
+  printf 'FAIL  project-static-nested (javac or conversion failed)\n'; cat "$tmp/project-static-nested/javac.err"; fail=$((fail+1))
 fi
 
 # protected inherited members remain accessible to a cross-package subclass.
@@ -286,7 +286,7 @@ else
   if [ "$receiver_rc" -eq 1 ] && printf '%s' "$receiver_out" | grep -q "\\[member-access\\]" && [ "$(find "$tmp/project-protected-receiver/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
     printf 'PASS  %-12s cross-package protected field through Base receiver refused with no output\n' "protected-receiver"; pass=$((pass+1))
   else
-    printf 'FAIL  protected-receiver (rc=%s)\\n%s\n' "$receiver_rc" "$receiver_out"; fail=$((fail+1))
+    printf 'FAIL  protected-receiver (rc=%s)\n%s\n' "$receiver_rc" "$receiver_out"; fail=$((fail+1))
   fi
 fi
 
@@ -445,7 +445,7 @@ JAVA
   if [ "$tx_rc" -eq 2 ] && [ "$before_main" = "$after_main" ] && [ "$before_manifest" = "$after_manifest" ] && [ "$sentinel" = "user-owned sentinel" ]; then
     printf 'PASS  %-12s failed generation leaves previous output, manifest and unowned files intact\n' "transaction"; pass=$((pass+1))
   else
-    printf 'FAIL  transaction (rc=%s)\\n%s\n' "$tx_rc" "$tx_out"; fail=$((fail+1))
+    printf 'FAIL  transaction (rc=%s)\n%s\n' "$tx_rc" "$tx_out"; fail=$((fail+1))
   fi
 else
   printf 'FAIL  transaction (could not establish initial generation)\n'; fail=$((fail+1))
@@ -465,14 +465,14 @@ import fixture.hidden.HiddenOuter.PublicNested;
 public class Main { PublicNested value; }
 JAVA
 if javac -d "$tmp/enclosing-access/cls" "$tmp/enclosing-access/src/fixture/hidden/HiddenOuter.java" "$tmp/enclosing-access/src/fixture/use/Main.java" 2> "$tmp/enclosing-access/javac.err"; then
-  printf 'FAIL  enclosing-access (javac unexpectedly accepted an inaccessible enclosing type)\\n'; fail=$((fail+1))
+  printf 'FAIL  enclosing-access (javac unexpectedly accepted an inaccessible enclosing type)\n'; fail=$((fail+1))
 else
   enclosing_out="$("$conv" --jdk "$tmp/enclosing-access/src" --out "$tmp/enclosing-access/out" --quiet 2>&1)"
   enclosing_rc=$?
   if [ "$enclosing_rc" -eq 1 ] && printf '%s' "$enclosing_out" | grep -q "\\[type-access\\]" && [ "$(find "$tmp/enclosing-access/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
-    printf 'PASS  %-12s inaccessible enclosing type blocks access to public nested type\\n' "enclosing-access"; pass=$((pass+1))
+    printf 'PASS  %-12s inaccessible enclosing type blocks access to public nested type\n' "enclosing-access"; pass=$((pass+1))
   else
-    printf 'FAIL  enclosing-access (rc=%s)\\n%s\\n' "$enclosing_rc" "$enclosing_out"; fail=$((fail+1))
+    printf 'FAIL  enclosing-access (rc=%s)\n%s\n' "$enclosing_rc" "$enclosing_out"; fail=$((fail+1))
   fi
 fi
 
@@ -508,14 +508,14 @@ public class Main {
 }
 JAVA
 if javac -d "$tmp/qualified-mismatch/cls" "$tmp/qualified-mismatch/src/fixture/alpha/Widget.java" "$tmp/qualified-mismatch/src/fixture/use/Main.java" 2> "$tmp/qualified-mismatch/javac.err"; then
-  printf 'FAIL  qualified-mismatch (javac unexpectedly accepted a nonexistent package type)\\n'; fail=$((fail+1))
+  printf 'FAIL  qualified-mismatch (javac unexpectedly accepted a nonexistent package type)\n'; fail=$((fail+1))
 else
   qualified_out="$("$conv" --jdk "$tmp/qualified-mismatch/src" --out "$tmp/qualified-mismatch/out" --quiet 2>&1)"
   qualified_rc=$?
   if [ "$qualified_rc" -eq 1 ] && printf '%s' "$qualified_out" | grep -q "\\[type-qualified-not-found\\]" && [ "$(find "$tmp/qualified-mismatch/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
-    printf 'PASS  %-12s wrong-package qualified type refused instead of simple-name fallback\\n' "qualified-mismatch"; pass=$((pass+1))
+    printf 'PASS  %-12s wrong-package qualified type refused instead of simple-name fallback\n' "qualified-mismatch"; pass=$((pass+1))
   else
-    printf 'FAIL  qualified-mismatch (rc=%s)\\n%s\\n' "$qualified_rc" "$qualified_out"; fail=$((fail+1))
+    printf 'FAIL  qualified-mismatch (rc=%s)\n%s\n' "$qualified_rc" "$qualified_out"; fail=$((fail+1))
   fi
 fi
 
