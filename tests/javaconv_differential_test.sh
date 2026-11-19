@@ -152,7 +152,10 @@ public class Main {
   public static void main(String[] args) {
     AlphaBase base = new AlphaBase();
     Nested nested = new Nested();
+    fixture.alpha.AlphaBase qualifiedBase = new fixture.alpha.AlphaBase();
+    fixture.alpha.AlphaBase.Nested qualifiedNested = new fixture.alpha.AlphaBase.Nested();
     System.out.println(base.value() + nested.value());
+    System.out.println(qualifiedBase.value() + qualifiedNested.value());
   }
 }
 JAVA
