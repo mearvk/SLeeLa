@@ -2205,8 +2205,19 @@ private:
             return r;
         }
         std::vector<E> args = parseArgs();
-        if (isOp("{")) return parseAnonymous(name, args);   // anonymous class
-        args = adaptArgs(pickMethod(name, "<init>", args), args);
+        if (isOp("{")) {
+            if (!constructedArgs.empty())
+                fail("generic-constructor", "explicit generic type arguments on anonymous-class allocation are not yet supported");
+            return parseAnonymous(name, args);
+        }
+        // Constructor overload selection must see the allocated parameterized
+        // receiver. Otherwise class variables in constructor parameters remain
+        // erased and an incompatible overload can be selected (or accepted).
+        Ty constructedType = mk(typeVars.count(name) ? "?" : name);
+        constructedType.args = constructedArgs;
+        const MethodSig* constructor = pickMethod(name, "<init>", args, 0, -1,
+                                                  constructedType.known() ? &constructedType : nullptr);
+        args = adaptArgs(constructor, args);
         std::string outerArg;
         {
             auto ci = classes.find(name);
@@ -2215,7 +2226,7 @@ private:
         E r;
         r.code = "new " + name + "(" + outerArg + joinArgs(args) + ")";
         r.pure = false;
-        r.ty = mk(typeVars.count(name) ? "?" : name);
+        r.ty = constructedType;
         return r;
     }
 
