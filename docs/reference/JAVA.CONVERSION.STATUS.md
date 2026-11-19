@@ -276,3 +276,8 @@ The C++ converter now parses and retains explicit type arguments in constructor 
 ### Protected instance-field receiver accessibility — 2026-11-18
 
 The C++ Java converter now enforces the cross-package subclass receiver restriction for protected instance fields (JLS 6.6.2.1): a protected field declared in another package cannot be selected through a receiver statically typed as the superclass. Added a positive subclass-typed receiver case and a negative multi-source project case to `tests/javaconv_differential_test.sh`; the negative case expects javac rejection and converter `[member-access]` refusal with no output. The harness was not run by user direction. This is an accessibility increment, not package-qualified symbol identity completion. No build/test/CI was run; status remains **NOT VERIFIED / HOLD**.
+
+
+### Generic constructor class substitution — 2026-11-18
+
+Explicit allocation type arguments are now retained in the constructed expression type and supplied to constructor overload selection, enabling class type variables in constructor parameter signatures to be substituted before overload applicability and argument adaptation. When a class explicitly declares constructors and none is applicable after substitution, conversion fails closed with `[constructor-resolution]`. Explicit type arguments on anonymous-class allocation are separately refused with `[generic-constructor]` pending equivalent support. Added positive `GenericConstructorClassSubstitution.java` and negative `GenericConstructorClassSubstitutionConflict.java`; inventory is 49 positive / 27 refusal fixtures, not test results. No build, javac, differential test, or CI was run. Status remains **NOT VERIFIED / HOLD**.
