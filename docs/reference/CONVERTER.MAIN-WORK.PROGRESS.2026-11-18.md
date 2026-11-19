@@ -60,3 +60,33 @@ Port/reconcile those changes selectively onto current master after reviewing the
 ## Incremental implementation completed in source — qualified type fail-closed guard
 
 A focused resolver correction was prepared on branch `work/java-qualified-type-fail-closed-2026-11-18`: exact package-qualified matches retain their existing accessibility/duplicate checks, while a nonmatching qualified name whose simple suffix exists in the project index now raises `[type-qualified-not-found]` rather than falling back to that unrelated simple-name declaration. A differential refusal fixture checks javac rejection, the converter diagnostic, and absence of generated SLeeLa files. This reduces accidental cross-package binding but **does not implement canonical package-qualified symbol storage or allow same-simple-name package declarations to coexist**. No build/test/CI was run per the user's hold.
+
+
+## Reassessment against current master — 2026-11-19
+
+A fresh source inspection after merge `229d987c01e3fa39eef65d88e2d597c28930cfed` changes the disposition of the old PR #372 checklist. Several of its advertised changes are already present in current `sleelactl/convert/java_to_sleela.cpp` and must not be blindly ported:
+
+- Method-invocation inference already records deferred lower-bound constraints for `? super T`, recursively detects method variables inside nested bound types, resolves deferred variables after argument/target inference, and checks the resulting lower-bound compatibility.
+- The resolver already validates retained method type-parameter upper bounds after inference.
+- `ClassInfo::typeParamBounds` is present in the public symbol model, and class/record declarations retain class bounds. Concrete type-argument validation is also present in constructor allocation and type parsing paths.
+- Duplicate declarations are marked ambiguous whenever a prior declaration has populated `sourceName`, including declarations in the same source unit.
+- Explicit imports are matched against indexed declarations by complete package name before returning the internal simple-name key; conflicting simple-name imports fail closed.
+
+Therefore PR #372 remains open/stale and its branch must not be merged. Its headline work is substantially represented in current master; remaining value is limited to reviewing its exact fixtures/edge cases against current code. This is a source inspection only, not behavioral verification. The existing older paragraph above describing PR #372 as wholly unmerged lower-bound implementation is historical and superseded by this reassessment.
+
+## Canonical package identity — implementation design constraint
+
+Current `SymbolTable::classes` remains `map<string, ClassInfo>` keyed by internal/source simple or hoisted names. `ClassInfo::packageName` is metadata, not the primary key. On a collision, the existing entry is marked ambiguous and its metadata/member data may be overwritten as subsequent source units are collected. This is why simply adding a fully-qualified lookup alias is insufficient: the second declaration's independent `ClassInfo` would already have been lost.
+
+The safe migration must retain independent declaration records keyed by canonical identity (package + enclosing-type path + declared type name), while maintaining a separate, explicitly ambiguity-aware simple-name index for legacy lookup. Every semantic edge must be migrated together: superclass/interface references, nested types, imports, field/method owner lookup, constructors, static imports, subtype traversal, generic substitution, and emitted internal names. Internal emitted names must be deterministic and collision-free without changing Java source identity. Until this is done, duplicate simple names across packages remain a documented refusal; do not claim they coexist.
+
+## Current next sequence
+
+1. Introduce canonical declaration storage without removing the legacy simple-name index; add deterministic canonical identity and collision-preserving collection.
+2. Migrate exact qualified/import lookup and superclass/interface graph edges to canonical identities.
+3. Migrate member/constructor lookup, nested-type ownership, static imports and accessibility to the same identity.
+4. Retain fail-closed behavior for ambiguous unqualified names and add positive same-simple-name cross-package fixtures plus negative ambiguity fixtures.
+5. Re-audit current lower-bound and class-bound logic against PR #372 fixtures; port only genuinely missing cases.
+6. Continue generic diamond/target typing, method references/lambda resolution, then SLeeLa-native resolver parity and transaction/provenance review.
+
+No build, test, or CI was run for this reassessment.
