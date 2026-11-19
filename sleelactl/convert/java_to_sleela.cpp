@@ -2217,6 +2217,14 @@ private:
         constructedType.args = constructedArgs;
         const MethodSig* constructor = pickMethod(name, "<init>", args, 0, -1,
                                                   constructedType.known() ? &constructedType : nullptr);
+        auto classDeclaration = classes.find(name);
+        bool declaresConstructors = false;
+        if (classDeclaration != classes.end())
+            for (const MethodSig& method : classDeclaration->second.methods)
+                if (method.name == "<init>") { declaresConstructors = true; break; }
+        if (declaresConstructors && !constructor)
+            fail("constructor-resolution", "no accessible constructor of '" + name +
+                 "' accepts the supplied arguments after class type substitution");
         args = adaptArgs(constructor, args);
         std::string outerArg;
         {
