@@ -1685,16 +1685,47 @@ private:
                     invocationCostLoose(resolved.ret,*expectedResultType)<0) {
                     sawUnsupportedGeneric=true; continue;
                 }
-                if(!best || cost<bestCost) {
-                    best=mp; bestResolved=resolved; bestCost=cost; ambiguous=false;
-                } else if(cost==bestCost && best) {
-                    if(moreSpecificForInvocation(resolved,bestResolved,args.size(),phase==2) ||
-                       (resolved.params==bestResolved.params && resolved.typeParams.empty() && !bestResolved.typeParams.empty())) {
-                        best=mp; bestResolved=resolved; ambiguous=false;
-                    } else if(!moreSpecificForInvocation(bestResolved,resolved,args.size(),phase==2) &&
-                              (resolved.params!=bestResolved.params || resolved.varargs!=bestResolved.varargs)) {
-                        ambiguous=true;
+                if (!best) {
+                    best=mp;
+                    bestResolved=resolved;
+                    bestCost=cost;
+                    ambiguous=false;
+                    continue;
+                }
+
+                // Once a JLS applicability phase has been selected, conversion
+                // distance is not a tie-breaker. JLS 15.12.2.5 selects the
+                // maximally-specific declaration(s); using an aggregate numeric
+                // conversion cost here incorrectly picks one of two incomparable
+                // reference overloads merely because one path is shorter.
+                const bool candidateMoreSpecific =
+                    moreSpecificForInvocation(resolved,bestResolved,args.size(),phase==2);
+                const bool currentMoreSpecific =
+                    moreSpecificForInvocation(bestResolved,resolved,args.size(),phase==2);
+                if (candidateMoreSpecific && !currentMoreSpecific) {
+                    best=mp;
+                    bestResolved=resolved;
+                    bestCost=cost;
+                    ambiguous=false;
+                } else if (currentMoreSpecific && !candidateMoreSpecific) {
+                    // Keep the existing maximally-specific candidate.
+                } else if (resolved.params==bestResolved.params &&
+                           resolved.varargs==bestResolved.varargs) {
+                    // Equal parameter signatures are normally an override or
+                    // bridge-equivalent declaration (already collapsed above).
+                    // Prefer the non-generic declaration only when both signatures
+                    // are otherwise identical, matching the supported raw overload
+                    // preference without inventing a conversion-distance rule.
+                    if (resolved.typeParams.empty() && !bestResolved.typeParams.empty()) {
+                        best=mp;
+                        bestResolved=resolved;
+                        bestCost=cost;
+                        ambiguous=false;
                     }
+                } else {
+                    // Incomparable applicable candidates are ambiguous even when
+                    // their invocation-conversion costs differ.
+                    ambiguous=true;
                 }
             }
             if(best) break;
