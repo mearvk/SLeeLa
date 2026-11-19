@@ -238,3 +238,10 @@ PR #372 was not merged wholesale. Its lower-bound inference implementation overl
 - If a source class explicitly declares constructors but no constructor is applicable after class substitution, conversion fails closed with `[constructor-resolution]` instead of emitting an allocation that Java would reject. Explicit generic arguments on anonymous-class allocation remain refused with `[generic-constructor]` until that path has matching semantics.
 - Added `GenericConstructorClassSubstitution.java` (positive) and `GenericConstructorClassSubstitutionConflict.java` (negative). Inventory is now 49 positive / 27 refusal fixtures; these are inventory counts, not test results.
 - **Verification: NOT RUN by user direction.** No build, javac, differential test, self-check, or CI was started. Production remains HOLD.
+
+
+### Qualified constructor allocation type names (2026-11-18)
+
+- `parseNew()` now retains every dotted segment in the allocated type name and resolves the complete qualified name through the package-aware type resolver. This supports indexed package-qualified top-level allocations and fully qualified nested allocations rather than silently replacing the prefix with the final identifier.
+- Extended the existing cross-package package-import harness fixture with `new fixture.alpha.AlphaBase()` and `new fixture.alpha.AlphaBase.Nested()` plus fully qualified declarations, so the future authorized differential run will compare these against javac.
+- This is a resolver-use improvement, not the canonical-key migration. `SymbolTable::classes` remains keyed by simple/hoisted names; same-simple-name declarations in distinct packages still cannot retain separate metadata. No build/test/CI was run by user direction; production remains HOLD.
