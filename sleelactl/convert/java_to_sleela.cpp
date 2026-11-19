@@ -2135,11 +2135,12 @@ private:
         if (e0 == (size_t)-1) fail("syntax", "expected a type after 'new'");
         // element type without dims
         std::string name;
+        std::string qualifiedName;
         std::vector<Ty> constructedArgs;
-        struct Resolve { };
         {
             if (!isIdentTok(cur())) fail("syntax", "expected a type after 'new'");
             name = ident();
+            qualifiedName = name;
             for (;;) {
                 if (isOp("<")) {
                     // Keep explicit arguments for class-bound validation. Diamond inference remains refused.
@@ -2147,11 +2148,18 @@ private:
                         fail("generic-constructor-diamond", "diamond inference for constructor allocation is not yet implemented; use explicit type arguments or retain this source as a refusal");
                     constructedArgs = parseGenericArguments();
                 }
-                if (isOp(".") && isIdentTok(at(p + 1))) { p++; name = ident(); continue; }
+                if (isOp(".") && isIdentTok(at(p + 1))) {
+                    p++;
+                    name = ident();
+                    qualifiedName += "." + name;
+                    continue;
+                }
                 break;
             }
         }
-        if (!isOp("[") && !typeVars.count(name)) name = resolveTypeName(name);
+        if (!isOp("[") && !typeVars.count(name))
+            name = qualifiedName.find('.') == std::string::npos
+                ? resolveTypeName(name) : resolveQualifiedTypeName(qualifiedName);
         if (!constructedArgs.empty()) {
             auto declaration = classes.find(name);
             if (declaration != classes.end()) {
