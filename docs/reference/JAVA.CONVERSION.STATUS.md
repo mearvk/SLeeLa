@@ -286,3 +286,8 @@ Explicit allocation type arguments are now retained in the constructed expressio
 ### Qualified constructor allocation type names — 2026-11-18
 
 `parseNew()` now retains complete dotted allocation type names and resolves them through the package-aware resolver, supporting indexed fully qualified top-level and nested allocations. The cross-package package-import harness now includes fully qualified `new fixture.alpha.AlphaBase()` and `new fixture.alpha.AlphaBase.Nested()` cases. This does not solve the underlying canonical identity issue: `SymbolTable::classes` remains simple/hoisted-name keyed, so same-simple-name declarations in different packages cannot yet coexist as independent metadata. No build, test, or CI was run. Status remains **NOT VERIFIED / HOLD**.
+
+
+## Main-work continuation pointer — 2026-11-18
+
+The active implementation sequence, current `master` baseline, merged package/generic-resolution work, unmerged lower-bound patch reconciliation, and remaining semantic priorities are tracked in [CONVERTER.MAIN-WORK.PROGRESS.2026-11-18.md](CONVERTER.MAIN-WORK.PROGRESS.2026-11-18.md). CI and execution evidence remain deferred/unverified; release remains **HOLD**.
