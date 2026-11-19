@@ -1,10 +1,10 @@
 #nordshrift 1.0
-#sleela     3.0
+#sleela     3.2
 
-sheet compat_current_2_2:
+sheet compat_current_3_2:
   version 2.3.0
   author "SLeeLa Compatibility Test"
-  description "Cross-version fixture: source syntax at the current supported edition (3.0)"
+  description "Cross-version fixture: source syntax at the current supported edition (3.2)"
 
 source:
   root "src"
