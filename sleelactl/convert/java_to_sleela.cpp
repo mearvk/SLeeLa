@@ -3409,7 +3409,7 @@ private:
             if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
-            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false; ci.enclosingType = nested ? outerName : ""; ci.isStaticNested = nested && nestedStatic;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
             MethodSig ts; ts.name = "toString"; ts.ret = mk("String"); ci.methods.push_back(ts);
@@ -3555,7 +3555,7 @@ private:
     // instance per constant (a constant with a body is an instance of a generated subclass), a
     // static values array, and values()/valueOf()/name()/ordinal()/toString()/compareTo().
     // A bare constant name in a case label is resolved by parseCaseLabel.
-    void parseEnum(const std::string& nestPrefix = "", const Mods& typeMods = Mods()) {
+    void parseEnum(const std::string& nestPrefix = "", const Mods& typeMods = Mods(), const std::string& outerName = "", bool nestedStatic = true) {
         InitScope noHoist(this, nullptr);
         expectKw("enum");
         typeVars.clear();
@@ -3584,7 +3584,7 @@ private:
             if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
-            ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames;
+            ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames; ci.enclosingType = nestPrefix.empty() ? "" : outerName; ci.isStaticNested = !nestPrefix.empty() && nestedStatic;
         }
         size_t beforeDiags = diags.size();
 
@@ -4101,7 +4101,7 @@ private:
         bool isIface = false;
         if (isKw("class")) p++;
         else if (isKw("interface")) { p++; isIface = true; }
-        else if (isKw("enum")) { parseEnum(nestPrefix, mods); return; }
+        else if (isKw("enum")) { parseEnum(nestPrefix, mods, outerName, nestedStatic); return; }
         else if (isKw("record") && isIdentTok(at(p + 1))) { parseRecord(nestPrefix, outerName, nestedStatic, mods); return; }
         else if (isKw("record")) unsup("nested");
         else if (isOp("@")) unsup("annotation-type");
