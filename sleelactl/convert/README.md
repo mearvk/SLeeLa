@@ -131,7 +131,7 @@ The following Java source forms are explicitly refused with construct-specific d
 - JPMS module declarations (`module-info.java`).
 - Annotation interface declarations.
 
-This is not a claim of complete JLS accessibility or Java language coverage. In particular, protected field receiver checks, all nested-type access combinations, static nested-type wildcard imports, module readability, and the remaining preview/newer Java constructs still require dedicated implementation and JDK differential fixtures.
+This is not a claim of complete JLS accessibility or Java language coverage. Protected field receiver checks, all nested-type access combinations, module readability, and the remaining preview/newer Java constructs still require dedicated implementation and JDK differential fixtures. Static nested-type single-member imports and on-demand imports now have implementation paths that preserve the fully qualified enclosing owner; dedicated differential fixtures were added but have not been executed.
 
 
 ### Generic constructor class substitution (implementation only; 2026-11-18)
