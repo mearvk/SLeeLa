@@ -63,6 +63,8 @@ struct ClassInfo {
     std::vector<std::string> typeParams; // declared class type variables, in source order
     std::map<std::string, std::vector<std::string>> typeParamBounds; // supported declared class upper bounds
     std::string innerOf;               // for an inner (non-static) class: the hoisted name of its enclosing class
+    std::string enclosingType;         // hoisted enclosing type for every member type, including static nested types
+    bool isStaticNested = false;       // distinguishes static member types from non-static inner classes
     bool isInterface = false;          // an interface (its bodiless methods are the functional-interface candidates)
     bool isEnum = false;               // an enum type (constants are static fields of the class)
     std::string super;                 // simple name of the superclass, "" if none
