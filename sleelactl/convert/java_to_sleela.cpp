@@ -182,6 +182,9 @@ private:
     }
 
     std::string resolveQualifiedTypeName(const std::string& qualified) const {
+        const size_t dot = qualified.rfind('.');
+        const std::string simple = dot == std::string::npos ? qualified : qualified.substr(dot + 1);
+        bool indexedSimpleName = false;
         for (const auto& entry : classes) {
             std::string dotted = entry.first;
             for (size_t pos = 0; (pos = dotted.find("__", pos)) != std::string::npos; )
@@ -194,9 +197,17 @@ private:
                     throw ConvErr{cur().line, cur().col, "type-access", "type '" + qualified + "' is not accessible from package '" + packageName_ + "'"};
                 return entry.first;
             }
+            // Do not let a misspelled or wrong-package qualified name bind to a
+            // different project declaration merely because its simple suffix matches.
+            if (dotted == simple) indexedSimpleName = true;
         }
-        const size_t dot = qualified.rfind('.');
-        return dot == std::string::npos ? qualified : qualified.substr(dot + 1);
+        if (indexedSimpleName)
+            throw ConvErr{cur().line, cur().col, "type-qualified-not-found",
+                "qualified type '" + qualified + "' does not match the package identity of any indexed project declaration named '" + simple + "'"};
+        // Types outside the source project (for example JDK classes) continue
+        // through the subject-model/simple-name path. If a project declaration
+        // shadows that suffix, the fail-closed rule above prevents accidental binding.
+        return simple;
     }
 
     std::string resolveTypeName(const std::string& n) const {
