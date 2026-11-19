@@ -176,11 +176,25 @@ private:
             const size_t p = n.find("__");
             return p == std::string::npos ? n : n.substr(0, p);
         };
-        if (info.typeVisibility == "public") return true;
-        if (info.typeVisibility == "private") return host(key) == host(curClass);
-        if (info.packageName == packageName_) return true;
-        if (info.typeVisibility == "protected") return isSubtypeName(curClass, host(key));
-        return false;
+        // Accessibility is cumulative: a public member type is not accessible
+        // when one of its enclosing types is inaccessible. Check every enclosing
+        // declaration, not just the terminal nested declaration.
+        std::function<bool(const std::string&, const ClassInfo&, int)> check =
+            [&](const std::string& currentKey, const ClassInfo& current, int depth) -> bool {
+                if (depth > 32) return false;
+                bool ownAccess = false;
+                if (current.typeVisibility == "public") ownAccess = true;
+                else if (current.typeVisibility == "private") ownAccess = host(currentKey) == host(curClass);
+                else if (current.packageName == packageName_) ownAccess = true;
+                else if (current.typeVisibility == "protected")
+                    ownAccess = isSubtypeName(curClass, host(currentKey));
+                if (!ownAccess) return false;
+                if (current.enclosingType.empty()) return true;
+                auto enclosing = classes.find(current.enclosingType);
+                return enclosing != classes.end() &&
+                       check(enclosing->first, enclosing->second, depth + 1);
+            };
+        return check(key, info, 0);
     }
 
     std::string resolveQualifiedTypeName(const std::string& qualified) const {
