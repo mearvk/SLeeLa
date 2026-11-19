@@ -281,3 +281,8 @@ The C++ Java converter now enforces the cross-package subclass receiver restrict
 ### Generic constructor class substitution — 2026-11-18
 
 Explicit allocation type arguments are now retained in the constructed expression type and supplied to constructor overload selection, enabling class type variables in constructor parameter signatures to be substituted before overload applicability and argument adaptation. When a class explicitly declares constructors and none is applicable after substitution, conversion fails closed with `[constructor-resolution]`. Explicit type arguments on anonymous-class allocation are separately refused with `[generic-constructor]` pending equivalent support. Added positive `GenericConstructorClassSubstitution.java` and negative `GenericConstructorClassSubstitutionConflict.java`; inventory is 49 positive / 27 refusal fixtures, not test results. No build, javac, differential test, or CI was run. Status remains **NOT VERIFIED / HOLD**.
+
+
+### Qualified constructor allocation type names — 2026-11-18
+
+`parseNew()` now retains complete dotted allocation type names and resolves them through the package-aware resolver, supporting indexed fully qualified top-level and nested allocations. The cross-package package-import harness now includes fully qualified `new fixture.alpha.AlphaBase()` and `new fixture.alpha.AlphaBase.Nested()` cases. This does not solve the underlying canonical identity issue: `SymbolTable::classes` remains simple/hoisted-name keyed, so same-simple-name declarations in different packages cannot yet coexist as independent metadata. No build, test, or CI was run. Status remains **NOT VERIFIED / HOLD**.
