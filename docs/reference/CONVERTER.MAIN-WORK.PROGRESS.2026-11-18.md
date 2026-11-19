@@ -120,3 +120,10 @@ No build, test, or CI was run for this reassessment.
 - The check is fail-closed if enclosing metadata is missing or the chain exceeds the defensive depth limit.
 - Remaining accessibility work includes the full JLS protected member-type qualifier rules, all nestmate/private combinations, and a systematic audit of inherited fields/methods/constructors and static imports.
 - No build, tests, compiler invocation, or CI was run, as requested. Implementation and fixtures remain unverified.
+
+
+## Nested declaration coverage follow-up (2026-11-18)
+
+- Extended enclosing/static-nested metadata collection to nested enums and records as well as ordinary classes/interfaces. Static nested wildcard resolution therefore uses the same owner identity for these member-type forms.
+- Corrected the new shell-fixture diagnostic formatting; no fixture was executed.
+- This does not solve the central same-simple-name cross-package storage collision. The next substantial software task remains a coordinated canonical-key migration across declaration storage, all semantic references, and deterministic emitted names. It cannot safely be replaced by a lookup alias while the old store overwrites colliding declarations.
