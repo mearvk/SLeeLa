@@ -127,3 +127,12 @@ No build, test, or CI was run for this reassessment.
 - Extended enclosing/static-nested metadata collection to nested enums and records as well as ordinary classes/interfaces. Static nested wildcard resolution therefore uses the same owner identity for these member-type forms.
 - Corrected the new shell-fixture diagnostic formatting; no fixture was executed.
 - This does not solve the central same-simple-name cross-package storage collision. The next substantial software task remains a coordinated canonical-key migration across declaration storage, all semantic references, and deterministic emitted names. It cannot safely be replaced by a lookup alias while the old store overwrites colliding declarations.
+
+
+## Overload resolution follow-up — 2026-11-18 (implementation only)
+
+- Updated `pickMethod` candidate selection so a JLS applicability phase is selected first (strict fixed arity, loose fixed arity, then variable arity), and conversion-distance totals are no longer used to choose between candidates inside that phase.
+- Within the selected phase, the resolver now compares the instantiated/effective parameter lists with `moreSpecificForInvocation` (including the existing variable-arity effective-component handling). A strictly more-specific candidate replaces the current candidate; incomparable applicable signatures produce an overload-ambiguity diagnostic even when their accumulated conversion costs differ.
+- Removed the now-obsolete aggregate-cost ranking state.
+- This is a focused correction to the final selection step, **not completion of the JLS overload-resolution issue**. The current implementation still needs a maximal-candidate-set audit (more than two incomparable/applicable candidates), full generic inference and poly-expression target typing, method-reference adaptation for static/bound/unbound/constructor references, return-type constraints, and a broader JDK differential matrix for boxing/unboxing, primitive/reference specificity, inherited overrides, bridge-equivalent signatures, and varargs fixed-array versus packed invocation.
+- No fixture was added in this change, and no build, test, compiler invocation, or CI was run. The change is **NOT VERIFIED**; do not treat overload resolution as production-complete.
