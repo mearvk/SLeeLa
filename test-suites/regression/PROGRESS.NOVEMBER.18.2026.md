@@ -230,3 +230,11 @@ PR #372 was not merged wholesale. Its lower-bound inference implementation overl
 - The converter now checks the field's declaring owner package and, for cross-package subclass access, requires the receiver's static type to be the current subclass or a subtype of it. Existing `this`/subclass-typed access remains permitted; invalid Base-typed receiver access fails with `[member-access]`.
 - Expanded the project protected-access harness case to exercise legal subclass-typed field access and added a negative multi-source project case that first confirms javac rejects the Base-typed receiver, then requires converter refusal with no generated files.
 - **Verification: NOT RUN by user direction.** The shell regression harness was edited but not executed. No build, test, or CI was started. Package-qualified canonical symbol identity remains the next major resolver migration; production remains HOLD.
+
+
+### Generic constructor class substitution (2026-11-18)
+
+- Explicit constructor type arguments are now carried into the constructed expression's `Ty` and passed to constructor overload selection as the allocated receiver type. Existing `instantiateClassType` logic therefore substitutes class type variables in constructor parameters before applicability and argument adaptation.
+- If a source class explicitly declares constructors but no constructor is applicable after class substitution, conversion fails closed with `[constructor-resolution]` instead of emitting an allocation that Java would reject. Explicit generic arguments on anonymous-class allocation remain refused with `[generic-constructor]` until that path has matching semantics.
+- Added `GenericConstructorClassSubstitution.java` (positive) and `GenericConstructorClassSubstitutionConflict.java` (negative). Inventory is now 49 positive / 27 refusal fixtures; these are inventory counts, not test results.
+- **Verification: NOT RUN by user direction.** No build, javac, differential test, self-check, or CI was started. Production remains HOLD.
