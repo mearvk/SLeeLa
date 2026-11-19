@@ -111,3 +111,12 @@ No build, test, or CI was run for this reassessment.
 - Updated `sleelactl/convert/README.md` to distinguish implementation from verification.
 - **Not addressed yet:** independent canonical declaration storage for same-simple-name top-level/member types across packages. `SymbolTable::classes` is still keyed by simple/hoisted names, so the full project-wide type identity migration remains the primary blocker. Full protected nested-type and nest-access audit also remains open.
 - **Verification:** no build, test, compiler invocation, or CI was run, per user instruction. These changes are implementation-only and unverified; do not report the new fixture as passing.
+
+
+## Enclosing-type accessibility follow-up (2026-11-18)
+
+- Type accessibility now walks the complete enclosing-type chain. A public nested declaration is rejected if its enclosing declaration is package-private, private, protected-inaccessible, or otherwise unavailable from the current compilation context.
+- Added a javac-negative converter-refusal fixture for a public static nested type enclosed by a package-private top-level class.
+- The check is fail-closed if enclosing metadata is missing or the chain exceeds the defensive depth limit.
+- Remaining accessibility work includes the full JLS protected member-type qualifier rules, all nestmate/private combinations, and a systematic audit of inherited fields/methods/constructors and static imports.
+- No build, tests, compiler invocation, or CI was run, as requested. Implementation and fixtures remain unverified.
