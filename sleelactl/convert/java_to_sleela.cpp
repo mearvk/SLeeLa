@@ -1453,7 +1453,6 @@ private:
         }
         const MethodSig* best=nullptr;
         MethodSig bestResolved;
-        int bestCost=0x3fffffff;
         bool ambiguous=false;
         bool sawUnsupportedGeneric=false;
         // JLS 15.12.2: fixed-arity applicability is considered before variable arity.
@@ -1688,7 +1687,6 @@ private:
                 if (!best) {
                     best=mp;
                     bestResolved=resolved;
-                    bestCost=cost;
                     ambiguous=false;
                     continue;
                 }
@@ -1705,7 +1703,6 @@ private:
                 if (candidateMoreSpecific && !currentMoreSpecific) {
                     best=mp;
                     bestResolved=resolved;
-                    bestCost=cost;
                     ambiguous=false;
                 } else if (currentMoreSpecific && !candidateMoreSpecific) {
                     // Keep the existing maximally-specific candidate.
@@ -1719,7 +1716,6 @@ private:
                     if (resolved.typeParams.empty() && !bestResolved.typeParams.empty()) {
                         best=mp;
                         bestResolved=resolved;
-                        bestCost=cost;
                         ambiguous=false;
                     }
                 } else {
