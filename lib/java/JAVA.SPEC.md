@@ -75,7 +75,7 @@ staged plan (the `javaString*` builtins and `OP_JSTR_*` VM string kind are the r
 | Second converter | `lib/java/converter` | a converter written in SLeeLa; same laws, same model |
 
 Loading. A program that imports `java.jdk-N` has the tier's classes resolved by name from `/lib`.
-Converted output carries `import java.jdk-N;` and `material;` and declares `#sleela 3.1`.
+Converted output carries `import java.jdk-N;` and `material;` and declares `#sleela 3.2` (multi-dimensional creation and nested initializers require 3.2, SLEELA.syntax 46.3).
 The tier is not built into `sleela`: removing `lib/java` removes Java support and leaves the
 language intact.
 

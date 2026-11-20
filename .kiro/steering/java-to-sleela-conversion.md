@@ -66,10 +66,11 @@ Run: `sleelactl build java-convert`, then
 
 ## Known SLeeLa limits the converter must respect (do not paper over)
 
-- Converted output declares `#sleela 3.1` (SLEELA.syntax sections 44 to 46). It uses the
+- Converted output declares `#sleela 3.2` (SLEELA.syntax sections 44 to 46; multi-dimensional
+  creation is a 3.2 form since 46.3, and the VM rejects it under 3.1). It uses the
   array initializer, multi-dimensional creation `new T[a][b]` (jagged and nested initializers
   included), labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`.
-  The converter emits a char literal as its integer code. Because 3.1 shows a value of static
+  The converter emits a char literal as its integer code. Because 3.1 and later show a value of static
   type `char` as text, a Java `(int)`/`(long)` cast of a char is emitted as a real cast, and a
   `char`/`double` shown as text still goes through the `tostr` rows (`Double.toString`, JavaText).
 - The open syntax blockers are the register in SLEELA.syntax 44.6. When SLeeLa gains a
@@ -94,7 +95,11 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
-- Status (2026-11-13): differential suite 32 of 32 (CI: `.github/workflows/java-convert.yml`); JDK 25.0.2
+- Status (2026-11-20, re-run): differential suite **58 pass, 35 fail** of 93 checks (`bash tests/javaconv_differential_test.sh`)
+  after repairing `java_to_sleela.cpp`, which did not compile from commit `2b785fd2` (2026-11-18) to `d0e80478`.
+  CI last passed on 2026-11-14; later runs failed at `check-manifest` or were cancelled, so the failures were not caught.
+  The 2026-11-13 figures below predate that and are historical:
+  Status (2026-11-13): differential suite 32 of 32 (CI: `.github/workflows/java-convert.yml`); JDK 25.0.2
   `java.base` subset 420 of 884 files converted (426 with `--single-thread`). The full status document is the
   `docs/reference/JAVA.CONVERSION.STATUS.md`; the run's report is the status, re-run before quoting newer numbers.
 - Text of values: a reference of a known type goes through the model row `tostr reference`
