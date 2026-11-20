@@ -45,7 +45,7 @@ The repository tree inventory also finds these non-toolchain binary payloads. Th
 | `api/sleela/2.8/generic.dna.bin` | 1.0121 | Binary data artifact; identity assigned without changing its data format |
 | `utf-4088/tools/utf4088-million.bin` | 1.0121 | Generated binary data artifact; identity assigned without changing its data format |
 
-The 1.0121 assignments are registry identities. They do not alter byte payloads. The inventory covers 16 binary payloads: 2 toolchain executables, 1 plugin JAR, 1 native test executable, 9 Java class files, and 2 binary data files.
+The 1.0121 assignments are registry identities. They do not alter byte payloads. The inventory covers 17 binary payloads: 3 toolchain executables (`javaconv` added 2026-11-20), 1 plugin JAR, 1 native test executable, 9 Java class files, and 2 binary data files.
 The class and data artifacts should be regenerated from their owning sources when
 those projects next build. The old IntelliJ JAR is explicitly not represented as
 rebuilt: its source build identity is 1.012, while the committed JAR still needs
@@ -62,6 +62,7 @@ The concrete identities for every inventoried payload are recorded in `binary-id
 - `SLEELA-BIN-1.0121` — the 2026-11-19 `working-binaries/sleela` payload (`1.0121`, syntax 1.0 – 3.2), SHA-256 `7608bd9cc3a85628ec28c81f490c38c876003349447281c286cc19788ae70483`; superseded.
 - `SLEELAVC-BIN-1.0121` — next source-built Sleelvac compiler artifact (`impl/build/sleelvac`).
 - `NORDSHRIFT-BIN-1.0121` — current `working-binaries/nordshrift`, built from `impl/` (`2.7.1-dev`, drives syntax up to 3.2), SHA-256 `21f3740dd6d4a18f4e5506346a62a4e23418063a8f617c96b96607f2d4199507`.
+- `JAVACONV-BIN-1.0121` — `working-binaries/javaconv`, the Java to SLeeLa converter (`sleelactl/convert`), added 2026-11-20 from `3679be471`; it had no prior version identity, so it takes the initial identity 1.0121. SHA-256 `66db79f3345137d57527d21a7dfb29392e9ee7e25a179b54ded9bbb2e12aaf22`.
 - `SLEELA-TERMINAL-GUI-BIN-1.0121` — next GUI executable (`sleela-terminal/build/SleelaTerminal`).
 - `SLEELA-TERMINAL-SHELL-BIN-1.0121` — shell executable (`sleela-terminal/build/slsh`), exposed by `slsh --version`.
 - `SLEELA-UNVERSIONED-BIN-1.0121` — reserved initial identity for any
@@ -95,3 +96,11 @@ Checks run with the new payload: `make test-version`, `test-opcode-registry`, `t
 `test-sleela`; `impl/tests/syntax31` and `syntax32` fixture scripts; the regression set (214 tests, with mutation
 testing) with `SLEELA_BIN=$PWD/working-binaries/sleela`; and `tests/javaconv_differential_test.sh` with no
 `impl/build/sleela` present (103 of 103).
+
+## Addition record (2026-11-20)
+
+`working-binaries/javaconv` added, built from `master` `3679be471` with `make -C sleelactl/convert` on Linux x86-64
+(GCC 11.5). A clean rebuild gives the same bytes. Checked: `javaconv --self-check` (model `java-to-sleela 1.6.0`) and
+`tests/javaconv_differential_test.sh` with this copy as the converter (116 of 116). `sleela` and `nordshrift` were
+rebuilt from the same commit and came out byte-identical to `SLEELA-BIN-1.0122` and `NORDSHRIFT-BIN-1.0121`, so
+their payloads and identities are unchanged.

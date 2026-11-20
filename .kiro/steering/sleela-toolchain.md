@@ -43,6 +43,12 @@ The toolchain is **two** native executables. The committed copies in
 
 There is **no separate `sleelac`** binary — compilation is `sleela compile`.
 
+`working-binaries/` also holds **`javaconv`** (artifact identity `JAVACONV-BIN-1.0121`, added 2026-11-20), the
+Java to SLeeLa converter behind `sleelactl run java-convert`. It is a tool, not part of the compiler toolchain.
+`sleelactl` runs the copy built in `sleelactl/convert/build/` (`sleelactl build java-convert`); the prebuilt copy is
+run directly (`./working-binaries/javaconv --file F.java --out DIR`) and reads the model and `lib/java` from this
+checkout. Rebuild it after converter or model-loader changes (`make -C sleelactl/convert`, then copy).
+
 The prebuilt copies (Linux x86-64) are committed for quick access. They are
 platform-specific and are **not** a substitute for the integrity-gated build;
 rebuild from source for any other platform or when in doubt.

@@ -38,6 +38,15 @@
       }
     },
     {
+      "path": "working-binaries/javaconv",
+      "identity": "JAVACONV-BIN-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "added_2026-11-20 from master 3679be471 (model java-to-sleela 1.6.0); self-check and 116/116 javaconv differential checks passed with this copy",
+      "sha256": "66db79f3345137d57527d21a7dfb29392e9ee7e25a179b54ded9bbb2e12aaf22",
+      "previous": null
+    },
+    {
       "path": "ide/sleela-intellij/.intellijPlatform/sandbox/sleela-intellij/IU-2025.3.6.1/plugins/sleela-intellij/lib/sleela-intellij-0.3.0-dev.jar",
       "identity": "SLEELA-INTELLIJ-PLUGIN-BIN-1.012",
       "artifact_version": "1.012",

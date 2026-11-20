@@ -1,11 +1,12 @@
 # working-binaries
 
-Prebuilt native SLeeLa toolchain binaries, kept here for quick access. Current source builds use release identity **1.0121** and accept source syntax **1.0 – 3.2**. The committed payloads below were rebuilt from that source on 2026-11-19 (`nordshrift`) and 2026-11-20 (`sleela`). Artifact identities are separate from product versions; see [VERSION-IDENTITIES.md](VERSION-IDENTITIES.md).
+Prebuilt native SLeeLa toolchain binaries, kept here for quick access. Current source builds use release identity **1.0121** and accept source syntax **1.0 – 3.2**. The committed payloads below were rebuilt from that source on 2026-11-19 (`nordshrift`) and 2026-11-20 (`sleela`); `javaconv` was added on 2026-11-20. Artifact identities are separate from product versions; see [VERSION-IDENTITIES.md](VERSION-IDENTITIES.md).
 
 | Binary | Product version | Artifact identity | What it is | Size |
 |--------|-----------------|-------------------|-------------|------|
 | `sleela` | `1.0121` | `SLEELA-BIN-1.0122` | the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.2**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~3.0 MB |
 | `nordshrift` | `2.7.1-dev` | `NORDSHRIFT-BIN-1.0121` | the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.2. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.6 MB |
+| `javaconv` | none (reports its model, `java-to-sleela 1.6.0`) | `JAVACONV-BIN-1.0121` | the Java to SLeeLa converter behind `sleelactl run java-convert` (C lexer and model loader, C++ translator; `sleelactl/convert`). Reads `impl/subjects/conversion/conversion.model` and `lib/java` from the checkout it runs in (found from its own path, or `SLEELA_ROOT`). Usage: `--jdk DIR --out DIR`, `--file F.java --out DIR`, `--jdk-version N`, `--self-check`. `sleelactl` itself runs the copy built in `sleelactl/convert/build/` (`sleelactl build java-convert`), not this one. | ~0.7 MB |
 
 ## Important caveats
 
@@ -142,16 +143,25 @@ Checked: 214/214 regression tests (with mutation testing), `test-version`, `test
 `test-osls-vm`, `test-sleela`, the syntax 3.1 and 3.2 fixture scripts, and 103/103
 `tests/javaconv_differential_test.sh` with this copy.
 
+Added 2026-11-20 (`javaconv`), built from `master` `3679be471` with `make -C sleelactl/convert` (GCC 11.5,
+`-O2 -std=c99` / `-std=c++17`); a clean rebuild gives the same bytes. It carries the converter work of 2026-11-20
+(field resolution, implicit public members, checked indirect `/lib` calls, the refusal registry of model 1.6.0).
+Checked: `--self-check` (model `java-to-sleela 1.6.0`) and 116/116 `tests/javaconv_differential_test.sh`
+with this copy as the converter. On the same day `sleela` and `nordshrift` were rebuilt from the same commit and
+came out byte-identical to the committed copies, so they were not replaced.
+
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.0121` (supported source syntax 1.0 – 3.2)
 - `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; drives SLeeLa up to 3.2)
+- `javaconv` — no version flag; `--self-check` prints `model java-to-sleela 1.6.0`
 
 SHA-256 of the committed copies:
 
 ```
 e259db8fc79f9977c6c6e2a7259532e90434839ff2466fcc045b02daf23d917a  sleela
 21f3740dd6d4a18f4e5506346a62a4e23418063a8f617c96b96607f2d4199507  nordshrift
+66db79f3345137d57527d21a7dfb29392e9ee7e25a179b54ded9bbb2e12aaf22  javaconv
 ```
 
 ---
