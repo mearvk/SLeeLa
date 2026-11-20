@@ -12,16 +12,16 @@
   "artifacts": [
     {
       "path": "working-binaries/sleela",
-      "identity": "SLEELA-BIN-1.0121",
-      "artifact_version": "1.0121",
+      "identity": "SLEELA-BIN-1.0122",
+      "artifact_version": "1.0122",
       "product_version": "1.0121",
-      "status": "rebuilt_from_syntax_3_2_source_2026-11-19; version, syntax-3.2, VM-opcode and runtime checks passed",
-      "sha256": "7608bd9cc3a85628ec28c81f490c38c876003349447281c286cc19788ae70483",
+      "status": "rebuilt_2026-11-20 for the multi-file /lib unit merge (impl/frontend/driver.cpp); version, syntax-3.1/3.2, VM-opcode, runtime, osls-vm, sleela, 214 regression and 103 javaconv differential checks passed",
+      "sha256": "e259db8fc79f9977c6c6e2a7259532e90434839ff2466fcc045b02daf23d917a",
       "source_syntax": "1.0..3.2",
       "previous": {
-        "identity": "SLEELA-BIN-1.012",
-        "product_version": "1.3.2-pro",
-        "sha256": "0c8f7cd85355ae1a299754e7df8f4e5efdf7059c7d9ffcdda0e8e88f79b80bc0"
+        "identity": "SLEELA-BIN-1.0121",
+        "product_version": "1.0121",
+        "sha256": "7608bd9cc3a85628ec28c81f490c38c876003349447281c286cc19788ae70483"
       }
     },
     {

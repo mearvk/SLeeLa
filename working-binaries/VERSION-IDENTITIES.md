@@ -58,7 +58,8 @@ The concrete identities for every inventoried payload are recorded in `binary-id
 
 - `SLEELA-BIN-1.012` — the previous `working-binaries/sleela` payload (`1.3.2-pro`, syntax up to 3.1); superseded.
 - `NORDSHRIFT-BIN-1.012` — the previous `working-binaries/nordshrift` payload; superseded.
-- `SLEELA-BIN-1.0121` — current `working-binaries/sleela`, built from `impl/` (`1.0121`, syntax 1.0 – 3.2), SHA-256 `7608bd9cc3a85628ec28c81f490c38c876003349447281c286cc19788ae70483`.
+- `SLEELA-BIN-1.0122` — current `working-binaries/sleela`, rebuilt from `impl/` on 2026-11-20 (product `1.0121`, syntax 1.0 – 3.2), SHA-256 `e259db8fc79f9977c6c6e2a7259532e90434839ff2466fcc045b02daf23d917a`.
+- `SLEELA-BIN-1.0121` — the 2026-11-19 `working-binaries/sleela` payload (`1.0121`, syntax 1.0 – 3.2), SHA-256 `7608bd9cc3a85628ec28c81f490c38c876003349447281c286cc19788ae70483`; superseded.
 - `SLEELAVC-BIN-1.0121` — next source-built Sleelvac compiler artifact (`impl/build/sleelvac`).
 - `NORDSHRIFT-BIN-1.0121` — current `working-binaries/nordshrift`, built from `impl/` (`2.7.1-dev`, drives syntax up to 3.2), SHA-256 `21f3740dd6d4a18f4e5506346a62a4e23418063a8f617c96b96607f2d4199507`.
 - `SLEELA-TERMINAL-GUI-BIN-1.0121` — next GUI executable (`sleela-terminal/build/SleelaTerminal`).
@@ -77,3 +78,20 @@ regenerated and `make check-manifest` printed OK. The checks this policy require
 `make test-version`, `impl/tests/syntax32/run_syntax32_tests.sh` (and `syntax31`), `make test-opcode-registry`,
 `make test-runtime`, `make test-osls-vm` and `make test-sleela` all pass, as do `test-nordshrift`
 (+ `-compiler`, `-semantic`, `-compat`, `-e2e`) and the full regression set (214 tests, with mutation testing).
+
+## Rebuild record (2026-11-20)
+
+`working-binaries/sleela` only, rebuilt on Linux x86-64 (GCC 11.5) from `master` at `cd43c1db`, after
+`make regen-manifest` and `make check-manifest` printed OK. The payload changed, so the artifact identity rises
+to `SLEELA-BIN-1.0122`; the product version it prints is still `1.0121`. The reason is the `impl/frontend/driver.cpp`
+change in `833b3a44`: a multi-file `sleela run/compile a.sleela b.sleela` now merges the user files first and
+resolves `/lib` units once. The 2026-11-19 payload resolved them per file, so a library class used by two files
+(`String`, or a project `Box` beside `javax.swing.Box`) was declared twice and the semantic pass rejected the
+program. With the old payload, the six multi-file project checks of `tests/javaconv_differential_test.sh` failed.
+
+`nordshrift` does not link `driver.o` and was not rebuilt; it stays `NORDSHRIFT-BIN-1.0121`.
+
+Checks run with the new payload: `make test-version`, `test-opcode-registry`, `test-runtime`, `test-osls-vm`,
+`test-sleela`; `impl/tests/syntax31` and `syntax32` fixture scripts; the regression set (214 tests, with mutation
+testing) with `SLEELA_BIN=$PWD/working-binaries/sleela`; and `tests/javaconv_differential_test.sh` with no
+`impl/build/sleela` present (103 of 103).

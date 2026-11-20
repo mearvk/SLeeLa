@@ -1,10 +1,10 @@
 # working-binaries
 
-Prebuilt native SLeeLa toolchain binaries, kept here for quick access. Current source builds use release identity **1.0121** and accept source syntax **1.0 – 3.2**. The committed payloads below were rebuilt from that source on 2026-11-19. Artifact identities are separate from product versions; see [VERSION-IDENTITIES.md](VERSION-IDENTITIES.md).
+Prebuilt native SLeeLa toolchain binaries, kept here for quick access. Current source builds use release identity **1.0121** and accept source syntax **1.0 – 3.2**. The committed payloads below were rebuilt from that source on 2026-11-19 (`nordshrift`) and 2026-11-20 (`sleela`). Artifact identities are separate from product versions; see [VERSION-IDENTITIES.md](VERSION-IDENTITIES.md).
 
 | Binary | Product version | Artifact identity | What it is | Size |
 |--------|-----------------|-------------------|-------------|------|
-| `sleela` | `1.0121` | `SLEELA-BIN-1.0121` | the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.2**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~3.0 MB |
+| `sleela` | `1.0121` | `SLEELA-BIN-1.0122` | the authoritative SLeeLa compiler/runner. **Supported source syntax 1.0 – 3.2**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~3.0 MB |
 | `nordshrift` | `2.7.1-dev` | `NORDSHRIFT-BIN-1.0121` | the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); drives SLeeLa source syntax up to 3.2. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.6 MB |
 
 ## Important caveats
@@ -133,6 +133,15 @@ Checked: 214/214 regression tests (with mutation testing) with `SLEELA_BIN=$PWD/
 `test-sleela` and the Nordshrift targets. Artifact identities: `SLEELA-BIN-1.0121`, `NORDSHRIFT-BIN-1.0121`
 (`VERSION-IDENTITIES.md`).
 
+Rebuilt 2026-11-20 (`sleela` only) from `master` `cd43c1db`, same product version `1.0121`, artifact identity
+`SLEELA-BIN-1.0122`: multi-file `sleela run/compile a.sleela b.sleela` merges the user files first and resolves
+`/lib` units once (`impl/frontend/driver.cpp`, `833b3a44`). The 2026-11-19 copy declared a library class used by
+two files twice, so converted multi-file Java projects failed with duplicate-declaration errors.
+`nordshrift` does not link the driver and was not rebuilt.
+Checked: 214/214 regression tests (with mutation testing), `test-version`, `test-opcode-registry`, `test-runtime`,
+`test-osls-vm`, `test-sleela`, the syntax 3.1 and 3.2 fixture scripts, and 103/103
+`tests/javaconv_differential_test.sh` with this copy.
+
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.0121` (supported source syntax 1.0 – 3.2)
@@ -141,7 +150,7 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-7608bd9cc3a85628ec28c81f490c38c876003349447281c286cc19788ae70483  sleela
+e259db8fc79f9977c6c6e2a7259532e90434839ff2466fcc045b02daf23d917a  sleela
 21f3740dd6d4a18f4e5506346a62a4e23418063a8f617c96b96607f2d4199507  nordshrift
 ```
 

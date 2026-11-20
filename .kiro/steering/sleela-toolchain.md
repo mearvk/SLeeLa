@@ -27,8 +27,8 @@ The toolchain is **two** native executables. The committed copies in
 [`/working-binaries/`](../../working-binaries/) report:
 
 - **`sleela`** — `SLeeLa™ Language/Runtime 1.0121`, the authoritative compiler/runner,
-  **supported source syntax 1.0 – 3.2** (rebuilt from `impl/` on 2026-11-19; artifact
-  identity `SLEELA-BIN-1.0121`). Syntax 3.2 gates `a.length`, `new T[a][b]` and typed char
+  **supported source syntax 1.0 – 3.2** (rebuilt from `impl/` on 2026-11-20; artifact
+  identity `SLEELA-BIN-1.0122`). Syntax 3.2 gates `a.length`, `new T[a][b]` and typed char
   text, which were 3.1 features in earlier builds.
   Subcommands: `check <f>`, `run <f>`, `compile <f...> -o <out>`,
   `validate-artifact <f>`, `nordshrift [--emit|--roundtrip] [--target=…] <f>`,

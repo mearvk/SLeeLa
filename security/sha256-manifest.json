@@ -503,7 +503,7 @@
     },
     {
       "path": "impl/core/terminal_platform_smoke.c",
-      "sha256": "3a1c94ac503ea294e93fc904d7bbaa0ea07f725c7e119da1a40932978de5df1e"
+      "sha256": "0c218ae250c250c5ffe0c7de85884d03cdcebc56e4cce6738f0f84139b306c02"
     },
     {
       "path": "impl/core/thread_platform_smoke.c",
