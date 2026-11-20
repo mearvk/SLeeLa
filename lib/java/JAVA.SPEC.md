@@ -25,6 +25,8 @@ Where the tier needs something the language does not have, the converter lowers 
 to constructs the language already has (the principle of `lib/java/jdk-28/LOWERING.md`); it does
 not add syntax or opcodes.
 
+> **Caveat (2026-11-20):** every "syntax 3.1" statement in this document is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; compiler ceiling 3.2). `#sleela 3.01` means 3.1, not 3.2. Section 44 (char literal, array initializer, labels, `finally` on abrupt exit) is 3.1. Sections 45 and 46 (typed `char` text, `a.length`, `new T[a][b]`) are 3.2: under `#sleela 3.1` or `3.01` `a.length` is rejected ("requires #sleela 3.2"). The C++ converter in `sleelactl/convert` emits `#sleela 3.2`. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
+
 Relation to the language specification. Sections 44, 45 and 46 of `SLEELA.syntax` (syntax 3.1 and
 3.1 (also written 3.01): character literal, array initializer, labeled statements, `finally` on abrupt exit, `a.length`,
 multi-dimensional arrays, char as text) are language features that the Java tier **uses**. They were

@@ -3,6 +3,8 @@
 Revision 1.0, 2026-11-13. Part of the Java tier; the normative text is
 [`JAVA.SPEC.md`](JAVA.SPEC.md). This page is the summary and the ledger.
 
+> **Caveat (2026-11-20):** every "syntax 3.1" statement in this document is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; compiler ceiling 3.2). `#sleela 3.01` means 3.1, not 3.2. Section 44 (char literal, array initializer, labels, `finally` on abrupt exit) is 3.1. Sections 45 and 46 (typed `char` text, `a.length`, `new T[a][b]`) are 3.2: under `#sleela 3.1` or `3.01` `a.length` is rejected ("requires #sleela 3.2"). The C++ converter in `sleelactl/convert` emits `#sleela 3.2`. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
+
 ## 1. Principles
 
 | # | Principle | Meaning in practice |
