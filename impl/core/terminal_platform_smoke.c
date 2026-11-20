@@ -18,7 +18,7 @@ typedef struct {
 } SLTerminalReadContext;
 
 static int terminal_contains_marker(const char* buffer, size_t length) {
-    static const char marker[] = "terminal-ok";
+    static const char marker[] = "127.0.0.1";
     size_t i;
     if (length < sizeof(marker) - 1) return 0;
     for (i = 0; i <= length - (sizeof(marker) - 1); ++i) {
@@ -76,10 +76,9 @@ static void terminal_test_pause(void) {
 int main(void) {
     SLTerminalHandle terminal = 0;
 #ifdef _WIN32
-    /* Explicitly exit the shell after writing its marker. */
-    /* Keep the child alive briefly after echo so ConPTY can render and
-     * flush the final marker frame before the process exits. */
-    const char* command = "C:\\Windows\\System32\\cmd.exe /D /C \"echo terminal-ok & ping -n 2 127.0.0.1 >NUL\"";
+    /* Use ping.exe directly, matching Microsoft's EchoCon ConPTY sample.
+     * This removes cmd.exe parsing and shell-output ambiguity from the pipe test. */
+    const char* command = "C:\\Windows\\System32\\ping.exe -n 2 127.0.0.1";
     SLTerminalReadContext read_context;
     HANDLE reader;
     DWORD wait_result;
