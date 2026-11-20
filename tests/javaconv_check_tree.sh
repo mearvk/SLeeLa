@@ -30,7 +30,7 @@ export SLEELA_HOME="$root" SLEELA_LIB="$root/lib" SLEELA_SHEET="$root/SHEET.shee
 export SLEELA_SHA256_MANIFEST="${SLEELA_SHA256_MANIFEST:-$root/security/sha256-manifest.json}"
 
 cat > "$rep/Stub.sleela" <<'EOF'
-#sleela 3.1
+#sleela 3.2
 import java.jdk-28;
 material;
 
