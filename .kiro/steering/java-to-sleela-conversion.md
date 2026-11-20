@@ -100,6 +100,11 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
+- Status (2026-11-20, after the field-resolution fixes): differential suite **108 of 108**; `java.base` subset
+  **259 of 884** files convert (267 SLeeLa files), 22 link-time errors in 11 of them; all of `java.base` 842 of 3344.
+  Static fields of `lib/java/jdk-28` units are checked like methods: a non-final static in a unit's "java declarations"
+  section is a placeholder (`= null`, `0.0`) and its read is `[library-stub]`; `/lib` field types are lossy (char as int,
+  float as double), so a `/lib` field read is typed only when typed as its own unit class. The entries below are earlier.
 - Status (2026-11-20, after the resolution and member checks): differential suite **103 of 103**; `java.base` subset
   **254 of 884** files convert (262 SLeeLa files) and `tests/javaconv_check_tree.sh` finds 22 link-time errors in 11 of
   them (was 874 in 110 of 381). Runs convert to a fixpoint (failed units leave the index); non-project types must be

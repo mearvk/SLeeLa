@@ -696,6 +696,46 @@ private:
         throw ConvErr{cur().line, cur().col, "library-member", what + " is not declared by its /lib unit" + (staticCall && !ctor ? " as a callable static member" : "")};
     }
 
+    // A static field read through a lib/java/jdk-28 type (`Owner.NAME`, or a static import of it).
+    // Fails closed when the unit chain declares the field only as a placeholder, or not at all.
+    // Returns the Java type when it is known exactly: only a field typed as its own unit class
+    // (an enum-style constant). Every other /lib field type is lossy (char is stored as int,
+    // float as double), so it stays unknown and typed operators refuse it ([untyped]).
+    // With `found` set, a member the chain does not declare returns with *found = false
+    // instead of failing, and *isStatic/*owner describe the declaration that was found.
+    Ty checkLibraryField(const std::string& name, const std::string& member, bool* found = nullptr,
+                         bool* isStatic = nullptr, std::string* owner = nullptr) const {
+        if (found) *found = false;
+        if (pass != 2 || !opt.library || name.empty() || classes.count(name)) return mk("?");
+        if (cm_find(&M, "type", name.c_str(), nullptr, nullptr)) return mk("?");
+        const std::string spelled = spellTypeName(name);
+        if (opt.library->units.count(spelled + "." + member)) return mk("?");   // a nested type, not a field
+        std::string up = spelled;
+        std::set<std::string> seen;
+        for (int depth = 0; depth < 32 && !up.empty() && seen.insert(up).second; depth++) {
+            const LibUnit* u = opt.library->unit(up);
+            if (!u) { if (depth == 0) return mk("?"); break; }   // outside lib/java/jdk-28: not checked
+            for (const LibField& f : u->fields) {
+                if (f.name != member || (!f.isStatic && !found)) continue;
+                if (found) { *found = true; if (isStatic) *isStatic = f.isStatic; if (owner) *owner = up; }
+                if (f.placeholder)
+                    throw ConvErr{cur().line, cur().col, "library-stub", "static field '" + spelled + "." + member +
+                        "' exists in /lib only as a placeholder declaration whose value is not the JDK value"};
+                const size_t dot = up.rfind('.');
+                const std::string own = dot == std::string::npos ? up : up.substr(dot + 1);
+                return depth == 0 && f.ty == own ? mk(name) : mk("?");
+            }
+            if (u->super.empty()) {
+                if (found) return mk("?");
+                throw ConvErr{cur().line, cur().col, "library-member", "static field " +
+                    std::string(std::isupper(static_cast<unsigned char>(member[0])) ? "or nested type " : "") +
+                    "'" + spelled + "." + member + "' is not declared by its /lib unit"};
+            }
+            up = u->super;
+        }
+        return mk("?");
+    }
+
     // A /lib member that returns Any (an erased Java type variable) where the Java call has a
     // concrete result type: SLeeLa needs the cast back, as for an erased project method.
     void castLibraryResult(const std::string& libRet, E& r) const {
@@ -2221,6 +2261,8 @@ private:
                         r.code = e.code + "." + name;
                         r.ty = mk("?");
                         if (const FieldInfo* fi = findField(e.code, name)) r.ty = fi->ty;
+                        else if (!r.isType && name != "class" && e.ty.n.rfind("type:", 0) == 0)
+                            r.ty = checkLibraryField(e.ty.n.substr(5), name);
                     }
                 } else if (e.ty.dims > 0 && name == "length") {
                     const cm_rec* al = cm_find(&M, "call", "array.length", nullptr, nullptr);
@@ -2484,6 +2526,8 @@ private:
             }
         }
         { E o; if (resolveOuter(name, &o)) return o; }
+        { E sf; if (resolveStaticImportField(name, &sf)) return sf; }
+        { E lf; if (resolveLibraryInheritedField(name, &lf)) return lf; }
         if (isupper((unsigned char)name[0]) || classes.count(name) || nestedMap_.count(name)) {
             std::string tn = resolveTypeName(name);
             E r; r.code = useTypeName(tn); r.isType = true; r.ty = mk("type:" + tn); return r;
@@ -2497,6 +2541,75 @@ private:
             if (isupper((unsigned char)last[0])) { p = q; E r; r.code = useTypeName(last); r.isType = true; r.ty = mk("type:" + last); return r; }
         }
         E r; r.code = safeName(name); r.ty = mk("?"); return r;
+    }
+    // A bare name that is a field inherited from a /lib superclass (JLS 8.3: fields are inherited).
+    // The project super chain is walked to its first non-project class, whose /lib unit chain
+    // must declare the field; a placeholder fails closed. A static field is written qualified
+    // with its declaring unit, an instance field bare (as an inherited instance field already was).
+    bool resolveLibraryInheritedField(const std::string& name, E* out) {
+        if (pass != 2 || !opt.library) return false;
+        std::string up = curClass;
+        for (int depth = 0; depth < 32; depth++) {
+            auto ci = classes.find(up);
+            if (ci == classes.end()) break;
+            if (ci->second.super.empty() || ci->second.super == up) return false;
+            up = ci->second.super;
+        }
+        if (up.empty() || classes.count(up)) return false;
+        bool found = false, isStatic = false;
+        std::string owner;
+        const Ty ty = checkLibraryField(up, name, &found, &isStatic, &owner);
+        if (!found) return false;
+        E r;
+        r.pure = true;
+        r.ty = ty;
+        r.code = isStatic ? owner + "." + name : safeName(name);
+        *out = r;
+        return true;
+    }
+    // JLS 7.5.3: `import static p.Owner.NAME;` makes a bare NAME in an expression mean the
+    // static field Owner.NAME (locals, fields and enclosing members, tried first, shadow it).
+    // The name is read exactly as the qualified form would be: a project owner through its
+    // declared static field (with the usual access check), a /lib owner through
+    // checkLibraryField. An import that names a member type or a static method is not a field.
+    bool resolveStaticImportField(const std::string& name, E* out) {
+        auto imports = staticNestedTypeImports_.find(name);
+        if (imports == staticNestedTypeImports_.end()) return false;
+        std::string chosenOwner;
+        E chosen;
+        for (const std::string& imported : imports->second) {
+            const std::string qualifiedOwner = imported.substr(0, imported.size() - name.size() - 1);
+            const std::string owner = resolveQualifiedTypeName(qualifiedOwner);
+            E r;
+            r.pure = true;
+            if (classes.count(owner)) {
+                if (classes.count(owner + "__" + name)) continue;   // a member type
+                const FieldInfo* fi = findField(owner, name);
+                if (!fi || !fi->isStatic) continue;                 // a static method import
+                r.code = useTypeName(owner) + "." + safeName(name);
+                r.ty = fi->ty;
+            } else {
+                if (cm_find(&M, "type", owner.c_str(), nullptr, nullptr)) continue;   // model fields are read above
+                const std::string spelled = spellTypeName(owner);
+                if (opt.library && opt.library->units.count(spelled + "." + name)) continue;   // a member type
+                if (opt.library && pass == 2) {
+                    // A static method of that name is a method import, not a field.
+                    bool method = false;
+                    if (const LibUnit* u = opt.library->unit(spelled))
+                        for (const LibMember& m : u->members) if (m.name == name && !m.ctor) method = true;
+                    if (method) continue;
+                }
+                r.ty = checkLibraryField(owner, name);
+                r.code = useTypeName(owner) + "." + name;
+            }
+            if (!chosenOwner.empty() && chosenOwner != owner)
+                fail("static-import-ambiguous", "unqualified field '" + name + "' matches more than one static import; qualify the owner");
+            chosenOwner = owner;
+            chosen = r;
+        }
+        if (chosenOwner.empty()) return false;
+        *out = chosen;
+        return true;
     }
     std::string safeNameForCall(const std::string& n) const {
         // Iterator.next() and user-declared next() are ordinary Java methods.
@@ -3973,7 +4086,8 @@ private:
         std::vector<std::string> memberLines;
         int instanceFields = 0;
         if (pass == 1) {
-            for (auto& c : consts) { FieldInfo fi; fi.ty = mk(name); fi.isStatic = true; ci.fields[c.name] = fi; }
+            // JLS 8.9.3: every enum constant is implicitly public static final.
+            for (auto& c : consts) { FieldInfo fi; fi.ty = mk(name); fi.isStatic = true; fi.visibility = "public"; ci.fields[c.name] = fi; }
             FieldInfo vf; vf.ty = mk(name, 1); vf.isStatic = true; ci.fields["enumValues"] = vf;
             auto addM = [&](const char* n, Ty r, std::vector<Ty> ps, bool st) { MethodSig m; m.name = n; m.ret = r; m.params = ps; m.isStatic = st; ci.methods.push_back(m); };
             addM("values", mk(name, 1), {}, true);
@@ -4553,7 +4667,11 @@ private:
         struct Restorer { Translator* t; const Saved& sv; bool nested; bool inner, ctor; std::string simple;
             ~Restorer() { if (nested) { t->restoreState(sv); t->innerMode_ = inner; t->innerCtorSeen_ = ctor; t->curSimple_ = simple; if (!t->anonStack_.empty() && t->anonStack_.back().sub.rfind("#nest", 0) == 0) t->anonStack_.pop_back(); } } }
             restorer{this, nestedSaved, nested, savedInner, savedCtorSeen, savedSimple};
-        typeVars.clear();
+        // JLS 6.3: the type parameters of a class are in scope in its whole body,
+        // member classes included (an inner class may use the E of its enclosing
+        // generic class). A static member type may not refer to them, which javac
+        // already rejects. The member type adds its own parameters on top.
+        if (!nested) typeVars.clear();
         curIsInterface = false;
         // A member type's modifiers were already read by the member parser; keep
         // them (public/protected/private decide cross-package type access).
@@ -5017,7 +5135,7 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
     const size_t dot = stem.rfind('.');
     const std::string cls = dot == std::string::npos ? stem : stem.substr(dot + 1);
     std::string line;
-    bool inBlock = false, inStubs = false, inClass = false;
+    bool inBlock = false, inStubs = false, inClass = false, inDecls = false;
     while (std::getline(in, line)) {
         if (inBlock) { if (line.find(">>") != std::string::npos) inBlock = false; continue; }
         size_t first = line.find_first_not_of(" \t");
@@ -5026,6 +5144,8 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
         if (line[first] == '<') {
             if (line.find("BEGIN java signatures") != std::string::npos) inStubs = true;
             else if (line.find("END java signatures") != std::string::npos) inStubs = false;
+            else if (line.find("BEGIN java declarations") != std::string::npos) inDecls = true;
+            else if (line.find("END java declarations") != std::string::npos) inDecls = false;
             continue;
         }
         if (!inClass) {
@@ -5043,6 +5163,30 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
         }
         if (first != 2) continue;
         const size_t open = line.find('(');
+        // A field declaration: `[mods] Type name [= init];`, its '=' or ';' before any '('.
+        {
+            const size_t end = std::min(line.find('='), line.find(';'));
+            if (end != std::string::npos && (open == std::string::npos || end < open) && line[first] != '@') {
+                std::istringstream fs(line.substr(first, end - first));
+                std::vector<std::string> w; std::string t;
+                while (fs >> t) w.push_back(t);
+                if (w.size() >= 2) {
+                    LibField f;
+                    f.name = w.back();
+                    f.ty = w[w.size() - 2];
+                    { const size_t lt = f.ty.find('<'); if (lt != std::string::npos) f.ty.erase(lt); }
+                    bool isFinal = false, plain = true;
+                    for (size_t i = 0; i + 2 < w.size(); i++) {
+                        if (w[i] == "static") f.isStatic = true;
+                        else if (w[i] == "final") isFinal = true;
+                        else if (w[i] != "public" && w[i] != "private" && w[i] != "protected") plain = false;
+                    }
+                    f.placeholder = inDecls && f.isStatic && !isFinal;
+                    if (plain && f.name.find_first_of("=.+-*/!&|[]") == std::string::npos) u.fields.push_back(f);
+                }
+                continue;
+            }
+        }
         if (open == std::string::npos || line[first] == '@') continue;
         std::istringstream hs(line.substr(first, open - first));
         std::vector<std::string> w; std::string t;

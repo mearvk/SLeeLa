@@ -97,11 +97,17 @@ struct SymbolTable {
 // and for the JDK tier (lib/java/jdk-28) the members each unit declares. A member in the
 // unit's "java signatures" section is a stub that only returns a default value.
 struct LibMember { std::string name; std::string ret; int arity = 0; bool isStatic = false; bool stub = false; bool ctor = false; };
+// A field declared by a lib/java/jdk-28 unit. In the generated "java declarations" section a
+// reflected constant is `static final` with its JDK value; a non-final static there is a
+// placeholder (`= null`, or 0.0 for an infinity) whose value is not the JDK value.
+// `ty` is the declared SLeeLa type, which is lossy (a Java char is stored as int, a float as double).
+struct LibField { std::string name; std::string ty; bool isStatic = false; bool placeholder = false; };
 struct LibUnit {
     bool parsed = false;          // the unit was found and read
     std::string super;            // SLeeLa superclass named in the class header, "" if none
     bool declaresCtor = false;
     std::vector<LibMember> members;
+    std::vector<LibField> fields;
 };
 struct LibraryIndex {
     std::set<std::string> units;                  // file stems under lib/java (e.g. "Objects", "Map.Entry")

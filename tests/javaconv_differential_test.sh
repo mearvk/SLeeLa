@@ -149,6 +149,51 @@ else
   printf 'FAIL  project-generic (project build or conversion failed)\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
 fi
 
+# single static imports of project fields across packages (JLS 7.5.3): a bare NAME is the
+# owner's static field (read, assigned, and beside a static method import of the same owner),
+# and an enum constant of an imported member enum is public from another package (JLS 8.9.3).
+mkdir -p "$tmp/project-static-import/src/fixture/consts" "$tmp/project-static-import/src/fixture/use" "$tmp/project-static-import/cls" "$tmp/project-static-import/sl"
+cat > "$tmp/project-static-import/src/fixture/consts/Consts.java" <<'JAVA'
+package fixture.consts;
+public class Consts {
+  public static final long MASK = 0xffffffffL;
+  public static int counter = 3;
+  public static int bump() { return ++counter; }
+  public enum Mode { FAST, SLOW }
+}
+JAVA
+cat > "$tmp/project-static-import/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+import static fixture.consts.Consts.MASK;
+import static fixture.consts.Consts.counter;
+import static fixture.consts.Consts.bump;
+import static fixture.consts.Consts.Mode;
+public class Main {
+  public static void main(String[] args) {
+    int x = -1;
+    System.out.println(x & MASK);
+    System.out.println(counter);
+    counter = 10;
+    System.out.println(bump());
+    System.out.println(counter * 2);
+    System.out.println(Mode.SLOW.ordinal());
+  }
+}
+JAVA
+if javac -d "$tmp/project-static-import/cls" "$tmp/project-static-import/src/fixture/consts/Consts.java" "$tmp/project-static-import/src/fixture/use/Main.java" 2> "$tmp/project-static-import/javac.err" &&
+   java -cp "$tmp/project-static-import/cls" fixture.use.Main > "$tmp/project-static-import/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-static-import/src" --out "$tmp/project-static-import/sl" --quiet; then
+  (cd "$tmp/project-static-import/sl" && run_project fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-static-import/actual.out"
+  if diff -u "$tmp/project-static-import/expected.out" "$tmp/project-static-import/actual.out" > "$tmp/project-static-import/diff"; then
+    printf 'PASS  %-12s cross-package static field imports and enum constant identical to the JDK\n' "project-static-import"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-static-import\n'; head -40 "$tmp/project-static-import/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-static-import (project build or conversion failed)\n'; cat "$tmp/project-static-import/javac.err"
+  "$conv" --jdk "$tmp/project-static-import/src" --out "$tmp/project-static-import/sl" | sed 's/^/      /'; fail=$((fail+1))
+fi
+
 # package identity and wildcard/nested imports across source packages.
 mkdir -p "$tmp/project-package/src/fixture/alpha" "$tmp/project-package/src/fixture/use" "$tmp/project-package/cls" "$tmp/project-package/sl"
 cat > "$tmp/project-package/src/fixture/alpha/AlphaBase.java" <<'JAVA'

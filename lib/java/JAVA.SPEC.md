@@ -308,6 +308,7 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | A type that is neither converted in the same run nor provided by a unit under `lib/java` (`[library-type]`) | the reference would not resolve when the output is linked; this includes types of units that failed closed | convert the unit that declares it, or add the type to `lib/java` |
 | A call or constructor of a `lib/java/jdk-28` type that its unit does not declare with that arity (`[library-member]`) | the reference would not resolve when the output is linked | add the member to the unit |
 | A call or constructor that the `lib/java/jdk-28` unit declares only in its "java signatures" stub section (`[library-stub]`) | the stub returns a default value, so the program would run but not behave like Java | write the member logic in the unit |
+| A read of a static field that the `lib/java/jdk-28` unit declares only as a non-final placeholder in its "java declarations" section (`[library-stub]`, for example `BigInteger.ONE`, `StandardCharsets.UTF_8`, `Collections.EMPTY_SET`) | the placeholder holds `null` or `0`, not the JDK value | give the unit a `static final` field with the real value |
 | Two project declarations with the same simple name, even in different packages (`[type-ambiguous]`) | converted documents link into one flat type namespace | package-qualified hoisted names |
 | Two constructors that lower to the same SLeeLa parameter list, such as `float` and `double` (`[overload-erasure]`) | SLeeLa selects a constructor by its emitted parameter types | signature-named constructor lowering |
 | `native` | no Java body and no declared Java-to-SLeeLa ABI binding | accept only when a modelled, verified native binding maps the exact owner/signature/ABI; otherwise fail closed (`[native]`) |
@@ -330,6 +331,23 @@ constructor, `super(...)` and unqualified inherited call by name and arity, walk
 - a member found only in the stub section is refused `[library-stub]`;
 - no member is refused `[library-member]`;
 - a member the unit declares to return `Any` gets a cast back to the Java result type at a typed target.
+
+Static fields of a `lib/java/jdk-28` type are checked the same way (2026-11-20, later). This applies to a qualified read
+`Owner.NAME`, to a bare name that a single static import binds to `Owner.NAME` (JLS 7.5.3), and to a bare name
+inherited from a library superclass (JLS 8.3), all walking the `extends` chain. In a unit's "java declarations"
+section a reflected constant is `static final` with its JDK value. A non-final static there is a placeholder
+(`static Any ONE = null;`, or `0.0` for an infinity), so reading it is refused `[library-stub]`. A field the
+chain does not declare is refused `[library-member]`. The declared SLeeLa field type is lossy (a Java `char`
+is stored as `int`, a `float` as `double`), so the read gets a type only when the field is typed as its own
+unit class (an enum-style constant such as `TimeUnit.NANOSECONDS`); otherwise its type stays unknown and typed
+operators refuse it (`[untyped]`). A single static import of a project field reads the declared static field
+through the usual access check. An import that names a member type or a static method is not a field.
+Tests: `LibraryStaticImport`, `reject/LibraryFieldPlaceholder`, `reject/InheritedLibraryPlaceholder`, and the
+`project-static-import` project of the differential script.
+
+The type parameters of a class are in scope in its member classes (JLS 6.3), so an inner class may use the `E`
+of its enclosing generic class (test `InnerOuterTypeVar`). Enum constants are public (JLS 8.9.3) when read from
+another package.
 
 The unit names and the selected unit per name are recorded in `CONVERSION-PROVENANCE.json`
 (`libraryUnits`). Parameter types are not compared, only arity. `tests/javaconv_check_tree.sh`

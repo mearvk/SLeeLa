@@ -226,3 +226,58 @@ Open defects found, not yet fixed:
   and five JDK files are refused `[library-member]`.
 
 Next: `type-ambiguous`, then `member-access`.
+
+## Addendum: enclosing type variables, static-imported and inherited fields (2026-11-20, later)
+
+The first two open defects above are fixed, and a third form of the same misreport was found and fixed.
+
+- **Enclosing type variables.** `parseTypeDecl` cleared the class type variables for every type, member types
+  included. JLS 6.3 puts a class's type parameters in scope in its member classes, so `E` in an inner class
+  (`ArrayList.Itr.next()`) was refused `[library-type]`. A member class now keeps the enclosing type variables
+  and adds its own. Test `InnerOuterTypeVar`.
+- **Static-imported fields.** A single static import of a field whose owner was a project type (`BigInteger.LONG_MASK`,
+  `String.COMPACT_STRINGS`) or a `/lib` type (`StandardCharsets.UTF_8`, `TimeUnit.NANOSECONDS`) fell through to the
+  type-name path. Only model `field` rows were consulted. The bare name is now read as `Owner.NAME`
+  (JLS 7.5.3) after locals, fields and enclosing members. A project owner is read through its declared static
+  field with the usual access check. A `/lib` owner goes through the new field check. Tests `LibraryStaticImport`
+  and the `project-static-import` project in `tests/javaconv_differential_test.sh`.
+- **Inherited `/lib` fields.** A bare uppercase name inherited from a library superclass (`PIPE_SIZE` in a
+  `PipedInputStream` subclass) was also taken for a type. It is now looked up in the superclass unit chain.
+  Test `reject/InheritedLibraryPlaceholder`.
+- **`/lib` static fields are checked.** `LibraryIndex::unit` now indexes field declarations. In a "java declarations"
+  section every reflected constant is `static final` with its JDK value (4,762 fields across the tier), and every
+  non-final static is a placeholder (2,082: `= null` for objects, `0.0` for the infinities and NaN, and
+  `PIPE_SIZE = 0` where the JDK has 1024). A read of a placeholder is refused `[library-stub]`. A field the chain
+  does not declare is refused `[library-member]`. This applies to qualified `Owner.NAME` reads too, which were
+  emitted unchecked before. Test `reject/LibraryFieldPlaceholder`.
+- **Enum constants are public** (JLS 8.9.3). They were recorded with package visibility, so `Consts.Mode.SLOW` from
+  another package was refused `[member-access]`. The `project-static-import` project covers it.
+
+Field types in `/lib` are lossy (a Java `char` is stored as `int`, a `float` as `double`). So a `/lib` field read
+gets a type only when it is typed as its own unit class. Otherwise its type stays unknown, and typed operators
+refuse it, as before.
+
+Re-measured with Corretto 25.0.5.1:
+
+| Input | Converted before | Converted after | Checker after |
+|---|---|---|---|
+| differential suite | 103 of 103 | 108 of 108 | |
+| `java.base` subset (884 files) | 254 (262 SLeeLa files) | 259 (267 SLeeLa files) | 256 clean, 11 with errors, 22 errors (unchanged) |
+| all of `java.base` (3344 files) | 841 (859 SLeeLa files) | 842 (860 SLeeLa files) | not re-run |
+
+The five newly converted files are the `java.lang.classfile.constantpool` entry interfaces (`DoubleEntry`,
+`FloatEntry`, `IntegerEntry`, `LongEntry`, `LoadableConstantEntry`). On all of `java.base`, four files that
+converted before are now refused `[library-stub]`, correctly. They read `BigInteger.ONE`, `Collections.EMPTY_SET`,
+`StandardCharsets.UTF_8` and `Policy.UNSUPPORTED_EMPTY_COLLECTION`, which are `null` placeholders in `/lib`. So their
+earlier conversions would have run with `null` where Java has an object: `PolicySpi`, `CollectionCertStoreParameters`,
+`ECFieldF2m` and `jdk.internal.util.xml.XMLStreamWriter`. No other file changed status. `library-type` refusals fell
+from 2,272 to 1,746 (subset: 1,742 to 1,509). Most of these sites now show their real first refusal.
+
+Still open:
+- `Instant` has no no-argument constructor (five JDK files `[library-member]`).
+- The placeholders themselves: common constants such as `BigInteger.ONE`/`ZERO`/`TEN`, `Collections.EMPTY_*` and
+  the `StandardCharsets` charsets need real `static final` values in their `lib/java/jdk-28` units.
+- Static fields inherited through an interface are not in the unit headers (they list only `extends`), so such a
+  read is refused `[library-member]`.
+
+Next: `type-ambiguous`, then `member-access`.

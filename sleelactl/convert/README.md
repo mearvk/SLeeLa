@@ -90,6 +90,14 @@ The refusal rows are the `unsupported` records of the model.
 
 ## Status (honest)
 
+**2026-11-20 (latest): field resolution.** Differential suite 108 of 108. Enclosing-class type variables are in scope
+in inner classes. A single static import of a field reads `Owner.NAME`, and so does a field inherited from a `/lib`
+superclass. Static fields of `lib/java/jdk-28` units are checked, and a non-final placeholder declaration
+(`BigInteger.ONE = null`) is refused `[library-stub]`. Enum constants are public across packages. `java.base` subset:
+259 of 884 converted, 22 errors in 11 emitted files (unchanged). All of `java.base`: 842 of 3344, with four earlier
+conversions now correctly refused for reading `null` placeholders (whole-tree checker not re-run on all of `java.base`).
+Details: `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
+
 **2026-11-20 (later): re-measurement.** Differential suite 103 of 103 on Corretto 25.0.5.1. `tests/javaconv_check_tree.sh`
 now links its stub at `#sleela 3.2` (it was 3.1 and rejected `array.length` in 3.2 output). `java.base` subset:
 254 of 884 converted, 11 emitted files with errors (22 errors). All of `java.base`: 841 of 3344 converted (859 SLeeLa files),

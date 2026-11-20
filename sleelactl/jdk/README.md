@@ -39,3 +39,7 @@ refusal table: `sleelactl/convert/README.md`.
 2026-11-20, Corretto 25.0.5.1 `src.zip` (extract with Python `zipfile`; the same four packages, 884 files): 254 converted
 (262 SLeeLa files), 630 failed closed, 251 of 262 emitted files pass `tests/javaconv_check_tree.sh`. All of `java.base`
 (3344 files, about 5 minutes): 841 converted (859 SLeeLa files), 2503 failed closed, 806 of 859 emitted files pass.
+
+2026-11-20 (later), same input, after the field-resolution fixes: subset 259 converted (267 SLeeLa files), 625 failed
+closed, 256 of 267 emitted files pass `tests/javaconv_check_tree.sh`. All of `java.base`: 842 converted (860 SLeeLa
+files), 2502 failed closed; the whole-tree checker was not re-run on it.
