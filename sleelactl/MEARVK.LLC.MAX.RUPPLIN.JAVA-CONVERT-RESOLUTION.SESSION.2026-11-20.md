@@ -132,3 +132,11 @@ Review of `impl/subjects/conversion/` (model, generator, README, `CONVERTER-IDEM
 Validation with model 1.6.0: differential suite **116 of 116** (adds `model-registry`). The `java.base` subset
 (262 of 884) and all of `java.base` (862 of 3344) were file-for-file identical to 1.5.0, with identical refusal
 counts and no `[model]` refusals. `generate_ret_rows.py --check` up to date.
+
+## 9. Performance measurement
+
+Recorded in `sleelactl/convert/PERFORMANCE.md`. `javaconv` converts the `java.base` subset (884 files, 488,871 lines)
+in 60 s on one core with 54 MB peak; one small file takes 0.8 s, mostly fixed setup. Converted benchmark programs print
+exactly the JDK output. Each run takes about 3.5 s on the SLeeLa VM against about 0.05 s on the JDK, and that time is
+start-up: a hand-written SLeeLa program takes 3.56 s, 1.89 s of it the SHA-256 execution gate. Steady-state compute
+speed was not measured: the larger-workload run was interrupted.

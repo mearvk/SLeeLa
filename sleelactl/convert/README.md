@@ -91,6 +91,8 @@ report lists each kind with its model reason.
 
 ## Status (honest)
 
+Speed and memory of `javaconv` and of converted programs: [`PERFORMANCE.md`](PERFORMANCE.md) (2026-11-20).
+
 **2026-11-20 (final): access and indirect /lib calls; model 1.6.0.** Differential suite 116 of 116 (adds `model-registry`). Implicitly public interface,
 record and enum members are visible across packages. Calls reaching `/lib` through a project type, an unqualified
 inherited call, or a static import are checked for stubs. A method call on an array is refused. `java.base` subset:
