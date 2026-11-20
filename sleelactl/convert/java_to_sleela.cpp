@@ -39,6 +39,7 @@ struct E {
     bool isNull = false;
     bool isLitInt = false;  // int literal (value in iv)
     long long iv = 0;
+    bool mayUtf16 = false;  // String text that may be UTF-16 at run time (it holds a char shown as text)
     size_t lambdaPos = (size_t)-1;   // a lambda argument whose target type is not known until the call is resolved
     int line = 0, col = 0;
 };
@@ -59,7 +60,8 @@ bool isIdentTok(const Tok& t) { return t.kind == JT_IDENT; }
 class Translator {
 public:
     Translator(const cm_model& m, const Options& o, const std::vector<Tok>& t, SymbolTable& tab, bool skipCollect)
-        : M(m), opt(o), T(t), classes(tab.classes), nestedMap_(tab.nested), skipPass1(skipCollect) {}
+        : M(m), opt(o), T(t), classes(tab.classes), nestedMap_(tab.nested), overloadedNames_(tab.overloadedNames),
+          overloadsComputed_(tab.overloadsComputed), skipPass1(skipCollect) {}
 
     // JDK functional interfaces: their abstract method, with generic parameters unknown. They are
     // only used when the interface itself was not collected from source.
@@ -107,6 +109,8 @@ private:
     std::vector<OutFile> files;
     std::map<std::string, ClassInfo>& classes;
     std::map<std::string, std::string>& nestedMap_;
+    std::set<std::string>& overloadedNames_;
+    bool& overloadsComputed_;
     bool skipPass1;
     std::map<std::string, std::string> importedTypes_;
     std::map<std::string, std::vector<std::string>> staticImports_;
@@ -741,8 +745,16 @@ private:
         // string concatenation
         auto isStr = [&](const E& x) { return x.ty.dims == 0 && x.ty.n == "String"; };
         if (op == "+" && (isStr(a) || isStr(b))) {
-            r.code = "(" + strOf(a) + " + " + strOf(b) + ")";
+            // A char shown as text is a plain String unless it is NUL or a lone
+            // surrogate, which only UTF-16 holds; the VM refuses + between the two
+            // kinds. Such a chain is joined by JavaText.cat, which accepts both.
+            auto charText = [](const E& x) { return x.ty.dims == 0 && x.ty.n == "char"; };
+            const bool u16 = a.mayUtf16 || b.mayUtf16 || charText(a) || charText(b);
+            auto catArg = [&](const E& x) { return isStr(x) || charText(x) ? strOf(x) : strOfText(x); };
+            r.code = u16 ? "JavaText.cat(" + catArg(a) + ", " + catArg(b) + ")"
+                         : "(" + strOf(a) + " + " + strOf(b) + ")";
             r.ty = mk("String");
+            r.mayUtf16 = u16;
             return r;
         }
 
@@ -1511,6 +1523,24 @@ private:
                 // inferred from another argument. Defer that check until all argument
                 // and target-type constraints have been collected.
                 std::vector<std::pair<Ty,Ty>> deferredLowerBounds;
+                // Arguments whose formal type still names an uninferred method
+                // variable (Bag<? super T> before T is known) are checked after
+                // all argument and target-type inference.
+                std::vector<std::pair<size_t,Ty>> pendingArgs;
+                // Only the CALLEE's own method variables count: a $T$ name in an
+                // argument type may be a type variable of the calling method.
+                auto containsVariable = [&](const Ty& value) {
+                    std::function<bool(const Ty&)> walk = [&](const Ty& v) {
+                        if (v.n.rfind("$T$",0)==0) {
+                            const std::string var = v.n.substr(3);
+                            if (std::find(m.typeParams.begin(), m.typeParams.end(), var) != m.typeParams.end() &&
+                                !inferred.count(var)) return true;
+                        }
+                        for (const Ty& a:v.args) if (walk(a)) return true;
+                        return v.bound && walk(*v.bound);
+                    };
+                    return walk(value);
+                };
                 int cost=0; bool applicable=true;
                 for (size_t i=0;i<args.size();++i) {
                     Ty target;
@@ -1598,6 +1628,13 @@ private:
                         target=ti->second;
                         target.dims+=directVariableDims;
                     } else target=applyInference(target);
+                    if (args[i].lambdaPos==(size_t)-1 && containsVariable(target)) {
+                        Ty formal;
+                        if (variable && n && i>=n-1) { formal=m.params.back(); formal.dims--; }
+                        else formal=m.params[i];
+                        pendingArgs.push_back({i,formal});
+                        continue;
+                    }
                     if (args[i].lambdaPos!=(size_t)-1) {
                         if (phase<2 && m.varargs && n && i==n-1 && target.dims>0) { applicable=false; break; }
                         if (target.dims != 0 || !functionalMethod(target.n)) { applicable=false; break; }
@@ -1641,6 +1678,26 @@ private:
                                 return true;
                             };
                         if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
+                    }
+                }
+                if (applicable && !pendingArgs.empty()) {
+                    std::function<Ty(const Ty&)> applyFinal = [&](const Ty& source) {
+                        Ty value=source;
+                        if (value.n.rfind("$T$",0)==0) {
+                            auto ti=inferred.find(value.n.substr(3));
+                            if (ti!=inferred.end()) { Ty resolved=ti->second; resolved.dims+=value.dims; return resolved; }
+                        }
+                        for (Ty& arg:value.args) arg=applyFinal(arg);
+                        if (value.bound) value.bound=std::make_shared<Ty>(applyFinal(*value.bound));
+                        return value;
+                    };
+                    for (const auto& pending:pendingArgs) {
+                        const Ty target=applyFinal(pending.second);
+                        if (containsVariable(target)) { applicable=false; break; }
+                        int c=phase==0 ? invocationCost(args[pending.first].ty,target)
+                                       : invocationCostLoose(args[pending.first].ty,target);
+                        if (c<0) { applicable=false; break; }
+                        cost+=c;
                     }
                 }
                 if (applicable && !deferredLowerBounds.empty()) {
@@ -2314,16 +2371,20 @@ private:
         std::string name;
         std::string qualifiedName;
         std::vector<Ty> constructedArgs;
+        // The target type of the whole allocation (declaration, assignment or
+        // return), captured before argument parsing replaces it.
+        const Ty diamondTarget = lambdaTarget_;
+        bool diamond = false, diamondUsedTarget = false;
         {
             if (!isIdentTok(cur())) fail("syntax", "expected a type after 'new'");
             name = ident();
             qualifiedName = name;
             for (;;) {
                 if (isOp("<")) {
-                    // Keep explicit arguments for class-bound validation. Diamond inference remains refused.
-                    if (isOpAt(p + 1, ">"))
-                        fail("generic-constructor-diamond", "diamond inference for constructor allocation is not yet implemented; use explicit type arguments or retain this source as a refusal");
-                    constructedArgs = parseGenericArguments();
+                    // Keep explicit arguments for class-bound validation. A diamond is
+                    // inferred from the target type below (JLS 15.9.3, target typing).
+                    if (isOpAt(p + 1, ">")) { p += 2; diamond = true; }
+                    else constructedArgs = parseGenericArguments();
                 }
                 if (isOp(".") && isIdentTok(at(p + 1))) {
                     p++;
@@ -2337,6 +2398,24 @@ private:
         if (!isOp("[") && !typeVars.count(name))
             name = qualifiedName.find('.') == std::string::npos
                 ? resolveTypeName(name) : resolveQualifiedTypeName(qualifiedName);
+        if (diamond) {
+            if (isOp("[")) fail("syntax", "'<>' is not allowed in array creation");
+            // A library class keeps erased type arguments (the variable declared
+            // type governs later typing). A generic class of this tree takes them
+            // from a target of the same class; any other target needs JLS 18.5
+            // inference across supertypes, which is not implemented: fail closed.
+            if (isUserType(name) && !classes.at(name).typeParams.empty()) {
+                const ClassInfo& generic = classes.at(name);
+                if (diamondTarget.known() && diamondTarget.dims == 0 && diamondTarget.n == name &&
+                    diamondTarget.args.size() == generic.typeParams.size()) {
+                    constructedArgs = diamondTarget.args;
+                    diamondUsedTarget = true;
+                } else {
+                    fail("generic-constructor-diamond", "diamond inference for '" + qualifiedName +
+                         "' is converted only when the target type is the same class with explicit type arguments");
+                }
+            }
+        }
         if (!constructedArgs.empty()) {
             auto declaration = classes.find(name);
             if (declaration != classes.end()) {
@@ -2391,6 +2470,10 @@ private:
             return r;
         }
         std::vector<E> args = parseArgs();
+        if (diamond && isOp("{"))
+            fail("generic-constructor-diamond", "diamond inference on an anonymous-class allocation is not converted");
+        if (diamondUsedTarget && !targetContextEndsAtCurrentToken())
+            fail("generic-constructor-diamond", "a diamond allocation used inside a larger expression has no target type");
         if (isOp("{")) {
             if (!constructedArgs.empty())
                 fail("generic-constructor", "explicit generic type arguments on anonymous-class allocation are not yet supported");
@@ -3876,31 +3959,37 @@ private:
         static const std::set<std::string> keep = {"<init>","main","toString","equals","hashCode","getClass","clone",
             "finalize","notify","notifyAll","wait","close"};
         std::set<std::string> excluded;
-        std::set<std::string> names;
         for (const auto& c : classes) {
             if (!isUserType(c.first)) continue;
+            std::set<std::string> checked;
             for (const auto& m : c.second.methods) {
-                if (m.owner.empty() || keep.count(m.name)) continue;
-                names.insert(m.name);
+                if (m.owner.empty() || keep.count(m.name) || excluded.count(m.name) || !checked.insert(m.name).second) continue;
                 if (mayOverrideLibrary(c.first, m.name)) excluded.insert(m.name);
             }
         }
-        for (const std::string& n : names) {
-            if (excluded.count(n)) continue;
-            bool overloaded = false;
-            for (const auto& c : classes) {
-                if (overloaded || !isUserType(c.first)) continue;
-                std::vector<const MethodSig*> seen;
-                collectNamedMethods(c.first, n, seen);
-                std::vector<const MethodSig*> distinct;
-                for (const MethodSig* m : seen) {
+        // One walk per class over its own and inherited declarations: a name is
+        // overloaded when a class sees it with two different erased parameter lists.
+        for (const auto& c : classes) {
+            if (!isUserType(c.first)) continue;
+            std::map<std::string, std::vector<const std::vector<Ty>*>> visible;
+            std::set<std::string> visited;
+            std::function<void(const std::string&, int)> walk = [&](const std::string& cls, int depth) {
+                if (depth > 32 || !visited.insert(cls).second) return;
+                auto it = classes.find(cls);
+                if (it == classes.end()) return;
+                for (const auto& m : it->second.methods) {
+                    if (keep.count(m.name) || excluded.count(m.name) || overloadedNames_.count(m.name)) continue;
+                    auto& lists = visible[m.name];
                     bool same = false;
-                    for (const MethodSig* d : distinct) if (sameErasedParams(m->params, d->params)) same = true;
-                    if (!same) distinct.push_back(m);
+                    for (const auto* l : lists) if (sameErasedParams(*l, m.params)) { same = true; break; }
+                    if (same) continue;
+                    lists.push_back(&m.params);
+                    if (lists.size() > 1) overloadedNames_.insert(m.name);
                 }
-                if (distinct.size() > 1) overloaded = true;
-            }
-            if (overloaded) overloadedNames_.insert(n);
+                if (!it->second.super.empty()) walk(it->second.super, depth + 1);
+                for (const auto& iface : it->second.ifaces) walk(iface, depth + 1);
+            };
+            walk(c.first, 0);
         }
     }
     static std::string overloadToken(const Ty& t) {
@@ -3925,8 +4014,6 @@ private:
         if (!m || !isOverloadedName(name)) return mapMember(name);
         return overloadName(name, m->declaredParams.empty() ? m->params : m->declaredParams);
     }
-    mutable std::set<std::string> overloadedNames_;
-    mutable bool overloadsComputed_ = false;
 
     std::string mapMember(const std::string& n) const {
         if (n != "close") return n;

@@ -13,6 +13,7 @@
 #define SLEELACTL_JAVA_TO_SLEELA_H
 
 #include <map>
+#include <set>
 #include <memory>
 #include <string>
 #include <vector>
@@ -85,6 +86,11 @@ struct SymbolTable {
     std::map<std::string, ClassInfo> classes;
     // nested type simple name -> hoisted top-level name (Outer__Inner); "\x01" marks a name used by several nested types
     std::map<std::string, std::string> nested;
+    // Method names emitted under signature names (overloaded user methods). Computed
+    // once, after every declaration of the project is collected, and shared by all
+    // source units so a name is renamed the same way everywhere.
+    std::set<std::string> overloadedNames;
+    bool overloadsComputed = false;
 };
 
 struct Diagnostic {

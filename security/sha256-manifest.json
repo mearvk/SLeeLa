@@ -30015,7 +30015,7 @@
     },
     {
       "path": "lib/java/jdk-25/implementations/java/lang/JavaText.sleela",
-      "sha256": "0bfa23dd940cc70b779421b6a16c5c55141d7eddac98ffdb094e644d994828e0"
+      "sha256": "db6b38ea72b62205d21edcf4dfb3811ab0e1775b3c2fb8acee98c27647141d41"
     },
     {
       "path": "lib/java/jdk-25/java/applet/Applet.sleela",

@@ -238,6 +238,15 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
 - Object text. An object of a class of this tree shown as text calls `toString()` through a
   generated static helper `Owner.javaText(x)` (`null` is `"null"`); other objects through
   `JavaFormat.objectText` (4.4).
+- Diamond allocation `new C<>(...)`. A library class keeps erased type arguments (the declared type of the
+  variable governs later typing). A generic class of this tree takes its arguments from a target type of the same
+  class (declaration, assignment or return, JLS 15.9.3). Any other target, a diamond inside a larger expression and
+  an anonymous `new C<>() {}` are refused (`[generic-constructor-diamond]`). Tests: `GenericConstructorDiamond`,
+  `ObjectText`, `reject/DiamondSupertypeTarget`.
+- Lower-bounded wildcards `? super T`. `T` is inferred from the other arguments or the target type, then the
+  argument is checked against the inferred bound. Tests: `LowerBoundWildcardInference`, `GenericWildcardLowerBound`.
+- String concatenation with a `char` shown as text. NUL and lone surrogates exist only as UTF-16 text and the VM
+  joins two Strings only of the same kind, so such a chain is joined by `JavaText.cat` (either kind). Test: `Floats`.
 - Overloaded methods. The converter selects the overload by JLS 15.12 (strict, loose, then variable-arity phases;
   most specific by 15.12.2.5, including `long <: double` and `Integer <: Number`). SLeeLa cannot make that
   selection itself (it does not tell `int` from `long`, stores `Integer` as `int`, and binds a call on a subclass

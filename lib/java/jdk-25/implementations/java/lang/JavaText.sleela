@@ -95,6 +95,23 @@ class JavaText {
     return javaStringToUtf8(u);
   }
 
+  << Java String concatenation on two Strings of either kind. A plain String
+     cannot hold NUL or an unpaired surrogate, so such text is UTF-16; the VM
+     joins two Strings only when both have the same kind. The result is plain
+     whenever it can be, as everywhere else in the tier. A null operand is the
+     text null (JLS 5.1.11). >>
+  static String cat(String a, String b) {
+    if (a == null) { a = "null"; }
+    if (b == null) { b = "null"; }
+    if (a instanceof string && b instanceof string) { return a + b; }
+    return plainIfRepresentable(javaStringConcat(asUtf16(a), asUtf16(b)));
+  }
+  < either String kind as UTF-16 >
+  static String asUtf16(String s) {
+    if (s instanceof string) { return javaStringFromUtf8(s); }
+    return s;
+  }
+
   < one code unit, or one code point (two units above U+FFFF), as a UTF-16 String >
   static String unitU(int c) {
     if (c < 0 || c > 65535) { throw new IllegalArgumentException("JavaText: code unit " + c + " is outside 0..65535"); }

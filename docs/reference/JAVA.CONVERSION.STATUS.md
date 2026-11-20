@@ -2,6 +2,22 @@
 
 # Java to SLeeLa Conversion: Overall Status
 
+## Verification refresh — 2026-11-20
+
+Built and run in a clean checkout of `master` (OpenJDK Corretto 25.0.5, GCC 11.5).
+
+- `sleelactl/convert` builds; `javaconv --self-check` passes (model `java-to-sleela 1.5.0`). From `2b785fd2`
+  (2026-11-18) the translator source did not compile; that was repaired on 2026-11-20.
+- `impl/build/sleela` builds; `make check-manifest` passes.
+- Differential suite `tests/javaconv_differential_test.sh`: **97 of 97** checks pass (positive programs
+  byte-identical to the JDK, refusal programs refused with the stated construct, project-mode checks).
+- Whole-tree measurement (section 3): **341 of 884** files of the JDK **25.0.5** `java.base` subset convert
+  (381 SLeeLa files; 543 fail closed). The converter as of `397bd499`, before the 2026-11-20 overload and
+  inference work, gives 338 on the same input; no file that converted there fails closed now.
+  The 420 of 2026-11-13 (JDK 25.0.2) is not reproduced: the 2026-11-18 member-access, type-access,
+  generic-bound and constructor-resolution checks refuse more files, which is the fail-closed rule at work.
+- Not measured: a tree-wide `sleela check` of the converted output.
+
 ## Verification refresh — 2026-11-18
 
 **Inspected master:** `3478f4856d044b615ff2e999ca5730a80eedd394`. **Release decision: HOLD.** Current verification metadata does not establish a passing production build or Java behavioral equivalence.
@@ -121,6 +137,8 @@ their subpackages, 884 files (the same set as the 2026-11-12 baseline). Commands
 | 2026-11-13, `55f52f49` | 423 | qualified nested names fixed (+13); 10 files now refused `[object-method]` whose earlier output the checker rejects |
 | 2026-11-13, model 1.3.0 (`e3993045`) | **420** (426 with `--single-thread`) | 3 more files refused `[boxed]`; their earlier output did not compile |
 | 2026-11-13, `e048707f` (after `bd4fc607` JavaChecks and the language-handler refactor) | **420** (426 with `--single-thread`) | unchanged; re-measured |
+| 2026-11-20, `397bd499`, JDK 25.0.5 | 338 | after the 2026-11-18 access, bound and constructor-resolution refusals |
+| 2026-11-20, overload names + diamond + `? super T` inference, JDK 25.0.5 | **341** | +3 (`BootstrapCallInfo`, `CharacterIteratorFieldDelegate`, `StreamSupport`); none newly refused |
 
 The count went down twice on purpose: each time the converter stopped writing output that SLeeLa rejects.
 A lower honest number is the goal of the fail-closed rule, not a regression.

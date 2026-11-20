@@ -25,7 +25,7 @@ export SLEELA_SHA256_MANIFEST="${SLEELA_SHA256_MANIFEST:-$root/security/sha256-m
 tests="$root/sleelactl/convert/tests"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
-filter() { grep -v 'memory-manager\|^verification\|\[security\]\|\[defender\]'; }
+filter() { grep -av 'memory-manager\|^verification\|\[security\]\|\[defender\]'; }
 # A --jdk conversion is one type per file and SLeeLa does not auto-link sibling
 # user files, so a project runs as one multi-file unit: the entry file first,
 # then every other file the converter emitted (listed in .javaconv-emitted).
