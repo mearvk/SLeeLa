@@ -1,6 +1,6 @@
 # SLeeLa 3.2 API edition
 
-**Current language edition:** SLeeLa syntax 3.2,   
+**Current language edition:** SLeeLa syntax 3.2  
 **Normative specification:** [`SLEELA.syntax`](../../../SLEELA.syntax), sections 44, 45 and 46  
 **Compiler gate:** `impl/frontend/version.h` — supported source syntax 1.0–3.2  
 **Java tier:** [`lib/java/JAVA.SPEC.md`](../../../lib/java/JAVA.SPEC.md) (specified apart from the language)
@@ -8,6 +8,8 @@
 This edition documents the current `/lib` source tree. The generated HTML snapshots are immutable
 numbered directories (`version-001`, `version-002`, ...). Each build adds the next number; an existing
 snapshot is never rewritten.
+
+Snapshots: [version-001](version-001/index.html) (2026-11-20; 123 packages, 18,236 source units, 18,569 classes and structs).
 
 Hand-authored API references for language-level features (specified in `SLEELA.syntax`, not as a `/lib` class):
 

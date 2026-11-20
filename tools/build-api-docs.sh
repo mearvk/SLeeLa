@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # Build the live SleelaDoc site, contributor-facing docs/API site, and a
-# versioned SLeeLa API snapshot (edition 3.1 unless API_EDITION says otherwise) from the same /lib source inventory.
+# versioned SLeeLa API snapshot (edition 3.2 unless API_EDITION says otherwise) from the same /lib source inventory.
 set -euo pipefail
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 PYTHON="${PYTHON:-python3}"
-# The language API edition the snapshot belongs to. 3.1 is the current edition (also written 3.01);
-# the 3.0 edition under api/sleela/3.0 is preserved and no longer written to.
-EDITION="${API_EDITION:-3.1}"
+# The language API edition the snapshot belongs to. 3.2 is the current edition.
+# 2026-11-20: this default was 3.1 ("the current edition, also written 3.01"). 3.01 means 3.1, not 3.2.
+# The 3.1 and 3.0 editions under api/sleela/ are preserved and no longer written to.
+EDITION="${API_EDITION:-3.2}"
 if [ -n "${API_SNAPSHOT:-}" ]; then
   SNAPSHOT="$API_SNAPSHOT"
 else

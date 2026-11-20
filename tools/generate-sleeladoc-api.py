@@ -591,10 +591,14 @@ def render_index(packages, pkg_units, out_dir, totals):
                 f'<strong>{totals["classes"]}</strong> classes and structs. '
                 f'Start at a package, open a unit, and read its fields and methods '
                 f'with plain explanations.</div>')
-    body.append('<p class="lead"><strong>Current language edition: SLeeLa syntax 3.1</strong> '
-                '(also written <code>3.01</code>; sections 44, 45 and 46 of <code>SLEELA.syntax</code>: '
-                'the character literal and <code>char</code> type, the array specification, labeled '
-                'statements, and <code>finally</code> on <code>return</code>/<code>break</code>/<code>continue</code>). '
+    # 2026-11-20: the banner named 3.1 ("also written 3.01; sections 44, 45 and 46"). 3.2 is the
+    # current edition: section 44 is 3.1, sections 45 and 46 are 3.2, and 3.01 means 3.1.
+    body.append('<p class="lead"><strong>Current language edition: SLeeLa syntax 3.2</strong> '
+                '(sections 44, 45 and 46 of <code>SLEELA.syntax</code>. Section 44, from 3.1: the character '
+                'literal, array initializers, labeled statements, and <code>finally</code> on '
+                '<code>return</code>/<code>break</code>/<code>continue</code>. Sections 45 and 46, from 3.2: typed '
+                '<code>char</code> text, <code>a.length</code> and <code>new T[a][b]</code>. '
+                '<code>#sleela 3.01</code> is the spelling of 3.1, not 3.2). '
                 'Each unit retains and displays its own declared <code>#sleela</code> version; '
                 'older declarations remain supported and are not silently relabelled.</p>')
     body.append(java_tier_callout(out_dir))
