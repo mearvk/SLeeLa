@@ -211,6 +211,14 @@ public:
         std::error_code ec;
         final_ = fs::absolute(final_, ec).lexically_normal();
         if (ec) { *why = "cannot resolve output destination: " + ec.message(); return false; }
+        // '--out .' or 'out/' normalizes with a trailing separator: its filename()
+        // is empty and parent_path() is the destination itself, which put the
+        // stage INSIDE the output tree and copied it into itself without end.
+        if (final_.filename().empty() && final_.has_parent_path()) final_ = final_.parent_path();
+        if (final_.filename().empty() || final_ == final_.root_path()) {
+            *why = "output destination must name a directory below the filesystem root";
+            return false;
+        }
         const fs::path parent = final_.parent_path();
         fs::create_directories(parent, ec);
         if (ec) { *why = "cannot create output parent: " + ec.message(); return false; }

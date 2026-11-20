@@ -1466,6 +1466,7 @@ private:
             for (const MethodSig* mp:candidates) {
                 MethodSig classResolved=*mp;
                 if (!classResolved.declaredRet) classResolved.declaredRet=std::make_shared<Ty>(mp->ret);
+                if (classResolved.declaredParams.empty()) classResolved.declaredParams=mp->params;
                 Ty declaringReceiver;
                 if (receiverType && receiverAsOwner(*receiverType,mp->owner,declaringReceiver)) {
                     for (Ty& param:classResolved.params) param=instantiateClassType(param,declaringReceiver);
@@ -1774,9 +1775,18 @@ private:
             args[i] = lam;
         }
         size_t fixed = n;
+        // A type-variable array (T[] or T...) is emitted with erasure as Any[].
+        // SLeeLa arrays are invariant and it has no array cast (SLEELA.syntax 46),
+        // so a concrete array (String[]) cannot be passed where Any[] is declared.
+        auto declaredTypeVarArray = [&](size_t i) {
+            return i < selected.declaredParams.size() && selected.declaredParams[i].dims > 0 &&
+                   isTypeVarTy(selected.declaredParams[i]);
+        };
         if (selected.varargs) {
             fixed = n - 1;
-            const Ty& vt = selected.params.back();
+            Ty vt = selected.params.back();
+            // Packed T... arguments are built as Any[] (the erased parameter type).
+            if (declaredTypeVarArray(n - 1)) vt.n = "Any";
             const bool direct = directVarargs;
             if (!direct) {
                 Ty et = vt; et.dims--;
@@ -1800,6 +1810,15 @@ private:
                 args.resize(fixed);
                 args.push_back(packed);
             }
+        }
+        for (size_t i = 0; i < args.size(); i++) {
+            const size_t pi = i < n ? i : n - 1;
+            if (!declaredTypeVarArray(pi)) continue;
+            if (selected.varargs && pi == n - 1 && !directVarargs) continue;   // packed as Any[] above
+            const Ty& at = args[i].ty;
+            if (at.dims > 0 && at.known() && at.n != "Any" && at.n != "null")
+                fail("generic-array", "a " + emitType(at) + " argument for a type-variable array parameter: "
+                     "T[] erases to Any[], and SLeeLa arrays are invariant with no array cast");
         }
         for (size_t i = 0; i < fixed && i < args.size(); i++) args[i] = coerce(args[i], selected.params[i]);
         return args;
@@ -1862,6 +1881,9 @@ private:
     std::string castErasedResult(const MethodSig* m, const Ty& actual, const std::string& code) {
         if (!m) return code;
         const Ty& declared = m->declaredRet ? *m->declaredRet : m->ret;
+        if (declared.dims > 0 && isTypeVarTy(declared) && actual.dims > 0 && actual.known() && actual.n != "Any")
+            fail("generic-array", "the type-variable array result of '" + m->name + "' erases to Any[], and SLeeLa has no array cast back to " +
+                 emitType(actual));
         if (declared.dims != 0 || !isTypeVarTy(declared)) return code;
         if (actual.dims != 0 || !actual.known() || actual.n == "void" || actual.n == "null" || actual.wildcard) return code;
         if (actual.n == "Object") return code;
@@ -4078,8 +4100,12 @@ private:
                 }
             }
         } catch (const ConvErr& e) { diag(e); return; }
-        if (isKw("module") || (isKw("open") && isKwAt(p + 1, "module")))
-            unsup("module-declaration");
+        // A module-info.java declaration is refused as a located diagnostic. The
+        // refusal is raised inside a try: thrown outside one it terminated the process.
+        try {
+            if (isKw("module") || (isKw("open") && isKwAt(p + 1, "module")))
+                unsup("module-declaration");
+        } catch (const ConvErr& e) { diag(e); return; }
         while (!atEof()) {
             if (acceptOp(";")) continue;
             size_t before = p;

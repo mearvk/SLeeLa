@@ -55,6 +55,7 @@ struct MethodSig {
     // per-call-site signatures pickMethod returns. Its erasure is what the emitted
     // SLeeLa method returns, so a type-variable declaration needs a cast at the call.
     std::shared_ptr<Ty> declaredRet;
+    std::vector<Ty> declaredParams;   // the parameter types as declared (empty when not recorded)
 };
 struct FieldInfo { Ty ty; bool isStatic = false; std::string visibility = "package"; };
 struct ClassInfo {

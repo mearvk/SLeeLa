@@ -283,6 +283,7 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | `Object.equals`/`hashCode`/`getClass` on a type that does not declare them (enums included) | the identity adapter exists as library groundwork but the converter does not yet bind generated object handles to it | wire VM heap identity, object handles and runtime class names into generated classes; keep wait/notify/clone refused |
 | `String.format` with a non-literal format, `%e`, argument indexes | runtime format parsing | a runtime formatter in `JavaFormat` |
 | `synchronized`/`volatile` in a multi-threaded program | memory model | real monitors, or keep the single-thread policy |
+| A concrete array passed to, or recovered from, a type-variable array `T[]` | `T[]` erases to `Any[]`; SLeeLa arrays are invariant and casts to array types are not available (SLEELA.syntax 46) | array element contracts in SLeeLa, then a checked array cast; `T...` with packed arguments is converted (packed as `Any[]`), the rest fails closed (`[generic-array]`, test `reject/GenericArrayIdentity`) |
 | `native` | no Java body and no declared Java-to-SLeeLa ABI binding | accept only when a modelled, verified native binding maps the exact owner/signature/ABI; otherwise fail closed (`[native]`) |
 
 ## 6. How to extend the tier
