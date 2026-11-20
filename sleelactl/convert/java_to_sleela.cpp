@@ -2221,6 +2221,11 @@ private:
                         continue;
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
+                    // An array's only members are length and the java.lang.Object methods, with clone()
+                    // returning a shallow copy (JLS 10.7). SLeeLa arrays have no methods, so the call
+                    // would only fail later in the checker. Refuse it here, located, instead.
+                    if (e.ty.dims > 0)
+                        fail("object-method", "method '" + name + "' on an array (JLS 10.7) has no SLeeLa equivalent yet");
                     Ty expectedType = lambdaTarget_;
                     const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
                     const MethodSig* im = pickMethod(recvType, name, args, 0, -1, &e.ty, expected);
@@ -4958,7 +4963,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.visibility = visibilityOf(mods); ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.visibility = (isIface && !mods.has("private")) ? std::string("public") : visibilityOf(mods); ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;  // visibility: JLS 9.4, interface methods are implicitly public unless private
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }

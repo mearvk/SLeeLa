@@ -98,6 +98,13 @@ superclass. Static fields of `lib/java/jdk-28` units are checked, and a non-fina
 conversions now correctly refused for reading `null` placeholders (whole-tree checker not re-run on all of `java.base`).
 Details: `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
 
+**2026-11-19 analysis: interface visibility and array methods.** Interface methods are now implicitly public
+(JLS 9.4): calls through an interface type from another package were refused `[member-access]` (3,753 sites on
+all of `java.base`, now 114). A method call on an array (`array.clone()`, JLS 10.7) is now refused
+`[object-method]`: it was emitted unchanged and failed the checker. Differential suite 110 of 110. All of
+`java.base`: 854 of 3344 converted (871 SLeeLa files), 86 linked semantic errors (was 842 and 137). Ranked
+blockers and open defects: `docs/reference/JAVA.CONVERTER.ANALYSIS.2026-11-19.md`.
+
 **2026-11-20 (later): re-measurement.** Differential suite 103 of 103 on Corretto 25.0.5.1. `tests/javaconv_check_tree.sh`
 now links its stub at `#sleela 3.2` (it was 3.1 and rejected `array.length` in 3.2 output). `java.base` subset:
 254 of 884 converted, 11 emitted files with errors (22 errors). All of `java.base`: 841 of 3344 converted (859 SLeeLa files),

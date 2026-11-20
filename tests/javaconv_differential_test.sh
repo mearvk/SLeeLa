@@ -194,6 +194,49 @@ else
   "$conv" --jdk "$tmp/project-static-import/src" --out "$tmp/project-static-import/sl" | sed 's/^/      /'; fail=$((fail+1))
 fi
 
+# interface methods are implicitly public (JLS 9.4): a call through an interface type from
+# another package is accessible even though the method declares no modifier; a private
+# interface method (Java 9+) stays private and is reached through a default method.
+mkdir -p "$tmp/project-iface-public/src/fixture/shape" "$tmp/project-iface-public/src/fixture/use" "$tmp/project-iface-public/cls" "$tmp/project-iface-public/sl"
+cat > "$tmp/project-iface-public/src/fixture/shape/Shape.java" <<'JAVA'
+package fixture.shape;
+public interface Shape {
+  int sides();
+  default int doubled() { return twice(sides()); }
+  private int twice(int n) { return n * 2; }
+}
+JAVA
+cat > "$tmp/project-iface-public/src/fixture/shape/Square.java" <<'JAVA'
+package fixture.shape;
+public class Square implements Shape { public int sides() { return 4; } }
+JAVA
+cat > "$tmp/project-iface-public/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+import fixture.shape.Shape;
+import fixture.shape.Square;
+public class Main {
+  static int count(Shape s) { return s.sides(); }
+  public static void main(String[] args) {
+    Shape s = new Square();
+    System.out.println(count(s));
+    System.out.println(s.doubled());
+  }
+}
+JAVA
+if javac -d "$tmp/project-iface-public/cls" "$tmp/project-iface-public/src/fixture/shape/Shape.java" "$tmp/project-iface-public/src/fixture/shape/Square.java" "$tmp/project-iface-public/src/fixture/use/Main.java" 2> "$tmp/project-iface-public/javac.err" &&
+   java -cp "$tmp/project-iface-public/cls" fixture.use.Main > "$tmp/project-iface-public/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-iface-public/src" --out "$tmp/project-iface-public/sl" --quiet; then
+  (cd "$tmp/project-iface-public/sl" && run_project fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-iface-public/actual.out"
+  if diff -u "$tmp/project-iface-public/expected.out" "$tmp/project-iface-public/actual.out" > "$tmp/project-iface-public/diff"; then
+    printf 'PASS  %-12s interface methods are implicitly public across packages (JLS 9.4)\n' "iface-public"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-iface-public\n'; head -40 "$tmp/project-iface-public/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-iface-public (project build or conversion failed)\n'; cat "$tmp/project-iface-public/javac.err"
+  "$conv" --jdk "$tmp/project-iface-public/src" --out "$tmp/project-iface-public/sl" | sed 's/^/      /'; fail=$((fail+1))
+fi
+
 # package identity and wildcard/nested imports across source packages.
 mkdir -p "$tmp/project-package/src/fixture/alpha" "$tmp/project-package/src/fixture/use" "$tmp/project-package/cls" "$tmp/project-package/sl"
 cat > "$tmp/project-package/src/fixture/alpha/AlphaBase.java" <<'JAVA'
