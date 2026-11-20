@@ -26,6 +26,22 @@ tests="$root/sleelactl/convert/tests"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 filter() { grep -v 'memory-manager\|^verification\|\[security\]\|\[defender\]'; }
+# A --jdk conversion is one type per file and SLeeLa does not auto-link sibling
+# user files, so a project runs as one multi-file unit: the entry file first,
+# then every other file the converter emitted (listed in .javaconv-emitted).
+# Like `java <MainClass>`, only the chosen entry point runs: other emitted files
+# that declare their own `static void main()` are left out of the unit.
+run_project() {
+  _rp_entry="$1"
+  set --
+  while IFS= read -r _rp_f; do
+    case "$_rp_f" in *.sleela) ;; *) continue ;; esac
+    [ "$_rp_f" = "$_rp_entry" ] && continue
+    grep -q '^  static void main()' "$_rp_f" && continue
+    set -- "$@" "$_rp_f"
+  done < .javaconv-emitted
+  timeout 300 "$sleela" run "$_rp_entry" "$@"
+}
 fail=0; pass=0
 
 for j in "$tests"/java/*.java; do
@@ -91,7 +107,7 @@ JAVA
 if javac -d "$tmp/project/cls" "$tmp/project/src/Widget.java" "$tmp/project/src/Main.java" 2> "$tmp/project/javac.err" &&
    java -cp "$tmp/project/cls" Main > "$tmp/project/expected.out" 2>&1 &&
    "$conv" --jdk "$tmp/project/src" --out "$tmp/project/sl" --quiet; then
-  (cd "$tmp/project/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project/actual.out"
+  (cd "$tmp/project/sl" && run_project Main.sleela 2>&1 | filter) > "$tmp/project/actual.out"
   if diff -u "$tmp/project/expected.out" "$tmp/project/actual.out" > "$tmp/project/diff"; then
     printf 'PASS  %-12s cross-file type and member resolution identical to the JDK\n' "project-index"; pass=$((pass+1))
   else
@@ -123,7 +139,7 @@ JAVA
 if javac -d "$tmp/project-generic/cls" "$tmp/project-generic/src/Box.java" "$tmp/project-generic/src/Main.java" 2> "$tmp/project-generic/javac.err" &&
    java -cp "$tmp/project-generic/cls" Main > "$tmp/project-generic/expected.out" 2>&1 &&
    "$conv" --jdk "$tmp/project-generic/src" --out "$tmp/project-generic/sl" --quiet; then
-  (cd "$tmp/project-generic/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-generic/actual.out"
+  (cd "$tmp/project-generic/sl" && run_project Main.sleela 2>&1 | filter) > "$tmp/project-generic/actual.out"
   if diff -u "$tmp/project-generic/expected.out" "$tmp/project-generic/actual.out" > "$tmp/project-generic/diff"; then
     printf 'PASS  %-12s cross-file class-generic substitution identical to the JDK\n' "project-generic"; pass=$((pass+1))
   else
@@ -162,7 +178,7 @@ JAVA
 if javac -d "$tmp/project-package/cls" "$tmp/project-package/src/fixture/alpha/AlphaBase.java" "$tmp/project-package/src/fixture/use/Main.java" 2> "$tmp/project-package/javac.err" &&
    java -cp "$tmp/project-package/cls" fixture.use.Main > "$tmp/project-package/expected.out" 2>&1 &&
    "$conv" --jdk "$tmp/project-package/src" --out "$tmp/project-package/sl" --quiet; then
-  (cd "$tmp/project-package/sl" && timeout 300 "$sleela" run fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-package/actual.out"
+  (cd "$tmp/project-package/sl" && run_project fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-package/actual.out"
   if diff -u "$tmp/project-package/expected.out" "$tmp/project-package/actual.out" > "$tmp/project-package/diff"; then
     printf 'PASS  %-12s package-qualified project index, wildcard import and nested single-type import match the JDK\n' "package-import"; pass=$((pass+1))
   else
@@ -211,8 +227,8 @@ if javac -d "$tmp/project-static-nested/cls" "$tmp/project-static-nested/src/fix
    java -cp "$tmp/project-static-nested/cls" fixture.use.WildcardMain > "$tmp/project-static-nested/expected-wildcard.out" 2>&1 &&
    java -cp "$tmp/project-static-nested/cls" fixture.use.SingleMain > "$tmp/project-static-nested/expected-single.out" 2>&1 &&
    "$conv" --jdk "$tmp/project-static-nested/src" --out "$tmp/project-static-nested/sl" --quiet; then
-  (cd "$tmp/project-static-nested/sl" && timeout 300 "$sleela" run fixture/use/WildcardMain.sleela 2>&1 | filter) > "$tmp/project-static-nested/actual-wildcard.out"
-  (cd "$tmp/project-static-nested/sl" && timeout 300 "$sleela" run fixture/use/SingleMain.sleela 2>&1 | filter) > "$tmp/project-static-nested/actual-single.out"
+  (cd "$tmp/project-static-nested/sl" && run_project fixture/use/WildcardMain.sleela 2>&1 | filter) > "$tmp/project-static-nested/actual-wildcard.out"
+  (cd "$tmp/project-static-nested/sl" && run_project fixture/use/SingleMain.sleela 2>&1 | filter) > "$tmp/project-static-nested/actual-single.out"
   if diff -u "$tmp/project-static-nested/expected-wildcard.out" "$tmp/project-static-nested/actual-wildcard.out" > "$tmp/project-static-nested/diff-wildcard" &&
      diff -u "$tmp/project-static-nested/expected-single.out" "$tmp/project-static-nested/actual-single.out" > "$tmp/project-static-nested/diff-single"; then
     printf 'PASS  %-12s static nested wildcard and single-type imports match the JDK\n' "static-nested"; pass=$((pass+1))
@@ -253,7 +269,7 @@ JAVA
 if javac -d "$tmp/project-protected/cls" "$tmp/project-protected/src/fixture/alpha/Base.java" "$tmp/project-protected/src/fixture/child/Child.java" "$tmp/project-protected/src/fixture/use/Main.java" 2> "$tmp/project-protected/javac.err" &&
    java -cp "$tmp/project-protected/cls" fixture.use.Main > "$tmp/project-protected/expected.out" 2>&1 &&
    "$conv" --jdk "$tmp/project-protected/src" --out "$tmp/project-protected/sl" --quiet; then
-  (cd "$tmp/project-protected/sl" && timeout 300 "$sleela" run fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-protected/actual.out"
+  (cd "$tmp/project-protected/sl" && run_project fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-protected/actual.out"
   if diff -u "$tmp/project-protected/expected.out" "$tmp/project-protected/actual.out" > "$tmp/project-protected/diff"; then
     printf 'PASS  %-12s protected inherited member access in subclass matches the JDK\n' "protected-access"; pass=$((pass+1))
   else
@@ -263,6 +279,9 @@ else
   printf 'FAIL  project-protected (project build or conversion failed)\n'; cat "$tmp/project-protected/javac.err"; fail=$((fail+1))
 fi
 
+# Refusal checks below: fail-closed is per source file (a file with any failed
+# member produces no output), so each check asserts the REFUSED file was not
+# written; other files of the project may convert.
 # a subclass in another package may not select a protected instance field
 # through a Base-typed receiver (JLS 6.6.2.1), even though it may use this
 # or a receiver whose static type is the subclass.
@@ -281,9 +300,9 @@ JAVA
 if javac -d "$tmp/project-protected-receiver/cls" "$tmp/project-protected-receiver/src/fixture/alpha/Base.java" "$tmp/project-protected-receiver/src/fixture/child/ChildBad.java" 2> "$tmp/project-protected-receiver/javac.err"; then
   printf 'FAIL  protected-receiver (javac unexpectedly accepted Base-typed protected field receiver)\n'; fail=$((fail+1))
 else
-  receiver_out="$("$conv" --jdk "$tmp/project-protected-receiver/src" --out "$tmp/project-protected-receiver/out" --quiet 2>&1)"
+  receiver_out="$("$conv" --jdk "$tmp/project-protected-receiver/src" --out "$tmp/project-protected-receiver/out" 2>&1)"
   receiver_rc=$?
-  if [ "$receiver_rc" -eq 1 ] && printf '%s' "$receiver_out" | grep -q "\\[member-access\\]" && [ "$(find "$tmp/project-protected-receiver/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+  if [ "$receiver_rc" -eq 1 ] && printf '%s' "$receiver_out" | grep -q "\\[member-access\\]" && [ "$(find "$tmp/project-protected-receiver/out" -name 'ChildBad.sleela' | wc -l)" -eq 0 ]; then
     printf 'PASS  %-12s cross-package protected field through Base receiver refused with no output\n' "protected-receiver"; pass=$((pass+1))
   else
     printf 'FAIL  protected-receiver (rc=%s)\n%s\n' "$receiver_rc" "$receiver_out"; fail=$((fail+1))
@@ -312,9 +331,9 @@ JAVA
 if javac -d "$tmp/project-access/cls" "$tmp/project-access/src/fixture/alpha/Visible.java" "$tmp/project-access/src/fixture/use/Main.java" 2> "$tmp/project-access/javac.err"; then
   printf 'FAIL  project-access (javac unexpectedly accepted package-private field access)\n'; fail=$((fail+1))
 else
-  access_out="$("$conv" --jdk "$tmp/project-access/src" --out "$tmp/project-access/out" --quiet 2>&1)"
+  access_out="$("$conv" --jdk "$tmp/project-access/src" --out "$tmp/project-access/out" 2>&1)"
   access_rc=$?
-  if [ "$access_rc" -eq 1 ] && printf '%s' "$access_out" | grep -q "\[member-access\]" && [ "$(find "$tmp/project-access/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+  if [ "$access_rc" -eq 1 ] && printf '%s' "$access_out" | grep -q "\[member-access\]" && [ "$(find "$tmp/project-access/out" -name 'Main.sleela' | wc -l)" -eq 0 ]; then
     printf 'PASS  %-12s cross-package package-private field access refused with no output\n' "member-access"; pass=$((pass+1))
   else
     printf 'FAIL  project-access (rc=%s)\n%s\n' "$access_rc" "$access_out"; fail=$((fail+1))
@@ -335,9 +354,9 @@ JAVA
 if javac -d "$tmp/project-type-access/cls" "$tmp/project-type-access/src/fixture/alpha/Hidden.java" "$tmp/project-type-access/src/fixture/use/Main.java" 2> "$tmp/project-type-access/javac.err"; then
   printf 'FAIL  project-type-access (javac unexpectedly accepted a non-public imported type)\n'; fail=$((fail+1))
 else
-  type_out="$("$conv" --jdk "$tmp/project-type-access/src" --out "$tmp/project-type-access/out" --quiet 2>&1)"
+  type_out="$("$conv" --jdk "$tmp/project-type-access/src" --out "$tmp/project-type-access/out" 2>&1)"
   type_rc=$?
-  if [ "$type_rc" -eq 1 ] && printf '%s' "$type_out" | grep -q "\[type-access\]" && [ "$(find "$tmp/project-type-access/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+  if [ "$type_rc" -eq 1 ] && printf '%s' "$type_out" | grep -q "\[type-access\]" && [ "$(find "$tmp/project-type-access/out" -name 'Main.sleela' | wc -l)" -eq 0 ]; then
     printf 'PASS  %-12s non-public cross-package type import refused with no output\n' "type-access"; pass=$((pass+1))
   else
     printf 'FAIL  project-type-access (rc=%s)\n%s\n' "$type_rc" "$type_out"; fail=$((fail+1))
@@ -355,7 +374,7 @@ JAVA
 cat > "$tmp/duplicate/src/Use.java" <<'JAVA'
 class Use { Clash value; }
 JAVA
-duplicate_out="$("$conv" --jdk "$tmp/duplicate/src" --out "$tmp/duplicate/out" --quiet 2>&1)"
+duplicate_out="$("$conv" --jdk "$tmp/duplicate/src" --out "$tmp/duplicate/out" 2>&1)"
 duplicate_rc=$?
 if [ "$duplicate_rc" -eq 1 ] && printf '%s' "$duplicate_out" | grep -q "\[type-ambiguous\]"; then
   printf 'PASS  %-12s ambiguous project-wide simple name refused\n' "duplicate-type"; pass=$((pass+1))
@@ -397,7 +416,7 @@ JAVA
 if javac -d "$tmp/project-inherited/cls" "$tmp/project-inherited/src/"*.java 2> "$tmp/project-inherited/javac.err" &&
    java -cp "$tmp/project-inherited/cls" Main > "$tmp/project-inherited/expected.out" 2>&1 &&
    "$conv" --jdk "$tmp/project-inherited/src" --out "$tmp/project-inherited/sl" --quiet; then
-  (cd "$tmp/project-inherited/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-inherited/actual.out"
+  (cd "$tmp/project-inherited/sl" && run_project Main.sleela 2>&1 | filter) > "$tmp/project-inherited/actual.out"
   if diff -u "$tmp/project-inherited/expected.out" "$tmp/project-inherited/actual.out" > "$tmp/project-inherited/diff"; then
     printf 'PASS  %-12s cross-file generic superclass/interface substitution identical to the JDK\n' "project-inherited"; pass=$((pass+1))
   else
@@ -437,7 +456,7 @@ JAVA
   printf 'user-owned sentinel\n' > "$tmp/transaction/out/ZCollision.sleela"
   before_main="$(cat "$tmp/transaction/out/Main.sleela")"
   before_manifest="$(cat "$tmp/transaction/out/.javaconv-emitted")"
-  tx_out="$("$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" --quiet 2>&1)"
+  tx_out="$("$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" 2>&1)"
   tx_rc=$?
   after_main="$(cat "$tmp/transaction/out/Main.sleela")"
   after_manifest="$(cat "$tmp/transaction/out/.javaconv-emitted")"
@@ -467,9 +486,9 @@ JAVA
 if javac -d "$tmp/enclosing-access/cls" "$tmp/enclosing-access/src/fixture/hidden/HiddenOuter.java" "$tmp/enclosing-access/src/fixture/use/Main.java" 2> "$tmp/enclosing-access/javac.err"; then
   printf 'FAIL  enclosing-access (javac unexpectedly accepted an inaccessible enclosing type)\n'; fail=$((fail+1))
 else
-  enclosing_out="$("$conv" --jdk "$tmp/enclosing-access/src" --out "$tmp/enclosing-access/out" --quiet 2>&1)"
+  enclosing_out="$("$conv" --jdk "$tmp/enclosing-access/src" --out "$tmp/enclosing-access/out" 2>&1)"
   enclosing_rc=$?
-  if [ "$enclosing_rc" -eq 1 ] && printf '%s' "$enclosing_out" | grep -q "\\[type-access\\]" && [ "$(find "$tmp/enclosing-access/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+  if [ "$enclosing_rc" -eq 1 ] && printf '%s' "$enclosing_out" | grep -q "\\[type-access\\]" && [ "$(find "$tmp/enclosing-access/out" -name 'Main.sleela' | wc -l)" -eq 0 ]; then
     printf 'PASS  %-12s inaccessible enclosing type blocks access to public nested type\n' "enclosing-access"; pass=$((pass+1))
   else
     printf 'FAIL  enclosing-access (rc=%s)\n%s\n' "$enclosing_rc" "$enclosing_out"; fail=$((fail+1))
@@ -483,7 +502,7 @@ class Repeated { int first() { return 1; } }
 class Repeated { int second() { return 2; } }
 class DuplicateUse { Repeated value; }
 JAVA
-same_duplicate_out="$("$conv" --jdk "$tmp/duplicate-same/src" --out "$tmp/duplicate-same/out" --quiet 2>&1)"
+same_duplicate_out="$("$conv" --jdk "$tmp/duplicate-same/src" --out "$tmp/duplicate-same/out" 2>&1)"
 same_duplicate_rc=$?
 if [ "$same_duplicate_rc" -eq 1 ] && printf '%s' "$same_duplicate_out" | grep -q "\[type-ambiguous\]"; then
   printf 'PASS  %-12s duplicate declaration in one source unit refused\n' "duplicate-same-unit"; pass=$((pass+1))
@@ -510,9 +529,9 @@ JAVA
 if javac -d "$tmp/qualified-mismatch/cls" "$tmp/qualified-mismatch/src/fixture/alpha/Widget.java" "$tmp/qualified-mismatch/src/fixture/use/Main.java" 2> "$tmp/qualified-mismatch/javac.err"; then
   printf 'FAIL  qualified-mismatch (javac unexpectedly accepted a nonexistent package type)\n'; fail=$((fail+1))
 else
-  qualified_out="$("$conv" --jdk "$tmp/qualified-mismatch/src" --out "$tmp/qualified-mismatch/out" --quiet 2>&1)"
+  qualified_out="$("$conv" --jdk "$tmp/qualified-mismatch/src" --out "$tmp/qualified-mismatch/out" 2>&1)"
   qualified_rc=$?
-  if [ "$qualified_rc" -eq 1 ] && printf '%s' "$qualified_out" | grep -q "\\[type-qualified-not-found\\]" && [ "$(find "$tmp/qualified-mismatch/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+  if [ "$qualified_rc" -eq 1 ] && printf '%s' "$qualified_out" | grep -q "\\[type-qualified-not-found\\]" && [ "$(find "$tmp/qualified-mismatch/out" -name 'Main.sleela' | wc -l)" -eq 0 ]; then
     printf 'PASS  %-12s wrong-package qualified type refused instead of simple-name fallback\n' "qualified-mismatch"; pass=$((pass+1))
   else
     printf 'FAIL  qualified-mismatch (rc=%s)\n%s\n' "$qualified_rc" "$qualified_out"; fail=$((fail+1))

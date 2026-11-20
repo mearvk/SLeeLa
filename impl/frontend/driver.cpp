@@ -2059,13 +2059,19 @@ static int runSourceMulti(const std::vector<std::string>& paths){
     sleela::rails::brandSleela(std::cout,1);
     if(paths.empty())return 1;
     sleela::Program merged; sleela::VersionResolution firstSyntax; bool haveSyntax=false;
+    // Merge every user file first, then resolve /lib units once for the whole
+    // unit. Resolving per file merged a library class (String, JavaText, ...)
+    // once for each file that used it, which the semantic pass then reported as
+    // duplicate declarations.
+    std::string mergedSource;
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
-        if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
+        mergedSource += src; mergedSource += "\n";
         mergeProgram(merged,std::move(prog));
     }
+    if(!loadReferencedLibraryUnits(mergedSource,merged,firstSyntax.declared))return 1;
     catalog::Catalog cat=loadCatalog();
     return compileAndRun(merged,cat,firstSyntax.declared);
 }
@@ -2075,13 +2081,19 @@ static int compileFilesMulti(const std::vector<std::string>& paths,const std::st
     if(verifyBeforeExecution(fs::current_path()))return 1;
     if(paths.empty())return 1;
     sleela::Program merged; sleela::VersionResolution firstSyntax; bool haveSyntax=false;
+    // Merge every user file first, then resolve /lib units once for the whole
+    // unit. Resolving per file merged a library class (String, JavaText, ...)
+    // once for each file that used it, which the semantic pass then reported as
+    // duplicate declarations.
+    std::string mergedSource;
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
-        if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
+        mergedSource += src; mergedSource += "\n";
         mergeProgram(merged,std::move(prog));
     }
+    if(!loadReferencedLibraryUnits(mergedSource,merged,firstSyntax.declared))return 1;
     catalog::Catalog cat=loadCatalog();
     try{
         int rc=sleela::compileToArtifact(merged,outputPath,&cat,firstSyntax.declared);

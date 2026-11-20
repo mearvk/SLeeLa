@@ -4114,7 +4114,7 @@ private:
         return o.str();
     }
 
-    void parseTypeDecl(const std::string& nestPrefix = "", bool nestedStatic = true, bool modsConsumed = false) {
+    void parseTypeDecl(const std::string& nestPrefix = "", bool nestedStatic = true, bool modsConsumed = false, const Mods& consumedMods = Mods()) {
         const bool nested = !nestPrefix.empty();
         Saved nestedSaved = saveState();
         const std::string outerName = curClass;
@@ -4125,7 +4125,9 @@ private:
             restorer{this, nestedSaved, nested, savedInner, savedCtorSeen, savedSimple};
         typeVars.clear();
         curIsInterface = false;
-        Mods mods = modsConsumed ? Mods() : parseModifiers();
+        // A member type's modifiers were already read by the member parser; keep
+        // them (public/protected/private decide cross-package type access).
+        Mods mods = modsConsumed ? consumedMods : parseModifiers();
         bool isIface = false;
         if (isKw("class")) p++;
         else if (isKw("interface")) { p++; isIface = true; }
@@ -4310,11 +4312,15 @@ private:
         if (isKw("class") || isKw("interface") || isKw("enum")) {   // a nested type is hoisted to Outer__Name
             if (!anonStack_.empty() && anonStack_.back().sub == cls && !innerMode_ && false) unsup("nested");
             bool st = mods.has("static") || isKw("interface") || isKw("enum") || curIsInterface;
-            parseTypeDecl(cls + "__", st, true);
+            Mods memberMods = mods;
+            if (curIsInterface) memberMods.set.insert("public");   // JLS 9.5: interface member types are implicitly public
+            parseTypeDecl(cls + "__", st, true, memberMods);
             return;
         }
         if (isKw("record") && isIdentTok(at(p + 1)) && (isOpAt(p + 2, "(") || isOpAt(p + 2, "<")) && (isOpAt(p + 2, "<") || scanRecordHeader(p + 2))) {
-            parseTypeDecl(cls + "__", true, true);
+            Mods memberMods = mods;
+            if (curIsInterface) memberMods.set.insert("public");   // JLS 9.5
+            parseTypeDecl(cls + "__", true, true, memberMods);
             return;
         }
         if (isOp("@")) unsup("member-annotation");
