@@ -238,6 +238,15 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
 - Object text. An object of a class of this tree shown as text calls `toString()` through a
   generated static helper `Owner.javaText(x)` (`null` is `"null"`); other objects through
   `JavaFormat.objectText` (4.4).
+- Overloaded methods. The converter selects the overload by JLS 15.12 (strict, loose, then variable-arity phases;
+  most specific by 15.12.2.5, including `long <: double` and `Integer <: Number`). SLeeLa cannot make that
+  selection itself (it does not tell `int` from `long`, stores `Integer` as `int`, and binds a call on a subclass
+  to its own method of that name), so an overloaded user method is emitted under a name built from its declared
+  parameter types (`pick__int`, `pick__long`, `choose__Object`). An override declares the same parameter types
+  and gets the same name, so virtual dispatch is unchanged. Names that may override a library method (`toString`,
+  `equals`, `hashCode`, functional-interface methods, modelled library members) and `main` keep their Java names.
+  Constructors are not renamed. Tests: `OverloadWidening`, `BoxingOverload`, `BoxingPhaseRules`,
+  `RemainingOverloadRules`, `WideningMostSpecific`, `reject/AmbiguousOverload`.
 - Boxed types. Scalar wrapper declarations and parameters use primitive storage for non-null values; modelled boxing/unboxing and invocation widening are supported (`BoxingOverload`, `BoxingUnboxingWidening`). A wrapper default or explicit `null` assignment is refused (`[boxed-null]`) because a primitive slot cannot preserve Java null; wrapper arrays are refused (`[boxed]`) because reference-array identity and nullable elements are not represented. Boxed type arguments (`List<Integer>`) are erased. Tests: `BoxingUnboxingWidening`, `reject/BoxedDecl`, `reject/BoxedNull`, `reject/BoxedNullParameter`, `reject/BoxedNullField`.
 - Interfaces carry no metadata fields; every class carries the Metadata Class record.
 - Limits: at most 64 instance fields per class (13 are metadata).
@@ -283,6 +292,7 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | `Object.equals`/`hashCode`/`getClass` on a type that does not declare them (enums included) | the identity adapter exists as library groundwork but the converter does not yet bind generated object handles to it | wire VM heap identity, object handles and runtime class names into generated classes; keep wait/notify/clone refused |
 | `String.format` with a non-literal format, `%e`, argument indexes | runtime format parsing | a runtime formatter in `JavaFormat` |
 | `synchronized`/`volatile` in a multi-threaded program | memory model | real monitors, or keep the single-thread policy |
+| A boxed value converted to a class supertype of its wrapper (`Integer` to `Number`, `Comparable`, `Serializable`) | boxed values use primitive storage; `Object` (the VM universal type) holds one, a SLeeLa class type such as `lib/java` `Number` cannot | a `Number` view over primitive storage (runtime `intValue`/`doubleValue` helpers); until then fails closed (`[boxed-reference]`, test `reject/BoxedToNumber`) |
 | A concrete array passed to, or recovered from, a type-variable array `T[]` | `T[]` erases to `Any[]`; SLeeLa arrays are invariant and casts to array types are not available (SLEELA.syntax 46) | array element contracts in SLeeLa, then a checked array cast; `T...` with packed arguments is converted (packed as `Any[]`), the rest fails closed (`[generic-array]`, test `reject/GenericArrayIdentity`) |
 | `native` | no Java body and no declared Java-to-SLeeLa ABI binding | accept only when a modelled, verified native binding maps the exact owner/signature/ABI; otherwise fail closed (`[native]`) |
 

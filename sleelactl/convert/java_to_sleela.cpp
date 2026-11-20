@@ -638,6 +638,16 @@ private:
         // an apparently valid primitive assignment.
         if (target.boxed && v.isNull)
             fail("boxed-null", "a nullable Java wrapper cannot be represented by primitive SLeeLa storage");
+        // Boxing to a supertype of the wrapper (Integer -> Number, Comparable,
+        // Serializable): boxed values use primitive storage, which a SLeeLa class
+        // type such as lib/java Number cannot hold. Object is the VM's universal
+        // type and does hold it; anything else would be emitted as code the VM
+        // rejects, so it is refused here.
+        if (v.ty.dims == 0 && target.dims == 0 && (v.ty.boxed || isPrimTy(v.ty)) && !v.isNull &&
+            target.known() && !target.boxed && !isPrimitiveName(target.n) && target.n != "Object" &&
+            target.n != "null" && target.n != "Any" && classOf(target) == "reference")
+            fail("boxed-reference", "a " + v.ty.n + " value converted to the reference type '" + target.n +
+                 "': boxed values use primitive storage, which only Object (not a SLeeLa class type) can hold");
         // Only model-declared primitive widening is implicit. The same cast
         // template is used for assignments, arguments and return expressions.
         if (v.ty.dims != 0 || target.dims != 0) return v;
@@ -1193,6 +1203,20 @@ private:
             for (const auto& iface : it->second.ifaces) {
                 int c = invocationCost(mk(iface), to, depth+1);
                 if (c >= 0) return c+1;
+            }
+        }
+        // A wrapper is a reference type: Integer widens to Number, Serializable and
+        // Comparable<Integer> by reference subtyping (JLS 4.10.2), which is a STRICT
+        // conversion (phase 1), not boxing. Without this, phase 1 saw only Object
+        // and chose m(Object) over the more specific m(Number).
+        if (from.boxed && from.dims == 0 && to.dims == 0) {
+            std::string primitive;
+            if (modelBoxed(from.n, &primitive)) {
+                const bool numeric = from.n=="Byte" || from.n=="Short" || from.n=="Integer" ||
+                    from.n=="Long" || from.n=="Float" || from.n=="Double";
+                if (numeric && to.n == "Number") return 1;
+                if (to.n == "Serializable") return 2;
+                if (to.n == "Comparable" && (to.args.empty() || (to.args.size()==1 && to.args[0].n==from.n))) return 2;
             }
         }
         if (to.n == "Object" && !isPrimitiveName(from.n)) return 8;
@@ -1972,15 +1996,17 @@ private:
                         if (dot != std::string::npos) owner = owner.substr(dot + 1);
                         Ty expectedType = lambdaTarget_;
                         const Ty* expected = expectedType.known() && targetContextEndsAtCurrentToken() ? &expectedType : nullptr;
-                        args = adaptArgs(pickMethod(owner, name, args, 0, -1, nullptr, expected), args);
-                        E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
+                        const MethodSig* sm = pickMethod(owner, name, args, 0, -1, nullptr, expected);
+                        args = adaptArgs(sm, args);
+                        E r = callResult(owner, name, args, e.code + "." + calledName(sm, name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
                         e = r;
                         continue;
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
                     Ty expectedType = lambdaTarget_;
                     const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
-                    args = adaptArgs(pickMethod(recvType, name, args, 0, -1, &e.ty, expected), args);
+                    const MethodSig* im = pickMethod(recvType, name, args, 0, -1, &e.ty, expected);
+                    args = adaptArgs(im, args);
                     // model 9c: a library parameter that takes a char as text
                     for (size_t ai = 0; ai < args.size(); ai++) {
                         const std::string idx = std::to_string(ai);
@@ -1989,7 +2015,7 @@ private:
                             args[ai].ty = mk("String");
                         }
                     }
-                    E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false, &e.ty, expected);
+                    E r = callResult(recvType, name, args, paren(e.code) + "." + calledName(im, name) + "(" + joinArgs(args) + ")", false, &e.ty, expected);
                     e = r;
                     continue;
                 }
@@ -2157,7 +2183,18 @@ private:
             std::string name = ident();
             if (isOp("(")) {
                 std::vector<E> a = parseArgs();
-                E r; r.code = "super." + name + "(" + joinArgs(a) + ")"; r.pure = false; r.ty = mk("?");
+                E r; r.pure = false; r.ty = mk("?");
+                std::string calleeName = name;
+                if (isOverloadedName(name)) {
+                    auto ci = classes.find(curClass);
+                    const std::string superName = ci == classes.end() ? std::string() : ci->second.super;
+                    const MethodSig* sm = superName.empty() ? nullptr : pickMethod(superName, name, a);
+                    if (!sm) fail("overload-resolution", "super." + name + "(...) names an overloaded method whose overload cannot be selected");
+                    a = adaptArgs(sm, a);
+                    r.ty = resolvedMethod(sm).ret;
+                    calleeName = calledName(sm, name);
+                }
+                r.code = "super." + calleeName + "(" + joinArgs(a) + ")";
                 return r;
             }
             unsup("untyped");
@@ -2215,7 +2252,7 @@ private:
                 else if (anonStack_.empty() || anonStack_.back().sub.rfind("#nest", 0) == 0) qualifier = "this.";
             }
             E r;
-            r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
+            r.code = qualifier + (pm && isOverloadedName(name) ? calledName(pm, name) : mapMember(safeNameForCall(name))) + "(" + joinArgs(a) + ")";
             r.pure = false;
             if (pm) { r.ty = resolvedMethod(pm).ret; r.code = castErasedResult(pm, r.ty, r.code); }
             else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true, nullptr, expected);
@@ -3285,7 +3322,7 @@ private:
             }
             std::vector<std::string> body = out;
             out.clear(); ind = 1;
-            memberLines.push_back("  " + emitType(fmCopy.ret) + " " + mapMember(fmCopy.name) + "(" + plist + ") {");
+            memberLines.push_back("  " + emitType(fmCopy.ret) + " " + overloadName(fmCopy.name, fmCopy.declaredParams.empty() ? fmCopy.params : fmCopy.declaredParams) + "(" + plist + ") {");
             for (auto& l : body) memberLines.push_back(l);
             memberLines.push_back("  }");
         } catch (...) { anonStack_.pop_back(); restoreState(saved); throw; }
@@ -3353,13 +3390,13 @@ private:
             if (staticMethod) {
                 samArgs = adaptArgs(staticMethod, samArgs);
                 resultType = resolvedMethod(staticMethod).ret;
-                call = tn + "." + mapMember(mname) + "(" + argsText(samArgs) + ")";
+                call = tn + "." + calledName(staticMethod, mname) + "(" + argsText(samArgs) + ")";
             } else if (instanceMethod) {
                 if (invocationCost(fm->params[0], mk(tn)) < 0)
                     fail("methodref", "the first functional-interface parameter is not a receiver of '" + tn + "'");
                 instanceArgs = adaptArgs(instanceMethod, instanceArgs);
                 resultType = resolvedMethod(instanceMethod).ret;
-                call = pn[0] + "." + mapMember(mname) + "(" + argsText(instanceArgs) + ")";
+                call = pn[0] + "." + calledName(instanceMethod, mname) + "(" + argsText(instanceArgs) + ")";
             } else {
                 fail("methodref", "no static or unbound instance overload of '" + tn + "::" + mname + "' matches the functional-interface parameters");
             }
@@ -3368,7 +3405,7 @@ private:
             if (!method) fail("methodref", "no instance overload of 'this::" + mname + "' matches the functional-interface parameters");
             samArgs = adaptArgs(method, samArgs);
             resultType = resolvedMethod(method).ret;
-            call = "outer_." + mapMember(mname) + "(" + argsText(samArgs) + ")";
+            call = "outer_." + calledName(method, mname) + "(" + argsText(samArgs) + ")";
         } else {
             bool isLocal = false;
             for (size_t i = scopes.size(); i-- > 0;) for (auto& kv : scopes[i]) if (kv.second.first == recv.code) isLocal = true;
@@ -3378,7 +3415,7 @@ private:
             samArgs = adaptArgs(method, samArgs);
             resultType = resolvedMethod(method).ret;
             capture = recv.code;
-            call = "cap_" + recv.code + "." + mapMember(mname) + "(" + argsText(samArgs) + ")";
+            call = "cap_" + recv.code + "." + calledName(method, mname) + "(" + argsText(samArgs) + ")";
         }
         if (fm->ret.n != "void" || fm->ret.dims != 0) {
             if (resultType.n == "void" || invocationCost(resultType, fm->ret) < 0)
@@ -3401,7 +3438,7 @@ private:
         for (size_t i = 0; i < n; i++) plist += (i ? ", " : "") + emitType(fm->params[i]) + " " + pn[i];
         const bool voidRet = fm->ret.dims == 0 && fm->ret.n == "void";
         std::vector<std::string> lines;
-        lines.push_back("  " + emitType(fm->ret) + " " + mapMember(fm->name) + "(" + plist + ") {");
+        lines.push_back("  " + emitType(fm->ret) + " " + overloadName(fm->name, fm->declaredParams.empty() ? fm->params : fm->declaredParams) + "(" + plist + ") {");
         lines.push_back(voidRet ? "    " + call + ";" : "    return " + call + ";");
         lines.push_back("  }");
         if (pass == 1) { MethodSig ms; ms.name = fm->name; ms.ret = fm->ret; ms.params = fm->params; classes[a.sub].methods.push_back(ms); }
@@ -3794,6 +3831,103 @@ private:
     bool isBuiltinCallName(const std::string& n) const {
         return cm_find(&M, "qualify", n.c_str(), nullptr, nullptr) != nullptr;
     }
+    // ---- overloaded user methods --------------------------------------------------
+    // SLeeLa resolves an overloaded call by its own rules: it cannot tell int from
+    // long, it maps Integer and int to the same storage (a duplicate declaration),
+    // and it binds a call on a subclass to the subclass method of that name even
+    // when Java selects a more specific inherited one. The converter already does
+    // Java's selection (JLS 15.12), so an overloaded user method is emitted under a
+    // distinct name built from its DECLARED parameter types: name__int, name__long.
+    // An override declares the same parameter types and so gets the same name, and
+    // SLeeLa's virtual dispatch on that name is Java's. Names that may override a
+    // library method keep their Java name.
+    static bool isSeededInterface(const std::string& c) {
+        static const std::set<std::string> seeded = {"Runnable","Callable","Supplier","Consumer","BiConsumer","Function",
+            "BiFunction","UnaryOperator","BinaryOperator","Predicate","BiPredicate","Comparator"};
+        return seeded.count(c) > 0;
+    }
+    bool isUserType(const std::string& c) const {
+        auto it = classes.find(c);
+        if (it == classes.end()) return false;
+        if (!isSeededInterface(c)) return true;
+        for (const auto& m : it->second.methods) if (!m.owner.empty()) return true;   // declared in source
+        return false;
+    }
+    bool mayOverrideLibrary(const std::string& cls, const std::string& name, int depth = 0) const {
+        if (depth > 32) return true;
+        auto it = classes.find(cls);
+        if (it == classes.end()) return false;
+        std::vector<std::string> ups = it->second.ifaces;
+        if (!it->second.super.empty()) ups.push_back(it->second.super);
+        for (const std::string& up : ups) {
+            if (up.empty() || up == cls || up == "Object") continue;
+            if (isUserType(up)) { if (mayOverrideLibrary(up, name, depth + 1)) return true; continue; }
+            auto lib = classes.find(up);
+            if (lib != classes.end()) for (const auto& m : lib->second.methods) if (m.name == name) return true;
+            if (cm_find(&M, "ret", up.c_str(), name.c_str(), nullptr)) return true;
+            if (cm_find(&M, "call", (up + "." + name).c_str(), nullptr, nullptr)) return true;
+            if (cm_find(&M, "ret", "Throwable", name.c_str(), nullptr)) return true;   // exceptions chain to Throwable
+        }
+        return false;
+    }
+    void computeOverloads() const {
+        if (overloadsComputed_ || pass != 2) return;
+        overloadsComputed_ = true;
+        static const std::set<std::string> keep = {"<init>","main","toString","equals","hashCode","getClass","clone",
+            "finalize","notify","notifyAll","wait","close"};
+        std::set<std::string> excluded;
+        std::set<std::string> names;
+        for (const auto& c : classes) {
+            if (!isUserType(c.first)) continue;
+            for (const auto& m : c.second.methods) {
+                if (m.owner.empty() || keep.count(m.name)) continue;
+                names.insert(m.name);
+                if (mayOverrideLibrary(c.first, m.name)) excluded.insert(m.name);
+            }
+        }
+        for (const std::string& n : names) {
+            if (excluded.count(n)) continue;
+            bool overloaded = false;
+            for (const auto& c : classes) {
+                if (overloaded || !isUserType(c.first)) continue;
+                std::vector<const MethodSig*> seen;
+                collectNamedMethods(c.first, n, seen);
+                std::vector<const MethodSig*> distinct;
+                for (const MethodSig* m : seen) {
+                    bool same = false;
+                    for (const MethodSig* d : distinct) if (sameErasedParams(m->params, d->params)) same = true;
+                    if (!same) distinct.push_back(m);
+                }
+                if (distinct.size() > 1) overloaded = true;
+            }
+            if (overloaded) overloadedNames_.insert(n);
+        }
+    }
+    static std::string overloadToken(const Ty& t) {
+        std::string n = t.n;
+        if (n.rfind("$T$", 0) == 0 || n.rfind("$C$", 0) == 0) n = "T";
+        else if (n == "?") n = "Any";
+        std::string out;
+        for (char ch : n) out += (std::isalnum(static_cast<unsigned char>(ch)) || ch == '_') ? ch : '_';
+        for (int i = 0; i < t.dims; i++) out += "Arr";
+        return out;
+    }
+    bool isOverloadedName(const std::string& name) const { computeOverloads(); return overloadedNames_.count(name) > 0; }
+    std::string overloadName(const std::string& name, const std::vector<Ty>& declaredParams) const {
+        if (!isOverloadedName(name)) return mapMember(name);
+        std::string out = name + "__";
+        if (declaredParams.empty()) out += "0";
+        for (size_t i = 0; i < declaredParams.size(); i++) out += (i ? "_" : "") + overloadToken(declaredParams[i]);
+        return out;
+    }
+    // The emitted name of a call to the selected (possibly substituted) signature.
+    std::string calledName(const MethodSig* m, const std::string& name) const {
+        if (!m || !isOverloadedName(name)) return mapMember(name);
+        return overloadName(name, m->declaredParams.empty() ? m->params : m->declaredParams);
+    }
+    mutable std::set<std::string> overloadedNames_;
+    mutable bool overloadsComputed_ = false;
+
     std::string mapMember(const std::string& n) const {
         if (n != "close") return n;
         const cm_rec* r = cm_find(&M, "rename", "close", "all", nullptr);
@@ -4479,7 +4613,9 @@ private:
                 typeVars = savedVars;
                 return;
             }
-            std::string sig = head + rt + " " + mapMember(name) + "(" + paramList(params) + ")";
+            std::vector<Ty> declaredTys;
+            for (auto& pr : params) declaredTys.push_back(pr.second);
+            std::string sig = head + rt + " " + overloadName(name, declaredTys) + "(" + paramList(params) + ")";
             if (isOp(";")) {
                 p++;
                 if (!isIface && !isAbstract) fail("native", "method without a body that is not abstract or an interface member");
