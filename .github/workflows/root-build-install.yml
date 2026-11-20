@@ -1,4 +1,5 @@
 name: Root Build and Install Qualification
+# Production qualification request: run Linux/macOS/Windows build and install matrix on the validation PR.
 
 # Re-run qualification on master after the November 14 repair-cycle cancellations.
 
