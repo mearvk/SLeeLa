@@ -93,6 +93,24 @@ struct SymbolTable {
     bool overloadsComputed = false;
 };
 
+// The SLeeLa side of non-project types: the /lib/java units the SLeeLa loader can resolve,
+// and for the JDK tier (lib/java/jdk-28) the members each unit declares. A member in the
+// unit's "java signatures" section is a stub that only returns a default value.
+struct LibMember { std::string name; std::string ret; int arity = 0; bool isStatic = false; bool stub = false; bool ctor = false; };
+struct LibUnit {
+    bool parsed = false;          // the unit was found and read
+    std::string super;            // SLeeLa superclass named in the class header, "" if none
+    bool declaresCtor = false;
+    std::vector<LibMember> members;
+};
+struct LibraryIndex {
+    std::set<std::string> units;                  // file stems under lib/java (e.g. "Objects", "Map.Entry")
+    std::map<std::string, std::string> jdkPath;   // stem -> the lib/java/jdk-28 file the loader selects
+    mutable std::map<std::string, LibUnit> cache; // parsed on first use
+    // nullptr when the stem has no lib/java/jdk-28 unit (its members are then not checked)
+    const LibUnit* unit(const std::string& stem) const;
+};
+
 struct Diagnostic {
     int line = 0, col = 0;
     std::string construct;   // model "unsupported" key, or "syntax"/"model"
@@ -121,11 +139,11 @@ struct Options {
     // wrapper: the VM throws it inside a try, SLEELA.syntax 37.5 and lib/java/support/SLJavaFaults.)
     // --unchecked-sizes omits the wrapper (NOT equivalent for a program that reaches a negative size).
     bool checkedArrays = true;
-    // Names of the SLeeLa units under /lib (file stems, e.g. "Objects", "Map.Entry"): the
-    // names the SLeeLa loader can resolve. When set, a type that is neither a project type
-    // of this run nor a model type must be one of these, or the member fails closed
-    // [library-type]: emitting it would leave a reference that nothing defines.
-    const std::set<std::string>* libraryUnits = nullptr;
+    // The SLeeLa units of the Java tier. When set, a type that is neither a project type of
+    // this run nor a model type must be a lib/java unit, or the member fails closed
+    // [library-type]; a call into a lib/java/jdk-28 unit must name a member that unit
+    // declares with real logic, or it fails closed [library-member] / [library-stub].
+    const LibraryIndex* library = nullptr;
 };
 
 struct Result {

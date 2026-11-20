@@ -6,6 +6,9 @@
 // typed). Only pass 2 diagnostics are reported.
 #include "java_to_sleela.h"
 
+#include <fstream>
+#include <sstream>
+
 extern "C" {
 #include "java_lex.h"
 }
@@ -41,6 +44,7 @@ struct E {
     long long iv = 0;
     bool mayUtf16 = false;  // String text that may be UTF-16 at run time (it holds a char shown as text)
     size_t lambdaPos = (size_t)-1;   // a lambda argument whose target type is not known until the call is resolved
+    bool libAny = false;    // the result of a /lib member declared to return Any (an erased Java type variable)
     int line = 0, col = 0;
 };
 
@@ -634,12 +638,12 @@ private:
     // loader, which finds /lib units by file stem. `name` is the internal (hoisted)
     // name, `spelled` the emitted spelling.
     void requireResolvable(const std::string& name, const std::string& spelled) const {
-        if (pass != 2 || !opt.libraryUnits) return;
+        if (pass != 2 || !opt.library) return;
         if (name.empty() || name == "Any" || name == "null" || name == "void" || name == "?") return;
         if (name.rfind("type:", 0) == 0 || name.rfind("$T$", 0) == 0 || name.rfind("$C$", 0) == 0) return;
         if (classes.count(name)) return;
         if (cm_find(&M, "type", name.c_str(), nullptr, nullptr)) return;
-        if (opt.libraryUnits->count(spelled)) return;
+        if (opt.library->units.count(spelled)) return;
         throw ConvErr{cur().line, cur().col, "library-type",
             "type '" + spelled + "' is not converted in this run and no /lib unit provides it"};
     }
@@ -647,6 +651,59 @@ private:
         const std::string spelled = spellTypeName(name);
         requireResolvable(name, spelled);
         return spelled;
+    }
+    // A call into a lib/java/jdk-28 unit. Returns 0 when the member is real, 1 when only a
+    // real instance form exists (for a static call: the tier's documented convention is
+    // `new T().m(...)`), and fails closed when the unit has only a stub or no such member.
+    // Units outside lib/java/jdk-28, and project types, are not checked here.
+    enum LibCall { kLibOk = 0, kLibViaInstance = 1, kLibUnchecked = 2 };
+    LibCall checkLibraryCall(const std::string& name, const std::string& member, size_t arity, bool staticCall, bool ctor,
+                             std::string* libRet = nullptr) const {
+        if (pass != 2 || !opt.library || name.empty() || classes.count(name)) return kLibUnchecked;
+        if (cm_find(&M, "type", name.c_str(), nullptr, nullptr)) return kLibUnchecked;
+        const std::string spelled = spellTypeName(name);
+        bool stubSeen = false, instanceSeen = false, unchecked = false;
+        std::string up = spelled;
+        std::set<std::string> seen;
+        for (int depth = 0; depth < 32 && !up.empty() && seen.insert(up).second; depth++) {
+            const LibUnit* u = opt.library->unit(up);
+            if (!u) { unchecked = depth > 0; break; }
+            for (const LibMember& m : u->members) {
+                if (m.ctor != ctor || (!ctor && m.name != member) || m.arity != (int)arity) continue;
+                if (m.stub) { stubSeen = true; continue; }
+                if (libRet) *libRet = m.ret;
+                if (ctor || !staticCall || m.isStatic) return kLibOk;
+                instanceSeen = true;
+            }
+            if (ctor) {
+                if (!u->declaresCtor && arity == 0) return kLibOk;
+                break;   // constructors are not inherited
+            }
+            if (staticCall) break;
+            up = u->super;
+        }
+        if (instanceSeen) {
+            const LibUnit* u = opt.library->unit(spelled);
+            bool noArg = u && !u->declaresCtor;
+            if (u) for (const LibMember& m : u->members) if (m.ctor && !m.stub && m.arity == 0) noArg = true;
+            if (noArg) return kLibViaInstance;
+        }
+        if (unchecked) return kLibUnchecked;
+        const std::string what = ctor ? "a constructor of '" + spelled + "' taking " + std::to_string(arity) + " argument(s)"
+                                      : "'" + spelled + "." + member + "' taking " + std::to_string(arity) + " argument(s)";
+        if (stubSeen)
+            throw ConvErr{cur().line, cur().col, "library-stub", what + " exists in /lib only as a signature stub that returns a default value"};
+        throw ConvErr{cur().line, cur().col, "library-member", what + " is not declared by its /lib unit" + (staticCall && !ctor ? " as a callable static member" : "")};
+    }
+
+    // A /lib member that returns Any (an erased Java type variable) where the Java call has a
+    // concrete result type: SLeeLa needs the cast back, as for an erased project method.
+    void castLibraryResult(const std::string& libRet, E& r) const {
+        if (libRet != "Any") return;
+        if (!r.ty.known()) { r.libAny = true; return; }   // cast at the typed target (coerce)
+        if (r.ty.dims != 0 || r.ty.wildcard) return;
+        if (r.ty.n == "void" || r.ty.n == "null" || r.ty.n == "Object" || r.ty.n == "Any" || r.ty.n.rfind("type:", 0) == 0) return;
+        r.code = "(" + emitType(r.ty) + ") " + paren(r.code);
     }
 
     std::string emitType(const Ty& t) const {
@@ -699,6 +756,17 @@ private:
             target.n != "null" && target.n != "Any" && classOf(target) == "reference")
             fail("boxed-reference", "a " + v.ty.n + " value converted to the reference type '" + target.n +
                  "': boxed values use primitive storage, which only Object (not a SLeeLa class type) can hold");
+        // An Any result of a /lib member reaching a typed reference slot needs the
+        // cast back (the Java call returns the type argument). Arrays cannot be cast.
+        if (v.libAny && !v.ty.known() && target.known() && target.dims == 0 && !target.boxed && !target.wildcard &&
+            !isPrimitiveName(target.n) && target.n != "Object" && target.n != "Any" && target.n != "null" &&
+            target.n.rfind("type:", 0) != 0) {
+            E r = v;
+            r.code = "(" + emitType(target) + ") " + paren(v.code);
+            r.ty = target;
+            r.libAny = false;
+            return r;
+        }
         // Only model-declared primitive widening is implicit. The same cast
         // template is used for assignments, arguments and return expressions.
         if (v.ty.dims != 0 || target.dims != 0) return v;
@@ -2102,7 +2170,13 @@ private:
                         const Ty* expected = expectedType.known() && targetContextEndsAtCurrentToken() ? &expectedType : nullptr;
                         const MethodSig* sm = pickMethod(owner, name, args, 0, -1, nullptr, expected);
                         args = adaptArgs(sm, args);
-                        E r = callResult(owner, name, args, e.code + "." + calledName(sm, name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
+                        std::string receiverCode = e.code;
+                        std::string libRet;
+                        if (!sm && e.ty.n.rfind("type:", 0) == 0 &&
+                            checkLibraryCall(e.ty.n.substr(5), calledName(sm, name), args.size(), true, false, &libRet) == kLibViaInstance)
+                            receiverCode = "new " + e.code + "()";
+                        E r = callResult(owner, name, args, receiverCode + "." + calledName(sm, name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
+                        if (!sm) castLibraryResult(libRet, r);
                         e = r;
                         continue;
                     }
@@ -2119,7 +2193,11 @@ private:
                             args[ai].ty = mk("String");
                         }
                     }
+                    std::string libRet;
+                    if (!im && e.ty.dims == 0 && e.ty.known() && !e.ty.boxed)
+                        checkLibraryCall(recvType, calledName(im, name), args.size(), false, false, &libRet);
                     E r = callResult(recvType, name, args, paren(e.code) + "." + calledName(im, name) + "(" + joinArgs(args) + ")", false, &e.ty, expected);
+                    if (!im) castLibraryResult(libRet, r);
                     e = r;
                     continue;
                 }
@@ -2280,6 +2358,11 @@ private:
             p++;
             if (isOp("(")) {
                 std::vector<E> a = parseArgs();
+                {
+                    auto self = classes.find(curClass);
+                    if (self != classes.end() && !self->second.super.empty())
+                        checkLibraryCall(self->second.super, "<init>", a.size(), false, true);
+                }
                 E r; r.code = "super(" + joinArgs(a) + ")"; r.pure = false; r.ty = mk("void");
                 return r;
             }
@@ -2348,6 +2431,16 @@ private:
                 }
             }
             if (!pm) refuseObjectMethod(curClass, name);
+            if (!pm && importedOwner.empty() && anonStack_.empty()) {
+                // An inherited method of a /lib superclass: it must exist in that unit's chain.
+                std::string up = curClass;
+                for (int depth = 0; depth < 32; depth++) {
+                    auto ci = classes.find(up);
+                    if (ci == classes.end()) { checkLibraryCall(up, mapMember(safeNameForCall(name)), a.size(), false, false); break; }
+                    if (ci->second.super.empty() || ci->second.super == up) break;
+                    up = ci->second.super;
+                }
+            }
             a = adaptArgs(pm, a);
             // A Java method named like a SLeeLa built-in (read, write, accept, lock, send, ...) would be taken
             // for the built-in by an unqualified call, so the call is qualified with its owner or with this.
@@ -2542,6 +2635,7 @@ private:
             fail("constructor-resolution", "no accessible constructor of '" + name +
                  "' accepts the supplied arguments after class type substitution");
         args = adaptArgs(constructor, args);
+        if (!constructor && !declaresConstructors) checkLibraryCall(name, "<init>", args.size(), false, true);
         std::string outerArg;
         {
             auto ci = classes.find(name);
@@ -4908,6 +5002,82 @@ bool lexInto(const std::string& src, std::vector<Tok>& v, Diagnostic* d) {
     return true;
 }
 }  // namespace
+
+// Read the member declarations of one lib/java/jdk-28 unit. The units follow one generated
+// layout: the class header at column 0, members at two spaces of indentation, method bodies
+// deeper, and the stub section between "BEGIN java signatures" and "END java signatures".
+const LibUnit* LibraryIndex::unit(const std::string& stem) const {
+    auto hit = cache.find(stem);
+    if (hit != cache.end()) return hit->second.parsed ? &hit->second : nullptr;
+    LibUnit& u = cache[stem];
+    auto path = jdkPath.find(stem);
+    if (path == jdkPath.end()) return nullptr;
+    std::ifstream in(path->second);
+    if (!in) return nullptr;
+    const size_t dot = stem.rfind('.');
+    const std::string cls = dot == std::string::npos ? stem : stem.substr(dot + 1);
+    std::string line;
+    bool inBlock = false, inStubs = false, inClass = false;
+    while (std::getline(in, line)) {
+        if (inBlock) { if (line.find(">>") != std::string::npos) inBlock = false; continue; }
+        size_t first = line.find_first_not_of(" \t");
+        if (first == std::string::npos) continue;
+        if (line.compare(first, 2, "<<") == 0) { if (line.find(">>", first + 2) == std::string::npos) inBlock = true; continue; }
+        if (line[first] == '<') {
+            if (line.find("BEGIN java signatures") != std::string::npos) inStubs = true;
+            else if (line.find("END java signatures") != std::string::npos) inStubs = false;
+            continue;
+        }
+        if (!inClass) {
+            std::istringstream hs(line);
+            std::vector<std::string> w; std::string t;
+            while (hs >> t) w.push_back(t);
+            for (size_t i = 0; i + 1 < w.size(); i++) {
+                if (w[i] != "class" && w[i] != "interface") continue;
+                inClass = true;
+                for (size_t j = i + 1; j + 1 < w.size(); j++)
+                    if (w[j] == "extends") { u.super = w[j + 1]; const size_t lt = u.super.find('<'); if (lt != std::string::npos) u.super.erase(lt); break; }
+                break;
+            }
+            continue;
+        }
+        if (first != 2) continue;
+        const size_t open = line.find('(');
+        if (open == std::string::npos || line[first] == '@') continue;
+        std::istringstream hs(line.substr(first, open - first));
+        std::vector<std::string> w; std::string t;
+        while (hs >> t) w.push_back(t);
+        if (w.empty()) continue;
+        LibMember m;
+        m.name = w.back();
+        bool hasType = false;
+        for (size_t i = 0; i + 1 < w.size(); i++) {
+            const std::string& x = w[i];
+            if (x == "static") m.isStatic = true;
+            else if (x == "public" || x == "private" || x == "protected" || x == "final" || x == "abstract" ||
+                     x == "synchronized" || x == "native" || x == "default") {}
+            else { hasType = true; m.ret = x; }
+        }
+        { const size_t lt = m.ret.find('<'); if (lt != std::string::npos) m.ret.erase(lt); }
+        static const std::set<std::string> kw = {"if", "for", "while", "switch", "return", "catch", "synchronized", "new"};
+        if (kw.count(m.name) || m.name.find_first_of("=.+-*/!&|") != std::string::npos) continue;
+        if (!hasType) { if (m.name != cls) continue; m.ctor = true; u.declaresCtor = true; }
+        int depth = 0; bool any = false; int commas = 0;
+        for (size_t i = open + 1; i < line.size(); i++) {
+            const char c = line[i];
+            if (c == '(' || c == '<' || c == '[') depth++;
+            else if (c == ']' || c == '>') depth--;
+            else if (c == ')') { if (depth == 0) break; depth--; }
+            else if (c == ',' && depth == 0) commas++;
+            else if (c != ' ' && c != '\t') any = true;
+        }
+        m.arity = any ? commas + 1 : 0;
+        m.stub = inStubs;
+        u.members.push_back(m);
+    }
+    u.parsed = true;
+    return &u;
+}
 
 Result convert(const std::string& src, const cm_model& model, const Options& opt, SymbolTable* shared) {
     Result r;

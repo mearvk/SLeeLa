@@ -186,6 +186,12 @@ most of them; all were fixed in `sleelactl/convert` (no change to `impl/frontend
 | `java/util/Tripwire` and `java/util/stream/Tripwire` were both emitted into one flat namespace | `[type-ambiguous]` for every declaring unit |
 | `AssertionError(float)` and `AssertionError(double)` lowered to one constructor | `[overload-erasure]` |
 
-After: 290 of 884 files convert (325 SLeeLa files), 108 errors in 30 files. Differential suite 100 of 100. Members of
-`/lib` types are still not checked; the remaining errors are of that kind and belong to the `lib/java` tier.
+After: 290 of 884 files convert (325 SLeeLa files), 108 errors in 30 files. Differential suite 100 of 100.
+
+Second pass, same day: calls into `lib/java/jdk-28` units are checked by name and arity against the unit the loader
+selects. A member that exists only in a unit's stub section ("java signatures", returns a default value) is refused
+`[library-stub]`, a missing one `[library-member]`. Java statics that the tier implements as instance methods are
+called as `new T().m(...)`, and `Any` results get a cast back. After: 254 of 884 files convert (262 SLeeLa files), 22
+errors in 11 files. Differential suite 103 of 103. The drop in converted files is calls that previously converted into
+stubs or into members that did not exist.
 

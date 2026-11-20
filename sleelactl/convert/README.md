@@ -84,7 +84,7 @@ The refusal rows are the `unsupported` records of the model.
   identical: Anon, Basics, Bounds, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested,
   ObjectText, Operands (191 lines of int/long/double/narrowing results), Records, Refs, Resources, Shapes, Strings,
   Switches, Sync, Varargs, IdentifierParity, OverloadWidening, ReservedIdentifiers, GenericIdentity, BoxingOverload, GenericCommonReference, NestedGenericInference, BoundedGeneric, ClassGenericReceiver, InheritedGenericReceiver, WildcardGeneric, StaticImports, BoundedClassType, LowerBoundWildcardInference, GenericWildcardLowerBound, GenericConstructorExplicitArguments, GenericConstructorClassSubstitution. The new generic fixtures and the updated `Refs` overload/method-reference fixture were changed after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
-- `tests/reject/*.java` (28 programs) must be refused with the construct named on their `// expect:` line
+- `tests/reject/*.java` (30 programs) must be refused with the construct named on their `// expect:` line
   and write nothing.
 - stale output: a file converted on one run and failing closed on the next leaves no `.sleela` behind.
 
@@ -107,10 +107,24 @@ Measured on the JDK 25.0.5 `java.base` subset (884 files) with `tests/javaconv_c
 | emitted files with an attributed error | 110 | 30 |
 | emitted files with none | 271 | 295 |
 
-The remaining 108 errors are calls into `/lib` units that lack the member or declare it differently (for example
-`Arrays.fill` and `Optional.of` declared as instance methods, `Unsafe.storeStoreFence` absent). Differential suite:
-100 of 100 (adds `reject/ConstructorErasure`, `cascade`, `flat-namespace`; the old converter fails all three and the
-provenance check). The text below is the earlier status, kept as the record.
+A second pass the same day checks calls into `lib/java/jdk-28` units by name and arity (`[library-member]`),
+refuses calls that would bind to signature stubs (`[library-stub]`), calls Java statics that the tier implements
+as instance methods as `new T().m(...)`, and casts `Any` results back (JAVA.SPEC.md 5.1):
+
+| | after resolution fixes | after member checks |
+|---|---|---|
+| files converted | 290 (325 SLeeLa files) | 254 (262 SLeeLa files) |
+| semantic errors with every emitted file linked | 108 | 22 |
+| emitted files with an attributed error | 30 | 11 |
+| emitted files with none | 295 | 251 |
+
+The 11 files left involve converted interfaces that extend `lib/java` classes (inherited members such as
+`NavigableSet.isEmpty`, the inherited constant `CharacterIterator.DONE`), covariant overrides of a `lib/java`
+return type (`constantValue`), and constructor selection by argument type (`Exception`). The most common first
+refusals are now `library-type` 113, `library-member` 84, `nested-ambiguous` 63, `member-access` 53,
+`generic-type` 39 and `library-stub` 36. Differential suite: 103 of 103 (adds `LibraryStatics`,
+`reject/LibraryMember`, `reject/LibraryStub`, `reject/ConstructorErasure`, `cascade`, `flat-namespace`).
+The text below is the earlier status, kept as the record.
 
 Converted and proven against a JDK (`tests/javaconv_differential_test.sh`, 22 programs plus 9 refusals and a
 stale-output check, 32 of 32 passing on 2026-11-13; in CI as `.github/workflows/java-convert.yml`). The later `IdentifierParity`, `OverloadWidening`, `ReservedIdentifiers`, `GenericIdentity`, `StaticImports`, and updated `Refs` fixtures, the `AmbiguousWideningOverload` and `BoundedGenericInference` refusal fixtures, and the overload-resolution/import changes, class-bound and deferred wildcard-lower-bound fixtures, the generic-constructor-diamond and generic-constructor-bound refusal fixtures, the constructor class-substitution fixtures, and the `BoxingOverload`, `GenericCommonReference`, `BoundedGeneric`, `NestedGenericInference`, `ClassGenericReceiver`, and `WildcardGeneric` fixtures have not yet been run:

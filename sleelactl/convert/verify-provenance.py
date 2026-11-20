@@ -77,8 +77,29 @@ if output_fp != data.get("outputSnapshotSha256"):
 lib_units = data.get("libraryUnits")
 if not isinstance(lib_units, dict) or not isinstance(lib_units.get("sha256"), str):
     fail("library unit vocabulary digest missing")
-lib_root = repo / "lib"
-stems = sorted({p.stem for p in lib_root.rglob("*.sleela") if p.is_file()}) if lib_root.is_dir() else []
-if len(stems) != lib_units.get("count") or sha("".join(x + "\n" for x in stems).encode()) != lib_units["sha256"]:
+java_root = repo / "lib" / "java"
+files = [p for p in java_root.rglob("*.sleela") if p.is_file()] if java_root.is_dir() else []
+stems = sorted({p.stem for p in files})
+order = ["/java/lang/", "/java/util/", "/java/io/", "/java/nio/", "/java/net/", "/java/time/", "/java/math/", "/java/text/"]
+def rank(rel):
+    module = 0 if rel.startswith("java.base/") else 1 if rel.startswith("java.") else 2
+    slash = rel.find("/")
+    pkg = rel if slash < 0 else rel[slash:]
+    package = 8
+    for i, o in enumerate(order):
+        if pkg.startswith(o) and pkg.rfind("/") + 1 == len(o):
+            package = i
+            break
+    return (module, package, rel.count("/"), rel.encode())
+best = {}
+for p in files:
+    rel = p.relative_to(java_root).as_posix()
+    if not rel.startswith("jdk-28/"):
+        continue
+    key = rank(rel[7:])
+    if p.stem not in best or key < best[p.stem][0]:
+        best[p.stem] = (key, rel)
+fp = "".join(x + "\n" for x in stems) + "".join(best[k][1] + "\n" for k in sorted(best))
+if len(stems) != lib_units.get("count") or sha(fp.encode()) != lib_units["sha256"]:
     fail("library unit vocabulary mismatch")
 print("javaconv provenance: PASS")

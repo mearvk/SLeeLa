@@ -305,7 +305,9 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | `synchronized`/`volatile` in a multi-threaded program | memory model | real monitors, or keep the single-thread policy |
 | A boxed value converted to a class supertype of its wrapper (`Integer` to `Number`, `Comparable`, `Serializable`) | boxed values use primitive storage; `Object` (the VM universal type) holds one, a SLeeLa class type such as `lib/java` `Number` cannot | a `Number` view over primitive storage (runtime `intValue`/`doubleValue` helpers); until then fails closed (`[boxed-reference]`, test `reject/BoxedToNumber`) |
 | A concrete array passed to, or recovered from, a type-variable array `T[]` | `T[]` erases to `Any[]`; SLeeLa arrays are invariant and casts to array types are not available (SLEELA.syntax 46) | array element contracts in SLeeLa, then a checked array cast; `T...` with packed arguments is converted (packed as `Any[]`), the rest fails closed (`[generic-array]`, test `reject/GenericArrayIdentity`) |
-| A type that is neither converted in the same run nor provided by a unit under `/lib` (`[library-type]`) | the reference would not resolve when the output is linked; this includes types of units that failed closed | convert the unit that declares it, or add the type to `lib/java` |
+| A type that is neither converted in the same run nor provided by a unit under `lib/java` (`[library-type]`) | the reference would not resolve when the output is linked; this includes types of units that failed closed | convert the unit that declares it, or add the type to `lib/java` |
+| A call or constructor of a `lib/java/jdk-28` type that its unit does not declare with that arity (`[library-member]`) | the reference would not resolve when the output is linked | add the member to the unit |
+| A call or constructor that the `lib/java/jdk-28` unit declares only in its "java signatures" stub section (`[library-stub]`) | the stub returns a default value, so the program would run but not behave like Java | write the member logic in the unit |
 | Two project declarations with the same simple name, even in different packages (`[type-ambiguous]`) | converted documents link into one flat type namespace | package-qualified hoisted names |
 | Two constructors that lower to the same SLeeLa parameter list, such as `float` and `double` (`[overload-erasure]`) | SLeeLa selects a constructor by its emitted parameter types | signature-named constructor lowering |
 | `native` | no Java body and no declared Java-to-SLeeLa ABI binding | accept only when a modelled, verified native binding maps the exact owner/signature/ABI; otherwise fail closed (`[native]`) |
@@ -315,11 +317,23 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 A run converts to a fixpoint. A unit that fails closed emits nothing, so the converter drops it from the
 project index and converts the other units again; their references to the dropped types then resolve
 like any non-project type, or fail closed (the diagnostic says `round N`). A non-project type in the
-output must be a `/lib` unit name (a file stem such as `Objects` or `Map.Entry`); a nested type of a
-library type is written `Outer.Inner`, the spelling the SLeeLa loader resolves. The `/lib` name set is
-recorded in `CONVERSION-PROVENANCE.json` (`libraryUnits`). Members of `/lib` types are not checked: a
-call to a method the `/lib` unit does not declare, or declares as an instance method where Java has a
-static one, still converts and fails at link time. `tests/javaconv_check_tree.sh` measures that.
+output must be a `lib/java` unit name (a file stem such as `Objects` or `Map.Entry`); a nested type of a
+library type is written `Outer.Inner`, the spelling the SLeeLa loader resolves.
+
+For a type with a `lib/java/jdk-28` unit, the converter reads the unit the loader selects (java.base first,
+then the package order of `impl/frontend/java/java_handler.cpp`) and checks every static call, instance call,
+constructor, `super(...)` and unqualified inherited call by name and arity, walking the unit `extends` chain:
+
+- a real member converts. A Java static method that the unit implements as an instance method (the tier
+  convention, for example `Arrays.fill`) is called as `new Arrays().fill(...)` when the unit has a
+  no-argument constructor;
+- a member found only in the stub section is refused `[library-stub]`;
+- no member is refused `[library-member]`;
+- a member the unit declares to return `Any` gets a cast back to the Java result type at a typed target.
+
+The unit names and the selected unit per name are recorded in `CONVERSION-PROVENANCE.json`
+(`libraryUnits`). Parameter types are not compared, only arity. `tests/javaconv_check_tree.sh`
+measures what still fails at link time.
 
 ## 6. How to extend the tier
 

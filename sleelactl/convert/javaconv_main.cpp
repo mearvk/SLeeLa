@@ -17,6 +17,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <tuple>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -507,24 +508,50 @@ int main(int argc, char** argv) {
     // reference to any non-project type does (the model and the lib/java tier),
     // or fail closed. The loop ends when a round adds no failure; it is bounded
     // by the number of units because every extra round removes at least one.
-    // The /lib unit names the SLeeLa loader resolves (file stems). A reference to a
-    // non-project type outside this set would not resolve, so the translator fails
-    // it closed. No /lib directory (an installed converter without the library):
-    // the check is off and the report says so.
-    std::set<std::string> libraryUnits;
+    // The Java tier the output links against: every unit name under lib/java (what the
+    // loader can resolve for converted code) and, per name, the lib/java/jdk-28 unit the
+    // loader selects (java.base first, then the java.lang/util/io/nio/net/time/math/text
+    // package order, then the shallowest path; impl/frontend/java/java_handler.cpp).
+    // No lib/java directory (an installed converter without the library): the checks are off.
+    javaconv::LibraryIndex library;
     std::string libraryFingerprint;
     {
         const fs::path lib = root / "lib";
+        const fs::path javaLib = lib / "java";
         std::error_code lec;
-        if (fs::is_directory(lib, lec)) {
-            for (fs::recursive_directory_iterator li(lib, lec), lend; !lec && li != lend; li.increment(lec)) {
-                std::error_code tec;
-                if (li->is_regular_file(tec) && li->path().extension() == ".sleela")
-                    libraryUnits.insert(li->path().stem().string());
+        auto rank = [](const std::string& rel) {
+            // rel is relative to lib/java/jdk-28
+            int module = rel.rfind("java.base/", 0) == 0 ? 0 : rel.rfind("java.", 0) == 0 ? 1 : 2;
+            static const char* order[] = {"/java/lang/", "/java/util/", "/java/io/", "/java/nio/", "/java/net/", "/java/time/", "/java/math/", "/java/text/"};
+            const size_t slash = rel.find('/');
+            const std::string pkg = slash == std::string::npos ? rel : rel.substr(slash);
+            const size_t lastSlash = pkg.rfind('/');
+            int package = 8;
+            for (int i = 0; i < 8; i++) {
+                const std::string o = order[i];
+                if (pkg.rfind(o, 0) == 0 && lastSlash + 1 == o.size()) { package = i; break; }
             }
-            if (lec) { std::cerr << "javaconv: cannot walk '" << lib.string() << "': " << lec.message() << "\n"; cm_free(&model); return 2; }
+            const int depth = (int)std::count(rel.begin(), rel.end(), '/');
+            return std::make_tuple(module, package, depth, rel);
+        };
+        std::map<std::string, std::tuple<int,int,int,std::string>> best;
+        if (fs::is_directory(javaLib, lec)) {
+            for (fs::recursive_directory_iterator li(javaLib, lec), lend; !lec && li != lend; li.increment(lec)) {
+                std::error_code tec;
+                if (!li->is_regular_file(tec) || li->path().extension() != ".sleela") continue;
+                const std::string stem = li->path().stem().string();
+                library.units.insert(stem);
+                const std::string rel = fs::relative(li->path(), javaLib).generic_string();
+                if (rel.rfind("jdk-28/", 0) != 0) continue;
+                auto key = rank(rel.substr(7));
+                auto it = best.find(stem);
+                if (it == best.end() || key < it->second) best[stem] = key;
+            }
+            if (lec) { std::cerr << "javaconv: cannot walk '" << javaLib.string() << "': " << lec.message() << "\n"; cm_free(&model); return 2; }
         }
-        for (const auto& u : libraryUnits) { libraryFingerprint += u; libraryFingerprint.push_back('\n'); }
+        for (const auto& b : best) library.jdkPath[b.first] = (javaLib / "jdk-28" / std::get<3>(b.second)).string();
+        for (const auto& u : library.units) { libraryFingerprint += u; libraryFingerprint.push_back('\n'); }
+        for (const auto& b : best) { libraryFingerprint += "jdk-28/" + std::get<3>(b.second); libraryFingerprint.push_back('\n'); }
     }
     auto optionsFor = [&](const InputFile& in) {
         javaconv::Options o;
@@ -536,7 +563,7 @@ int main(int argc, char** argv) {
         o.bundle = c.bundle || !c.file.empty();
         if (c.split) o.bundle = false;
         o.bundleName = in.path.stem().string();
-        if (!libraryUnits.empty()) o.libraryUnits = &libraryUnits;
+        if (!library.units.empty()) o.library = &library;
         return o;
     };
     std::vector<javaconv::Result> results(inputs.size());
@@ -731,8 +758,8 @@ int main(int argc, char** argv) {
       << "  \"converterSourceSha256\": \"" << sha256Hex(converterFingerprint) << "\",\n"
       << "  \"inputSnapshotSha256\": \"" << sha256Hex(sourceFingerprint) << "\",\n"
       << "  \"outputSnapshotSha256\": \"" << sha256Hex(outputFingerprint) << "\",\n"
-      << "  \"libraryUnits\": {\"count\": " << libraryUnits.size() << ", \"sha256\": \"" << sha256Hex(libraryFingerprint)
-      << "\", \"identity\": \"sorted .sleela file stems under <repo>/lib, one per line; non-project types must be one of them\"},\n"
+      << "  \"libraryUnits\": {\"count\": " << library.units.size() << ", \"sha256\": \"" << sha256Hex(libraryFingerprint)
+      << "\", \"identity\": \"sorted .sleela file stems under <repo>/lib/java, one per line, then the selected lib/java/jdk-28 unit per stem (path under lib/java), one per line; non-project types must be one of the stems\"},\n"
       << "  \"options\": {\"bundle\": " << ((c.bundle || !c.file.empty()) && !c.split ? "true" : "false")
       << ", \"singleThread\": " << (c.singleThread ? "true" : "false")
       << ", \"checkedArrays\": " << (c.uncheckedSizes ? "false" : "true")
