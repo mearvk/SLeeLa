@@ -13,7 +13,7 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The repository inventory on 2026-11-12 contains **15,048 Git-indexed files under `/lib/java`**: 10,243 in `jdk-25/` (10,212 SLeeLa files plus the API dump and tools), 4,774 in `jdk-28/` (4,721 SLeeLa files plus its index, notes and a `module-summary.md` per module), and 31 top-level classes, documents and validators. The recorded baseline of 15,004 files is a floor, not the current count. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The repository inventory on 2026-11-19 contains **15,093 Git-indexed library files under `/lib/java`** (excluding the control files listed in `MANIFEST.json`): `jdk-25/`, `jdk-28/`, the top-level classes, and the SLJIP protocol specification under `protocol/`. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
@@ -69,13 +69,12 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count is at least the recorded **15,004-file** baseline;
-- manifest schema and root metadata are present;
-- the expected Java interoperability boundary is documented;
-- required source-role metadata is present; and
-- the inventory has not silently fallen below its established baseline.
+- the Git-indexed library-file count exactly equals the manifest count (15,093 at this revision);
+- every declared control file is tracked and excluded from the library count;
+- manifest schema, root, bridge, source-role, execution-boundary, and mapping metadata are valid; and
+- missing or additional tracked files cause a validation failure until the manifest is deliberately updated.
 
-When files are intentionally added or removed, the baseline and manifest must be updated in the same change. CI therefore makes library growth an explicit engineering event rather than allowing the documented count to drift.
+When library source files are intentionally added or removed, update inventory.count in the same change. Documentation and validator control files are explicitly listed in inventory.control_files and excluded. The validator uses exact equality: both unexpected growth and unexpected shrinkage fail. The current count includes the new protocol specification and machine-readable schema.
 
 ## Procedural Implementation (JDK 28)
 
@@ -214,6 +213,31 @@ The native execution foundation should also remain testable:
 `SLeeLa source → Compiler → C/C++ VM → execution`
 
 These paths are architectural test targets; a particular binding must not claim support until its implementation and CI tests establish that support.
+
+## Runtime Capability Boundary
+
+The library's source envelopes describe Java API types; they do not, by themselves, implement Java method execution. The repository currently has an external-JVM host path for Java source, runnable JARs, and compiled class folders. The Java connector also provides allow-listed reflective construction and invocation through SleelaJdkBridge and SleelaClassLoader. These are distinct integration layers: the external host is a child process, and the Java-side reflection helper is not yet a SLeeLa VM invocation opcode. Neither should be described as JNI or an embedded JVM.
+
+The SLJIP v1 endpoint now implements Java-side construction, method invocation, public field access, opaque object handles, and structured exception responses. The native C codec (runtime/java_interop_protocol.c) exposes a callback-based exchange API and is tested standalone; it is not yet linked into sleela or sleelvac. However, the SLeeLa compiler/VM does not yet lower source expressions to these operations, and the native runtime does not yet own the endpoint process pipes. Descriptive strings such as java.invoke: are not invocation opcodes. See protocol/SLJIP-v1.md, RUNTIME-INTEGRATION.md, and impl/JAVA-INTEROP-LOWERING.md for the current boundaries.
+
+## JDK Signature Catalog
+
+The JDK 28 signature synchronizer records official Javadoc member declarations as comments inside a generated catalog section. It does not generate executable method bodies or placeholder return values. This keeps API metadata useful without suggesting that a stub returning false, zero, or null is a conforming Java implementation.
+
+Use tools/jdk28_signature_sync.py --check to audit drift, or --limit N for a controlled batch. Run the focused regression tests with python3 test-suites/java-library-integrity.py from the repository root.
+
+## Typed Java Invocation Protocol
+
+The first versioned transport contract is documented in [protocol/SLJIP-v1.md](protocol/SLJIP-v1.md), with a machine-readable description in [protocol/SLJIP-v1.json](protocol/SLJIP-v1.json). The Java helper endpoint is `SleelaJdkProtocolServer`; the native C frame codec is `runtime/java_interop_protocol.c`. The protocol supports bounded frames, typed primitive/string values, allow-listed class resolution, construction, public instance/static invocation, opaque per-session object handles, release, and structured exception responses.
+
+The Java endpoint and native frame codec have independent focused test runners:
+
+- `bash test-suites/java-interop-protocol-endpoint.sh`
+- `bash test-suites/java-interop-protocol-codec.sh`
+- `python3 test-suites/java-interop-protocol.py` (cross-platform orchestration; runs both suites)
+- `make -C connector protocol-test protocol-codec-test`
+
+The native codec is linked into both native tool binaries. The callback-driven exchange API is ready for a process/pipe provider. Compiler/VM lowering is still a separate required integration step: no SLeeLa source expression is yet claimed to execute these protocol operations.
 
 ## Expansion
 

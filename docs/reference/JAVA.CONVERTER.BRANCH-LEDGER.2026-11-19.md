@@ -45,20 +45,56 @@ Treat as superseded. Not verified hunk by hunk.
 |---|---|
 | work/nov18-production-validation (PR #378) | Workflow-only: one line added to each of java-convert.yml, jdk28-validation.yml, regression-set.yml, root-build-install.yml. 4 ahead, 122 behind. |
 
-## E. Genuinely not on master (separate Java library/interop workstream, not converter code)
+## E. Java library / interop workstream (not converter code)
 
-Checked by file presence on master; none of the names below exist there.
+### work/java-api-dependency-closure: already on master
 
-| Branch (ahead/behind) | Unmerged content |
-|---|---|
-| work/java-interoperability-hardening (98/2096) | SLJIP-v1 protocol (`lib/java/protocol/SLJIP-v1.{json,md}`), `connector/java/.../SleelaJdkProtocol{Fixture,Server}.java`, `lib/java/tools/jdk28_signature_sync.py`, `impl/JAVA-INTEROP-LOWERING.md`, `lib/java/RUNTIME-INTEGRATION.md`, `test-suites/{test-java-protocol.py,test-java-protocol-codec.c,java-library-integrity.py,java-interop-protocol.py}` |
-| work/java-api-dependency-closure (83/2096) | `lib/java/tools/java_api_{dependency_graph,member_dependencies,visibility_constructor_audit}.py`, `lib/java/implementations/java/lang/{JavaObjectIdentity,JavaStringValue}.sleela`, `tests/java_string_native*` |
-| fix/java-launcher-main-sync (171/3588) | Java launcher/runtime probe (`runtime/java_runtime_probe.c`, `runtime/JAVA-HOST-CAPABILITIES.md`, `markdown/NATIVE.JAVA.md`); master already has `test-suites/java-runtime-{bridge,probe}.sh`, so likely partly superseded. Compare listing hit an API rate limit; not fully inspected. |
+Master moved `lib/java/tools/` to `lib/java/jdk-25/tools/` and `lib/java/implementations/` to
+`lib/java/jdk-25/implementations/`. At the new paths, the branch's `java_api_dependency_graph.py`,
+`java_api_member_dependencies.py`, `java_api_visibility_constructor_audit.py`,
+`JavaObjectIdentity.sleela` and `tests/java_source_implementation_audit.py` are byte-identical on master;
+`JavaStringValue.sleela`, `impl/core/sleela_utf16.c`, `tests/java_string_native_suite.py` and
+`tests/Makefile` exist on master in a newer form. Nothing to port.
 
-Porting rules if these are taken (see repo learnings): port per file set, not by merge. Both branches
-are about 2000 commits behind and edit `lib/java/MANIFEST.json`, `README.md`, and `validate.py`, which
-master has since changed. Any `lib/**` change needs `security/sha256-manifest.json`, `lib/LIBRARY.SYMBOLS.md`,
-the inventory test counts, and `lib/LIBRARY.INDEX.md` regenerated.
+### work/java-interoperability-hardening: PORTED to master 2026-11-19
+
+Ported per file against merge base `fe98a72b` (not merged):
+
+- New: SLJIP v1 protocol (`lib/java/protocol/SLJIP-v1.{json,md}`), `lib/java/RUNTIME-INTEGRATION.md`,
+  `impl/JAVA-INTEROP-LOWERING.md`, `runtime/java_interop_protocol.{c,h}`,
+  `connector/java/.../SleelaJdkProtocol{Server,Fixture}.java`, and tests
+  `test-suites/{java-interop-protocol-codec.sh,java-interop-protocol-endpoint.sh,java-interop-protocol.py,java-library-integrity.py,test-java-protocol-codec.c,test-java-protocol.py}`.
+- Taken from the branch (master unchanged since base): `SleelaClassLoader.java`, `SleelaJdkBridge.java`,
+  `SleelaJdkConformance.java`, `connector/CLASS_LOADER.md`, `lib/java/JDK28_API_SYNC.md`.
+- Re-targeted to master layout: `jdk28_sync.py` and `jdk28_signature_sync.py` applied at
+  `lib/java/jdk-25/tools/`; path references in `java-library-integrity.py` and `JDK28_API_SYNC.md` updated.
+- Reconciled: `lib/java/validate.py` takes the branch's exact-count validator; `MANIFEST.json` keeps
+  master's content, adds `RUNTIME-INTEGRATION.md` as a control file, and records the exact count 15,093;
+  `lib/java/README.md` merged by hand; `connector/Makefile` auto-merged.
+- Not taken: the branch linked `java_interop_protocol.o` into `sleela`/`sleelvac` and added an unused
+  include to `impl/frontend/driver.cpp`. Nothing calls the codec, and master has since moved Java handling
+  out of the driver, so master's driver and link lines are kept. The docs now say the codec is tested
+  standalone and not yet linked. `impl/Makefile` `test-java-runtime` runs the two protocol tests.
+- Bugs fixed while porting: `test-java-protocol.py` read stderr eagerly as an assert message, deadlocking
+  every request (5 of 7 tests hung); `connector/Makefile` used `$tmp` instead of `$$tmp`;
+  `SleelaJdkConformance.java` (also broken on master) called `add` on an `Object`.
+
+Verified in this sandbox (JDK 25.0.5, gcc): `python3 lib/java/validate.py` PASS (15,093 exact);
+`java-interop-protocol-codec.sh` PASS; `java-interop-protocol-endpoint.sh` 7/7 OK;
+`java-library-integrity.py` 7/7 OK; `make -C connector protocol-test protocol-codec-test` PASS;
+`SleelaJdkConformance` PASS (compiled directly; `make conformance` needs the Jakarta Servlet jar, which
+the sandbox could not download). The full `impl` runtime build was not run.
+
+Still pre-existing on master, not fixed: `SleelaHttpConnector.java` declares `maxResponseBytes` twice;
+`tests/java_api_*_suite.py` and `MANIFEST.json` `validation` still point at `lib/java/tools/` paths that
+moved to `lib/java/jdk-25/tools/`.
+
+### fix/java-launcher-main-sync (171/3588)
+
+Java launcher/runtime probe (`runtime/java_runtime_probe.c`, `runtime/JAVA-HOST-CAPABILITIES.md`,
+`markdown/NATIVE.JAVA.md`); master already has `runtime/java_runtime_probe.c` and
+`test-suites/java-runtime-{bridge,probe}.sh`, so likely superseded. Compare listing hit an API rate
+limit; not fully inspected.
 
 ## F. Sleelactl native-math line
 
