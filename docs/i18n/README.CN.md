@@ -117,6 +117,8 @@ make clean-install       # guided install of the main package only
 ## V. 语言与运行时
 权威语法是 [`SLEELA.syntax`](../../SLEELA.syntax)。当前仓库记录的语法版本为 **3.0**；编译器/工具版本与源码语法版本是两个不同的概念。3.0 表面新增了 **`pure` 和 `gasoline` 文档标记**（§30）——一对单独出现的、依上下文而定的、仅作声明的 Preonems，含义几乎相同，各自以自己的诚实性标示文档的地位。语法 3.0 将 1.0–2.9 的语言表面整合为当前的规范版本，并保留所有各功能特有的最低版本门槛。此前的 2.9 表面新增了 **`@mix` 连续字段**（§28）——当每个字段都带有 `@mix` 时，类可以声明多个同名实例字段，将其理解为一个带索引的组（自上而下 `1,2,3,…`，或手动 `@mix(1,2,3,...)`，其索引个数必须与该组字段数一致）。它延续了以 2 为底的有符号/无符号宽整数系列 `int32`..`int16777216`（§24）和 `uint32`..`uint16777216`（§25），它们建立在更早的 `long`/`int64`/`int128`（§21）之上；还延续了**关键字支持文档**（§22）；以及 **Preonems**——仅作声明的文档标记 `author`/`authorial`（§18）、`material`/`memory`（§19–§20）、`determine`（§23）、`object`/`field`（§26）、`pure`/`gasoline`（§30）和 `artifact`（§35，立法级地位，按时间与空间分级），统称 Preonems（§26.1）。构造函数重载解析以及 `this(...)`/基类构造函数委托，明确不在已验证的语法 1.8 契约范围之内。在依赖某项功能之前，请查阅语法及实现说明。SleelaDoc 的九个源码单元现已声明 `#sleela 3.0`；共享的编译器门槛接受 1.0–3.0 的源码语法。新的 API 构建由 `make api-docs` 生成。
 
+> **Edition note (2026-11-20, English):** the current language edition is **Syntax 3.2**. The compiler accepts source syntax 1.0–3.2 and reads a source with no `#sleela` line as 3.2; `#sleela 3.01` means 3.1, not 3.2. Current API edition: [`api/sleela/3.2/`](../../api/sleela/3.2/README.md). Current overview: [SLeeLa International Version 3.2](../reference/LANGUAGE.INTERNATIONAL.3.2.md). The paragraph above is the earlier text and is kept until this section is translated again.
+
 仓库包含原生 C/C++ 实现、SLVM 生成参考、标准库模块、测试、示例和平台集成。各模块的实现和验证状态各不相同；请以其规范和当前 CI 结果为准，而不要假定各处完备程度一致。
 
 ## VI. 工程原则

@@ -7,7 +7,7 @@ inclusion: always
 Syntax **2.5** adds a bare, contextual, **declarative-only** document marker
 **`memory`** — a sibling to the 2.5 `material` marker and the 2.4
 `author`/`authorial` marker. It shares the **2.5 introduction gate** with `material`; **no edition is
-bumped** to introduce it. The current compiler maximum is 3.0. The normative definition is
+bumped** to introduce it. The current compiler maximum is 3.2. The normative definition is
 [`SLEELA.syntax` §20](../../SLEELA.syntax).
 
 ## What it means

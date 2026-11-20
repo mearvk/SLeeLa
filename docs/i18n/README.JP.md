@@ -139,6 +139,8 @@ make clean-install       # メインパッケージのみをガイド付きで�
 
 正式な文法は[`SLEELA.syntax`](../../SLEELA.syntax)です。リポジトリが文書化している現行構文は **3.0** です。コンパイラ／ツールのバージョンとソース構文のバージョンは別のものです。構文3.0では **`pure` と `gasoline` の文書マーカー**（§30）が追加されています。これらは文書の位置づけをそれぞれの誠実さによって示す、文脈依存の宣言的Preonemです。構文3.0は1.0～2.9の言語機能を統合し、各機能に定められた最低バージョン要件を維持します。以前の構文2.9では **`@mix` 連続フィールド**（§28）が追加され、同名のインスタンスフィールドを一つの索引付きグループとして扱えるようになりました（既定の `1,2,3,…`、またはグループ内フィールド数と一致する `@mix(1,2,3,...)`）。また、`long`／`int64`／`int128`（§21）を基礎とする2進の符号付き／符号なし整数ファミリー `int32`～`int16777216`（§24）および `uint32`～`uint16777216`（§25）、キーワードサポーター文書（§22）、そしてPreonemsが引き継がれています。Preonemsには `author`／`authorial`（§18）、`material`／`memory`（§19～§20）、`determine`（§23）、`object`／`field`（§26）、`pure`／`gasoline`（§30）、および立法府級の位置づけを時間と空間にわたって示す `artifact`（§35）が含まれます。Preonems全体の名称は§26.1で定義されています。コンストラクターのオーバーロード解決と `this(...)`／基底クラスコンストラクターへの委譲は、検証済みの構文1.8契約の対象外です。機能を利用する前に文法と実装ノートを確認してください。SleelaDocの九つのソース単位は現在 `#sleela 3.0` を宣言し、共通コンパイラゲートはソース構文1.0～3.0を受け入れます。新しいAPIビルドは `make api-docs` で生成されます。
 
+> **Edition note (2026-11-20, English):** the current language edition is **Syntax 3.2**. The compiler accepts source syntax 1.0–3.2 and reads a source with no `#sleela` line as 3.2; `#sleela 3.01` means 3.1, not 3.2. Current API edition: [`api/sleela/3.2/`](../../api/sleela/3.2/README.md). Current overview: [SLeeLa International Version 3.2](../reference/LANGUAGE.INTERNATIONAL.3.2.md). The paragraph above is the earlier text and is kept until this section is translated again.
+
 リポジトリには、ネイティブC/C++実装、SLVM生成リファレンス、標準ライブラリモジュール、テスト、例、プラットフォーム統合が含まれます。実装と検証の状況はモジュールごとに異なります。一様に完全であると仮定せず、各仕様と現在のCI結果を確認してください。
 
 ## VI. エンジニアリング原則

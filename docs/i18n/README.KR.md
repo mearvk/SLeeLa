@@ -140,6 +140,8 @@ make clean-install       # 주요 패키지만 안내형 설치
 
 공식 문법은 [`SLEELA.syntax`](../../SLEELA.syntax)에 정의되어 있습니다. 저장소가 문서화하는 현재 문법 버전은 **3.0**입니다. 컴파일러/도구 버전과 소스 문법 버전은 서로 다릅니다. 문법 3.0에는 **`pure` 및 `gasoline` 문서 마커**(§30)가 추가되었습니다. 두 마커는 문서의 지위를 각자의 정직성에 따라 나타내는 문맥 의존적 선언형 Preonem입니다. 문법 3.0은 1.0~2.9의 언어 표면을 통합하면서 각 기능별 최소 버전 조건을 유지합니다. 이전 2.9 버전에는 **`@mix` 연속 필드**(§28)가 추가되어, 같은 이름의 인스턴스 필드 여러 개를 하나의 인덱스 그룹으로 취급할 수 있습니다(기본 `1,2,3,…` 또는 그룹 필드 수와 일치하는 `@mix(1,2,3,...)`). 또한 `long`/`int64`/`int128`(§21)을 바탕으로 한 부호 있는 정수 계열 `int32`~`int16777216`(§24)과 부호 없는 정수 계열 `uint32`~`uint16777216`(§25), 키워드 지원 문서(§22), 그리고 Preonems가 이어집니다. Preonems에는 `author`/`authorial`(§18), `material`/`memory`(§19~§20), `determine`(§23), `object`/`field`(§26), `pure`/`gasoline`(§30), 시간과 공간에 걸쳐 입법부 수준의 지위를 나타내는 `artifact`(§35)가 포함됩니다. 전체 명칭 Preonems는 §26.1에 정의되어 있습니다. 생성자 오버로드 해석과 `this(...)`/기반 클래스 생성자 위임은 검증된 문법 1.8 계약의 범위 밖입니다. 기능에 의존하기 전에 문법 및 구현 참고 자료를 확인하세요. SleelaDoc의 아홉 소스 단위는 현재 `#sleela 3.0`을 선언하며, 공통 컴파일러 게이트는 소스 문법 1.0~3.0을 허용합니다. 새 API 빌드는 `make api-docs`로 생성됩니다.
 
+> **Edition note (2026-11-20, English):** the current language edition is **Syntax 3.2**. The compiler accepts source syntax 1.0–3.2 and reads a source with no `#sleela` line as 3.2; `#sleela 3.01` means 3.1, not 3.2. Current API edition: [`api/sleela/3.2/`](../../api/sleela/3.2/README.md). Current overview: [SLeeLa International Version 3.2](../reference/LANGUAGE.INTERNATIONAL.3.2.md). The paragraph above is the earlier text and is kept until this section is translated again.
+
 저장소에는 네이티브 C/C++ 구현, SLVM 생성 참조, 표준 라이브러리 모듈, 테스트, 예제 및 플랫폼 통합이 포함되어 있습니다. 구현 및 검증 상태는 모듈마다 다릅니다. 모든 모듈이 동일하게 완전하다고 가정하지 말고 해당 사양과 현재 CI 결과를 확인하세요.
 
 ## VI. 엔지니어링 원칙

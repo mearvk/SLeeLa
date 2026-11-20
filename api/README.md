@@ -7,11 +7,11 @@ The repository maintains three complementary API documentation surfaces:
 - [Contributor API site](../docs/api/index.html) — the documentation-facing
   entry point, generated from the same source inventory.
 - [SLeeLa language API editions](sleela/README.md) — versioned language API
-  snapshots. The current edition is [SLeeLa 3.2](sleela/3.2/README.md) (also written 3.2).
+  snapshots. The current edition is [SLeeLa 3.2](sleela/3.2/README.md).
 
 Native C and C++ API references are catalogued under [`native/`](native/).
 The historical SLeeLa 2.1, 2.6, 2.8, and 2.9 material remains available and
-is not rewritten as part of the 3.0 or 3.2 editions.
+is not rewritten as part of the 3.0, 3.1 or 3.2 editions.
 
 The standard-library **`advantage`** package (advantaging a dividend, with its
 `math/`, `physics/`, `integration/`, `grading/`, and `output/` subjects) is
@@ -28,8 +28,8 @@ make api-docs
 ```
 
 This generates the live site, the contributor-facing site, and a new immutable
-3.2 snapshot under `api/sleela/3.2/version-NNN/`. The first build uses
-`version-001`; subsequent snapshots must use the next unused number:
+3.2 snapshot under `api/sleela/3.2/version-NNN/`. The first build, 2026-11-20, is
+[`version-001`](sleela/3.2/version-001/index.html); subsequent snapshots use the next unused number:
 
 ```sh
 API_SNAPSHOT=version-002 make api-docs

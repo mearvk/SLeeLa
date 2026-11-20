@@ -12,9 +12,9 @@ to claim Syntax 3.2 support until it is rebuilt. Keep new/edited `.sleela` code 
 ## Compiler choice
 
 - The committed `working-binaries/sleela` payload reports
-  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.1** only.
-  It does not yet validate the complete Syntax 3.2 feature set. Use a freshly
-  rebuilt `impl/build/sleela` for Syntax 3.2 validation:
+  `SLeeLa™ Language/Runtime 1.0121` and supports **syntax 1.0 – 3.2** (rebuilt
+  2026-11-19; it accepts and checks `#sleela 3.2` sources). Either it or a freshly
+  rebuilt `impl/build/sleela` validates Syntax 3.2:
 
       ./working-binaries/sleela check <file>
       ./working-binaries/sleela run   <file>

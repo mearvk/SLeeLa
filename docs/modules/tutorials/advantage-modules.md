@@ -27,7 +27,7 @@ impl/build/sleela version
 
 ```
 [memory-manager] enabled (hard limit 2,147,483,648 bytes)
-SLeeLa™ Language/Runtime 1.3.2-pro (supported source syntax 1.0 – 3.1; native C/C++ Core VM)
+SLeeLa™ Language/Runtime 1.0121 (supported source syntax 1.0 – 3.2; native C/C++ Core VM)
 VM: struct/class layout ceiling 65,536
 ```
 

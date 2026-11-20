@@ -9,7 +9,7 @@ on:
       - "tools/build-api-docs.sh"
       - "SLEELA.syntax"
       - "lib/java/JAVA.SPEC.md"
-      - "api/sleela/3.1/*.md"
+      - "api/sleela/3.2/*.md"
       - ".github/workflows/api-docs.yml"
   workflow_dispatch:
 
@@ -35,10 +35,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add sleeladoc-api docs/api api/sleela/3.1
+          git add sleeladoc-api docs/api api/sleela/3.2
           if git diff --cached --quiet; then
             echo "Generated API documentation is already current."
           else
-            git commit -m "Build SLeeLa syntax 3.1 API documentation"
+            git commit -m "Build SLeeLa syntax 3.2 API documentation"
             git push origin "${{ github.ref_name }}"
           fi

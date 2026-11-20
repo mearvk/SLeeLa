@@ -275,6 +275,8 @@ make clean-install       # guided install of the main package only
 ## V. 語言與執行環境
 權威語法為 [`SLEELA.syntax`](../../SLEELA.syntax)。目前儲存庫記載的語法為 **3.0**；編譯器／工具版本與原始碼語法版本是不同的概念。3.0 版面新增 **`pure` 與 `gasoline` 文件標記**（§30）——這是一對單獨使用、依上下文判定、僅限宣告的 Preonems，意義幾近相同，各自以其誠實性標示文件的地位。語法 3.0 將 1.0–2.9 的語言面貌整併為目前的規範版次，並保留所有各功能專屬的最低版本管制。先前的 2.9 版面新增 **`@mix` 後繼欄位**（§28）——當每個欄位都帶有 `@mix` 時，類別可宣告多個同名的實例欄位，並視為一個有索引的群組（預設由上而下 `1,2,3,…`，或手動指定 `@mix(1,2,3,...)`，其索引數量必須與群組相符）。它延續以 2 為底的帶號／無號寬幅整數系列 `int32`..`int16777216`（§24）與 `uint32`..`uint16777216`（§25），建立在先前的 `long`/`int64`/`int128`（§21）之上；**關鍵字支援文件**（§22）；以及 **Preonems**——僅限宣告的文件標記 `author`/`authorial`（§18）、`material`/`memory`（§19–§20）、`determine`（§23）、`object`/`field`（§26）、`pure`/`gasoline`（§30），以及 `artifact`（§35，依時間與空間分級的立法級地位），統稱為 Preonems（§26.1）。建構子多載解析，以及 `this(...)`／基底建構子委派，明確不在已驗證的語法 1.8 契約範圍內。在依賴某項功能之前，請先查閱語法與實作說明。SleelaDoc 的九個原始碼單元現在宣告 `#sleela 3.0`；共用的編譯器閘門接受 1.0–3.0 的原始碼語法。新的 API 建置由 `make api-docs` 產生。
 
+> **Edition note (2026-11-20, English):** the current language edition is **Syntax 3.2**. The compiler accepts source syntax 1.0–3.2 and reads a source with no `#sleela` line as 3.2; `#sleela 3.01` means 3.1, not 3.2. Current API edition: [`api/sleela/3.2/`](../../api/sleela/3.2/README.md). Current overview: [SLeeLa International Version 3.2](../reference/LANGUAGE.INTERNATIONAL.3.2.md). The paragraph above is the earlier text and is kept until this section is translated again.
+
 本儲存庫包含原生 C/C++ 實作、SLVM 產生參考、標準函式庫模組、測試、範例與平台整合。各模組的實作與驗證狀態不盡相同；請查閱其規格與目前的 CI 結果，而不要假設一律完整。
 
 ## VI. 工程原則

@@ -438,6 +438,7 @@ SLeeLa is a broad language-and-runtime project. Its documentation should disting
 Important qualifications in the current references include:
 
 - Syntax 3.1 is the current accepted grammar ceiling (this reference describes the 3.0 surface), not an automatic enablement of every historical or proposed feature.
+  > **Note (2026-11-20):** the ceiling is now 3.2. The current reference is [SLeeLa International Version 3.2](LANGUAGE.INTERNATIONAL.3.2.md).
 - Constructor overload resolution and `this(...)` / base-constructor delegation are not verified and are rejected explicitly.
 - `prestige` remains a proposal.
 - `U<n>`, `C<n>`, and the named wide-integer families have distinct documented meanings and implementation boundaries; do not infer universal end-to-end support from their grammar or type recognition.
