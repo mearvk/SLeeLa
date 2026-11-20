@@ -35,3 +35,7 @@ sleelactl/convert/build/javaconv --jdk /tmp/jdk25 --out /tmp/jdk25-sleela --jdk-
 
 Result (model 1.3.0): 420 converted (496 SLeeLa files), 464 failed closed; 426 with `--single-thread`. Details and the
 refusal table: `sleelactl/convert/README.md`.
+
+2026-11-20, Corretto 25.0.5.1 `src.zip` (extract with Python `zipfile`; the same four packages, 884 files): 254 converted
+(262 SLeeLa files), 630 failed closed, 251 of 262 emitted files pass `tests/javaconv_check_tree.sh`. All of `java.base`
+(3344 files, about 5 minutes): 841 converted (859 SLeeLa files), 2503 failed closed, 806 of 859 emitted files pass.

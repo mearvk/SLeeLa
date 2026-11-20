@@ -195,3 +195,34 @@ called as `new T().m(...)`, and `Any` results get a cast back. After: 254 of 884
 errors in 11 files. Differential suite 103 of 103. The drop in converted files is calls that previously converted into
 stubs or into members that did not exist.
 
+
+## Addendum: baseline re-measurement and checker stub fix (2026-11-20)
+
+`tests/javaconv_check_tree.sh` linked its stub at `#sleela 3.1`. The stub version governs the whole linked
+program, so a converted `#sleela 3.2` file using `array.length` (`Resources`) failed with "the array length member
+requires #sleela 3.2". The stub is now `#sleela 3.2`; the 49 files converted from `tests/java` all check clean.
+
+Re-measured with Corretto 25.0.5.1 and its `src.zip`:
+
+| Input | Files | Converted | Failed closed | Checker |
+|---|---|---|---|---|
+| `java.base` subset (`lang`, `util`, `math`, `text`) | 884 | 254 (262 SLeeLa files) | 630 | 251 clean, 11 with errors, 22 errors |
+| all of `java.base` | 3344 | 841 (859 SLeeLa files) | 2503 | 806 clean, 53 with errors, 146 errors |
+
+Differential suite 103 of 103 against the JDK (includes the generic and wildcard fixtures that earlier notes
+listed as not yet run). The full `java.base` run takes about 5 minutes.
+
+First refusal per failed file, full `java.base`: `type-ambiguous` 468, `member-access` 322, `library-type` 268,
+`library-member` 202, `nested-ambiguous` 156, `volatile` 128, `library-stub` 122. On the subset: `library-type` 113,
+`library-member` 84, `nested-ambiguous` 63, `member-access` 53. Most subset `library-type` and `library-member` entries name
+JDK-internal classes (`Unsafe`, `ArraysSupport`, `Reflection`, `Preconditions`) that the subset does not include;
+they are not gaps in the public `lib/java/jdk-28` surface.
+
+Open defects found, not yet fixed:
+- A type variable of an enclosing generic class used in an inner class (`E` in `ArrayList.Itr.next()`) is reported
+  as `[library-type]`. It is rarely the first refusal in its file.
+- A static-imported constant (`LONG_MASK`, `UTF_8`) is reported as `[library-type]`.
+- `Instant` has no no-argument constructor, so the tier convention `new Instant().ofEpochMilli(...)` cannot be used
+  and five JDK files are refused `[library-member]`.
+
+Next: `type-ambiguous`, then `member-access`.
