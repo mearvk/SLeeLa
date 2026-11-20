@@ -53,6 +53,9 @@ identifier replacements and built-in qualification) are read from
 `JConvRules.sleela` applies the native converter's source-rewrite policy. A member that uses a construct
 SLeeLa cannot express yet becomes a stub that throws
 `UnsupportedOperationException` naming the reason. Output declares syntax 3.1.
+
+> **Caveat (2026-11-20):** the edition statement above is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; `impl/frontend/version.h` ceiling 3.2; `api/sleela/3.2/LANGUAGE-API.md`). `#sleela 3.01` means 3.1 and does not mean 3.2. Sections 44, 45 and 46 are not one edition: 44 is 3.1, 45 and 46 are 3.2. This line describes the SLeeLa-side converter; the C++ converter declares `#sleela 3.2`. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
+
 Status and measurements: [`STATUS.md`](STATUS.md) section 11 and
 [`converter/README.md`](converter/README.md).
 

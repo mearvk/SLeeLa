@@ -16,6 +16,9 @@ converter (README: `lib/java/converter/README.md`). It is separate from
    files declare `#sleela 3.1` and use only forms up to section 44. Do not adopt
    syntax 3.1 forms (sections 45, 46: typed char text, read-only `a.length`,
    `new T[a][b]`) unless the owner asks for it.
+
+   > **Caveat (2026-11-20):** the edition statement above is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; `impl/frontend/version.h` ceiling 3.2; `api/sleela/3.2/LANGUAGE-API.md`). `#sleela 3.01` means 3.1 and does not mean 3.2. Sections 44, 45 and 46 are not one edition: 44 is 3.1, 45 and 46 are 3.2. This rule describes the SLeeLa-side `lib/java/converter`, whose sources declare `#sleela 3.0`; the C++ converter in `sleelactl/convert` emits 3.2. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
+
 3. **Shared semantic laws come from the model.** Type/rank/promotion, operator,
    cast, widening, string-conversion, identifier-replacement and built-in
    qualification laws are read from `impl/subjects/conversion/conversion.model`

@@ -198,6 +198,8 @@ refuse (do not clamp or wrap) inputs that could push it past. See
 
 ## Syntax 3.1 (3.01) notes: char and arrays
 
+> **Caveat (2026-11-20):** the edition statement above is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; `impl/frontend/version.h` ceiling 3.2; `api/sleela/3.2/LANGUAGE-API.md`). `#sleela 3.01` means 3.1 and does not mean 3.2. Sections 44, 45 and 46 are not one edition: 44 is 3.1, 45 and 46 are 3.2. In this section, `a.length`, `new T[a][b]` and the typed-`char` text rules (sections 45 and 46) are gated at 3.2, not 3.1; below 3.2 use `arrayLength(a)`. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
+
 - **Syntax 3.1 `char` and arrays (SLEELA.syntax 45, 46).** Under `#sleela 3.1` a `char`
   shows as text only where its static type is `char` (a `+` with a String, `s += c`,
   `print(c)`); through `Any` or an `int` parameter it is a number, so use

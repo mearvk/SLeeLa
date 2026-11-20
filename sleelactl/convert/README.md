@@ -9,6 +9,8 @@ Java source --java_lex.c--> tokens --java_to_sleela.cpp--> SLeeLa 3.1 document(s
                           conv_model.c <--+-- impl/subjects/conversion/conversion.model
 ```
 
+> **Caveat (2026-11-20):** the edition statement above is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; `impl/frontend/version.h` ceiling 3.2; `api/sleela/3.2/LANGUAGE-API.md`). `#sleela 3.01` means 3.1 and does not mean 3.2. Sections 44, 45 and 46 are not one edition: 44 is 3.1, 45 and 46 are 3.2. The converter writes `#sleela 3.2` (`java_to_sleela.cpp`), not 3.1 as the diagram says. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
+
 | File | Language | Role |
 |---|---|---|
 | `java_lex.{h,c}` | C99 | JLS ch. 3 tokenizer: literals decoded (hex/octal/binary, `_`, `L`, exponents, escapes, text blocks) |

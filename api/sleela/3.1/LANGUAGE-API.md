@@ -51,3 +51,5 @@ An undefined label is `break to undefined label 'x'`.
 
 `#sleela 3.01` and `#sleela 3.1` name the same edition. The supported range is 1.0 to 3.1; `#sleela 3.2` is a future
 edition and is rejected.
+
+> **Caveat (2026-11-20):** the edition statement above is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; `impl/frontend/version.h` ceiling 3.2; `api/sleela/3.2/LANGUAGE-API.md`). `#sleela 3.01` means 3.1 and does not mean 3.2. Sections 44, 45 and 46 are not one edition: 44 is 3.1, 45 and 46 are 3.2. This page documents 3.1 as it was; `#sleela 3.2` is accepted by the current compiler, whose supported range is 1.0 to 3.2. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.

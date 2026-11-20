@@ -9,6 +9,8 @@ It is consumed by `sleelactl/convert` (C lexer + model loader, C++ translator),
 registered in sleelactl as `java-convert`, and by `lib/java/converter` (a SLeeLa
 program; `JConvModel.sleela` reads type/rank/promotion, operator, cast, widening,
 rename, qualification, `ret`, `field` and `tostr` rows; its output stays at syntax 3.1). Unlike math/physics it is not compiled
+
+> **Caveat (2026-11-20):** the edition statement above is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; `impl/frontend/version.h` ceiling 3.2; `api/sleela/3.2/LANGUAGE-API.md`). `#sleela 3.01` means 3.1 and does not mean 3.2. Sections 44, 45 and 46 are not one edition: 44 is 3.1, 45 and 46 are 3.2. The C++ converter output is `#sleela 3.2`. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
 into the `sleela` runtime: it governs a tool, and its executable half is
 `lib/java/JavaOperands.sleela`. Rules: `.kiro/steering/java-to-sleela-conversion.md`.
 

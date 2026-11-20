@@ -162,3 +162,12 @@ both `CONVERSION.PRINCIPLES.md`, `lib/java/STATUS.md`, `impl/subjects/conversion
 ## Addendum: language edition aligned to 3.01 (3.1) (2026-11-13)
 
 By the owner's decision the language edition set with 3.01 is the only one: sections 44, 45 and 46 of `SLEELA.syntax` are one edition, spelled `#sleela 3.01` or `3.1`. The "3.2" described above is retired. The compiler ceiling is 3.1 (`impl/frontend/version.h`), the 3.2 gates are 3.1 gates, a `#sleela 3.2` source is rejected as a future edition, the converter emits `#sleela 3.1`, and the two test directories `impl/tests/syntax31` and `impl/tests/syntax32` are merged into `impl/tests/syntax31` (19 cases). The text above is kept as the record of what was done at the time.
+
+## Addendum: caveat on the edition alignment (restored to 3.2, 2026-11-20)
+
+The two addenda above that call "3.2" retired and set the ceiling and the converter output to 3.1 are kept as the
+record of what was decided on 2026-11-13. They no longer describe the tree. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; `impl/frontend/version.h` ceiling 3.2; `api/sleela/3.2/LANGUAGE-API.md`). `#sleela 3.01` means 3.1 and does not mean 3.2. Sections 44, 45 and 46 are not one edition: 44 is 3.1, 45 and 46 are 3.2. The compiler accepts
+`#sleela 3.2` and defaults to it, `impl/tests/syntax31` and `impl/tests/syntax32` are separate directories,
+`#sleela 3.3` is the above-ceiling case in `impl/tests/version`, and `sleelactl/convert` emits `#sleela 3.2`. Read the
+"syntax 3.2" addendum (the char and array specifications) as current and the "aligned to 3.01 (3.1)" addendum as
+superseded. Where other notes say the converter "stays at 3.1", the same caveat applies; each carries a pointer to this one.

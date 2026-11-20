@@ -39,6 +39,7 @@ settled, is edited deliberately, as settled Source.
 - `impl/frontend/semantic.cpp` — `collect()` gates it to 2.5; no other effect.
 - `impl/tests/version/` — fixtures `material_2_5.sleela` (accepted) and
   `material_too_early.sleela` (rejected at 2.4); `minor_ahead.sleela` is expected to declare `#sleela 3.1` (one above the current ceiling).
+  > **Caveat (2026-11-20):** the ceiling is 3.2, so `minor_ahead.sleela` declares `#sleela 3.3` (see `impl/tests/version/minor_ahead.sleela`). The 3.1 wording above is the original.
 
 ## Placement convention (standing rule)
 

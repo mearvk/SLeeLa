@@ -10,6 +10,8 @@ lowerings in the converter (`sleelactl/convert`, `conversion.model`). They are s
 Specific Section, `lib/java/JAVA.SPEC.md`, not in `SLEELA.syntax`, and from there into the
 documentation. Syntax 3.1, also written 3.01 (sections 44 to 46), stays as the language features the tier uses.
 
+> **Caveat (2026-11-20):** the edition statement above is the original wording and is kept. Syntax **3.2** is the current edition (`SLEELA.syntax` 44.1; `impl/frontend/version.h` ceiling 3.2; `api/sleela/3.2/LANGUAGE-API.md`). `#sleela 3.01` means 3.1 and does not mean 3.2. Sections 44, 45 and 46 are not one edition: 44 is 3.1, 45 and 46 are 3.2. The `sleelactl/convert` output is `#sleela 3.2`. See `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT.SESSION.2026-11-12.md`, last addendum.
+
 Standing, always-on. Registered 2026-11-12. Changes to this area must keep these rules.
 
 ## The goal
