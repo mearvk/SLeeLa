@@ -643,8 +643,8 @@ class JConvExpr {
 
   < ---- kinds ---- >
   String promote(String k) {
-    < JLS unary numeric promotion: char widens to int. The edge comes from
-       the shared conversion model, not a second hard-coded conversion table. >
+    << JLS unary numeric promotion: char widens to int. The edge comes from
+       the shared conversion model, not a second hard-coded conversion table. >>
     if (k == "c") { return this.rw.rules.canWiden("char", "int") ? "i" : "?"; }
     return k;
   }

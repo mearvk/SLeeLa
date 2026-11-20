@@ -96,8 +96,8 @@ class JConvMain {
     rules.useModel(model);
     print("jconv: model " + model.describe());
     JConvReport rep = new JConvReport();
-    < Generated source must be stable across wall-clock dates. Conversion time
-       belongs in the external run log, not in the converted artifact metadata. >
+    << Generated source must be stable across wall-clock dates. Conversion time
+       belongs in the external run log, not in the converted artifact metadata. >>
     JConvTranslator tr = new JConvTranslator(rules, cfg, rep, "unknown");
     if (!tr.makeDirs(cfg.outRoot)) {
       print("jconv: cannot create " + cfg.outRoot);

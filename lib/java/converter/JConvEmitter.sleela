@@ -78,8 +78,8 @@ class JConvEmitter {
   }
 
   boolean openOut(String path) {
-    < Stage beside the destination. A stopped VM leaves the previous output intact;
-       the next run removes the stale temporary file before starting again. >
+    << Stage beside the destination. A stopped VM leaves the previous output intact;
+       the next run removes the stale temporary file before starting again. >>
     this.targetPath = path;
     this.tempPath = path + ".jconv-tmp";
     if (osExists(this.tempPath) == 1) { osRemove(this.tempPath); }
@@ -94,9 +94,9 @@ class JConvEmitter {
     return !this.failed;
   }
 
-  < Compare the staged output with the existing file and publish only changed
+  << Compare the staged output with the existing file and publish only changed
      bytes. JConvSource compares decoded UTF-16 code units after validating UTF-8;
-     generated SLeeLa is valid UTF-8, so this preserves exact text equality. >
+     generated SLeeLa is valid UTF-8, so this preserves exact text equality. >>
   boolean sameTextFile(String a, String b) {
     if (osFileSize(a) != osFileSize(b)) { return false; }
     JConvSource left = new JConvSource();

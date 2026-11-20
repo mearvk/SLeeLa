@@ -612,6 +612,9 @@ class JConvTranslator {
   void convertBody(String kind, String name, String stem, int open, int close, int constEnd, int count,
                    int[] mk, int[] mStart, int[] mHdr, int[] mBody, int[] mEnd, int[] mFlags,
                    int compOpen, int compClose, boolean hasCtor, boolean hasCanonical, String typeWord, boolean inBundle) {
+    < the output path for diagnostics, derived the same way as in convertType >
+    String outRel = stem + ".sleela";
+    if (dirOf(this.rel) != "") { outRel = dirOf(this.rel) + "/" + stem + ".sleela"; }
     if (kind == "annotation") {
       keptComment("<< Java annotation interface: annotations carry no SLeeLa behavior. Its elements, as declared in Java:\n", this.lx.begins[open], this.lx.ends[close]);
     }

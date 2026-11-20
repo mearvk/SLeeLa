@@ -96,8 +96,8 @@ class JConvReport {
     this.reportPath = outRoot + "/CONVERSION-REPORT.tsv";
     this.reportTemp = this.reportPath + ".jconv-tmp";
     if (resume && loadState()) {
-      < A batch resume must continue the staged report; do not silently start a
-         second report if the staged file is missing. >
+      << A batch resume must continue the staged report; do not silently start a
+         second report if the staged file is missing. >>
       if (osExists(this.reportTemp) != 1) { return false; }
       this.handle = openFile(this.reportTemp, "a");
       return this.handle >= 0;

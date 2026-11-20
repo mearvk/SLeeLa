@@ -2,6 +2,34 @@
 
 # Java to SLeeLa Conversion: Overall Status
 
+## Measured verification — 2026-11-19 (master `7fbcdd0ae`, Linux x86-64, gcc, Corretto 25.0.5.1)
+
+These were run in a full checkout, not inferred. `cd impl && make check-manifest` was OK before any edit.
+
+| Gate | Result |
+|---|---|
+| C++ converter build (`make -C sleelactl/convert`, also `bin/sleelactl build java-convert`) | PASS, no warnings |
+| `javaconv --self-check` (model 1.5.0) | PASS |
+| `generate_ret_rows.py --check` | PASS (section 10b up to date, 8922 rows) |
+| Runtime build (`make -C impl build/sleela`, 1.0121, syntax 1.0–3.2) | PASS |
+| `tests/javaconv_differential_test.sh` (positive, refusal, project and transaction checks) | **108 pass, 0 fail** (7 min 21 s) |
+| `java.base` subset (java/lang, util, math, text; 884 files) | 259 converted (267 SLeeLa files), 625 failed closed; matches the 2026-11-20 record |
+| `tests/javaconv_check_tree.sh` on that subset | 256 of 267 clean; 11 files with 22 errors (StringCharacterIterator 7, NavigableSet 4, Exception 2, SequencedCollection 2, one each in 7 others) |
+| SLeeLa-native converter `per-member-stub-policy.sh` | PASS after fix below (was FAIL) |
+| SLeeLa-native converter `repeat-run-transaction.sh` | PASS after fix below (was FAIL) |
+| `tests/sleelactl_cli_test.sh`, `tests/sleelactl_systemctl_scope_test.sh` | PASS |
+
+Native converter defects fixed in this check (`lib/java/converter`):
+
+- Six two-line comments opened with a single `<` (a one-line comment) in JConvEmitter (2), JConvExpr,
+  JConvMain, JConvModel and JConvReport; their second line was parsed as code. Converted to `<< ... >>`.
+  This was the first error (`JConvMain.sleela` line 99) and stopped every native conversion.
+- `JConvTranslator.convertBody` used `outRel`, which is local to `convertType`. It now derives it the same way.
+- `security/sha256-manifest.json` regenerated for exactly these six files (reviewed: no other entry changed).
+
+Not run: whole-`java.base` tree check (leave-one-out over 860 files exceeds the sandbox time limit),
+JDK 28 campaign, Windows and macOS. Release decision unchanged: **HOLD** until those gates are measured.
+
 ## Verification refresh — 2026-11-20
 
 Built and run in a clean checkout of `master` (OpenJDK Corretto 25.0.5, GCC 11.5).
