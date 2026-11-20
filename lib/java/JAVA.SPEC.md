@@ -393,17 +393,23 @@ measures what still fails at link time.
 
 ## 7. Verification
 
-`bash tests/javaconv_differential_test.sh` runs 22 programs on a JDK and on the converted SLeeLa:
-Anon, Basics, Bounds, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, ObjectText, Operands, Records,
-Refs, Resources, Shapes, Strings, Switches, Sync, Varargs, and 9 refusal programs under `tests/reject` that must be refused (a lambda
-argument to an unknown method, String identity comparison, a `synchronized` block without `--single-thread`, an operand of
-unknown type, an `Object` method a user type does not declare, called with and without a receiver, a qualified nested
-superclass that shares its simple name with the class, a boxed declared type, and a user object without `toString()` shown
-as text). The workflow `.github/workflows/java-convert.yml` runs the suite in CI on every change to the converter, the
-model, the Java tier or the compiler/VM. A last check converts a file, makes it fail closed, converts
-again and requires that the earlier output is gone (the converter keeps the list of what it wrote in `.javaconv-emitted`).
+Current (2026-11-20, master `7126f6c6c`, Corretto 25.0.5.1): `bash tests/javaconv_differential_test.sh` passes
+**116 of 116** checks. It runs the 55 programs of `sleelactl/convert/tests/java/` on a JDK and, converted, on the
+SLeeLa VM, and requires byte-identical output. It requires the 38 programs of `tests/reject/` to be refused with
+their `// expect:` construct and no output. It converts and runs 9 multi-file projects (cross-file generics,
+packages, imports, access, static imports, implicitly public members), checks 9 project-level refusals (access,
+duplicate names, cascades), and checks stale output, provenance,
+repeat-run mtimes, transactional publication and the model refusal registry (`model-registry`). The workflow
+`.github/workflows/java-convert.yml` runs the suite in CI on every change to the converter, the model, the Java tier
+or the compiler/VM.
+
+Whole-tree status (2026-11-20, `java.base` of Corretto 25.0.5.1): the `lang`/`util`/`math`/`text` subset converts
+262 of 884 files, and all of `java.base` 862 of 3,344. Full status: `docs/reference/JAVA.CONVERSION.STATUS.md`. The
+report of a run is the status; see `sleelactl/convert/README.md`.
+
 `bash examples/java/differential/run-differential.sh` is the older hand-converted suite.
 
-Whole-tree status (2026-11-13, JDK 25.0.2 `java.base`: `java/lang`, `java/util`, `java/math`, `java/text`,
-884 files): 420 of 884 files (496 SLeeLa files); 426 with `--single-thread`; first refusals led by `nested-ambiguous` (131 files),
-`nested` (67) and `untyped` (57). Full status: `JAVA.CONVERSION.STATUS.md`. The report of the run is the status; see `sleelactl/convert/README.md`.
+Earlier (2026-11-13, JDK 25.0.2), kept as history: 22 programs and 9 refusals; 420 of 884 subset files (496 SLeeLa
+files; 426 with `--single-thread`), first refusals led by `nested-ambiguous` (131 files), `nested` (67) and
+`untyped` (57). That run predates the resolution and member checks that made later conversions stricter, so its
+count is not comparable with the current one.

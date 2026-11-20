@@ -1,5 +1,48 @@
 # SLeeLa Production Release Qualification Report
 
+## Verification refresh — 2026-11-20 (master `7126f6c6c`), measured
+
+**Decision remains: HOLD.** Unlike the refreshes below, this one records commands that were actually run, in a full
+checkout of `master` on Linux x86-64 (Amazon Linux 2023, AMD EPYC 9R14, GCC 11.5.0, Corretto 25.0.5.1). JDK 28 is not
+installed in that environment, so the JDK 28 gates could not be run.
+
+| Gate | Result |
+|---|---|
+| 1. Master baseline | Confirmed: `7126f6c6c`. |
+| 2. SHA-256 integrity and provenance | **PASS.** `cd impl && make check-manifest` OK against the committed manifest; `tools/verify-before-execution.py` PASS (18,673 items) on a stock checkout. Converter provenance (`provenance` check) PASS. |
+| 3. Runtime and converter builds | **PASS.** `make -C impl build/sleela build/sleelvac build/nordshrift` and `make -C sleelactl/convert`, no warnings. Rebuilds are byte-identical to `working-binaries/` (`SLEELA-BIN-1.0122`, `NORDSHRIFT-BIN-1.0121`, `JAVACONV-BIN-1.0121`). |
+| 4. Conversion model and JDK 28 signatures | Model **PASS**: `javaconv --self-check` (model `java-to-sleela` 1.6.0, 59 refusal rows), `generate_ret_rows.py --check` up to date (8,922 rows). JDK 28 signatures **NOT RUN** (no JDK 28). |
+| 5. Differential and refusal suites | **PASS: 116 of 116** (`tests/javaconv_differential_test.sh` with `impl/build/sleela`): 55 positive programs byte-identical to Corretto 25.0.5.1, 38 refusal fixtures fail closed with no output, 9 multi-file projects byte-identical to the JDK, 9 project-level refusals, and the stale-output, provenance, repeat-run, transaction and model-registry checks. CI `java-convert.yml` succeeded on master `7fbcdd0ae`, `69716e1bd`, `4fea26aba` and `3679be471`. |
+| 6. Native per-member policy and transactions | **PASS.** `lib/java/converter/tests/per-member-stub-policy.sh` (supported sibling kept, unsupported member fails loudly, report counts stubs) and `repeat-run-transaction.sh` (provenance, identical bytes/paths/mtimes, failed run keeps the prior generation). |
+| 7. Representative Java execution | **PASS for the fixtures in gate 5.** Whole-tree: `java.base` subset (884 files) 262 converted; all of `java.base` (3,344 files) 862 converted. Link-time check (`tests/javaconv_check_tree.sh`): subset 22 errors in 11 of 267 emitted files (measured on the 259-file generation); all of `java.base` 148 errors in 53 of 885 files on an intermediate generation; **not re-run on the final generation**. |
+| 8. JDK 28 and platform qualification | **NOT RUN.** No JDK 28; Linux x86-64 only. Windows and macOS not executed. |
+
+### Closure criteria (section 7) at `7126f6c6c`
+
+| Criterion | State |
+|---|---|
+| Clean runtime build, compile output archived | Partly: built (gate 3); the log is not archived in the repository |
+| C++ converter builds against the model; strict self-check passes | **Met** (model 1.6.0) |
+| SLeeLa-native converter builds and consumes the shared model consistently | Partly: it runs and passes its policy and transaction tests (gate 6); consistency with the C++ converter is not measured |
+| All positive fixtures byte-identical | **Met** (55 programs, 9 multi-file projects) |
+| All refusal fixtures fail closed | **Met** (38 fixtures, up from the 22 this report expected) |
+| Per-member stub policy, transactional repeat-run and provenance | **Met** (gates 5 and 6) |
+| JDK 28 reflection/index campaign | Not run (no JDK 28) |
+| Signature collisions enumerated | Not run (part of the JDK 28 campaign) |
+| Functional-equivalence gaps implemented or excluded; stubs never counted as implemented | Partly: the C++ converter refuses calls into `/lib` signature stubs and reads of placeholder fields (`[library-stub]`), so stubs are not converted as if implemented. The accepted-but-different cases of section 5.3 were not re-checked |
+| JDK 25/28 API differences reviewed | Not run (no JDK 28) |
+| Linux, Windows 10+, macOS on real hosts | Partly: Linux x86-64 only |
+| README, status, converter README and this report agree on dated counts and commit | **Met at this refresh**: root `README.md`, `JAVA.CONVERSION.STATUS.md`, `lib/java/JAVA.SPEC.md` §7, `sleelactl/convert/README.md` and this report state the counts above |
+| Reproducible artifacts, matching manifests, rollback recorded | Partly: byte-identical rebuilds and a matching manifest; no rollback instructions recorded |
+
+Summary: 5 of 13 criteria met, 5 partly met, 3 not runnable without JDK 28. The decision stays **HOLD**. The next
+steps are a JDK 28 environment for the campaign gates, the section 5.3 runtime cases, Windows and macOS hosts, and a
+link-time check of the final generation.
+
+Speed (`sleelactl/convert/PERFORMANCE.md`): `javaconv` converts the 884-file subset in 60 s; converted programs run
+correctly but pay SLeeLa start-up of about 3.5 s per run (1.9 s of it the SHA-256 gate); steady-state compute speed
+is not yet measured.
+
 ## Verification refresh — 2026-11-18 (master 3478f4856d04)
 
 **Decision remains: HOLD.** This refresh records repository and workflow metadata inspected after the earlier report baseline; it does not claim that queued jobs passed.

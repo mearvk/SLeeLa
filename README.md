@@ -44,12 +44,16 @@ Recent additions to the language, drivers, and standard library:
 - **The Java tier and the Java → SLeeLa converter.** `sleelactl java-convert`
   converts Java source to SLeeLa source and refuses (writes nothing) on any
   construct it cannot convert exactly. A differential suite runs each program on
-  a JDK and, converted, on the SLeeLa VM: **31 of 31** checks pass against
-  OpenJDK 25.0.2 (21 byte-identical programs, 9 fail-closed refusals, 1
-  stale-output check), gated in CI by
-  [`java-convert.yml`](.github/workflows/java-convert.yml). On the JDK 25
-  `java.base` subset, **420 of 884** files convert; that is not a claim that the
-  output compiles, and a tree-wide `sleela check` has not been measured. The
+  a JDK and, converted, on the SLeeLa VM: **116 of 116** checks pass against
+  Corretto 25.0.5.1 (55 byte-identical programs, 38 fail-closed refusals, 9
+  multi-file projects, 9 project-level refusals, and the stale-output, provenance, repeat-run, transaction
+  and model-registry checks; measured 2026-11-20 at `7126f6c6c`), gated in CI by
+  [`java-convert.yml`](.github/workflows/java-convert.yml). Of JDK 25 `java.base`,
+  **262 of 884** files of the `lang`/`util`/`math`/`text` subset and **862 of
+  3,344** files overall convert; the rest fail closed with a located reason. Of
+  the emitted files, about 94% pass the linked semantic check (last measured on
+  an earlier generation). Release status: **HOLD**
+  ([qualification report](docs/reference/PRODUCTION.RELEASE.QUALIFICATION.2026-11-18.md)). The
   converter itself is a SLeeLa program under `lib/java/converter/`; the Java
   runtime tier it targets lives in [`lib/java`](lib/java/README.md) (JDK 25 and
   JDK 28 source surfaces). Specification: [`lib/java/JAVA.SPEC.md`](lib/java/JAVA.SPEC.md);

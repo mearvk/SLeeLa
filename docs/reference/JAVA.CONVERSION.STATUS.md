@@ -2,6 +2,37 @@
 
 # Java to SLeeLa Conversion: Overall Status
 
+## Measured verification — 2026-11-20, current (master `7126f6c6c`, Linux x86-64, GCC 11.5, Corretto 25.0.5.1)
+
+Run in a full checkout; the committed SHA-256 manifest matches it (`make check-manifest` OK, execution gate PASS).
+This section is the current status. The sections below it are earlier and kept as history.
+
+| Gate | Result |
+|---|---|
+| C++ converter build (`make -C sleelactl/convert`) | PASS, no warnings; byte-identical to `working-binaries/javaconv` (`JAVACONV-BIN-1.0121`) |
+| `javaconv --self-check` | PASS, model `java-to-sleela` **1.6.0** (59 refusal rows) |
+| `generate_ret_rows.py --check` | PASS (8,922 rows) |
+| Runtime build (`make -C impl build/sleela`, 1.0121, syntax 1.0–3.2) | PASS; byte-identical to `working-binaries/sleela` (`SLEELA-BIN-1.0122`) |
+| `tests/javaconv_differential_test.sh` | **116 pass, 0 fail**: 55 positive programs, 38 refusal fixtures, 9 multi-file projects byte-identical to the JDK, 9 project-level refusals, stale-output, provenance, repeat-run, transaction, model-registry |
+| CI `java-convert.yml` on master | success on `7fbcdd0ae`, `69716e1bd`, `4fea26aba`, `3679be471` |
+| `java.base` subset (java/lang, util, math, text; 884 files) | **262 converted** (270 SLeeLa files), 622 failed closed |
+| All of `java.base` (3,344 files) | **862 converted** (879 SLeeLa files), 2,482 failed closed; `member-access` refusals 114 (3,877 at the start of 2026-11-20) |
+| `tests/javaconv_check_tree.sh` | subset: 22 errors in 11 of 267 files (259-file generation); all of `java.base`: 148 errors in 53 of 885 files (intermediate generation); **not re-run on the final generation** |
+| SLeeLa-native converter `per-member-stub-policy.sh`, `repeat-run-transaction.sh` | PASS |
+| Speed (`sleelactl/convert/PERFORMANCE.md`) | `javaconv`: subset in 60 s, one core, 54 MB. Converted programs: output identical to the JDK; about 3.5 s per run, all SLeeLa start-up (1.9 s SHA-256 gate). Steady-state compute speed not measured |
+
+Largest first refusals on all of `java.base`: `type-ambiguous` 488 files, `library-type` 269, `library-member` 231,
+`nested-ambiguous` 170, `library-stub` 141, `volatile` 132, `object-method` 131.
+
+Changes of 2026-11-20 behind these numbers: field resolution (static imports, inherited `/lib` fields, placeholder
+fields refused), implicitly public interface/record/enum members, checked indirect `/lib` calls (stubs refused),
+seeded functional interfaces treated as library types, array method calls refused, and the refusal registry of model
+1.6.0. Records: `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT-RESOLUTION.SESSION.2026-11-20.md`,
+`impl/subjects/conversion/README.md`.
+
+Not run: JDK 28 campaign (no JDK 28 in the environment), Windows and macOS, link-time check of the final generation.
+Release decision: **HOLD** (`PRODUCTION.RELEASE.QUALIFICATION.2026-11-18.md`, refresh of 2026-11-20).
+
 ## Measured verification — 2026-11-19 (master `7fbcdd0ae`, Linux x86-64, gcc, Corretto 25.0.5.1)
 
 These were run in a full checkout, not inferred. `cd impl && make check-manifest` was OK before any edit.
