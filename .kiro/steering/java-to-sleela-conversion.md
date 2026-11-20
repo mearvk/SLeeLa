@@ -40,10 +40,13 @@ Run: `sleelactl build java-convert`, then
 
 ## Rules
 
-1. **The model is the single source of Java semantics.** Operator widths,
-   promotion, casts, compound assignment, string conversion and library result
-   types are rows in `conversion.model`. The C/C++ holds NO Java rules of its own.
-   To change behaviour, change the model (and its test), not the translator.
+1. **The model is the single source of the expression-level Java laws.** Operator widths,
+   promotion, casts, compound assignment, string conversion and library result types are rows in
+   `conversion.model`. To change those, change the model (and its test), not the translator.
+   Declaration and name-resolution laws (access, implicit modifiers, overload resolution, generic
+   inference, enum and record lowering) live in the C++ translator and are specified in
+   `lib/java/JAVA.SPEC.md`. Every refusal kind is an `unsupported` row of the model (section 12): add
+   the row with the refusal, or the converter reports it as `[model]` (model 1.6.0, check `model-registry`).
 2. **Fail closed.** If the model does not cover a construct, the converter stops
    with a located diagnostic (`file:line:col [construct] reason`). It never
    guesses, never emits a near-miss, never silently drops behaviour. A file with
@@ -100,7 +103,7 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
-- Status (2026-11-20, final): differential suite **115 of 115**; `java.base` subset **262 of 884**; all of `java.base`
+- Status (2026-11-20, final, model 1.6.0): differential suite **116 of 116**; `java.base` subset **262 of 884**; all of `java.base`
   **862 of 3344**. Implicitly public members (interface methods, record members, enum methods) are public across
   packages. A call that reaches `/lib` indirectly (project receiver, unqualified inherited call, static import) gets the
   stub check. The seeded functional interfaces are library types for these checks (`isProjectType`). A missing member

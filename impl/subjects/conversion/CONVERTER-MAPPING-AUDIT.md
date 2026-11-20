@@ -209,3 +209,32 @@ This does not close semantic parity. Native per-member stubs remain partial
 results, and its name-keyed method table still loses overload distinctions;
 project-wide overload resolution, generic invocation inference, generic SAM
 target substitution, and aligned accepted/refused outcomes remain required.
+
+## Verification update (2026-11-20, C++ converter only)
+
+`tests/javaconv_differential_test.sh` was run with model 1.6.0 and the source-built `impl/build/sleela`:
+116 of 116 pass. For the C++ converter this settles the rows above marked "pending verification":
+
+| Area | Evidence (differential fixtures, byte-identical to a JDK) |
+|---|---|
+| Primitive types, promotion, casts, widening | `Operands`, `Basics`, `OverloadWidening`, `WideningMostSpecific`, `BoxingUnboxingWidening` |
+| `float` (binary32) | `Floats` (24 lines identical) |
+| Compound assignment | `Operands`, `Floats` (C++ side; native compound-float is still not implemented) |
+| String conversion | `Strings`, `ObjectText`, `Formats` |
+| Built-in qualification and renames | `IdentifierParity`, `ReservedIdentifiers` |
+| Boxing | `BoxingOverload`, `BoxingPhaseRules`; refusals `reject/Boxed*` |
+
+Corrections to the text above:
+
+- "Library result types: extensive `ret` and `field` rows". There are 8,964 `ret` rows (8,922 reflected in
+  section 10b) but only 4 hand `field` rows (`Integer`/`Long` `MAX_VALUE`/`MIN_VALUE`). Static fields of `/lib` types
+  are now checked against the `lib/java/jdk-28` units, and placeholder declarations are refused `[library-stub]`.
+- Section 4 says package-private accessibility and nested type imports "remain open". In the C++ converter both
+  are implemented and tested: package-private, protected and type access (`member-access`, `protected-access`,
+  `protected-receiver`, `type-access`, `enclosing-access`), wildcard and nested imports (`package-import`,
+  `static-nested`, `qualified-mismatch`), and single static imports of fields and methods (`project-static-import`,
+  `LibraryStaticImport`, `StaticImportLibrary`). Module readability remains open.
+- Refusal reasons: since model 1.6.0 every refusal kind the C++ translator emits is an `unsupported` row
+  (59 rows), enforced at run time (a kind without a row is reported `[model]`) and by the `model-registry` check.
+
+The SLeeLa-native converter (`lib/java/converter`) was not run in this session, so its rows stay as written.

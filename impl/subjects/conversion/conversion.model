@@ -5,10 +5,20 @@
 # set of laws. Math owns arithmetic; physics owns mechanics; conversion owns the
 # laws under which Java source becomes functionally equivalent SLeeLa source.
 #
-# The model is DATA. The sleelactl converter (sleelactl/convert) holds no Java
-# semantic knowledge of its own: every typing rule, operator lowering and cast
-# below is read from this file, and the converter FAILS CLOSED when a construct
-# is not covered here (it never guesses, it never emits a near-miss).
+# The model is DATA. The sleelactl converter (sleelactl/convert) reads every
+# expression-level law from this file: types, boxing, promotion, operator
+# lowering, casts, widening, compound assignment, string conversion, result
+# types, built-in qualification and identifier renames. It FAILS CLOSED when a
+# construct is not covered (it never guesses, it never emits a near-miss), and
+# every refusal kind it emits is a row of section 12.
+#
+# Scope (1.6.0): the declaration and name-resolution laws are NOT rows here. They
+# are implemented in the C++ translator and specified in lib/java/JAVA.SPEC.md:
+# name resolution and access (JLS 6), implicit modifiers of interface, record and
+# enum members (JLS 8.9.3, 8.10, 9.4), overload resolution (JLS 15.12), generic
+# inference, and the enum/record lowerings and initialization order. Library
+# members are typed by section 10 here and checked against the lib/java/jdk-28
+# units themselves (existence, arity, stubs, placeholder fields).
 #
 # Normative sources: The Java Language Specification (JLS) chapters 4 (types),
 # 5 (conversions and promotion), 14 (statements), 15 (expressions).
@@ -34,6 +44,7 @@
 #   ret <owner> <method> <return type or @arg0>
 #   field <owner> <name> <type>
 #   call <java owner.method> <sleela call template>   ($args)
+#   chartext <owner> <method> <argument index>   (a char argument passed as text, section 9c)
 #   qualify <name>                               (a VM built-in call name: an own method of that
 #                                                 name is called qualified, this.m() / Owner.m())
 #   rename <name> <context> <replacement>         (context: all | value; value-only preserves next())
@@ -42,7 +53,7 @@
 # Template variables: $a $b operands, $t target type, $recv receiver, $args
 # comma-joined argument list, $0 $1 ... individual arguments.
 # ============================================================================
-model java-to-sleela 1.5.0
+model java-to-sleela 1.6.0
 
 # ---- 1. Types (JLS 4). SLeeLa int is a 64-bit slot, so the int-width types are
 #         kept as their own names and wrapped by the templates below.
@@ -9504,13 +9515,18 @@ call System.out.println print($args)
 call array.length arrayLength($recv)
 
 # ---- 12. Constructs the converter refuses, with the reason it states.
-unsupported float float arithmetic rounds to IEEE binary32 at every step; SLeeLa has no binary32 operator set, so equivalence cannot be guaranteed
-unsupported lambda a lambda target without a known single abstract method or a nested generated-class capture chain cannot be lowered safely
+#          Every refusal kind the translator emits must have a row here (1.6.0): a kind
+#          without one is reported as [model] instead, so the list cannot drift from the
+#          code. The diagnostic keeps its located, specific message; the row is the general
+#          reason, shown per kind in CONVERSION-REPORT. Rows marked superseded are kept for
+#          the record and are not emitted. syntax and model are errors, not refusals.
+unsupported float superseded in 1.5.0 (not emitted): float is converted through the binary32 rows of sections 3 to 9b (test Floats)
+unsupported lambda superseded (not emitted): lambdas are converted; refusals are lambda-target, lambda-this and anonymous-nested
 unsupported methodref method references need the linear lowering of lib/java/jdk-28/LOWERING.md
 unsupported synchronized synchronized blocks have no SLeeLa form
-unsupported enum enum declarations are listed in SLEELA.syntax 43.5 as not supported
+unsupported enum superseded (not emitted): enums are lowered to classes (test Enums); enum refusals are enum-this-ctor
 unsupported incr-expr ++/-- of a floating point value used as a value cannot recover the old value exactly
-unsupported assign-expr an assignment inside a construct the converter cannot hoist or sequence
+unsupported assign-expr superseded (not emitted): assignments used as values are converted (test Refs); a double-evaluated operand is side-effecting-lvalue
 unsupported switch-expr a switch expression must start the expression of a declaration, assignment, return or expression statement; type patterns and case null are not converted
 unsupported string-static String is a keyword type in SLeeLa, so String.valueOf / String.format / String.join cannot be called as static members yet
 unsupported nested nested/inner/anonymous types that cannot be safely hoisted or captured are not converted
@@ -9525,3 +9541,44 @@ unsupported member-annotation an annotation type or annotation member declaratio
 unsupported object-method a java.lang.Object method (equals, hashCode, getClass ...) on a user type that does not declare it is not converted yet
 unsupported object-text an object of a type of this tree with no toString() in its class chain is shown as text: Java prints an identity hash (Name@1b6d3586), which has no equivalent
 unsupported boxed arrays of boxed wrapper types are not represented as reference arrays; scalar non-null wrappers use primitive storage
+
+# ---- 12b. Refusal kinds added to the model in 1.6.0 (emitted by the translator before then,
+#           with their reason only in C++).
+unsupported anonymous-nested an anonymous class inside another anonymous class or lambda is not converted
+unsupported anonymous-super the superclass constructor that an anonymous class calls is not known
+unsupported boxed-identity == between two boxed values compares identity in Java (value cache behaviour); boxed values use primitive storage
+unsupported boxed-reference a boxed value converted to a class supertype of its wrapper (Number, Comparable) cannot be held by primitive storage
+unsupported constructor-resolution no accessible constructor accepts the supplied arguments
+unsupported enum-this-ctor an enum constructor that delegates with this(...) is not converted
+unsupported format-arg a String.format format has more conversions than arguments
+unsupported format-conv a String.format conversion the runtime formatter does not implement
+unsupported format-nonliteral String.format is converted only with a string literal format
+unsupported generic-array a concrete array passed to or recovered from a type-variable array T[]; SLeeLa arrays are invariant and array casts are not available
+unsupported generic-constructor explicit or inferred generic type arguments of a constructor that cannot be proven
+unsupported generic-constructor-diamond diamond inference is converted only when the target type determines the type arguments
+unsupported generic-inference a generic method whose bounds or type arguments cannot be inferred and proven (intersection LUBs, capture, target typing)
+unsupported generic-type a generic type argument that is primitive or does not satisfy the declared bound
+unsupported import-ambiguous a simple type name imported from more than one package or owner
+unsupported lambda-target the functional interface a lambda or method reference converts to is not known
+unsupported lambda-this this inside a lambda in a static context
+unsupported library-member the lib/java/jdk-28 unit does not declare the member (name and arity), so the reference would not link
+unsupported library-stub the lib/java/jdk-28 unit declares the member only as a signature stub or placeholder field that returns a default value, not the Java behaviour
+unsupported library-type the type is neither converted in this run nor provided by a lib/java unit, so the reference would not link
+unsupported member-access the member is not accessible from the calling package (JLS 6.6)
+unsupported methodref-ambiguous both a static and an unbound instance method match the method reference
+unsupported methodref-return the referenced method result is not compatible with the functional-interface return type
+unsupported native native methods have no Java body and no declared Java-to-SLeeLa binding
+unsupported nested-ambiguous a simple name used by several nested types cannot be resolved to one hoisted type
+unsupported outer-instance an enclosing instance (Outer.this, outer.new Inner()) used from a static context or not available
+unsupported overload-ambiguous several applicable overloads remain incomparable under the supported invocation conversions
+unsupported overload-erasure two constructors lower to the same SLeeLa parameter list, and SLeeLa selects a constructor by its emitted parameter types
+unsupported overload-resolution an overloaded method whose overload cannot be selected (super calls, unknown argument types)
+unsupported reserved-member a member named like a SLeeLa reserved word or built-in
+unsupported side-effecting-lvalue ++/-- or compound assignment on an operand with side effects would evaluate it twice
+unsupported static-import-ambiguous an unqualified name matches more than one static import
+unsupported string-identity == on Strings compares identity in Java but value in SLeeLa
+unsupported switch-break a break inside a lowered switch that is not the final statement of its case group cannot be expressed without a jump
+unsupported type-access the type is not accessible from the calling package
+unsupported type-ambiguous two project declarations share a simple name, and converted documents share one flat type namespace
+unsupported type-qualified-not-found a qualified type name that matches no project declaration of that package
+unsupported volatile volatile and synchronized need the Java memory model; convert with --single-thread to treat them as plain

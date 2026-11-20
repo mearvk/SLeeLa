@@ -157,3 +157,16 @@ source snapshot:
    newly shared behavior.
 6. Run both converters independently; report complete, partial/stubbed,
    refused, and infrastructure-failed counts separately.
+
+## Verification update (2026-11-20)
+
+The tests that the section above lists as "added but not yet executed" were run with the C++ converter
+(`sleelactl/convert`, model 1.6.0) and the source-built `impl/build/sleela`, in
+`tests/javaconv_differential_test.sh` (116 of 116 pass):
+
+- `provenance`: source, model, converter-source and output SHA-256 provenance verified independently;
+- `repeat-run`: a repeat conversion preserves every output mtime;
+- `transaction`: a failed generation leaves the previous output, the ownership manifest and unowned files intact;
+- `stale-output`: a file that converted earlier and now fails closed leaves no output behind.
+
+Only the C++ converter was run. The SLeeLa-native converter (`lib/java/converter`) was not.

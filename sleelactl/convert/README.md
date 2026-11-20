@@ -74,7 +74,8 @@ inputs and emitted outputs; the manifest omits timestamps and absolute paths.
 
 Every construct the model does not cover is refused with
 `file:line:col [construct] reason`. A file with any failed member writes no output.
-The refusal rows are the `unsupported` records of the model.
+The refusal rows are the `unsupported` records of the model. Since model 1.6.0 this is enforced: a refusal kind without a row is reported `[model]`, and the
+report lists each kind with its model reason.
 
 ## Verification
 
@@ -90,7 +91,7 @@ The refusal rows are the `unsupported` records of the model.
 
 ## Status (honest)
 
-**2026-11-20 (final): access and indirect /lib calls.** Differential suite 115 of 115. Implicitly public interface,
+**2026-11-20 (final): access and indirect /lib calls; model 1.6.0.** Differential suite 116 of 116 (adds `model-registry`). Implicitly public interface,
 record and enum members are visible across packages. Calls reaching `/lib` through a project type, an unqualified
 inherited call, or a static import are checked for stubs. A method call on an array is refused. `java.base` subset:
 262 of 884 converted. All of `java.base`: 862 of 3344 (`member-access` refusals 3,753 to 114). Record:

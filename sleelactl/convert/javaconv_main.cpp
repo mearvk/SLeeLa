@@ -825,11 +825,16 @@ int main(int argc, char** argv) {
           << "- deterministic provenance: [CONVERSION-PROVENANCE.json](CONVERSION-PROVENANCE.json)\n\n"
           << "A file that fails closed produces NO output: a partly converted type is never written.\n\n";
         if (!byConstruct.empty()) {
-            m << "## Failures by construct\n\n| construct | count |\n|---|---|\n";
+            m << "## Failures by construct\n\n| construct | count | reason (conversion model) |\n|---|---|---|\n";
             std::vector<std::pair<size_t, std::string>> v;
             for (auto& kv : byConstruct) v.push_back({kv.second, kv.first});
             std::sort(v.rbegin(), v.rend());
-            for (auto& x : v) m << "| " << x.second << " | " << x.first << " |\n";
+            for (auto& x : v) {
+                const cm_rec* why = cm_find(&model, "unsupported", x.second.c_str(), nullptr, nullptr);
+                std::string reason = why ? why->f[1] : (x.second == "syntax" ? "the source does not parse as supported Java" : "a model error");
+                for (char& ch : reason) if (ch == '|') ch = '/';
+                m << "| " << x.second << " | " << x.first << " | " << reason << " |\n";
+            }
             m << "\n## Failed files\n\n";
             for (auto& o : outcomes) {
                 if (o.ok) continue;

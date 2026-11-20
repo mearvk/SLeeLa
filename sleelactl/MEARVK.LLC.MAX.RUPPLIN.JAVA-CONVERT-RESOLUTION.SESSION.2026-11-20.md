@@ -110,3 +110,25 @@ That run found the unchecked calls fixed in round 2. **Not re-run on the final g
 - An array `clone()` lowering (an array copy) would recover the 12 files above.
 - Largest first refusals on all of `java.base`: `type-ambiguous` (488 files), `library-type` (269), `library-member` (231).
 - `main` does not have the converter work.
+
+## 8. Review of the conversion subject and its fixes (model 1.6.0)
+
+Review of `impl/subjects/conversion/` (model, generator, README, `CONVERTER-IDEMPOTENCE.md`,
+`CONVERTER-MAPPING-AUDIT.md`, `IDENTIFIER-COLLISIONS.md`). Section 10b was up to date
+(`generate_ret_rows.py --check`, 8,922 rows), and the self-check passed. Findings and what was done:
+
+| Finding | Fix |
+|---|---|
+| The header claimed the converter holds no Java semantic knowledge of its own; declaration and name-resolution laws (JLS 6, 8.9.3, 8.10, 9.4, 15.12, inference, lowerings) live in C++ | Claim narrowed to expression-level laws in the model header, subject README, steering rule 1 and `JAVA.SPEC.md` section 3 |
+| The converter emitted 57 refusal kinds; the model had rows for 21 | 38 rows added (section 12b). `syntax` and `model` are errors, not refusals. The translator reports a kind without a row as `[model]`; check `model-registry` |
+| Rows `float`, `enum`, `lambda`, `assign-expr` were never emitted and two were wrong | Marked superseded, with the current behaviour and its test |
+| A second library typing source (the `lib/java/jdk-28` units) was undocumented | Described in the subject README |
+| `chartext` was missing from the record grammar | Added |
+| Stale "not yet verified" claims (Floats, provenance, repeat-run, transaction, package-private access, nested imports); "extensive field rows" (there are 4) | Dated verification updates in both audit files and the README; history kept. The native converter claims stay pending (not run) |
+| README revision table out of order; latest measurement from 1.3.0 | Reordered newest first; 1.6.0 row and a current measurement added |
+
+`CONVERSION-REPORT.md` now lists each refusal kind with its model reason.
+
+Validation with model 1.6.0: differential suite **116 of 116** (adds `model-registry`). The `java.base` subset
+(262 of 884) and all of `java.base` (862 of 3344) were file-for-file identical to 1.5.0, with identical refusal
+counts and no `[model]` refusals. `generate_ret_rows.py --check` up to date.

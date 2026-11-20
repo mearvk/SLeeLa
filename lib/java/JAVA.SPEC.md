@@ -92,6 +92,14 @@ language intact.
    converted program (`tests/javaconv_differential_test.sh`). Every refusal has a program in
    `tests/reject/`.
 4. **No claim beyond the report.** `CONVERSION-REPORT.md` of a run is the status of that run.
+5. **One registry of refusal kinds.** Every `[construct]` the converter emits is an `unsupported` row of
+   `impl/subjects/conversion/conversion.model` (section 12, 59 rows since model 1.6.0). The diagnostic keeps
+   its located, specific message, and the row gives the general reason shown in `CONVERSION-REPORT.md`. A
+   kind without a row is reported `[model]` and still fails closed (check `model-registry`). New refusals
+   add their row in the same change.
+6. **Where the laws live.** Expression-level laws are rows of the conversion model. Declaration and
+   name-resolution laws (access, implicit modifiers, overload resolution, generic inference, the enum and
+   record lowerings) are implemented in the C++ translator and specified in this document.
 
 ## 4. Lowering catalogue
 

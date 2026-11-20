@@ -77,6 +77,18 @@ for j in "$tests"/reject/*.java; do
   fi
 done
 
+# model registry: every refusal kind needs an 'unsupported' row in the conversion model. With the
+# string-identity row removed from a copy of the model, that refusal must surface as [model] (still no output).
+mkdir -p "$tmp/model-registry/out"
+grep -v '^unsupported string-identity ' "$root/impl/subjects/conversion/conversion.model" > "$tmp/model-registry/conversion.model"
+mr_out="$("$conv" --file "$tests/reject/StringIdentity.java" --out "$tmp/model-registry/out" --model "$tmp/model-registry/conversion.model" 2>&1)"; mr_rc=$?
+if [ "$mr_rc" -eq 1 ] && printf '%s' "$mr_out" | grep -q "\[model\] refusal kind 'string-identity' has no 'unsupported' row" &&
+   [ "$(ls "$tmp/model-registry/out"/*.sleela 2>/dev/null | wc -l)" -eq 0 ]; then
+  printf 'PASS  %-12s a refusal kind without a model row is reported [model], no output written\n' "model-registry"; pass=$((pass+1))
+else
+  printf 'FAIL  model-registry (rc=%s)\n%s\n' "$mr_rc" "$mr_out"; fail=$((fail+1))
+fi
+
 # stale output: a file that converted on an earlier run and now fails closed must leave no output behind
 mkdir -p "$tmp/stale/src"
 printf 'public class Stale { public static void main(String[] a) { System.out.println(1); } }\n' > "$tmp/stale/src/Stale.java"

@@ -4625,6 +4625,13 @@ private:
     void diag(const ConvErr& e) {
         if (pass != 2) return;
         Diagnostic d; d.line = e.line; d.col = e.col; d.construct = e.construct; d.message = e.msg;
+        // Every refusal kind is a row of the model (section 12). A kind without one is
+        // reported as [model], so a refusal added in C++ alone is visible and still fails closed.
+        if (d.construct != "syntax" && d.construct != "model" &&
+            !cm_find(&M, "unsupported", d.construct.c_str(), nullptr, nullptr)) {
+            d.message = "refusal kind '" + d.construct + "' has no 'unsupported' row in the conversion model: " + d.message;
+            d.construct = "model";
+        }
         diags.push_back(d);
     }
 
