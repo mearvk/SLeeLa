@@ -51,6 +51,10 @@ struct MethodSig {
     bool isAbstract = false; // declared without a body (an interface method, or abstract)
     std::string owner;       // the class that declares it
     std::string visibility = "package";
+    // The return type as declared (before invocation/class substitution); set on the
+    // per-call-site signatures pickMethod returns. Its erasure is what the emitted
+    // SLeeLa method returns, so a type-variable declaration needs a cast at the call.
+    std::shared_ptr<Ty> declaredRet;
 };
 struct FieldInfo { Ty ty; bool isStatic = false; std::string visibility = "package"; };
 struct ClassInfo {

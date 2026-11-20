@@ -1465,6 +1465,7 @@ private:
         for (int phase=0;phase<3 && !best;++phase) {
             for (const MethodSig* mp:candidates) {
                 MethodSig classResolved=*mp;
+                if (!classResolved.declaredRet) classResolved.declaredRet=std::make_shared<Ty>(mp->ret);
                 Ty declaringReceiver;
                 if (receiverType && receiverAsOwner(*receiverType,mp->owner,declaringReceiver)) {
                     for (Ty& param:classResolved.params) param=instantiateClassType(param,declaringReceiver);
@@ -1667,6 +1668,7 @@ private:
                 }
                 if (!applicable) { sawUnsupportedGeneric=true; continue; }
                 MethodSig resolved=m;
+                if (!resolved.declaredRet) resolved.declaredRet=std::make_shared<Ty>(m.ret);
                 std::function<Ty(const Ty&)> instantiate = [&](const Ty& source) {
                     Ty t=source;
                     if (t.n.rfind("$T$",0)==0) {
@@ -1850,6 +1852,22 @@ private:
         fail("object-method", "java.lang.Object." + name + " on " + recvType + ", which does not declare it, has no SLeeLa equivalent yet");
     }
 
+    // A declared result of type-variable type (T, or a class variable) is emitted
+    // with erasure as Any. When invocation inference or receiver substitution gives
+    // a concrete type, Java's checkcast is restored as a SLeeLa cast, so the value
+    // keeps its static type for initializers, arguments and member calls.
+    bool isTypeVarTy(const Ty& t) const {
+        return t.n.rfind("$T$", 0) == 0 || t.n.rfind("$C$", 0) == 0;
+    }
+    std::string castErasedResult(const MethodSig* m, const Ty& actual, const std::string& code) {
+        if (!m) return code;
+        const Ty& declared = m->declaredRet ? *m->declaredRet : m->ret;
+        if (declared.dims != 0 || !isTypeVarTy(declared)) return code;
+        if (actual.dims != 0 || !actual.known() || actual.n == "void" || actual.n == "null" || actual.wildcard) return code;
+        if (actual.n == "Object") return code;
+        return "(" + emitType(actual) + ") " + paren(code);
+    }
+
     E callResult(const std::string& recvType, const std::string& name, const std::vector<E>& args, std::string code, bool staticCall, const Ty* receiverType = nullptr, const Ty* expectedResultType = nullptr) {
         E r;
         r.code = code;
@@ -1857,6 +1875,7 @@ private:
         (void)staticCall;
         if (const MethodSig* m = pickMethod(recvType, name, args, 0, -1, receiverType, expectedResultType)) {
             r.ty = resolvedMethod(m).ret;
+            r.code = castErasedResult(m, r.ty, r.code);
             return r;
         }
         refuseObjectMethod(recvType, name);
@@ -1873,7 +1892,7 @@ private:
             auto ci = classes.find(up);
             if (ci == classes.end() || ci->second.super.empty() || ci->second.super == up) break;
             up = ci->second.super;
-            if (const MethodSig* m = pickMethod(up, name, args, 0, -1, nullptr, expectedResultType)) { r.ty = resolvedMethod(m).ret; return r; }
+            if (const MethodSig* m = pickMethod(up, name, args, 0, -1, nullptr, expectedResultType)) { r.ty = resolvedMethod(m).ret; r.code = castErasedResult(m, r.ty, r.code); return r; }
             rec = cm_find(&M, "ret", up.c_str(), name.c_str(), nullptr);
         }
         if (rec) {
@@ -2003,6 +2022,17 @@ private:
                                      "' cannot be selected through receiver type '" + e.ty.n +
                                      "' from subclass '" + curClass + "'");
                             r.ty = instantiateClassType(fi->ty,declaringReceiver);
+                            // A field of type-variable type is emitted as Any; a read
+                            // keeps its substituted static type through a cast (Java's
+                            // checkcast). An assignment target stays a plain field.
+                            static const char* const kAssignOps[] = {"=","+=","-=","*=","/=","%=","&=","|=","^=","<<=",">>=",">>>=","++","--"};
+                            bool assignTarget = false;
+                            for (const char* op : kAssignOps) if (isOp(op)) assignTarget = true;
+                            if (!assignTarget && fi->ty.dims == 0 && isTypeVarTy(fi->ty)) {
+                                MethodSig asRead; asRead.ret = fi->ty;
+                                r.code = castErasedResult(&asRead, r.ty, r.code);
+                                if (r.code[0] == '(') r.pure = e.pure;
+                            }
                         } else r.ty = mk("?");
                     }
                 }
@@ -2165,7 +2195,7 @@ private:
             E r;
             r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
-            if (pm) r.ty = resolvedMethod(pm).ret;
+            if (pm) { r.ty = resolvedMethod(pm).ret; r.code = castErasedResult(pm, r.ty, r.code); }
             else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true, nullptr, expected);
             else r.ty = mk("?");
             return r;

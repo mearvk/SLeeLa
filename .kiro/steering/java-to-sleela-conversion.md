@@ -98,7 +98,7 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
-- Status (2026-11-20, re-run): differential suite **71 pass, 22 fail** of 93 checks (`bash tests/javaconv_differential_test.sh`)
+- Status (2026-11-20, re-run): differential suite **80 pass, 13 fail** of 93 checks (`bash tests/javaconv_differential_test.sh`)
   after repairing `java_to_sleela.cpp`, which did not compile from commit `2b785fd2` (2026-11-18) to `d0e80478`.
   CI last passed on 2026-11-14; later runs failed at `check-manifest` or were cancelled, so the failures were not caught.
   The 2026-11-13 figures below predate that and are historical:
