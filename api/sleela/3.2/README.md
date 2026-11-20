@@ -14,7 +14,7 @@ Hand-authored API references for language-level features (specified in `SLEELA.s
 - [Language API — character, array, labels, `finally`](LANGUAGE-API.md)
 - [Java tier API — what the Java to SLeeLa conversion adds](JAVA-TIER-API.md)
 
-Earlier editions are preserved and are not rewritten: [3.0](../3.0/README.md), [2.9](../2.9/README.md).
+Earlier editions are preserved and are not rewritten: [3.1](../3.1/README.md), [3.0](../3.0/README.md), [2.9](../2.9/README.md).
 
 To build:
 
