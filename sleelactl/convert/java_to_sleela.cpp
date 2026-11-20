@@ -83,6 +83,7 @@ public:
             if (classes.count(f.name)) continue;
             ClassInfo& ci = classes[f.name];
             ci.isInterface = true;
+            ci.seeded = true;
             MethodSig m; m.name = f.method; m.ret = f.ret[0] == '?' ? Ty() : mk(f.ret); m.isAbstract = true;
             for (int i = 0; i < f.nparams; i++) m.params.push_back(Ty());
             ci.methods.push_back(m);
@@ -617,6 +618,13 @@ private:
     // Outer.Inner.sleela; the SLeeLa loader finds it only from the dotted source
     // spelling Outer.Inner (which the parser reads as Outer__Inner), never from
     // the mangled name. Such names are written dotted.
+    // A type declared by a source unit of this run. The seeded JDK functional interfaces
+    // (Runnable, Comparator, Function ...) are in `classes` only to type lambdas; for /lib
+    // resolution and member checks they are library types.
+    bool isProjectType(const std::string& n) const {
+        auto it = classes.find(n);
+        return it != classes.end() && !it->second.seeded;
+    }
     std::string spellTypeName(const std::string& n) const {
         if (n.find("__") == std::string::npos || classes.count(n)) return n;
         std::vector<std::string> parts;
@@ -641,7 +649,7 @@ private:
         if (pass != 2 || !opt.library) return;
         if (name.empty() || name == "Any" || name == "null" || name == "void" || name == "?") return;
         if (name.rfind("type:", 0) == 0 || name.rfind("$T$", 0) == 0 || name.rfind("$C$", 0) == 0) return;
-        if (classes.count(name)) return;
+        if (isProjectType(name)) return;
         if (cm_find(&M, "type", name.c_str(), nullptr, nullptr)) return;
         if (opt.library->units.count(spelled)) return;
         throw ConvErr{cur().line, cur().col, "library-type",
@@ -659,7 +667,7 @@ private:
     enum LibCall { kLibOk = 0, kLibViaInstance = 1, kLibUnchecked = 2 };
     LibCall checkLibraryCall(const std::string& name, const std::string& member, size_t arity, bool staticCall, bool ctor,
                              std::string* libRet = nullptr) const {
-        if (pass != 2 || !opt.library || name.empty() || classes.count(name)) return kLibUnchecked;
+        if (pass != 2 || !opt.library || name.empty() || isProjectType(name)) return kLibUnchecked;
         if (cm_find(&M, "type", name.c_str(), nullptr, nullptr)) return kLibUnchecked;
         const std::string spelled = spellTypeName(name);
         bool stubSeen = false, instanceSeen = false, unchecked = false;
@@ -706,7 +714,7 @@ private:
     Ty checkLibraryField(const std::string& name, const std::string& member, bool* found = nullptr,
                          bool* isStatic = nullptr, std::string* owner = nullptr) const {
         if (found) *found = false;
-        if (pass != 2 || !opt.library || name.empty() || classes.count(name)) return mk("?");
+        if (pass != 2 || !opt.library || name.empty() || isProjectType(name)) return mk("?");
         if (cm_find(&M, "type", name.c_str(), nullptr, nullptr)) return mk("?");
         const std::string spelled = spellTypeName(name);
         if (opt.library->units.count(spelled + "." + member)) return mk("?");   // a nested type, not a field
@@ -734,6 +742,71 @@ private:
             up = u->super;
         }
         return mk("?");
+    }
+
+    // An instance method that a project type does not declare may be inherited from a /lib
+    // ancestor: a superclass, or an interface (a default method). Every non-project ancestor
+    // reached through the project superclasses and interfaces is checked like a direct /lib
+    // call. The call converts when one ancestor declares a real member, or when an ancestor is
+    // outside lib/java/jdk-28 (not checked). Otherwise the first refusal stands: a stub only
+    // ([library-stub]) or no such member ([library-member]). A type with no /lib ancestor is
+    // left to the caller (java.lang.Object methods are refused separately).
+    // With onlyIfNamed, the check applies only when an ancestor unit declares a member of that
+    // name: in a nested class an unqualified name the class does not have resolves outward.
+    void checkInheritedLibraryCall(const std::string& projectType, const std::string& member, size_t arity,
+                                   std::string* libRet = nullptr, bool onlyIfNamed = false) const {
+        if (pass != 2 || !opt.library) return;
+        // The first non-project class on the superclass chain is checked strictly, as a direct
+        // /lib call (a type without a lib/java/jdk-28 unit is then refused). An ancestor reached
+        // through an interface that has no lib/java/jdk-28 unit is not checked.
+        std::vector<std::pair<std::string, bool>> ancestors;   // name, reached by superclass links only
+        std::vector<std::pair<std::string, bool>> work{{projectType, true}};
+        std::set<std::string> seen;
+        while (!work.empty() && seen.size() < 256) {
+            const auto c = work.back();
+            work.pop_back();
+            if (c.first.empty() || !seen.insert(c.first).second) continue;
+            auto ci = classes.find(c.first);
+            if (ci == classes.end() || ci->second.seeded) { ancestors.push_back(c); continue; }
+            if (!ci->second.super.empty() && ci->second.super != c.first) work.push_back({ci->second.super, c.second});
+            for (const auto& i : ci->second.ifaces) work.push_back({i, false});
+        }
+        if (ancestors.empty()) return;
+        if (onlyIfNamed) {
+            bool named = false;
+            for (const auto& anc : ancestors) {
+                std::string up = spellTypeName(anc.first);
+                std::set<std::string> visited;
+                for (int depth = 0; depth < 32 && !up.empty() && visited.insert(up).second; depth++) {
+                    const LibUnit* u = opt.library->unit(up);
+                    if (!u) break;
+                    for (const LibMember& m : u->members) if (!m.ctor && m.name == member) named = true;
+                    up = u->super;
+                }
+            }
+            if (!named) return;
+        }
+        // A real member in any ancestor converts the call. Otherwise a stub refuses it. A
+        // missing member refuses it only on the superclass chain: /lib unit headers list only
+        // `extends`, not the interfaces an interface extends, so "not declared" by an interface
+        // unit cannot be trusted (SortedSet does not show isEmpty, which it gets from Collection).
+        bool stubbed = false, missing = false, unknown = false;
+        ConvErr stubErr{0, 0, "", ""}, missingErr{0, 0, "", ""};
+        for (const auto& anc : ancestors) {
+            const std::string& a = anc.first;
+            if (cm_find(&M, "type", a.c_str(), nullptr, nullptr)) return;
+            if (!anc.second && !opt.library->unit(spellTypeName(a))) { unknown = true; continue; }
+            try {
+                const LibCall k = checkLibraryCall(a, member, arity, false, false, libRet);
+                if (k == kLibOk || k == kLibUnchecked) return;
+            } catch (const ConvErr& e) {
+                if (e.construct == "library-stub") { if (!stubbed) stubErr = e; stubbed = true; }
+                else if (anc.second) { if (!missing) missingErr = e; missing = true; }
+                else unknown = true;
+            }
+        }
+        if (stubbed) throw stubErr;
+        if (missing && !unknown) throw missingErr;
     }
 
     // A /lib member that returns Any (an erased Java type variable) where the Java call has a
@@ -2239,8 +2312,10 @@ private:
                         }
                     }
                     std::string libRet;
-                    if (!im && e.ty.dims == 0 && e.ty.known() && !e.ty.boxed)
-                        checkLibraryCall(recvType, calledName(im, name), args.size(), false, false, &libRet);
+                    if (!im && e.ty.dims == 0 && e.ty.known() && !e.ty.boxed) {
+                        if (isProjectType(recvType)) checkInheritedLibraryCall(recvType, calledName(im, name), args.size(), &libRet);
+                        else checkLibraryCall(recvType, calledName(im, name), args.size(), false, false, &libRet);
+                    }
                     E r = callResult(recvType, name, args, paren(e.code) + "." + calledName(im, name) + "(" + joinArgs(args) + ")", false, &e.ty, expected);
                     if (!im) castLibraryResult(libRet, r);
                     e = r;
@@ -2449,6 +2524,8 @@ private:
             const MethodSig* pm = pickMethod(curClass, name, a, 0, -1, nullptr, expected);
             std::string qualifier;
             std::string importedOwner;
+            std::string importedLibRet;
+            bool importedLibViaInstance = false;
             if (!pm) {
                 std::vector<std::string> owners;
                 auto si = staticImports_.find(name);
@@ -2461,13 +2538,32 @@ private:
                     const bool modeled = cm_find(&M, "ret", owner.c_str(), name.c_str(), nullptr) != nullptr ||
                         cm_find(&M, "call", (owner + "." + name).c_str(), nullptr, nullptr) != nullptr;
                     if (candidate && !candidate->isStatic) continue;
+                    // A static method of a lib/java/jdk-28 unit (JLS 7.5.3: `import static java.util.Objects.requireNonNull;`).
+                    // It is checked like a qualified call: a stub is refused, and a static the tier
+                    // implements as an instance method is called on `new Owner()`.
+                    if (!candidate && pass == 2 && opt.library && !isProjectType(owner)) {
+                        const LibUnit* u = opt.library->unit(spellTypeName(owner));
+                        bool named = false;
+                        if (u) for (const LibMember& m : u->members) if (!m.ctor && m.name == name) named = true;
+                        if (named) {
+                            if (!importedOwner.empty() && importedOwner != owner)
+                                fail("static-import-ambiguous", "unqualified call '" + name + "' matches more than one static import; qualify the owner");
+                            const LibCall k = checkLibraryCall(owner, name, a.size(), true, false, &importedLibRet);
+                            importedOwner = owner;
+                            importedLibViaInstance = k == kLibViaInstance;
+                            continue;
+                        }
+                    }
                     if (!candidate && !modeled) continue;
                     if (!importedOwner.empty() && importedOwner != owner)
                         fail("static-import-ambiguous", "unqualified call '" + name + "' matches more than one static import; qualify the owner");
                     importedOwner = owner;
                     pm = candidate;
                 }
-                if (!importedOwner.empty()) qualifier = importedOwner + ".";
+                if (!importedOwner.empty())
+                    qualifier = pm || classes.count(importedOwner) ? importedOwner + "."
+                              : importedLibViaInstance ? "new " + useTypeName(importedOwner) + "()."
+                              : useTypeName(importedOwner) + ".";
             }
             if (!pm && importedOwner.empty() && !anonStack_.empty()) {
                 const AnonCtx& ac = anonStack_.back();
@@ -2479,14 +2575,10 @@ private:
             }
             if (!pm) refuseObjectMethod(curClass, name);
             if (!pm && importedOwner.empty() && anonStack_.empty()) {
-                // An inherited method of a /lib superclass: it must exist in that unit's chain.
-                std::string up = curClass;
-                for (int depth = 0; depth < 32; depth++) {
-                    auto ci = classes.find(up);
-                    if (ci == classes.end()) { checkLibraryCall(up, mapMember(safeNameForCall(name)), a.size(), false, false); break; }
-                    if (ci->second.super.empty() || ci->second.super == up) break;
-                    up = ci->second.super;
-                }
+                // An inherited method of a /lib superclass or interface: it must exist in that unit chain.
+                checkInheritedLibraryCall(curClass, mapMember(safeNameForCall(name)), a.size());
+            } else if (!pm && importedOwner.empty() && anonStack_.back().sub.rfind("#nest", 0) == 0) {
+                checkInheritedLibraryCall(curClass, mapMember(safeNameForCall(name)), a.size(), nullptr, true);
             }
             a = adaptArgs(pm, a);
             // A Java method named like a SLeeLa built-in (read, write, accept, lock, send, ...) would be taken
@@ -2499,7 +2591,7 @@ private:
             r.code = qualifier + (pm && isOverloadedName(name) ? calledName(pm, name) : mapMember(safeNameForCall(name))) + "(" + joinArgs(a) + ")";
             r.pure = false;
             if (pm) { r.ty = resolvedMethod(pm).ret; r.code = castErasedResult(pm, r.ty, r.code); }
-            else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true, nullptr, expected);
+            else if (!importedOwner.empty()) { r = callResult(importedOwner, name, a, r.code, true, nullptr, expected); castLibraryResult(importedLibRet, r); }
             else r.ty = mk("?");
             return r;
         }
@@ -2560,7 +2652,7 @@ private:
             if (ci->second.super.empty() || ci->second.super == up) return false;
             up = ci->second.super;
         }
-        if (up.empty() || classes.count(up)) return false;
+        if (up.empty() || isProjectType(up)) return false;
         bool found = false, isStatic = false;
         std::string owner;
         const Ty ty = checkLibraryField(up, name, &found, &isStatic, &owner);
@@ -2587,7 +2679,7 @@ private:
             const std::string owner = resolveQualifiedTypeName(qualifiedOwner);
             E r;
             r.pure = true;
-            if (classes.count(owner)) {
+            if (isProjectType(owner)) {
                 if (classes.count(owner + "__" + name)) continue;   // a member type
                 const FieldInfo* fi = findField(owner, name);
                 if (!fi || !fi->isStatic) continue;                 // a static method import
@@ -3875,9 +3967,11 @@ private:
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false; ci.enclosingType = nested ? outerName : ""; ci.isStaticNested = nested && nestedStatic;
-            for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
-            MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
-            MethodSig ts; ts.name = "toString"; ts.ret = mk("String"); ci.methods.push_back(ts);
+            // JLS 8.10.3/8.10.4: accessors, toString/equals/hashCode are public; the implicit
+            // canonical constructor has the access of the record class.
+            for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ms.visibility = "public"; ci.methods.push_back(ms); }
+            MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.visibility = ci.typeVisibility; canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
+            MethodSig ts; ts.name = "toString"; ts.ret = mk("String"); ts.visibility = "public"; ci.methods.push_back(ts);
             // equals / hashCode exist exactly when the record lowering generates them (see below)
             bool simpleC = true, hashC = true;
             for (auto& c : comps) {
@@ -3887,8 +3981,8 @@ private:
                 if (!pr && !st) simpleC = false;
                 if (!(t.dims == 0 && (t.n == "int" || t.n == "short" || t.n == "byte" || t.n == "char" || t.n == "boolean" || t.n == "long" || st))) hashC = false;
             }
-            if (simpleC) { MethodSig es; es.name = "equals"; es.ret = mk("boolean"); es.params.push_back(mk("Object")); ci.methods.push_back(es); }
-            if (hashC) { MethodSig hs; hs.name = "hashCode"; hs.ret = mk("int"); ci.methods.push_back(hs); }
+            if (simpleC) { MethodSig es; es.name = "equals"; es.visibility = "public"; es.ret = mk("boolean"); es.params.push_back(mk("Object")); ci.methods.push_back(es); }
+            if (hashC) { MethodSig hs; hs.name = "hashCode"; hs.visibility = "public"; hs.ret = mk("int"); ci.methods.push_back(hs); }
         }
         size_t beforeDiags = diags.size();
         std::vector<std::string> memberLines;
@@ -4094,7 +4188,8 @@ private:
             // JLS 8.9.3: every enum constant is implicitly public static final.
             for (auto& c : consts) { FieldInfo fi; fi.ty = mk(name); fi.isStatic = true; fi.visibility = "public"; ci.fields[c.name] = fi; }
             FieldInfo vf; vf.ty = mk(name, 1); vf.isStatic = true; ci.fields["enumValues"] = vf;
-            auto addM = [&](const char* n, Ty r, std::vector<Ty> ps, bool st) { MethodSig m; m.name = n; m.ret = r; m.params = ps; m.isStatic = st; ci.methods.push_back(m); };
+            // JLS 8.9.3: the generated values/valueOf/name/ordinal/compareTo are public.
+            auto addM = [&](const char* n, Ty r, std::vector<Ty> ps, bool st) { MethodSig m; m.name = n; m.ret = r; m.params = ps; m.isStatic = st; m.visibility = "public"; ci.methods.push_back(m); };
             addM("values", mk(name, 1), {}, true);
             addM("valueOf", mk(name), {mk("String")}, true);
             addM("name", mk("String"), {}, false);
@@ -5140,8 +5235,9 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
     const size_t dot = stem.rfind('.');
     const std::string cls = dot == std::string::npos ? stem : stem.substr(dot + 1);
     std::string line;
-    bool inBlock = false, inStubs = false, inClass = false, inDecls = false;
+    bool inBlock = false, inStubs = false, inClass = false, inDecls = false, isInterface = false;
     while (std::getline(in, line)) {
+        if (!inClass && line.find("Java kind: interface") != std::string::npos) isInterface = true;
         if (inBlock) { if (line.find(">>") != std::string::npos) inBlock = false; continue; }
         size_t first = line.find_first_not_of(" \t");
         if (first == std::string::npos) continue;
@@ -5199,9 +5295,10 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
         if (w.empty()) continue;
         LibMember m;
         m.name = w.back();
-        bool hasType = false;
+        bool hasType = false, isDefault = false;
         for (size_t i = 0; i + 1 < w.size(); i++) {
             const std::string& x = w[i];
+            if (x == "default") isDefault = true;
             if (x == "static") m.isStatic = true;
             else if (x == "public" || x == "private" || x == "protected" || x == "final" || x == "abstract" ||
                      x == "synchronized" || x == "native" || x == "default") {}
@@ -5221,7 +5318,7 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
             else if (c != ' ' && c != '\t') any = true;
         }
         m.arity = any ? commas + 1 : 0;
-        m.stub = inStubs;
+        m.stub = inStubs && !(isInterface && !isDefault && !m.isStatic && !m.ctor);
         u.members.push_back(m);
     }
     u.parsed = true;

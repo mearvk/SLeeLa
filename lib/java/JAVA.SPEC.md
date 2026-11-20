@@ -308,6 +308,7 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | A type that is neither converted in the same run nor provided by a unit under `lib/java` (`[library-type]`) | the reference would not resolve when the output is linked; this includes types of units that failed closed | convert the unit that declares it, or add the type to `lib/java` |
 | A call or constructor of a `lib/java/jdk-28` type that its unit does not declare with that arity (`[library-member]`) | the reference would not resolve when the output is linked | add the member to the unit |
 | A call or constructor that the `lib/java/jdk-28` unit declares only in its "java signatures" stub section (`[library-stub]`) | the stub returns a default value, so the program would run but not behave like Java | write the member logic in the unit |
+| A method call on an array (`a.clone()`, `a.equals(b)`; `[object-method]`, test `reject/ArrayClone`) | a SLeeLa array has no methods; the call does not link | an array copy lowering for `clone()` |
 | A read of a static field that the `lib/java/jdk-28` unit declares only as a non-final placeholder in its "java declarations" section (`[library-stub]`, for example `BigInteger.ONE`, `StandardCharsets.UTF_8`, `Collections.EMPTY_SET`) | the placeholder holds `null` or `0`, not the JDK value | give the unit a `static final` field with the real value |
 | Two project declarations with the same simple name, even in different packages (`[type-ambiguous]`) | converted documents link into one flat type namespace | package-qualified hoisted names |
 | Two constructors that lower to the same SLeeLa parameter list, such as `float` and `double` (`[overload-erasure]`) | SLeeLa selects a constructor by its emitted parameter types | signature-named constructor lowering |
@@ -348,6 +349,24 @@ Tests: `LibraryStaticImport`, `reject/LibraryFieldPlaceholder`, `reject/Inherite
 The type parameters of a class are in scope in its member classes (JLS 6.3), so an inner class may use the `E`
 of its enclosing generic class (test `InnerOuterTypeVar`). Enum constants are public (JLS 8.9.3) when read from
 another package.
+
+Members that Java makes implicitly public are recorded as public, so they are visible from another package:
+interface methods other than `private` ones (JLS 9.4), record accessors, `toString`, `equals` and `hashCode`
+(JLS 8.10.3), the implicit canonical constructor with the access of its record (JLS 8.10.4), and the generated enum
+methods (JLS 8.9.3). Project `project-implicit-public` in the differential script.
+
+Calls that reach a `/lib` member indirectly are checked like direct calls. This covers an instance call on a project
+type that does not declare the method, and an unqualified call in a class. The converter walks the project superclasses and interfaces to their
+non-project ancestors. A real member in any ancestor converts the call, and a stub refuses it (`[library-stub]`). A
+missing member refuses it only on the superclass chain. The unit headers list only `extends`, so a member that an
+interface unit does not show may come from an interface it extends. In an interface unit, a method without `default`
+or `static` is abstract: calling it dispatches to the implementing class, so it is not a stub. In a nested class the
+check applies only when an ancestor unit has a member of that name, because a bare name the class lacks resolves
+outward (JLS 15.12.1). A single static import of a `/lib` method binds to its owner, gets the same check, and is
+written `Owner.m(...)` or, for a static that the tier implements as an instance method, `new Owner().m(...)`. The JDK functional
+interfaces the converter seeds to type lambdas (`Runnable`, `Comparator`, `Function`, ...) are library types for
+these checks. Tests: `StaticImportLibrary`, `reject/StaticImportStub`, `reject/InterfaceDefaultStub`,
+`reject/InheritedInterfaceStub`.
 
 The unit names and the selected unit per name are recorded in `CONVERSION-PROVENANCE.json`
 (`libraryUnits`). Parameter types are not compared, only arity. `tests/javaconv_check_tree.sh`

@@ -237,6 +237,69 @@ else
   "$conv" --jdk "$tmp/project-iface-public/src" --out "$tmp/project-iface-public/sl" | sed 's/^/      /'; fail=$((fail+1))
 fi
 
+# implicitly public members used from another package: interface abstract, default and
+# static methods (JLS 9.4), record accessors, canonical constructor, toString and equals
+# (JLS 8.10.3, 8.10.4), and the generated enum methods (JLS 8.9.3).
+mkdir -p "$tmp/project-implicit-public/src/fixture/api" "$tmp/project-implicit-public/src/fixture/use" "$tmp/project-implicit-public/cls" "$tmp/project-implicit-public/sl"
+cat > "$tmp/project-implicit-public/src/fixture/api/Shape.java" <<'JAVA'
+package fixture.api;
+public interface Shape {
+  int area();
+  default int twice() { return 2 * area(); }
+  static Shape square(int s) { return new Square(s); }
+}
+JAVA
+cat > "$tmp/project-implicit-public/src/fixture/api/Square.java" <<'JAVA'
+package fixture.api;
+public class Square implements Shape {
+  private final int s;
+  public Square(int s) { this.s = s; }
+  public int area() { return s * s; }
+}
+JAVA
+cat > "$tmp/project-implicit-public/src/fixture/api/Point.java" <<'JAVA'
+package fixture.api;
+public record Point(int x, int y) { }
+JAVA
+cat > "$tmp/project-implicit-public/src/fixture/api/Level.java" <<'JAVA'
+package fixture.api;
+public enum Level { LOW, HIGH }
+JAVA
+cat > "$tmp/project-implicit-public/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+import fixture.api.Level;
+import fixture.api.Point;
+import fixture.api.Shape;
+public class Main {
+  public static void main(String[] args) {
+    Shape s = Shape.square(3);
+    System.out.println(s.area());
+    System.out.println(s.twice());
+    Point p = new Point(4, 5);
+    System.out.println(p.x() + p.y());
+    System.out.println(p);
+    System.out.println(p.equals(new Point(4, 5)));
+    System.out.println(Level.HIGH.ordinal());
+    System.out.println(Level.valueOf("LOW").name());
+    System.out.println(Level.values().length);
+    System.out.println(Level.LOW.compareTo(Level.HIGH));
+  }
+}
+JAVA
+if javac -d "$tmp/project-implicit-public/cls" "$tmp/project-implicit-public/src/fixture/api/"*.java "$tmp/project-implicit-public/src/fixture/use/Main.java" 2> "$tmp/project-implicit-public/javac.err" &&
+   java -cp "$tmp/project-implicit-public/cls" fixture.use.Main > "$tmp/project-implicit-public/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-implicit-public/src" --out "$tmp/project-implicit-public/sl" --quiet; then
+  (cd "$tmp/project-implicit-public/sl" && run_project fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-implicit-public/actual.out"
+  if diff -u "$tmp/project-implicit-public/expected.out" "$tmp/project-implicit-public/actual.out" > "$tmp/project-implicit-public/diff"; then
+    printf 'PASS  %-12s cross-package implicitly public interface, record and enum members identical to the JDK\n' "project-implicit-public"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-implicit-public\n'; head -40 "$tmp/project-implicit-public/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-implicit-public (project build or conversion failed)\n'; cat "$tmp/project-implicit-public/javac.err"
+  "$conv" --jdk "$tmp/project-implicit-public/src" --out "$tmp/project-implicit-public/sl" | sed 's/^/      /'; fail=$((fail+1))
+fi
+
 # package identity and wildcard/nested imports across source packages.
 mkdir -p "$tmp/project-package/src/fixture/alpha" "$tmp/project-package/src/fixture/use" "$tmp/project-package/cls" "$tmp/project-package/sl"
 cat > "$tmp/project-package/src/fixture/alpha/AlphaBase.java" <<'JAVA'

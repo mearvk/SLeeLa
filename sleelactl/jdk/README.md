@@ -43,3 +43,7 @@ refusal table: `sleelactl/convert/README.md`.
 2026-11-20 (later), same input, after the field-resolution fixes: subset 259 converted (267 SLeeLa files), 625 failed
 closed, 256 of 267 emitted files pass `tests/javaconv_check_tree.sh`. All of `java.base`: 842 converted (860 SLeeLa
 files), 2502 failed closed; the whole-tree checker was not re-run on it.
+
+2026-11-20 (final), same input, after the access and indirect-call fixes: subset 262 converted (270 SLeeLa files), 622
+failed closed. All of `java.base`: 862 converted (879 SLeeLa files), 2482 failed closed. The whole-tree checker was not
+re-run on this generation.

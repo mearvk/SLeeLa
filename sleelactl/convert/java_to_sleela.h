@@ -64,6 +64,7 @@ struct ClassInfo {
     std::string packageName;          // declared Java package (empty for the unnamed package)
     std::string typeVisibility = "package";
     bool ambiguous = false;           // duplicate simple name across project units: fail closed
+    bool seeded = false;              // a JDK functional interface seeded for lambda targets, not a project type
     std::map<std::string, FieldInfo> fields;
     std::vector<MethodSig> methods;
     std::vector<std::string> typeParams; // declared class type variables, in source order
@@ -96,6 +97,9 @@ struct SymbolTable {
 // The SLeeLa side of non-project types: the /lib/java units the SLeeLa loader can resolve,
 // and for the JDK tier (lib/java/jdk-28) the members each unit declares. A member in the
 // unit's "java signatures" section is a stub that only returns a default value.
+// `stub` is a body that only returns a default value. An abstract method of an interface unit
+// is written in the same stub form, but calling it dispatches to the implementing class, so it
+// is not a stub (`stub` stays false for it).
 struct LibMember { std::string name; std::string ret; int arity = 0; bool isStatic = false; bool stub = false; bool ctor = false; };
 // A field declared by a lib/java/jdk-28 unit. In the generated "java declarations" section a
 // reflected constant is `static final` with its JDK value; a non-final static there is a

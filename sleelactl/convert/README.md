@@ -90,6 +90,12 @@ The refusal rows are the `unsupported` records of the model.
 
 ## Status (honest)
 
+**2026-11-20 (final): access and indirect /lib calls.** Differential suite 115 of 115. Implicitly public interface,
+record and enum members are visible across packages. Calls reaching `/lib` through a project type, an unqualified
+inherited call, or a static import are checked for stubs. A method call on an array is refused. `java.base` subset:
+262 of 884 converted. All of `java.base`: 862 of 3344 (`member-access` refusals 3,753 to 114). Record:
+`sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT-RESOLUTION.SESSION.2026-11-20.md`.
+
 **2026-11-20 (latest): field resolution.** Differential suite 108 of 108. Enclosing-class type variables are in scope
 in inner classes. A single static import of a field reads `Owner.NAME`, and so does a field inherited from a `/lib`
 superclass. Static fields of `lib/java/jdk-28` units are checked, and a non-final placeholder declaration

@@ -100,6 +100,12 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
+- Status (2026-11-20, final): differential suite **115 of 115**; `java.base` subset **262 of 884**; all of `java.base`
+  **862 of 3344**. Implicitly public members (interface methods, record members, enum methods) are public across
+  packages. A call that reaches `/lib` indirectly (project receiver, unqualified inherited call, static import) gets the
+  stub check. The seeded functional interfaces are library types for these checks (`isProjectType`). A missing member
+  is refused only on the superclass chain, because unit headers do not list interface `extends`. Session record:
+  `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT-RESOLUTION.SESSION.2026-11-20.md`.
 - Status (2026-11-20, after the field-resolution fixes): differential suite **108 of 108**; `java.base` subset
   **259 of 884** files convert (267 SLeeLa files), 22 link-time errors in 11 of them; all of `java.base` 842 of 3344.
   Static fields of `lib/java/jdk-28` units are checked like methods: a non-final static in a unit's "java declarations"
