@@ -175,6 +175,10 @@ private:
     };
     static constexpr const char* kInitMarker = "@@FIELDINIT@@";
     std::string curSimple_;         // the source name of the class being parsed (constructors are written with it)
+    // Emitted constructor parameter lists per class. SLeeLa selects a constructor by
+    // its emitted parameter types, so two Java constructors that lower to the same
+    // list (float and double both store as double) cannot both be written.
+    std::map<std::string, std::set<std::string>> emittedCtorSigs_;
     bool typeAccessible(const std::string& key, const ClassInfo& info) const {
         auto host = [](const std::string& n) {
             const size_t p = n.find("__");
@@ -603,6 +607,48 @@ private:
         return t;
     }
 
+    // Spelling of a type name in emitted SLeeLa. A project nested type is hoisted
+    // into its own document named Outer__Inner, so it keeps that name. A nested
+    // type of a NON-project (library) type lives under /lib in a unit named
+    // Outer.Inner.sleela; the SLeeLa loader finds it only from the dotted source
+    // spelling Outer.Inner (which the parser reads as Outer__Inner), never from
+    // the mangled name. Such names are written dotted.
+    std::string spellTypeName(const std::string& n) const {
+        if (n.find("__") == std::string::npos || classes.count(n)) return n;
+        std::vector<std::string> parts;
+        for (size_t start = 0;;) {
+            const size_t sep = n.find("__", start);
+            parts.push_back(n.substr(start, sep == std::string::npos ? std::string::npos : sep - start));
+            if (sep == std::string::npos) break;
+            start = sep + 2;
+        }
+        for (const auto& part : parts)
+            if (part.empty() || !std::isupper(static_cast<unsigned char>(part[0]))) return n;
+        if (classes.count(parts[0])) return n;   // enclosing type is a project type
+        std::string dotted = parts[0];
+        for (size_t i = 1; i < parts.size(); i++) dotted += "." + parts[i];
+        return dotted;
+    }
+
+    // A non-project type written into the output must be resolvable by the SLeeLa
+    // loader, which finds /lib units by file stem. `name` is the internal (hoisted)
+    // name, `spelled` the emitted spelling.
+    void requireResolvable(const std::string& name, const std::string& spelled) const {
+        if (pass != 2 || !opt.libraryUnits) return;
+        if (name.empty() || name == "Any" || name == "null" || name == "void" || name == "?") return;
+        if (name.rfind("type:", 0) == 0 || name.rfind("$T$", 0) == 0 || name.rfind("$C$", 0) == 0) return;
+        if (classes.count(name)) return;
+        if (cm_find(&M, "type", name.c_str(), nullptr, nullptr)) return;
+        if (opt.libraryUnits->count(spelled)) return;
+        throw ConvErr{cur().line, cur().col, "library-type",
+            "type '" + spelled + "' is not converted in this run and no /lib unit provides it"};
+    }
+    std::string useTypeName(const std::string& name) const {
+        const std::string spelled = spellTypeName(name);
+        requireResolvable(name, spelled);
+        return spelled;
+    }
+
     std::string emitType(const Ty& t) const {
         std::string n = t.n;
         if (t.boxed) { std::string primitive; if (modelBoxed(n,&primitive)) n=primitive; }
@@ -610,6 +656,7 @@ private:
         else {
             const cm_rec* tr = cm_find(&M, "type", n.c_str(), nullptr, nullptr);
             if (tr && tr->f[1][0]) n = tr->f[1];
+            else if (!tr) n = useTypeName(n);
         }
         for (int i = 0; i < t.dims; i++) n += "[]";
         return n;
@@ -2080,7 +2127,7 @@ private:
                 E r;
                 if (e.isType && nestedMap_.count(name)) {   // Outer.Inner used as a qualifier
                     std::string tn = resolveTypeName(name);
-                    r.code = tn; r.isType = true; r.ty = mk("type:" + tn);
+                    r.code = useTypeName(tn); r.isType = true; r.ty = mk("type:" + tn);
                     e = r;
                     continue;
                 }
@@ -2346,7 +2393,7 @@ private:
         { E o; if (resolveOuter(name, &o)) return o; }
         if (isupper((unsigned char)name[0]) || classes.count(name) || nestedMap_.count(name)) {
             std::string tn = resolveTypeName(name);
-            E r; r.code = tn; r.isType = true; r.ty = mk("type:" + tn); return r;
+            E r; r.code = useTypeName(tn); r.isType = true; r.ty = mk("type:" + tn); return r;
         }
         // lower-case unknown name: inherited field or a package qualifier (java.util.X)
         if (isOp(".") && at(p + 1).kind == JT_IDENT && name.find('_') == std::string::npos) {
@@ -2354,7 +2401,7 @@ private:
             size_t q = p;
             std::string last = name;
             while (isOpAt(q, ".") && isIdentTok(at(q + 1)) && islower((unsigned char)last[0])) { last = at(q + 1).text; q += 2; }
-            if (isupper((unsigned char)last[0])) { p = q; E r; r.code = last; r.isType = true; r.ty = mk("type:" + last); return r; }
+            if (isupper((unsigned char)last[0])) { p = q; E r; r.code = useTypeName(last); r.isType = true; r.ty = mk("type:" + last); return r; }
         }
         E r; r.code = safeName(name); r.ty = mk("?"); return r;
     }
@@ -2459,14 +2506,14 @@ private:
                 std::string body = parseArrayInit(r.ty);
                 std::string dimsText;
                 for (int i = 0; i < rank; i++) dimsText += "[]";
-                r.code = "new " + name + dimsText + body;
+                r.code = "new " + useTypeName(name) + dimsText + body;
                 return r;
             }
             if (sized.size() > 8) fail("model", "array creation with more than 8 sized dimensions");
             std::string dimsText;
             for (const auto& z : sized) dimsText += "[" + z + "]";
             for (int i = (int)sized.size(); i < rank; i++) dimsText += "[]";
-            r.code = "new " + (name == "float" ? std::string("double") : name) + dimsText;
+            r.code = "new " + (name == "float" ? std::string("double") : useTypeName(name)) + dimsText;
             return r;
         }
         std::vector<E> args = parseArgs();
@@ -2501,7 +2548,7 @@ private:
             if (ci != classes.end() && !ci->second.innerOf.empty()) outerArg = outerInstanceCode(ci->second.innerOf) + (args.empty() ? "" : ", ");
         }
         E r;
-        r.code = "new " + name + "(" + outerArg + joinArgs(args) + ")";
+        r.code = "new " + useTypeName(name) + "(" + outerArg + joinArgs(args) + ")";
         r.pure = false;
         r.ty = constructedType;
         return r;
@@ -3605,6 +3652,12 @@ private:
         }
         expectOp("{");
         ClassInfo& ci = classes[name];
+        // Converted SLeeLa documents link into one flat type namespace, so two
+        // project declarations with the same (hoisted) simple name cannot both be
+        // emitted, even from different Java packages: the linked set would hold a
+        // duplicate class. Every declaring unit fails closed.
+        if (pass == 2 && ci.ambiguous)
+            fail("type-ambiguous", "the type name '" + name + "' is declared by more than one source unit; converted documents share one flat type namespace");
         if (pass == 1) {
             if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
@@ -3780,6 +3833,12 @@ private:
         }
         expectOp("{");
         ClassInfo& ci = classes[name];
+        // Converted SLeeLa documents link into one flat type namespace, so two
+        // project declarations with the same (hoisted) simple name cannot both be
+        // emitted, even from different Java packages: the linked set would hold a
+        // duplicate class. Every declaring unit fails closed.
+        if (pass == 2 && ci.ambiguous)
+            fail("type-ambiguous", "the type name '" + name + "' is declared by more than one source unit; converted documents share one flat type namespace");
         if (pass == 1) {
             if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
@@ -4471,6 +4530,12 @@ private:
         ClassInit cinit;
         InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
+        // Converted SLeeLa documents link into one flat type namespace, so two
+        // project declarations with the same (hoisted) simple name cannot both be
+        // emitted, even from different Java packages: the linked set would hold a
+        // duplicate class. Every declaring unit fails closed.
+        if (pass == 2 && ci.ambiguous)
+            fail("type-ambiguous", "the type name '" + name + "' is declared by more than one source unit; converted documents share one flat type namespace");
         if (pass == 1) {
             if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
@@ -4631,6 +4696,12 @@ private:
                 MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.owner = cls; ms.visibility = visibilityOf(mods); ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
+            }
+            if (pass == 2) {
+                std::string erased;
+                for (size_t i = 0; i < params.size(); i++) erased += (i ? "," : "") + emitType(params[i].second);
+                if (!emittedCtorSigs_[cls].insert(erased).second)
+                    fail("overload-erasure", "two constructors of '" + cls + "' lower to the same SLeeLa parameter list (" + erased + ")");
             }
             std::string plist = paramList(params);
             std::string sig = enumMode_ ? cls + "(String enumName_, int enumOrd_" + (plist.empty() ? "" : ", " + plist) + ")" : cls + "(" + plist + ")";

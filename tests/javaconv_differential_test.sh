@@ -382,6 +382,58 @@ else
   printf 'FAIL  duplicate-type (rc=%s)\n%s\n' "$duplicate_rc" "$duplicate_out"; fail=$((fail+1))
 fi
 
+# cascade: a unit that converted against the signatures of a unit that failed closed
+# would name members nothing defines (here the overload name of Gadget.make). The
+# dependent unit must be converted again without the failed unit in the index and
+# fail closed itself; the independent unit still converts.
+mkdir -p "$tmp/cascade/src" "$tmp/cascade/out"
+cat > "$tmp/cascade/src/Gadget.java" <<'JAVA'
+public class Gadget {
+  static int make(int v) { return v; }
+  static int make(int v, int w) { return v + w; }
+  native int probe();
+}
+JAVA
+cat > "$tmp/cascade/src/UsesGadget.java" <<'JAVA'
+public class UsesGadget {
+  public static void main(String[] args) { System.out.println(Gadget.make(2)); }
+}
+JAVA
+cat > "$tmp/cascade/src/Alone.java" <<'JAVA'
+public class Alone {
+  public static void main(String[] args) { System.out.println(7); }
+}
+JAVA
+cascade_out="$("$conv" --jdk "$tmp/cascade/src" --out "$tmp/cascade/out" 2>&1)"
+cascade_rc=$?
+if [ "$cascade_rc" -eq 1 ] && [ ! -e "$tmp/cascade/out/UsesGadget.sleela" ] && [ ! -e "$tmp/cascade/out/Gadget.sleela" ] &&
+   [ -e "$tmp/cascade/out/Alone.sleela" ] && grep -q 'UsesGadget.java' "$tmp/cascade/out/CONVERSION-REPORT.md" &&
+   grep -q 'round 2' "$tmp/cascade/out/CONVERSION-REPORT.json"; then
+  printf 'PASS  %-12s dependent of a failed-closed unit refused in round 2; independent unit converts\n' "cascade"; pass=$((pass+1))
+else
+  printf 'FAIL  cascade (rc=%s)\n%s\n' "$cascade_rc" "$cascade_out"; fail=$((fail+1))
+fi
+
+# flat namespace: two packages each declaring Clash cannot both be emitted, because
+# converted documents link into one type namespace. Both declarations fail closed.
+mkdir -p "$tmp/flatns/src/p1" "$tmp/flatns/src/p2" "$tmp/flatns/out"
+cat > "$tmp/flatns/src/p1/Clash.java" <<'JAVA'
+package p1;
+class Clash { int one() { return 1; } }
+JAVA
+cat > "$tmp/flatns/src/p2/Clash.java" <<'JAVA'
+package p2;
+class Clash { int two() { return 2; } }
+JAVA
+flat_out="$("$conv" --jdk "$tmp/flatns/src" --out "$tmp/flatns/out" 2>&1)"
+flat_rc=$?
+if [ "$flat_rc" -eq 1 ] && [ "$(find "$tmp/flatns/out" -name 'Clash.sleela' | wc -l)" -eq 0 ] &&
+   [ "$(printf '%s' "$flat_out" | grep -c '\[type-ambiguous\]')" -eq 2 ]; then
+  printf 'PASS  %-12s same simple name in two packages: both declarations refused\n' "flat-namespace"; pass=$((pass+1))
+else
+  printf 'FAIL  flat-namespace (rc=%s)\n%s\n' "$flat_rc" "$flat_out"; fail=$((fail+1))
+fi
+
 # project-wide generic inheritance: type arguments must be substituted through
 # a cross-file superclass and interface edge before inherited calls are emitted.
 mkdir -p "$tmp/project-inherited/src" "$tmp/project-inherited/cls" "$tmp/project-inherited/sl"

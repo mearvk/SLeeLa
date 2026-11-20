@@ -84,11 +84,33 @@ The refusal rows are the `unsupported` records of the model.
   identical: Anon, Basics, Bounds, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested,
   ObjectText, Operands (191 lines of int/long/double/narrowing results), Records, Refs, Resources, Shapes, Strings,
   Switches, Sync, Varargs, IdentifierParity, OverloadWidening, ReservedIdentifiers, GenericIdentity, BoxingOverload, GenericCommonReference, NestedGenericInference, BoundedGeneric, ClassGenericReceiver, InheritedGenericReceiver, WildcardGeneric, StaticImports, BoundedClassType, LowerBoundWildcardInference, GenericWildcardLowerBound, GenericConstructorExplicitArguments, GenericConstructorClassSubstitution. The new generic fixtures and the updated `Refs` overload/method-reference fixture were changed after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
-- `tests/reject/*.java` (27 programs) must be refused with the construct named on their `// expect:` line
+- `tests/reject/*.java` (28 programs) must be refused with the construct named on their `// expect:` line
   and write nothing.
 - stale output: a file converted on one run and failing closed on the next leaves no `.sleela` behind.
 
 ## Status (honest)
+
+**2026-11-20: resolution fixes and whole-tree check.** Three converter defects let output through that does not
+link: (1) a unit converted against the signatures of a unit that failed closed, so it named members nothing
+defines (for example 63 calls to `Objects.requireNonNull__T`); (2) a nested type of a library type was written
+`Map__Entry`, which the SLeeLa loader does not resolve (it resolves `Map.Entry`); (3) a type outside both the run
+and `/lib` was written as-is. Also: two declarations with one simple name in different packages were both
+emitted (`Tripwire`), and `float`/`double` constructor overloads lowered to one signature (`AssertionError`).
+The converter now converts to a fixpoint, spells library nested types dotted, refuses `[library-type]`,
+`[type-ambiguous]` and `[overload-erasure]`, and records the `/lib` name set in provenance (JAVA.SPEC.md 5.1).
+Measured on the JDK 25.0.5 `java.base` subset (884 files) with `tests/javaconv_check_tree.sh`:
+
+| | before | after |
+|---|---|---|
+| files converted | 341 (381 SLeeLa files) | 290 (325 SLeeLa files) |
+| semantic errors with every emitted file linked | 874 | 108 |
+| emitted files with an attributed error | 110 | 30 |
+| emitted files with none | 271 | 295 |
+
+The remaining 108 errors are calls into `/lib` units that lack the member or declare it differently (for example
+`Arrays.fill` and `Optional.of` declared as instance methods, `Unsafe.storeStoreFence` absent). Differential suite:
+100 of 100 (adds `reject/ConstructorErasure`, `cascade`, `flat-namespace`; the old converter fails all three and the
+provenance check). The text below is the earlier status, kept as the record.
 
 Converted and proven against a JDK (`tests/javaconv_differential_test.sh`, 22 programs plus 9 refusals and a
 stale-output check, 32 of 32 passing on 2026-11-13; in CI as `.github/workflows/java-convert.yml`). The later `IdentifierParity`, `OverloadWidening`, `ReservedIdentifiers`, `GenericIdentity`, `StaticImports`, and updated `Refs` fixtures, the `AmbiguousWideningOverload` and `BoundedGenericInference` refusal fixtures, and the overload-resolution/import changes, class-bound and deferred wildcard-lower-bound fixtures, the generic-constructor-diamond and generic-constructor-bound refusal fixtures, the constructor class-substitution fixtures, and the `BoxingOverload`, `GenericCommonReference`, `BoundedGeneric`, `NestedGenericInference`, `ClassGenericReceiver`, and `WildcardGeneric` fixtures have not yet been run:

@@ -74,4 +74,11 @@ if input_fp != data.get("inputSnapshotSha256"):
 output_fp = verify_list("outputs", data.get("outputs"), out)
 if output_fp != data.get("outputSnapshotSha256"):
     fail("output snapshot aggregate mismatch")
+lib_units = data.get("libraryUnits")
+if not isinstance(lib_units, dict) or not isinstance(lib_units.get("sha256"), str):
+    fail("library unit vocabulary digest missing")
+lib_root = repo / "lib"
+stems = sorted({p.stem for p in lib_root.rglob("*.sleela") if p.is_file()}) if lib_root.is_dir() else []
+if len(stems) != lib_units.get("count") or sha("".join(x + "\n" for x in stems).encode()) != lib_units["sha256"]:
+    fail("library unit vocabulary mismatch")
 print("javaconv provenance: PASS")

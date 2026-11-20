@@ -305,7 +305,21 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | `synchronized`/`volatile` in a multi-threaded program | memory model | real monitors, or keep the single-thread policy |
 | A boxed value converted to a class supertype of its wrapper (`Integer` to `Number`, `Comparable`, `Serializable`) | boxed values use primitive storage; `Object` (the VM universal type) holds one, a SLeeLa class type such as `lib/java` `Number` cannot | a `Number` view over primitive storage (runtime `intValue`/`doubleValue` helpers); until then fails closed (`[boxed-reference]`, test `reject/BoxedToNumber`) |
 | A concrete array passed to, or recovered from, a type-variable array `T[]` | `T[]` erases to `Any[]`; SLeeLa arrays are invariant and casts to array types are not available (SLEELA.syntax 46) | array element contracts in SLeeLa, then a checked array cast; `T...` with packed arguments is converted (packed as `Any[]`), the rest fails closed (`[generic-array]`, test `reject/GenericArrayIdentity`) |
+| A type that is neither converted in the same run nor provided by a unit under `/lib` (`[library-type]`) | the reference would not resolve when the output is linked; this includes types of units that failed closed | convert the unit that declares it, or add the type to `lib/java` |
+| Two project declarations with the same simple name, even in different packages (`[type-ambiguous]`) | converted documents link into one flat type namespace | package-qualified hoisted names |
+| Two constructors that lower to the same SLeeLa parameter list, such as `float` and `double` (`[overload-erasure]`) | SLeeLa selects a constructor by its emitted parameter types | signature-named constructor lowering |
 | `native` | no Java body and no declared Java-to-SLeeLa ABI binding | accept only when a modelled, verified native binding maps the exact owner/signature/ABI; otherwise fail closed (`[native]`) |
+
+### 5.1 Resolution of references across a run (2026-11-20)
+
+A run converts to a fixpoint. A unit that fails closed emits nothing, so the converter drops it from the
+project index and converts the other units again; their references to the dropped types then resolve
+like any non-project type, or fail closed (the diagnostic says `round N`). A non-project type in the
+output must be a `/lib` unit name (a file stem such as `Objects` or `Map.Entry`); a nested type of a
+library type is written `Outer.Inner`, the spelling the SLeeLa loader resolves. The `/lib` name set is
+recorded in `CONVERSION-PROVENANCE.json` (`libraryUnits`). Members of `/lib` types are not checked: a
+call to a method the `/lib` unit does not declare, or declares as an instance method where Java has a
+static one, still converts and fails at link time. `tests/javaconv_check_tree.sh` measures that.
 
 ## 6. How to extend the tier
 

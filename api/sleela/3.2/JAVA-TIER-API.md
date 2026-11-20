@@ -48,9 +48,12 @@ are the model `impl/subjects/conversion/conversion.model`.
 ## Verification
 
 - `tests/javaconv_differential_test.sh` runs each fixture on a real JDK and, converted, on the SLeeLa VM, and requires
-  identical output. Last run on `master`: pass=97, fail=0.
+  identical output. Last run on `master`: pass=100, fail=0.
 - `tests/javaconv_check_tree.sh <out-dir>` links every emitted file and runs the semantic checker over the set.
   "Converted" means the converter accepted the file; this script measures whether the output also checks. On the
   `java.base` subset (`java/lang`, `java/util`, `java/math`, `java/text`, 884 source files), measured 2026-11-20 with
   model 1.5.0: 341 files converted (381 SLeeLa files), 271 of those 381 have no attributed semantic error and 110 do
   (874 errors with all files linked; attribution is by leave-one-out and is approximate).
+- After the resolution fixes of 2026-11-20 (`lib/java/JAVA.SPEC.md` 5.1), the same subset gives 290 converted files
+  (325 SLeeLa files); 295 have no attributed semantic error and 30 do (108 errors with all files linked). The
+  remaining errors are calls into `/lib` units that lack the member or declare it differently.

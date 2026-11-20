@@ -497,16 +497,70 @@ int main(int argc, char** argv) {
         }
     }
 
-    // Pass 1 over the whole immutable snapshot: calls and field reads across files
-    // are typed against one consistent source generation.
-    javaconv::SymbolTable table;
-    for (auto& in : inputs) {
+    // Convert to a fixpoint. Pass 1 indexes the signatures of every unit still in
+    // the project; pass 2 converts against that index. A unit that fails closed
+    // emits nothing, so the types it declares do not exist in the output. A unit
+    // that converted against those signatures would name members (overload
+    // signature names, project-only types) that nothing defines. Each round
+    // therefore drops the failed units from the index and converts the remaining
+    // units again: their references to the dropped types now resolve the way a
+    // reference to any non-project type does (the model and the lib/java tier),
+    // or fail closed. The loop ends when a round adds no failure; it is bounded
+    // by the number of units because every extra round removes at least one.
+    // The /lib unit names the SLeeLa loader resolves (file stems). A reference to a
+    // non-project type outside this set would not resolve, so the translator fails
+    // it closed. No /lib directory (an installed converter without the library):
+    // the check is off and the report says so.
+    std::set<std::string> libraryUnits;
+    std::string libraryFingerprint;
+    {
+        const fs::path lib = root / "lib";
+        std::error_code lec;
+        if (fs::is_directory(lib, lec)) {
+            for (fs::recursive_directory_iterator li(lib, lec), lend; !lec && li != lend; li.increment(lec)) {
+                std::error_code tec;
+                if (li->is_regular_file(tec) && li->path().extension() == ".sleela")
+                    libraryUnits.insert(li->path().stem().string());
+            }
+            if (lec) { std::cerr << "javaconv: cannot walk '" << lib.string() << "': " << lec.message() << "\n"; cm_free(&model); return 2; }
+        }
+        for (const auto& u : libraryUnits) { libraryFingerprint += u; libraryFingerprint.push_back('\n'); }
+    }
+    auto optionsFor = [&](const InputFile& in) {
         javaconv::Options o;
         o.sourceName = in.rel.generic_string();
         o.jdkVersion = c.version;
+        o.author = c.author;
         o.singleThread = c.singleThread;
         o.checkedArrays = !c.uncheckedSizes;
-        javaconv::collect(in.source, model, o, table);
+        o.bundle = c.bundle || !c.file.empty();
+        if (c.split) o.bundle = false;
+        o.bundleName = in.path.stem().string();
+        if (!libraryUnits.empty()) o.libraryUnits = &libraryUnits;
+        return o;
+    };
+    std::vector<javaconv::Result> results(inputs.size());
+    std::vector<bool> dropped(inputs.size(), false);
+    std::vector<int> failedRound(inputs.size(), 0);
+    for (int round = 1;; round++) {
+        javaconv::SymbolTable table;
+        for (size_t i = 0; i < inputs.size(); i++)
+            if (!dropped[i]) javaconv::collect(inputs[i].source, model, optionsFor(inputs[i]), table);
+        bool newFailure = false;
+        for (size_t i = 0; i < inputs.size(); i++) {
+            if (dropped[i]) continue;
+            results[i] = javaconv::convert(inputs[i].source, model, optionsFor(inputs[i]), &table);
+            if (!results[i].ok() || results[i].files.empty()) {
+                dropped[i] = true;
+                failedRound[i] = round;
+                newFailure = true;
+                if (round > 1)
+                    for (auto& d : results[i].diagnostics)
+                        d.message += " (round " + std::to_string(round) +
+                                     ": after units that failed closed were removed from the project index)";
+            }
+        }
+        if (!newFailure) break;
     }
 
     // Work on a complete staged generation. All existing output, including
@@ -541,19 +595,11 @@ int main(int argc, char** argv) {
     std::vector<FileOutcome> outcomes;
     std::map<std::string, size_t> byConstruct;
     size_t emitted = 0;
-    for (auto& in : inputs) {
+    for (size_t idx = 0; idx < inputs.size(); idx++) {
+        const InputFile& in = inputs[idx];
         FileOutcome fo;
         fo.rel = in.rel.generic_string();
-        javaconv::Options opt;
-        opt.sourceName = fo.rel;
-        opt.jdkVersion = c.version;
-        opt.author = c.author;
-        opt.singleThread = c.singleThread;
-        opt.checkedArrays = !c.uncheckedSizes;
-        opt.bundle = c.bundle || !c.file.empty();
-        if (c.split) opt.bundle = false;
-        opt.bundleName = in.path.stem().string();
-        javaconv::Result r = javaconv::convert(in.source, model, opt, &table);
+        const javaconv::Result& r = results[idx];
         if (r.ok() && !r.files.empty()) {
             fs::path dir = outRoot / in.rel.parent_path();
             std::error_code ec;
@@ -685,6 +731,8 @@ int main(int argc, char** argv) {
       << "  \"converterSourceSha256\": \"" << sha256Hex(converterFingerprint) << "\",\n"
       << "  \"inputSnapshotSha256\": \"" << sha256Hex(sourceFingerprint) << "\",\n"
       << "  \"outputSnapshotSha256\": \"" << sha256Hex(outputFingerprint) << "\",\n"
+      << "  \"libraryUnits\": {\"count\": " << libraryUnits.size() << ", \"sha256\": \"" << sha256Hex(libraryFingerprint)
+      << "\", \"identity\": \"sorted .sleela file stems under <repo>/lib, one per line; non-project types must be one of them\"},\n"
       << "  \"options\": {\"bundle\": " << ((c.bundle || !c.file.empty()) && !c.split ? "true" : "false")
       << ", \"singleThread\": " << (c.singleThread ? "true" : "false")
       << ", \"checkedArrays\": " << (c.uncheckedSizes ? "false" : "true")

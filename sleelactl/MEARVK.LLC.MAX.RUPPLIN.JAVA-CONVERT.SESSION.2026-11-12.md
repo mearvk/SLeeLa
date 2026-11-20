@@ -171,3 +171,21 @@ record of what was decided on 2026-11-13. They no longer describe the tree. Synt
 `#sleela 3.3` is the above-ceiling case in `impl/tests/version`, and `sleelactl/convert` emits `#sleela 3.2`. Read the
 "syntax 3.2" addendum (the char and array specifications) as current and the "aligned to 3.01 (3.1)" addendum as
 superseded. Where other notes say the converter "stays at 3.1", the same caveat applies; each carries a pointer to this one.
+
+## Addendum: references that do not link (2026-11-20)
+
+A new whole-tree check, `tests/javaconv_check_tree.sh`, links every emitted file and runs the semantic checker.
+On the JDK 25.0.5 `java.base` subset it found 874 errors in 110 of 381 emitted files. Five converter defects caused
+most of them; all were fixed in `sleelactl/convert` (no change to `impl/frontend`, `impl/core` or the model):
+
+| Defect | Fix |
+|---|---|
+| A unit converted against the index entries of a unit that then failed closed, so it called members nothing defines (`Objects.requireNonNull__T`) | the run converts to a fixpoint; failed units leave the index; later refusals say `round N` |
+| A nested type of a library type was written `Map__Entry`; the loader resolves only `Map.Entry` | non-project nested types are written dotted |
+| A type in neither the run nor `/lib` was written as-is | `[library-type]` against the `/lib` unit names, recorded in provenance |
+| `java/util/Tripwire` and `java/util/stream/Tripwire` were both emitted into one flat namespace | `[type-ambiguous]` for every declaring unit |
+| `AssertionError(float)` and `AssertionError(double)` lowered to one constructor | `[overload-erasure]` |
+
+After: 290 of 884 files convert (325 SLeeLa files), 108 errors in 30 files. Differential suite 100 of 100. Members of
+`/lib` types are still not checked; the remaining errors are of that kind and belong to the `lib/java` tier.
+

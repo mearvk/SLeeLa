@@ -121,6 +121,11 @@ struct Options {
     // wrapper: the VM throws it inside a try, SLEELA.syntax 37.5 and lib/java/support/SLJavaFaults.)
     // --unchecked-sizes omits the wrapper (NOT equivalent for a program that reaches a negative size).
     bool checkedArrays = true;
+    // Names of the SLeeLa units under /lib (file stems, e.g. "Objects", "Map.Entry"): the
+    // names the SLeeLa loader can resolve. When set, a type that is neither a project type
+    // of this run nor a model type must be one of these, or the member fails closed
+    // [library-type]: emitting it would leave a reference that nothing defines.
+    const std::set<std::string>* libraryUnits = nullptr;
 };
 
 struct Result {
