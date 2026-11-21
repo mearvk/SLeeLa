@@ -726,12 +726,59 @@ private:
     // `new T().m(...)`), and fails closed when the unit has only a stub or no such member.
     // Units outside lib/java/jdk-28, and project types, are not checked here.
     enum LibCall { kLibOk = 0, kLibViaInstance = 1, kLibUnchecked = 2 };
+    // Whether a /lib parameter declared as `param` accepts an argument of Java type `a` once linked:
+    // 1 yes, 0 no, 2 not decided (lenient). Only clear mismatches are 0: a reference or array for a
+    // primitive, a narrowing primitive, arrays of different primitive elements, a non-String for
+    // String, and a String for a class other than Object (String is a SLeeLa keyword type).
+    int libParamAccepts(std::string param, const E& a) const {
+        if (param.empty() || param == "Any" || param == "Object") return 1;
+        Ty t = a.ty;
+        if (a.isNull) {
+            if (param.find('[') == std::string::npos && (isPrimitiveName(param) > 0 || param == "boolean")) return 0;
+            return 1;
+        }
+        if (!t.known() || t.n == "Any" || t.n == "?" || t.n.rfind("$", 0) == 0 || t.n.rfind("type:", 0) == 0 || a.libAny) return 2;
+        int pd = 0; while (param.size() > 2 && param.compare(param.size() - 2, 2, "[]") == 0) { param.resize(param.size() - 2); pd++; }
+        std::string an = t.n;
+        if (t.boxed) { std::string prim; if (modelBoxed(an, &prim)) an = prim; }
+        auto prim = [&](const std::string& x) { return x == "boolean" || isPrimitiveName(x) > 0; };
+        auto norm = [](std::string x) { return x == "float" ? std::string("double") : x; };
+        if (pd > 0) {
+            if (t.dims != pd) return 0;
+            if (prim(param) || prim(an)) return norm(param) == norm(an) ? 1 : 0;
+            return param == an ? 1 : 2;
+        }
+        if (t.dims > 0) return (prim(param) || param == "String") ? 0 : 2;
+        if (prim(param)) {
+            if (!prim(an)) return 0;
+            static const std::map<std::string, int> rank = {{"byte",1},{"short",2},{"char",2},{"int",3},{"long",4},{"float",5},{"double",6}};
+            if (param == "boolean" || an == "boolean") return param == an ? 1 : 0;
+            auto pr = rank.find(param), ar = rank.find(an);
+            if (pr == rank.end() || ar == rank.end()) return 2;
+            if (an == "char" && (param == "short" || param == "byte")) return 0;
+            return ar->second <= pr->second ? 1 : 0;
+        }
+        if (param == "String") return an == "String" ? 1 : 0;
+        if (an == "String" || prim(an)) return 0;
+        if (an == param) return 1;
+        return 2;
+    }
+    bool libParamsAccept(const LibMember& m, const std::vector<E>* args) const {
+        if (!args || m.params.size() != args->size()) return true;
+        for (size_t i = 0; i < args->size(); i++) if (libParamAccepts(m.params[i], (*args)[i]) == 0) return false;
+        return true;
+    }
+    std::string argTypesText(const std::vector<E>& args) const {
+        std::string r;
+        for (size_t i = 0; i < args.size(); i++) r += (i ? ", " : "") + (args[i].isNull ? std::string("null") : args[i].ty.known() ? emitType(args[i].ty) : std::string("?"));
+        return r;
+    }
     LibCall checkLibraryCall(const std::string& name, const std::string& member, size_t arity, bool staticCall, bool ctor,
-                             std::string* libRet = nullptr) const {
+                             std::string* libRet = nullptr, const std::vector<E>* args = nullptr) const {
         if (pass != 2 || !opt.library || name.empty() || isProjectType(name)) return kLibUnchecked;
         if (cm_find(&M, "type", name.c_str(), nullptr, nullptr)) return kLibUnchecked;
         const std::string spelled = spellTypeName(name);
-        bool stubSeen = false, instanceSeen = false, unchecked = false;
+        bool stubSeen = false, instanceSeen = false, unchecked = false, typeMismatch = false;
         std::string up = spelled;
         std::set<std::string> seen;
         for (int depth = 0; depth < 32 && !up.empty() && seen.insert(up).second; depth++) {
@@ -739,6 +786,10 @@ private:
             if (!u) { unchecked = depth > 0; break; }
             for (const LibMember& m : u->members) {
                 if (m.ctor != ctor || (!ctor && m.name != member) || m.arity != (int)arity) continue;
+                // An overload whose declared parameter types clearly cannot take these arguments would
+                // not be selected when the output is linked (Arrays.fill(long[], long) against the only
+                // real fill(int[], int)). It does not count as a match.
+                if (!libParamsAccept(m, args)) { typeMismatch = true; continue; }
                 if (m.stub) { stubSeen = true; continue; }
                 if (libRet) *libRet = m.ret;
                 if (ctor || !staticCall || m.isStatic) return kLibOk;
@@ -762,6 +813,8 @@ private:
                                       : "'" + spelled + "." + member + "' taking " + std::to_string(arity) + " argument(s)";
         if (stubSeen)
             throw ConvErr{cur().line, cur().col, "library-stub", what + " exists in /lib only as a signature stub that returns a default value"};
+        if (typeMismatch && args)
+            throw ConvErr{cur().line, cur().col, "library-member", what + " is declared by its /lib unit, but no overload takes (" + argTypesText(*args) + ")"};
         throw ConvErr{cur().line, cur().col, "library-member", what + " is not declared by its /lib unit" + (staticCall && !ctor ? " as a callable static member" : "")};
     }
 
@@ -815,7 +868,8 @@ private:
     // With onlyIfNamed, the check applies only when an ancestor unit declares a member of that
     // name: in a nested class an unqualified name the class does not have resolves outward.
     void checkInheritedLibraryCall(const std::string& projectType, const std::string& member, size_t arity,
-                                   std::string* libRet = nullptr, bool onlyIfNamed = false) const {
+                                   std::string* libRet = nullptr, bool onlyIfNamed = false,
+                                   const std::vector<E>* args = nullptr) const {
         if (pass != 2 || !opt.library) return;
         // The first non-project class on the superclass chain is checked strictly, as a direct
         // /lib call (a type without a lib/java/jdk-28 unit is then refused). An ancestor reached
@@ -858,7 +912,7 @@ private:
             if (cm_find(&M, "type", a.c_str(), nullptr, nullptr)) return;
             if (!anc.second && !opt.library->unit(spellTypeName(a))) { unknown = true; continue; }
             try {
-                const LibCall k = checkLibraryCall(a, member, arity, false, false, libRet);
+                const LibCall k = checkLibraryCall(a, member, arity, false, false, libRet, args);
                 if (k == kLibOk || k == kLibUnchecked) return;
             } catch (const ConvErr& e) {
                 if (e.construct == "library-stub") { if (!stubbed) stubErr = e; stubbed = true; }
@@ -2416,7 +2470,7 @@ private:
                         std::string receiverCode = e.code;
                         std::string libRet;
                         if (!sm && e.ty.n.rfind("type:", 0) == 0 &&
-                            checkLibraryCall(e.ty.n.substr(5), calledName(sm, name), args.size(), true, false, &libRet) == kLibViaInstance)
+                            checkLibraryCall(e.ty.n.substr(5), calledName(sm, name), args.size(), true, false, &libRet, &args) == kLibViaInstance)
                             receiverCode = "new " + e.code + "()";
                         E r = callResult(owner, name, args, receiverCode + "." + calledName(sm, name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
                         if (!sm) castLibraryResult(libRet, r);
@@ -2445,8 +2499,8 @@ private:
                     }
                     std::string libRet;
                     if (!im && e.ty.dims == 0 && e.ty.known() && !e.ty.boxed) {
-                        if (isProjectType(recvType)) checkInheritedLibraryCall(recvType, calledName(im, name), args.size(), &libRet);
-                        else checkLibraryCall(recvType, calledName(im, name), args.size(), false, false, &libRet);
+                        if (isProjectType(recvType)) checkInheritedLibraryCall(recvType, calledName(im, name), args.size(), &libRet, false, &args);
+                        else checkLibraryCall(recvType, calledName(im, name), args.size(), false, false, &libRet, &args);
                     }
                     E r = callResult(recvType, name, args, paren(e.code) + "." + calledName(im, name) + "(" + joinArgs(args) + ")", false, &e.ty, expected);
                     if (!im) castLibraryResult(libRet, r);
@@ -2703,7 +2757,7 @@ private:
                 {
                     auto self = classes.find(curClass);
                     if (self != classes.end() && !self->second.super.empty())
-                        checkLibraryCall(self->second.super, "<init>", a.size(), false, true);
+                        checkLibraryCall(self->second.super, "<init>", a.size(), false, true, nullptr, &a);
                 }
                 E r; r.code = "super(" + joinArgs(a) + ")"; r.pure = false; r.ty = mk("void");
                 return r;
@@ -2768,7 +2822,7 @@ private:
                         if (named) {
                             if (!importedOwner.empty() && importedOwner != owner)
                                 fail("static-import-ambiguous", "unqualified call '" + name + "' matches more than one static import; qualify the owner");
-                            const LibCall k = checkLibraryCall(owner, name, a.size(), true, false, &importedLibRet);
+                            const LibCall k = checkLibraryCall(owner, name, a.size(), true, false, &importedLibRet, &a);
                             importedOwner = owner;
                             importedLibViaInstance = k == kLibViaInstance;
                             continue;
@@ -2796,9 +2850,9 @@ private:
             if (!pm) refuseObjectMethod(curClass, name);
             if (!pm && importedOwner.empty() && anonStack_.empty()) {
                 // An inherited method of a /lib superclass or interface: it must exist in that unit chain.
-                checkInheritedLibraryCall(curClass, mapMember(safeNameForCall(name)), a.size());
+                checkInheritedLibraryCall(curClass, mapMember(safeNameForCall(name)), a.size(), nullptr, false, &a);
             } else if (!pm && importedOwner.empty() && anonStack_.back().sub.rfind("#nest", 0) == 0) {
-                checkInheritedLibraryCall(curClass, mapMember(safeNameForCall(name)), a.size(), nullptr, true);
+                checkInheritedLibraryCall(curClass, mapMember(safeNameForCall(name)), a.size(), nullptr, true, &a);
             }
             a = adaptArgs(pm, a);
             // A Java method named like a SLeeLa built-in (read, write, accept, lock, send, ...) would be taken
@@ -3079,7 +3133,7 @@ private:
             fail("constructor-resolution", "no accessible constructor of '" + name +
                  "' accepts the supplied arguments after class type substitution");
         args = adaptArgs(constructor, args);
-        if (!constructor && !declaresConstructors) checkLibraryCall(name, "<init>", args.size(), false, true);
+        if (!constructor && !declaresConstructors) checkLibraryCall(name, "<init>", args.size(), false, true, nullptr, &args);
         std::string outerArg;
         {
             auto ci = classes.find(name);
@@ -5800,6 +5854,30 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
             else if (c != ' ' && c != '\t') any = true;
         }
         m.arity = any ? commas + 1 : 0;
+        if (m.arity > 0) {
+            // parameter types: every token of a parameter except its name, generics removed
+            std::string cur; int d = 0; size_t i = open + 1;
+            auto flush = [&]() {
+                std::string t = cur; cur.clear();
+                std::string noGen; int g = 0;
+                for (char c : t) { if (c == '<') g++; else if (c == '>') g--; else if (!g) noGen += c; }
+                std::istringstream ps(noGen); std::vector<std::string> w; std::string x;
+                while (ps >> x) if (x != "final") w.push_back(x);
+                std::string ty;
+                if (w.size() >= 2) { for (size_t k = 0; k + 1 < w.size(); k++) ty += w[k]; }
+                if (ty.rfind("java.lang.", 0) == 0) ty = ty.substr(10);
+                m.params.push_back(ty);
+            };
+            for (; i < line.size(); i++) {
+                const char c = line[i];
+                if (c == '(' || c == '<' || c == '[') d++;
+                else if (c == ']' || c == '>') d--;
+                else if (c == ')') { if (d == 0) break; d--; }
+                if (c == ',' && d == 0) { flush(); continue; }
+                cur += c;
+            }
+            flush();
+        }
         m.stub = inStubs && !(isInterface && !isDefault && !m.isStatic && !m.ctor);
         u.members.push_back(m);
     }

@@ -257,3 +257,16 @@ All of `java.base`: **871 of 3344** converted (894 SLeeLa files), up from 864, n
 `[nested-ambiguous]` sites 3,165 -> 184. The 894 emitted files link with 109 semantic errors (unchanged count, no new
 message). Largest first refusals now: `type-ambiguous` 499 files, `library-type` 310, `library-stub` 205,
 `library-member` 191.
+
+## 15. Iteration: /lib member check compares parameter types
+
+The `/lib` member check matched by name and argument count only. A call whose only same-arity real member had
+other parameter types converted, then failed at link time: `Arrays.fill(long[], long)` against the only real
+`fill(int[], int)` ("argument to 'fill' has type long[], expected int[]"), and a String passed for `CharSequence`.
+`LibraryIndex::unit` now records each member's declared parameter types. A same-arity member counts only if
+`libParamAccepts` does not rule it out. Only clear mismatches are ruled out: a reference or array for a primitive, a
+narrowing primitive, arrays of different primitive elements, a non-String for `String`, and a `String` for a class
+other than Object (String is a SLeeLa keyword type). Unknown or generic arguments stay lenient. The refusal says
+which argument types no overload takes. Applied to static, instance, inherited, statically imported and
+constructor calls. Tests `LibraryOverloads`, `reject/LibraryParameterTypes`. Differential suite 144 of 144.
+Pushed before the `java.base` re-measurement finished (recorded in the next section).

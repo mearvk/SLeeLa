@@ -101,7 +101,9 @@ struct SymbolTable {
 // `stub` is a body that only returns a default value. An abstract method of an interface unit
 // is written in the same stub form, but calling it dispatches to the implementing class, so it
 // is not a stub (`stub` stays false for it).
-struct LibMember { std::string name; std::string ret; int arity = 0; bool isStatic = false; bool stub = false; bool ctor = false; };
+struct LibMember { std::string name; std::string ret; int arity = 0; bool isStatic = false; bool stub = false; bool ctor = false;
+                   std::vector<std::string> params;   // declared SLeeLa parameter types, as written in the unit (`int[]`, `Any`, `String`)
+};
 // A field declared by a lib/java/jdk-28 unit. In the generated "java declarations" section a
 // reflected constant is `static final` with its JDK value; a non-final static there is a
 // placeholder (`= null`, or 0.0 for an infinity) whose value is not the JDK value.
