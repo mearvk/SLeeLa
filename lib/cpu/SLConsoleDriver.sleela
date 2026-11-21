@@ -3,7 +3,7 @@
    Definition: Defines SLConsoleDriver — a character-output driver (the system
      console / serial tty). It extends SLDeviceDriver and writes characters out
      of its port; the OS's print path and the shell use it. The native side
-     renders bytes to the host terminal across the explicit VM/OS bridge.
+     renders bytes to the host terminal through SLConsoleSink.
    
    Family: cpu. Extends SLDeviceDriver. >>
 #sleela 2.5
@@ -63,8 +63,10 @@ class SLConsoleDriver extends SLDeviceDriver {
     if (!ready()) { return -1; }
     write(code);
     charsWritten = charsWritten + 1;
-    return native sleela_console_putc(code);
+    if (sink == null) { sink = new SLConsoleSink(); sink.configure(); }
+    return sink.put(code);
   }
 
   int charCount() { return charsWritten; }
+  SLConsoleSink sink;
 }

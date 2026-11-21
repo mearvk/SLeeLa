@@ -2,13 +2,15 @@
    SLeeLa Standard Library Definition.
    Definition: Defines SLRAM — random-access main memory: a word-addressable
      store the CPU reads instructions and data from. It models capacity, word
-     width, and access counting, and crosses the explicit VM/OS bridge to the
-     native memory subsystem for the actual backing cells (SLeeLa's surface has
-     no large array storage, so bulk cells live below the bridge).
+     width, and access counting. Memory up to 1048576 words is a dense int
+     array. Larger memories (a GPU with gigabytes of VRAM, a 64-bit address
+     space) use a sparse open-addressing table of 262144 slots, so only the
+     words actually written cost storage and an untouched word reads as 0.
+     A sparse store that fills up refuses further new words by returning -1.
    
    Addressing is by word index; out-of-range access is rejected.
    
-   Family: cpu. Native backing store via bridge. >>
+   Family: cpu. Pure SLeeLa storage; no native bridge. >>
 #sleela 2.5
 material;
 class SLRAM {
@@ -57,36 +59,82 @@ class SLRAM {
   int wordCount;
   < bits per word >
   int width;
-  < native backing-store handle (0 until allocated) >
+  < 1 once allocated, 0 before allocate() or after free() >
   int handle;
   int reads;
   int writes;
+  < dense backing cells, used when wordCount fits DENSE_LIMIT >
+  int[] cells;
+  < sparse table: key is address plus one, 0 marks an empty slot >
+  int[] keys;
+  int[] vals;
+  int slots;
+  int used;
+  int sparse;
+  static final int DENSE_LIMIT = 1048576;
+  static final int SPARSE_SLOTS = 262144;
 
   void configure(int words, int bits) {
     wordCount = words; width = bits; handle = 0; reads = 0; writes = 0;
+    sparse = 0; slots = 0; used = 0;
   }
 
-  < Allocate the native backing store (zero-initialized). >
+  < Allocate the backing store (zero-initialized). Returns the handle, 1. >
   int allocate() {
-    handle = native sleela_mem_alloc_words(wordCount, width);
+    if (wordCount <= 1048576) {
+      cells = new int[wordCount]; sparse = 0;
+    } else {
+      slots = 262144;
+      keys = new int[slots]; vals = new int[slots]; sparse = 1; used = 0;
+    }
+    handle = 1;
     return handle;
   }
 
   boolean inRange(int addr) { return addr >= 0 && addr < wordCount; }
 
+  < Find the table slot for an address: its own slot, or the first empty one. >
+  int slotFor(int addr) {
+    int key = addr + 1;
+    int i = (addr * 40503) % slots;
+    int probes = 0;
+    while (probes < slots) {
+      if (keys[i] == key || keys[i] == 0) { return i; }
+      i = i + 1;
+      if (i >= slots) { i = 0; }
+      probes = probes + 1;
+    }
+    return -1;
+  }
+
   int readWord(int addr) {
     if (!inRange(addr)) { return -1; }
     reads = reads + 1;
-    return native sleela_mem_read_word(handle, addr);
+    if (handle == 0) { return 0; }
+    if (sparse == 0) { return cells[addr]; }
+    int i = slotFor(addr);
+    if (i < 0 || keys[i] == 0) { return 0; }
+    return vals[i];
   }
 
+  < Store a word. Returns 0, or -1 when out of range or the sparse table is full. >
   int writeWord(int addr, int value) {
     if (!inRange(addr)) { return -1; }
+    if (handle == 0) { return -1; }
     writes = writes + 1;
-    return native sleela_mem_write_word(handle, addr, value);
+    if (sparse == 0) { cells[addr] = value; return 0; }
+    int i = slotFor(addr);
+    if (i < 0) { return -1; }
+    if (keys[i] == 0) { keys[i] = addr + 1; used = used + 1; }
+    vals[i] = value;
+    return 0;
   }
 
-  void free() { if (handle != 0) { native sleela_mem_free(handle); handle = 0; } }
+  void free() { cells = null; keys = null; vals = null; used = 0; handle = 0; }
+
+  < Words actually backed by storage: all of them when dense, those written when sparse. >
+  int residentWords() { if (sparse == 0) { return wordCount; } return used; }
+  boolean isSparse() { return sparse == 1; }
 
   int capacityWords() { return wordCount; }
   int capacityBytes() { return wordCount * (width / 8); }

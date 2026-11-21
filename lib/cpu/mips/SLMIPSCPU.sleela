@@ -56,6 +56,10 @@ class SLMIPSCPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local copies of inherited or field-owned constants: the checker does not >
+  < see statics through inheritance or a field, so they are repeated here. >
+  static final int SLALU_OP_ADD = 0;
+  static final int SLALU_OP_SUB = 1;
   static final int R_HI = 32;
   static final int R_LO = 33;
 
@@ -94,9 +98,9 @@ class SLMIPSCPU extends SLCPURuntime {
     int opcode = opOf(word);
     int rd = rdOf(word); int rs = rsOf(word); int rtImm = rtImmOf(word);
 
-    if (opcode == ADD)  { setGpr(rd, aluOp(gpr(rs), gpr(rtImm), alu.OP_ADD)); return; }
-    if (opcode == SUB)  { setGpr(rd, aluOp(gpr(rs), gpr(rtImm), alu.OP_SUB)); return; }
-    if (opcode == ADDI) { setGpr(rd, aluOp(gpr(rs), signed(rtImm), alu.OP_ADD)); return; }
+    if (opcode == ADD)  { setGpr(rd, aluOp(gpr(rs), gpr(rtImm), SLALU_OP_ADD)); return; }
+    if (opcode == SUB)  { setGpr(rd, aluOp(gpr(rs), gpr(rtImm), SLALU_OP_SUB)); return; }
+    if (opcode == ADDI) { setGpr(rd, aluOp(gpr(rs), signed(rtImm), SLALU_OP_ADD)); return; }
     if (opcode == LW)   { setGpr(rd, readMem(gpr(rs) + signed(rtImm))); return; }
     if (opcode == SW)   { writeMem(gpr(rs) + signed(rtImm), gpr(rd)); return; }
     if (opcode == BEQ)  { if (gpr(rd) == gpr(rs)) { branchDelaySlot(); setEntryPoint(programCounter() + signed(rtImm)); } return; }
@@ -124,4 +128,19 @@ class SLMIPSCPU extends SLCPURuntime {
   int hi()         { return readReg(R_HI); }
   int lo()         { return readReg(R_LO); }
   int cp0()        { return cp0Status; }
+
+  < The physical circuit model of this processor: logic family, supply, clock, >
+  < blocks, timing paths, nets and semaphores (see SLMIPSCircuit). It is built, clocked >
+  < for 16 cycles and returned ready for verifyAll() and circuitGrade(). >
+  SLMIPSCircuit circuitModel() {
+    SLMIPSCircuit c = new SLMIPSCircuit();
+    c.build();
+    c.runCycles(16);
+    return c;
+  }
+
+  String circuitGrade() {
+    SLMIPSCircuit c = circuitModel();
+    return c.circuitGrade();
+  }
 }

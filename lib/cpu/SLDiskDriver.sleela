@@ -81,7 +81,8 @@ class SLDiskDriver extends SLDeviceDriver {
     return dma.runTransfer();
   }
 
-  void serviceInterrupt() { /* clear device status; wake the waiting process */ }
+  < clear device status; wake the waiting process >
+  void serviceInterrupt() { }
 
   int readsIssued() { return blocksRead; }
   int writesIssued() { return blocksWritten; }

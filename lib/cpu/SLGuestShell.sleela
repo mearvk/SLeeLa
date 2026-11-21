@@ -56,6 +56,15 @@ class SLGuestShell {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLGuestSyscall_SYS_CLOSE = 3;
+  static final int SLGuestSyscall_SYS_EXIT = 60;
+  static final int SLGuestSyscall_SYS_GETPID = 39;
+  static final int SLGuestSyscall_SYS_OPEN = 2;
+  static final int SLGuestSyscall_SYS_READ = 0;
+  static final int SLGuestSyscall_SYS_WRITE = 1;
   static final int CMD_UNKNOWN = 0;
   static final int CMD_HELP    = 1;
   static final int CMD_ECHO    = 2;
@@ -73,7 +82,7 @@ class SLGuestShell {
   < Write a string (as a sequence of char codes carried in a small helper) to >
   < stdout via SYS_WRITE. The caller passes already-encoded bytes; here we >
   < expose a single-char and a terminator convenience. >
-  void putc(int ch) { sys.dispatch(sys.SYS_WRITE, 1, ch, 0); }
+  void putc(int ch) { sys.dispatch(SLGuestSyscall_SYS_WRITE, 1, ch, 0); }
   void newline() { putc(10); }
 
   < Classify a command word given its leading char code (a compact dispatch >
@@ -113,20 +122,20 @@ class SLGuestShell {
       < print a digit count >
       putc(48 + n); newline();
     } else if (cmd == CMD_CAT) {
-      int fd = sys.dispatch(sys.SYS_OPEN, arg, 0, 0);
+      int fd = sys.dispatch(SLGuestSyscall_SYS_OPEN, arg, 0, 0);
       if (fd >= 0) {
-        int b = sys.dispatch(sys.SYS_READ, fd, 0, 0);
+        int b = sys.dispatch(SLGuestSyscall_SYS_READ, fd, 0, 0);
         if (b >= 0) { putc(b); }
-        sys.dispatch(sys.SYS_CLOSE, fd, 0, 0);
+        sys.dispatch(SLGuestSyscall_SYS_CLOSE, fd, 0, 0);
       }
       newline();
     } else if (cmd == CMD_PS) {
-      int pid = sys.dispatch(sys.SYS_GETPID, 0, 0, 0);
+      int pid = sys.dispatch(SLGuestSyscall_SYS_GETPID, 0, 0, 0);
       < print our PID digit >
       putc(48 + (pid % 10)); newline();
     } else if (cmd == CMD_EXIT) {
       running = 0;
-      sys.dispatch(sys.SYS_EXIT, arg, 0, 0);
+      sys.dispatch(SLGuestSyscall_SYS_EXIT, arg, 0, 0);
     } else {
       < '?' for unknown >
       putc(63); newline();

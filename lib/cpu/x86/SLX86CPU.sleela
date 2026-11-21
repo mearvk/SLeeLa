@@ -58,6 +58,10 @@ class SLX86CPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local copies of inherited or field-owned constants: the checker does not >
+  < see statics through inheritance or a field, so they are repeated here. >
+  static final int SLALU_OP_ADD = 0;
+  static final int SLALU_OP_SUB = 1;
   static final int EAX = 0; static final int ECX = 1; static final int EDX = 2; static final int EBX = 3;
   static final int ESP = 4; static final int EBP = 5; static final int ESI = 6; static final int EDI = 7;
   static final int EFLAGS = 8;
@@ -90,10 +94,10 @@ class SLX86CPU extends SLCPURuntime {
 
     if (opcode == MOV_RI) { int v = immOf(word); writeReg(dstOf(word), v); setZN(v); return; }
     if (opcode == MOV_RR) { int v = readReg(srcOf(word)); writeReg(dstOf(word), v); setZN(v); return; }
-    if (opcode == ADD_RR) { int r = aluOp(readReg(dstOf(word)), readReg(srcOf(word)), alu.OP_ADD); writeReg(dstOf(word), r); return; }
-    if (opcode == SUB_RR) { int r = aluOp(readReg(dstOf(word)), readReg(srcOf(word)), alu.OP_SUB); writeReg(dstOf(word), r); return; }
-    if (opcode == INC_R)  { int r = aluOp(readReg(dstOf(word)), 1, alu.OP_ADD); writeReg(dstOf(word), r); return; }
-    if (opcode == CMP_RR) { aluOp(readReg(dstOf(word)), readReg(srcOf(word)), alu.OP_SUB); return; }
+    if (opcode == ADD_RR) { int r = aluOp(readReg(dstOf(word)), readReg(srcOf(word)), SLALU_OP_ADD); writeReg(dstOf(word), r); return; }
+    if (opcode == SUB_RR) { int r = aluOp(readReg(dstOf(word)), readReg(srcOf(word)), SLALU_OP_SUB); writeReg(dstOf(word), r); return; }
+    if (opcode == INC_R)  { int r = aluOp(readReg(dstOf(word)), 1, SLALU_OP_ADD); writeReg(dstOf(word), r); return; }
+    if (opcode == CMP_RR) { aluOp(readReg(dstOf(word)), readReg(srcOf(word)), SLALU_OP_SUB); return; }
     if (opcode == MOV_RM) { writeReg(dstOf(word), readMem(immOf(word))); return; }
     if (opcode == MOV_MR) { writeMem(immOf(word), readReg(dstOf(word))); return; }
     if (opcode == JMP)    { setEntryPoint(immOf(word)); return; }
@@ -127,4 +131,19 @@ class SLX86CPU extends SLCPURuntime {
   int reg(int i)       { return readReg(i); }
   int eflags()         { return readReg(EFLAGS); }
   boolean protectedMode(){ return mode == 1; }
+
+  < The physical circuit model of this processor: logic family, supply, clock, >
+  < blocks, timing paths, nets and semaphores (see SLX86Circuit). It is built, clocked >
+  < for 16 cycles and returned ready for verifyAll() and circuitGrade(). >
+  SLX86Circuit circuitModel() {
+    SLX86Circuit c = new SLX86Circuit();
+    c.build();
+    c.runCycles(16);
+    return c;
+  }
+
+  String circuitGrade() {
+    SLX86Circuit c = circuitModel();
+    return c.circuitGrade();
+  }
 }

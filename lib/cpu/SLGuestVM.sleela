@@ -60,6 +60,26 @@ class SLGuestVM {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLGuestSyscall_SYS_CLOSE = 3;
+  static final int SLGuestSyscall_SYS_EXECVE = 59;
+  static final int SLGuestSyscall_SYS_EXIT = 60;
+  static final int SLGuestSyscall_SYS_FORK = 57;
+  static final int SLGuestSyscall_SYS_OPEN = 2;
+  static final int SLGuestSyscall_SYS_READ = 0;
+  static final int SLGuestSyscall_SYS_WAIT = 61;
+  static final int SLGuestSyscall_SYS_WRITE = 1;
+  static final int SLGuestSyscall_SYS_YIELD = 24;
+  static final int SLSleelaOpcode_OP_FILECLOSE = 46;
+  static final int SLSleelaOpcode_OP_FILEOPEN = 43;
+  static final int SLSleelaOpcode_OP_FILEREAD = 44;
+  static final int SLSleelaOpcode_OP_FILEWRITE = 45;
+  static final int SLSleelaOpcode_OP_HALT = 48;
+  static final int SLSleelaOpcode_OP_JOINALL = 29;
+  static final int SLSleelaOpcode_OP_PRINT = 27;
+  static final int SLSleelaOpcode_OP_SPAWN = 28;
   String name;
   < virtual CPU (the guest's modeled hardware core) >
   SLCore vcpu;
@@ -178,7 +198,7 @@ class SLGuestVM {
 
     if (kernel == null) {
       < No kernel: fall back to direct console emulation for OP_PRINT. >
-      if (opcode == op.OP_PRINT && devices != null && devices.hasConsole()) { devices.consoleWrite(payload); }
+      if (opcode == SLSleelaOpcode_OP_PRINT && devices != null && devices.hasConsole()) { devices.consoleWrite(payload); }
       return;
     }
 
@@ -210,29 +230,29 @@ class SLGuestVM {
   < reuses the canonical substrate opcodes: OP_SPAWN is clone/exec (its arg >
   < selects fork vs. execve) and OP_JOINALL is wait. >
   int syscallNumberFor(int opcode, int arg, SLSleelaOpcode op, SLGuestSyscall sys) {
-    if (opcode == op.OP_PRINT) { return sys.SYS_WRITE; }
-    if (opcode == op.OP_FILEOPEN) { return sys.SYS_OPEN; }
-    if (opcode == op.OP_FILEREAD) { return sys.SYS_READ; }
-    if (opcode == op.OP_FILEWRITE) { return sys.SYS_WRITE; }
-    if (opcode == op.OP_FILECLOSE) { return sys.SYS_CLOSE; }
-    if (opcode == op.OP_SPAWN) {
+    if (opcode == SLSleelaOpcode_OP_PRINT) { return SLGuestSyscall_SYS_WRITE; }
+    if (opcode == SLSleelaOpcode_OP_FILEOPEN) { return SLGuestSyscall_SYS_OPEN; }
+    if (opcode == SLSleelaOpcode_OP_FILEREAD) { return SLGuestSyscall_SYS_READ; }
+    if (opcode == SLSleelaOpcode_OP_FILEWRITE) { return SLGuestSyscall_SYS_WRITE; }
+    if (opcode == SLSleelaOpcode_OP_FILECLOSE) { return SLGuestSyscall_SYS_CLOSE; }
+    if (opcode == SLSleelaOpcode_OP_SPAWN) {
       < OP_SPAWN with arg 0 is fork(); arg > 0 selects execve() (arg carries >
       < langId + 1 so 0 stays reserved for a plain fork). >
-      if (arg == 0) { return sys.SYS_FORK; }
-      return sys.SYS_EXECVE;
+      if (arg == 0) { return SLGuestSyscall_SYS_FORK; }
+      return SLGuestSyscall_SYS_EXECVE;
     }
-    if (opcode == op.OP_JOINALL) { return sys.SYS_WAIT; }
-    if (opcode == op.OP_HALT) { return sys.SYS_EXIT; }
-    return sys.SYS_YIELD;
+    if (opcode == SLSleelaOpcode_OP_JOINALL) { return SLGuestSyscall_SYS_WAIT; }
+    if (opcode == SLSleelaOpcode_OP_HALT) { return SLGuestSyscall_SYS_EXIT; }
+    return SLGuestSyscall_SYS_YIELD;
   }
 
   < The first syscall argument (fd for I/O; progId for execve): OP_PRINT writes >
   < to stdout (fd 1); OP_SPAWN carries the exec program id as its stack payload, >
   < surfaced to execve as arg0. >
   int syscallArg0(int opcode, int arg, SLSleelaOpcode op, int payload) {
-    if (opcode == op.OP_PRINT) { return 1; }
+    if (opcode == SLSleelaOpcode_OP_PRINT) { return 1; }
     < execve progId >
-    if (opcode == op.OP_SPAWN && arg != 0) { return payload; }
+    if (opcode == SLSleelaOpcode_OP_SPAWN && arg != 0) { return payload; }
     return 0;
   }
 
@@ -240,7 +260,7 @@ class SLGuestVM {
   < which holds langId + 1 so that arg 0 can mean "plain fork". >
   int syscallArg2(int opcode, int arg, SLSleelaOpcode op) {
     < langId >
-    if (opcode == op.OP_SPAWN && arg != 0) { return arg - 1; }
+    if (opcode == SLSleelaOpcode_OP_SPAWN && arg != 0) { return arg - 1; }
     return 0;
   }
 

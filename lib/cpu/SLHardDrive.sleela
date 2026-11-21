@@ -3,13 +3,14 @@
    Definition: Defines SLHardDrive — persistent block storage (an HDD or SSD).
      It is the slowest, largest tier of the storage hierarchy and the device the
      OS boots from and loads programs out of. It presents a block interface
-     (read/write by block number) and crosses the explicit VM/OS bridge to the
-     native file-backed store.
+     (read/write by block number) and keeps its blocks in an SLRAM store, one
+     payload word per block. Contents live for the life of the program; there
+     is no file-backed persistence because SLeeLa has no file bridge here.
    
    Models capacity in blocks, block size, media kind (spinning vs. solid-state),
    and I/O counters.
    
-   Family: cpu. Native file-backed store via bridge. >>
+   Family: cpu. Pure SLeeLa block store. >>
 #sleela 2.5
 material;
 class SLHardDrive {
@@ -64,6 +65,8 @@ class SLHardDrive {
   int blockBytes;
   int media;
   int handle;
+  SLRAM store;
+  String mountPath;
   int reads;
   int writes;
 
@@ -72,9 +75,11 @@ class SLHardDrive {
     handle = 0; reads = 0; writes = 0;
   }
 
-  < Mount the native file-backed store, creating it if absent. >
+  < Mount the drive. The path is recorded but not opened: the store is in memory. >
   int mount(String path) {
-    handle = native sleela_blockdev_open(path, blockCount, blockBytes);
+    mountPath = path;
+    store = new SLRAM(); store.configure(blockCount, 32); store.allocate();
+    handle = 1;
     return handle;
   }
 
@@ -83,16 +88,16 @@ class SLHardDrive {
   int readBlock(int block) {
     if (!inRange(block) || handle == 0) { return -1; }
     reads = reads + 1;
-    return native sleela_blockdev_read(handle, block);
+    return store.readWord(block);
   }
 
   int writeBlock(int block, int payloadHandle) {
     if (!inRange(block) || handle == 0) { return -1; }
     writes = writes + 1;
-    return native sleela_blockdev_write(handle, block, payloadHandle);
+    return store.writeWord(block, payloadHandle);
   }
 
-  void unmount() { if (handle != 0) { native sleela_blockdev_close(handle); handle = 0; } }
+  void unmount() { if (handle != 0) { store.free(); handle = 0; } }
 
   int capacityBlocks() { return blockCount; }
   int capacityBytes() { return blockCount * blockBytes; }

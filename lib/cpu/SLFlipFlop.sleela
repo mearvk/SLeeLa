@@ -71,8 +71,8 @@ class SLFlipFlop {
   < through master then slave to the output. >
   int clock(int clk) {
     if (lastClk == 0 && clk == 1) {
-      master.enable(); master.write(d); master.disable();
-      slave.enable(); slave.write(master.read()); slave.disable();
+      master.activate(); master.write(d); master.disable();
+      slave.activate(); slave.write(master.read()); slave.disable();
     }
     lastClk = clk;
     return slave.read();

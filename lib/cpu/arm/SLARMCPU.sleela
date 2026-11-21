@@ -57,6 +57,10 @@ class SLARMCPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local copies of inherited or field-owned constants: the checker does not >
+  < see statics through inheritance or a field, so they are repeated here. >
+  static final int SLALU_OP_ADD = 0;
+  static final int SLALU_OP_SUB = 1;
   static final int R_SP = 13; static final int R_LR = 14; static final int R_PC = 15;
   static final int R_CPSR = 16;
 
@@ -102,10 +106,10 @@ class SLARMCPU extends SLCPURuntime {
     int rd = rdOf(word); int rn = rnOf(word); int op2 = op2Of(word);
 
     if (opcode == MOV) { writeReg(rd, op2); setNZ(op2); return; }
-    if (opcode == ADD) { int r = aluOp(readReg(rn), op2, alu.OP_ADD); writeReg(rd, r); return; }
-    if (opcode == SUB) { int r = aluOp(readReg(rn), op2, alu.OP_SUB); writeReg(rd, r); return; }
+    if (opcode == ADD) { int r = aluOp(readReg(rn), op2, SLALU_OP_ADD); writeReg(rd, r); return; }
+    if (opcode == SUB) { int r = aluOp(readReg(rn), op2, SLALU_OP_SUB); writeReg(rd, r); return; }
     < flags only >
-    if (opcode == CMP) { aluOp(readReg(rn), op2, alu.OP_SUB); return; }
+    if (opcode == CMP) { aluOp(readReg(rn), op2, SLALU_OP_SUB); return; }
     if (opcode == LDR) { writeReg(rd, readMem(readReg(rn) + op2)); return; }
     if (opcode == STR) { writeMem(readReg(rn) + op2, readReg(rd)); return; }
     if (opcode == B)   { setEntryPoint(programCounter() + signed12(op2)); return; }
@@ -127,4 +131,19 @@ class SLARMCPU extends SLCPURuntime {
   int reg(int i)  { return readReg(i); }
   int cpsr()      { return readReg(R_CPSR); }
   boolean secure(){ return securityState == 1; }
+
+  < The physical circuit model of this processor: logic family, supply, clock, >
+  < blocks, timing paths, nets and semaphores (see SLARMCircuit). It is built, clocked >
+  < for 16 cycles and returned ready for verifyAll() and circuitGrade(). >
+  SLARMCircuit circuitModel() {
+    SLARMCircuit c = new SLARMCircuit();
+    c.build();
+    c.runCycles(16);
+    return c;
+  }
+
+  String circuitGrade() {
+    SLARMCircuit c = circuitModel();
+    return c.circuitGrade();
+  }
 }

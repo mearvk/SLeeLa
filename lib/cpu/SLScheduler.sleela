@@ -53,6 +53,10 @@ class SLScheduler {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLProcess_RUNNING = 2;
   static final int MAX_PROC = 8;
   SLProcess p0; SLProcess p1; SLProcess p2; SLProcess p3;
   SLProcess p4; SLProcess p5; SLProcess p6; SLProcess p7;
@@ -101,7 +105,7 @@ class SLScheduler {
   < Preempt the current process and dispatch the next onto the given core. >
   SLProcess schedule(SLCore core) {
     if (count == 0) { return null; }
-    if (current >= 0) { SLProcess running = at(current); if (running != null && running.alive()) { running.saveContext(core); if (running.processState() == running.RUNNING) { running.markReady(); } } }
+    if (current >= 0) { SLProcess running = at(current); if (running != null && running.alive()) { running.saveContext(core); if (running.processState() == SLProcess_RUNNING) { running.markReady(); } } }
     int next = pickNext();
     if (next < 0) { return null; }
     current = next;

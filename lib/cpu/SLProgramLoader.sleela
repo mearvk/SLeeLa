@@ -86,9 +86,9 @@ class SLProgramLoader {
     return load(prog, loadAddr);
   }
 
-  < Convenience: infer the language from the file extension. >
-  SLProcess loadFile(String path, String programName, int loadAddr) {
-    SLProgram prog = compiler.compileFile(path, programName);
+  < Convenience: choose the language from the stated extension, such as ".c". >
+  SLProcess loadFile(String path, String extension, String programName, int loadAddr) {
+    SLProgram prog = compiler.compileFile(path, extension, programName);
     return load(prog, loadAddr);
   }
 

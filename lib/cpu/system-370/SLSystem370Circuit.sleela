@@ -1,0 +1,118 @@
+<< lib/cpu/system-370/SLSystem370Circuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSystem370Circuit, the circuit model of the IBM System/370
+     (System/370 bipolar, model not stated). It states the logic family and its voltage thresholds, the
+     supply rail, the clock and its phases, the functional blocks with width,
+     depth, gate and transistor counts, two timing paths, four monitored nets
+     and three semaphores.
+
+   Provenance of the figures:
+     clock      9 MHz, taken from the existing SLSystem370CPU model; not checked here.
+     recalled   transistor count unknown; feature size unknown; supply -5200 mV.
+                Recalled figures come from general knowledge and were not checked
+                against a primary source in this session.
+     derived    thresholds (MECL 10K typical levels); gate delay 2000 ps (MECL 10K about 2 ns); edge time, fanout,
+                block gate and transistor counts and depths, and both timing
+                paths. Derived numbers are planning figures, not measurements.
+   The model stays at functional-block level. It is not a transistor netlist.
+
+   Family: cpu. Extends SLCircuitModel. >>
+#sleela 2.5
+material;
+class SLSystem370Circuit extends SLCircuitModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39654;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "IBM";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  void build() {
+    SLLogicFamily f = new SLLogicFamily();
+    f.configure("ECL", 0, -5200, 260);
+    f.setThresholds(-1475, -1105, -1630, -980);
+    f.setSpeed(2000, 3000, 10);
+    f.setProvenance("thresholds MECL 10K typical levels; speed MECL 10K about 2 ns");
+
+    SLVoltageRail rail = new SLVoltageRail();
+    rail.configure("supply", -5200, -5460, -4940);
+
+    configure("IBM System/370", f, rail, 9000, 1);
+    setWidths(32, 24);
+    setTransistors(0);
+    setKnown(0, 0, 1, 0);
+    setProvenance("recalled: System/370 bipolar, model not stated; transistor count unknown");
+
+    SLCircuitBlock alu = addBlock("alu", "alu", 32, 7, 288, 1152);
+    alu.setProvenance("derived: parallel-prefix carry adder and logic unit, 4 transistors per gate");
+    SLCircuitBlock regs = addBlock("register-file", "regfile", 512, 6, 512, 3072);
+    regs.setProvenance("derived: 16 registers of 32 bits at 6 transistors per bit");
+    SLCircuitBlock dec = addBlock("instruction-decode", "decode", 32, 6, 512, 2048);
+    dec.setProvenance("derived: decode and control sized at 16 gates per data bit");
+    SLCircuitBlock bus = addBlock("bus-interface", "bus", 56, 3, 112, 448);
+    bus.setProvenance("derived: address and data latches and drivers");
+    SLCircuitBlock clk = addBlock("clock", "clock", 1, 4, 8, 32);
+    clk.setProvenance("derived: clock buffer and phase generation");
+    SLCircuitBlock rest = addRemainder("other");
+
+    SLCircuitPath add = addPath("alu-add", 5555);
+    add.setPeriod(111111);
+    add.describe("derived: operand latch, 32-bit prefix carry, result latch in one clock phase");
+    add.addStage("operand-latch", 2000);
+    add.addStage("carry-32-bits", 14000);
+    add.addStage("result-latch", 2000);
+    add.constrain(2000, 500, 2222);
+
+    SLCircuitPath rf = addPath("register-read-bypass", 5555);
+    rf.setPeriod(111111);
+    rf.describe("derived: register-file read, bypass mux, ALU input latch");
+    rf.addStage("register-read", 12000);
+    rf.addStage("bypass-mux", 4000);
+    rf.addStage("input-latch", 2000);
+    rf.constrain(2000, 500, 2222);
+
+    SLSignalQuality n0 = addNet("CLK");
+    n0.setEdgeLimit(12000);
+    SLSignalQuality n1 = addNet("A0");
+    SLSignalQuality n2 = addNet("D0");
+    SLSignalQuality n3 = addNet("RESET");
+
+    SLCircuitSemaphore latchSem = addSemaphore("latch", 1, 2);
+    SLCircuitSemaphore abus = addSemaphore("address-bus", 1, 2);
+    SLCircuitSemaphore dbus = addSemaphore("data-bus", 1, 2);
+  }
+}

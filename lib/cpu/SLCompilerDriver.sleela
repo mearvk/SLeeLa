@@ -78,29 +78,31 @@ class SLCompilerDriver {
     SLFrontendSleela f = new SLFrontendSleela(); f.init(path); return f;
   }
 
-  < Infer the language from a file extension. >
-  int languageOf(String path) {
-    if (endsWith(path, ".c")) { return 1; }
-    if (endsWith(path, ".cpp") || endsWith(path, ".cc") || endsWith(path, ".cxx")) { return 2; }
-    if (endsWith(path, ".java") || endsWith(path, ".class")) { return 3; }
-    < .sleela / default >
-    return 0;
+  < Parse and lower with the concrete frontend. The runtime binds a method call to >
+  < the declared type of the receiver, so a call through an SLFrontend variable >
+  < would run the base lower() and drop the language lowering. Each branch here >
+  < calls lower() on a variable of the concrete frontend type. >
+  SLIR lowerFor(int langId, String path) {
+    if (langId == 1) { SLFrontendC f = new SLFrontendC(); f.init(path); f.parse(); return f.lower(); }
+    if (langId == 2) { SLFrontendCpp f = new SLFrontendCpp(); f.initCpp(path); f.parse(); return f.lower(); }
+    if (langId == 3) { SLFrontendJava f = new SLFrontendJava(); f.init(path); f.parse(); return f.lower(); }
+    SLFrontendSleela f = new SLFrontendSleela(); f.init(path); f.parse(); return f.lower();
   }
 
-  boolean endsWith(String s, String suffix) {
-    int sl = length(s); int fl = length(suffix);
-    if (fl > sl) { return false; }
-    return substring(s, sl - fl, sl) == suffix;
+  < Language id for a file extension such as ".c" or ".java". SLeeLa has no >
+  < character access on a String, so a path cannot be cut at its last dot here; >
+  < the caller passes the extension. 1 C, 2 C++, 3 Java, 0 SLeeLa and default. >
+  int languageOfExtension(String extension) {
+    if (extension == ".c") { return 1; }
+    if (extension == ".cpp" || extension == ".cc" || extension == ".cxx") { return 2; }
+    if (extension == ".java" || extension == ".class") { return 3; }
+    return 0;
   }
-  int length(String s) { return native sleela_str_length(s); }
-  String substring(String s, int a, int b) { return native sleela_str_substring(s, a, b); }
 
   < Compile a source file in the given language into a runnable SLProgram. >
   SLProgram compile(String path, int langId, String programName) {
     lastLanguage = langId;
-    SLFrontend fe = frontendFor(langId, path);
-    fe.parse();
-    SLIR ir = fe.lower();
+    SLIR ir = lowerFor(langId, path);
 
     SLProgram prog = new SLProgram(); prog.configure(programName, 4096);
     SLLowering backend = new SLLowering();
@@ -113,9 +115,9 @@ class SLCompilerDriver {
     return prog;
   }
 
-  < Convenience: infer language from the path extension. >
-  SLProgram compileFile(String path, String programName) {
-    return compile(path, languageOf(path), programName);
+  < Convenience: choose the language from the stated extension, such as ".c". >
+  SLProgram compileFile(String path, String extension, String programName) {
+    return compile(path, languageOfExtension(extension), programName);
   }
 
   int language() { return lastLanguage; }

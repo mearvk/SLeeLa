@@ -1,0 +1,118 @@
+<< lib/cpu/x86/SLX86Circuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLX86Circuit, the circuit model of the Intel IA-32
+     (IA-32 at 33 MHz, an 80386 class part). It states the logic family and its voltage thresholds, the
+     supply rail, the clock and its phases, the functional blocks with width,
+     depth, gate and transistor counts, two timing paths, four monitored nets
+     and three semaphores.
+
+   Provenance of the figures:
+     clock      33 MHz, taken from the existing SLX86CPU model; not checked here.
+     recalled   transistor count 275000; feature size 1500 nm; supply 5000 mV.
+                Recalled figures come from general knowledge and were not checked
+                against a primary source in this session.
+     derived    thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 375 ps (derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm); edge time, fanout,
+                block gate and transistor counts and depths, and both timing
+                paths. Derived numbers are planning figures, not measurements.
+   The model stays at functional-block level. It is not a transistor netlist.
+
+   Family: cpu. Extends SLCircuitModel. >>
+#sleela 2.5
+material;
+class SLX86Circuit extends SLCircuitModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39662;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "Intel";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  void build() {
+    SLLogicFamily f = new SLLogicFamily();
+    f.configure("CMOS", 1500, 5000, 250);
+    f.setThresholds(1500, 3500, 500, 4500);
+    f.setSpeed(375, 562, 4);
+    f.setProvenance("thresholds derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out; speed derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm");
+
+    SLVoltageRail rail = new SLVoltageRail();
+    rail.configure("supply", 5000, 4750, 5250);
+
+    configure("Intel IA-32", f, rail, 33000, 1);
+    setWidths(32, 32);
+    setTransistors(275000);
+    setKnown(1, 1, 1, 0);
+    setProvenance("recalled: IA-32 at 33 MHz, an 80386 class part; 275000 transistors");
+
+    SLCircuitBlock alu = addBlock("alu", "alu", 32, 7, 288, 1728);
+    alu.setProvenance("derived: parallel-prefix carry adder and logic unit, 6 transistors per gate");
+    SLCircuitBlock regs = addBlock("register-file", "regfile", 288, 6, 288, 1728);
+    regs.setProvenance("derived: 9 registers of 32 bits at 6 transistors per bit");
+    SLCircuitBlock dec = addBlock("instruction-decode", "decode", 32, 6, 512, 3072);
+    dec.setProvenance("derived: decode and control sized at 16 gates per data bit");
+    SLCircuitBlock bus = addBlock("bus-interface", "bus", 64, 3, 128, 768);
+    bus.setProvenance("derived: address and data latches and drivers");
+    SLCircuitBlock clk = addBlock("clock", "clock", 1, 4, 8, 48);
+    clk.setProvenance("derived: clock buffer and phase generation");
+    SLCircuitBlock rest = addRemainder("other");
+
+    SLCircuitPath add = addPath("alu-add", 1515);
+    add.setPeriod(30303);
+    add.describe("derived: operand latch, 32-bit prefix carry, result latch in one clock phase");
+    add.addStage("operand-latch", 375);
+    add.addStage("carry-32-bits", 2625);
+    add.addStage("result-latch", 375);
+    add.constrain(375, 93, 606);
+
+    SLCircuitPath rf = addPath("register-read-bypass", 1515);
+    rf.setPeriod(30303);
+    rf.describe("derived: register-file read, bypass mux, ALU input latch");
+    rf.addStage("register-read", 2250);
+    rf.addStage("bypass-mux", 750);
+    rf.addStage("input-latch", 375);
+    rf.constrain(375, 93, 606);
+
+    SLSignalQuality n0 = addNet("CLK");
+    n0.setEdgeLimit(2248);
+    SLSignalQuality n1 = addNet("A0");
+    SLSignalQuality n2 = addNet("D0");
+    SLSignalQuality n3 = addNet("RESET");
+
+    SLCircuitSemaphore latchSem = addSemaphore("latch", 1, 2);
+    SLCircuitSemaphore abus = addSemaphore("address-bus", 1, 2);
+    SLCircuitSemaphore dbus = addSemaphore("data-bus", 1, 2);
+  }
+}

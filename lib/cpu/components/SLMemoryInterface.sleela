@@ -110,13 +110,13 @@ class SLMemoryInterface {
     SLCadenceConnector c = new SLCadenceConnector();
     c.initialize(cadenceTech, name);
     c.resolve();
-    connect(c);
+    plugConnector(c);
   }
 
   < Plug a cadence connector into the slot: resolve-then-load it (if the caller >
   < has not already), then read its resolved timings. Fail-closed — a connector >
   < that will not load leaves the overlay disengaged with a refresh-free duty. >
-  boolean connect(SLCadenceConnector connector) {
+  boolean plugConnector(SLCadenceConnector connector) {
     slot = connector;
     if (connector == null) { targetTech = -1; tREFI_ns = 0; tRFC_ns = 0; return false; }
     boolean ok = connector.load();

@@ -1,0 +1,118 @@
+<< lib/cpu/sega-sg-1000/SLSG1000Circuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSG1000Circuit, the circuit model of the Sega SG-1000 (Z80)
+     (Zilog Z80 class). It states the logic family and its voltage thresholds, the
+     supply rail, the clock and its phases, the functional blocks with width,
+     depth, gate and transistor counts, two timing paths, four monitored nets
+     and three semaphores.
+
+   Provenance of the figures:
+     clock      4 MHz, taken from the existing SLSG1000CPU model; not checked here.
+     recalled   transistor count 8500; feature size 4000 nm; supply 5000 mV.
+                Recalled figures come from general knowledge and were not checked
+                against a primary source in this session.
+     derived    thresholds (TTL-compatible input and output levels); gate delay 7200 ps (derived, 1.8 ps per nm for depletion-load NMOS); edge time, fanout,
+                block gate and transistor counts and depths, and both timing
+                paths. Derived numbers are planning figures, not measurements.
+   The model stays at functional-block level. It is not a transistor netlist.
+
+   Family: cpu. Extends SLCircuitModel. >>
+#sleela 2.5
+material;
+class SLSG1000Circuit extends SLCircuitModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39647;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "Sega";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "Japan";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  void build() {
+    SLLogicFamily f = new SLLogicFamily();
+    f.configure("NMOS", 4000, 5000, 250);
+    f.setThresholds(800, 2000, 400, 2400);
+    f.setSpeed(7200, 10800, 4);
+    f.setProvenance("thresholds TTL-compatible input and output levels; speed derived, 1.8 ps per nm for depletion-load NMOS");
+
+    SLVoltageRail rail = new SLVoltageRail();
+    rail.configure("supply", 5000, 4750, 5250);
+
+    configure("Sega SG-1000 (Z80)", f, rail, 4000, 1);
+    setWidths(8, 16);
+    setTransistors(8500);
+    setKnown(1, 1, 1, 0);
+    setProvenance("recalled: Zilog Z80 class; 8500 transistors");
+
+    SLCircuitBlock alu = addBlock("alu", "alu", 8, 18, 72, 288);
+    alu.setProvenance("derived: ripple carry adder and logic unit, 4 transistors per gate");
+    SLCircuitBlock regs = addBlock("register-file", "regfile", 80, 6, 80, 480);
+    regs.setProvenance("derived: 10 registers of 8 bits at 6 transistors per bit");
+    SLCircuitBlock dec = addBlock("instruction-decode", "decode", 8, 6, 128, 512);
+    dec.setProvenance("derived: decode and control sized at 16 gates per data bit");
+    SLCircuitBlock bus = addBlock("bus-interface", "bus", 24, 3, 48, 192);
+    bus.setProvenance("derived: address and data latches and drivers");
+    SLCircuitBlock clk = addBlock("clock", "clock", 1, 4, 8, 32);
+    clk.setProvenance("derived: clock buffer and phase generation");
+    SLCircuitBlock rest = addRemainder("other");
+
+    SLCircuitPath add = addPath("alu-add", 12500);
+    add.setPeriod(250000);
+    add.describe("derived: operand latch, 8-bit ripple carry, result latch in one clock phase");
+    add.addStage("operand-latch", 7200);
+    add.addStage("carry-8-bits", 129600);
+    add.addStage("result-latch", 7200);
+    add.constrain(7200, 1800, 5000);
+
+    SLCircuitPath rf = addPath("register-read-bypass", 12500);
+    rf.setPeriod(250000);
+    rf.describe("derived: register-file read, bypass mux, ALU input latch");
+    rf.addStage("register-read", 43200);
+    rf.addStage("bypass-mux", 14400);
+    rf.addStage("input-latch", 7200);
+    rf.constrain(7200, 1800, 5000);
+
+    SLSignalQuality n0 = addNet("CLK");
+    n0.setEdgeLimit(43200);
+    SLSignalQuality n1 = addNet("A0");
+    SLSignalQuality n2 = addNet("D0");
+    SLSignalQuality n3 = addNet("RESET");
+
+    SLCircuitSemaphore latchSem = addSemaphore("latch", 1, 2);
+    SLCircuitSemaphore abus = addSemaphore("address-bus", 1, 2);
+    SLCircuitSemaphore dbus = addSemaphore("data-bus", 1, 2);
+  }
+}

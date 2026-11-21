@@ -1,0 +1,118 @@
+<< lib/cpu/sifive-u74/SLSiFiveU74Circuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSiFiveU74Circuit, the circuit model of the SiFive U74 (RISC-V RV64GC)
+     (U74 on the FU740). It states the logic family and its voltage thresholds, the
+     supply rail, the clock and its phases, the functional blocks with width,
+     depth, gate and transistor counts, two timing paths, four monitored nets
+     and three semaphores.
+
+   Provenance of the figures:
+     clock      1500 MHz, taken from the existing SLSiFiveU74CPU model; not checked here.
+     recalled   transistor count unknown; feature size 28 nm; supply not sourced.
+                Recalled figures come from general knowledge and were not checked
+                against a primary source in this session.
+     derived    supply 1100 mV from the node or clock era; thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 7 ps (derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm); edge time, fanout,
+                block gate and transistor counts and depths, and both timing
+                paths. Derived numbers are planning figures, not measurements.
+   The model stays at functional-block level. It is not a transistor netlist.
+
+   Family: cpu. Extends SLCircuitModel. >>
+#sleela 2.5
+material;
+class SLSiFiveU74Circuit extends SLCircuitModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39649;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "SiFive";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  void build() {
+    SLLogicFamily f = new SLLogicFamily();
+    f.configure("CMOS", 28, 1100, 55);
+    f.setThresholds(330, 770, 110, 990);
+    f.setSpeed(7, 10, 4);
+    f.setProvenance("thresholds derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out; speed derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm");
+
+    SLVoltageRail rail = new SLVoltageRail();
+    rail.configure("supply", 1100, 1045, 1155);
+
+    configure("SiFive U74 (RISC-V RV64GC)", f, rail, 1500000, 1);
+    setWidths(64, 39);
+    setTransistors(0);
+    setKnown(0, 1, 0, 0);
+    setProvenance("recalled: U74 on the FU740; transistor count unknown");
+
+    SLCircuitBlock alu = addBlock("alu", "alu", 64, 8, 576, 3456);
+    alu.setProvenance("derived: parallel-prefix carry adder and logic unit, 6 transistors per gate");
+    SLCircuitBlock regs = addBlock("register-file", "regfile", 2048, 7, 2048, 12288);
+    regs.setProvenance("derived: 32 registers of 64 bits at 6 transistors per bit");
+    SLCircuitBlock dec = addBlock("instruction-decode", "decode", 64, 6, 1024, 6144);
+    dec.setProvenance("derived: decode and control sized at 16 gates per data bit");
+    SLCircuitBlock bus = addBlock("bus-interface", "bus", 103, 3, 206, 1236);
+    bus.setProvenance("derived: address and data latches and drivers");
+    SLCircuitBlock clk = addBlock("clock", "clock", 1, 4, 8, 48);
+    clk.setProvenance("derived: clock buffer and phase generation");
+    SLCircuitBlock rest = addRemainder("other");
+
+    SLCircuitPath add = addPath("alu-add", 33);
+    add.setPeriod(666);
+    add.describe("derived: operand latch, 64-bit prefix carry, result latch in one clock phase");
+    add.addStage("operand-latch", 7);
+    add.addStage("carry-64-bits", 56);
+    add.addStage("result-latch", 7);
+    add.constrain(7, 1, 13);
+
+    SLCircuitPath rf = addPath("register-read-bypass", 33);
+    rf.setPeriod(666);
+    rf.describe("derived: register-file read, bypass mux, ALU input latch");
+    rf.addStage("register-read", 49);
+    rf.addStage("bypass-mux", 14);
+    rf.addStage("input-latch", 7);
+    rf.constrain(7, 1, 13);
+
+    SLSignalQuality n0 = addNet("CLK");
+    n0.setEdgeLimit(40);
+    SLSignalQuality n1 = addNet("A0");
+    SLSignalQuality n2 = addNet("D0");
+    SLSignalQuality n3 = addNet("RESET");
+
+    SLCircuitSemaphore latchSem = addSemaphore("latch", 1, 2);
+    SLCircuitSemaphore abus = addSemaphore("address-bus", 1, 2);
+    SLCircuitSemaphore dbus = addSemaphore("data-bus", 1, 2);
+  }
+}

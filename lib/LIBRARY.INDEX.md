@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 1.18 completes the CPU circuit layer in `lib/cpu/`: a circuit class for every remaining CPU folder (129 generated `SL<Name>Circuit` units), `SLConsoleSink` (pure SLeeLa console output replacing the native bridge), and the examples `circuit-grades.sleela` and `cpu-circuit-wiring.sleela` (18164 → **18296** sources; 18250 → **18382** total records). Package and facade counts are unchanged.
+>
 > Revision 1.17 adds the CPU circuit-physics layer to `lib/cpu/`: `SLLogicFamily`, `SLSignalQuality`, `SLTimedGate`, `SLCircuitSemaphore`, `SLCircuitPath`, `SLCircuitBlock` and `SLCircuitModel`, the per-CPU circuit classes `SL6502Circuit`, `SLZ80Circuit` and `SLIntel4004Circuit`, three `circuit-demo.sleela` demos and `examples/circuit-primitives.sleela` (18150 → **18164** sources; 18236 → **18250** total records). Package and facade counts are unchanged.
 >
 > Revision 1.16 adds `lib/java/converter/JConvClassLit.sleela`, the class literals of the Java converter (rule 8e: binary names and kinds of `T.class`), and gives `lib/java/jdk-28/java.base/java/lang/Class.sleela` an implementation block for class literals (18149 → **18150** sources; 18235 → **18236** total records). Package and facade counts are unchanged.
@@ -112,9 +114,9 @@
 
 **Revision:** 0.82  
 **Packages:** 123  
-**SLeeLa source units:** 18164  
+**SLeeLa source units:** 18296  
 **Module-facade symbols:** 86  
-**Total symbol records:** 18250  
+**Total symbol records:** 18382  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

@@ -8,6 +8,7 @@
    
    Shows the key property: you compose BOTH the real module AND the interface. >>
 #sleela 2.5
+import cpu;
 material;
 class Ddr5AsDdr2CadenceExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
@@ -107,7 +108,7 @@ class Ddr5AsDdr2CadenceExample {
     print("connector '" + ddr4.referenceId() + "' state after resolve: " + ddr4.state());
     ddr2cad.engage();
     < load()s then binds timings >
-    boolean connected = ddr2cad.connect(ddr4);
+    boolean connected = ddr2cad.plugConnector(ddr4);
     print("connected DDR4 cadence: " + connected + ", slot state=" +
           ddr2cad.cadenceSlot().state() + ", refreshes as " + ddr2cad.refreshesAsName());
     print("effective BW under DDR4 cadence: " + ddr2cad.effectiveBandwidthMBs() +

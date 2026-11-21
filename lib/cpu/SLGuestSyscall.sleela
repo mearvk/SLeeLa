@@ -151,7 +151,7 @@ class SLGuestSyscall {
     } else if (number == SYS_OPEN) {
       if (fs != null) { r = fs.openByName(arg0); }
     } else if (number == SYS_CLOSE) {
-      if (fs != null) { r = fs.close(arg0); }
+      if (fs != null) { r = fs.closeFd(arg0); }
     } else if (number == SYS_GETPID) {
       if (scheduler != null && scheduler.running() != null) { r = scheduler.running().taskId(); } else { r = 1; }
     } else if (number == SYS_BRK) {

@@ -59,6 +59,34 @@ class SLSleelaVM {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLSleelaOpcode_OP_ADD = 8;
+  static final int SLSleelaOpcode_OP_AND = 20;
+  static final int SLSleelaOpcode_OP_CONST = 1;
+  static final int SLSleelaOpcode_OP_DIV = 11;
+  static final int SLSleelaOpcode_OP_DUP = 3;
+  static final int SLSleelaOpcode_OP_EQ = 14;
+  static final int SLSleelaOpcode_OP_GE = 19;
+  static final int SLSleelaOpcode_OP_GT = 18;
+  static final int SLSleelaOpcode_OP_HALT = 48;
+  static final int SLSleelaOpcode_OP_JMP = 23;
+  static final int SLSleelaOpcode_OP_JMPF = 24;
+  static final int SLSleelaOpcode_OP_LE = 17;
+  static final int SLSleelaOpcode_OP_LOADG = 4;
+  static final int SLSleelaOpcode_OP_LT = 16;
+  static final int SLSleelaOpcode_OP_MOD = 12;
+  static final int SLSleelaOpcode_OP_MUL = 10;
+  static final int SLSleelaOpcode_OP_NE = 15;
+  static final int SLSleelaOpcode_OP_NEG = 13;
+  static final int SLSleelaOpcode_OP_NOP = 0;
+  static final int SLSleelaOpcode_OP_NOT = 22;
+  static final int SLSleelaOpcode_OP_OR = 21;
+  static final int SLSleelaOpcode_OP_POP = 2;
+  static final int SLSleelaOpcode_OP_PRINT = 27;
+  static final int SLSleelaOpcode_OP_STOREG = 5;
+  static final int SLSleelaOpcode_OP_SUB = 9;
   SLSleelaOpcode op;
   < opcode of each instruction >
   SLRAM codeOps;
@@ -154,42 +182,42 @@ class SLSleelaVM {
     executed = executed + 1;
     ip = ip + 1;
 
-    if (o == op.OP_NOP) { return o; }
-    if (o == op.OP_CONST) { push(a); return o; }
-    if (o == op.OP_POP) { pop(); return o; }
-    if (o == op.OP_DUP) { int v = pop(); push(v); push(v); return o; }
-    if (o == op.OP_LOADG) { push(globals.readWord(a)); return o; }
-    if (o == op.OP_STOREG) { globals.writeWord(a, pop()); return o; }
+    if (o == SLSleelaOpcode_OP_NOP) { return o; }
+    if (o == SLSleelaOpcode_OP_CONST) { push(a); return o; }
+    if (o == SLSleelaOpcode_OP_POP) { pop(); return o; }
+    if (o == SLSleelaOpcode_OP_DUP) { int v = pop(); push(v); push(v); return o; }
+    if (o == SLSleelaOpcode_OP_LOADG) { push(globals.readWord(a)); return o; }
+    if (o == SLSleelaOpcode_OP_STOREG) { globals.writeWord(a, pop()); return o; }
 
-    if (o == op.OP_ADD) { int b = pop(); int x = pop(); push(x + b); return o; }
-    if (o == op.OP_SUB) { int b = pop(); int x = pop(); push(x - b); return o; }
-    if (o == op.OP_MUL) { int b = pop(); int x = pop(); push(x * b); return o; }
-    if (o == op.OP_DIV) { int b = pop(); int x = pop(); if (b != 0) { push(x / b); } else { push(0); } return o; }
-    if (o == op.OP_MOD) { int b = pop(); int x = pop(); if (b != 0) { push(x % b); } else { push(0); } return o; }
-    if (o == op.OP_NEG) { push(0 - pop()); return o; }
+    if (o == SLSleelaOpcode_OP_ADD) { int b = pop(); int x = pop(); push(x + b); return o; }
+    if (o == SLSleelaOpcode_OP_SUB) { int b = pop(); int x = pop(); push(x - b); return o; }
+    if (o == SLSleelaOpcode_OP_MUL) { int b = pop(); int x = pop(); push(x * b); return o; }
+    if (o == SLSleelaOpcode_OP_DIV) { int b = pop(); int x = pop(); if (b != 0) { push(x / b); } else { push(0); } return o; }
+    if (o == SLSleelaOpcode_OP_MOD) { int b = pop(); int x = pop(); if (b != 0) { push(x % b); } else { push(0); } return o; }
+    if (o == SLSleelaOpcode_OP_NEG) { push(0 - pop()); return o; }
 
-    if (o == op.OP_EQ) { int b = pop(); int x = pop(); push(boolInt(x == b)); return o; }
-    if (o == op.OP_NE) { int b = pop(); int x = pop(); push(boolInt(x != b)); return o; }
-    if (o == op.OP_LT) { int b = pop(); int x = pop(); push(boolInt(x < b)); return o; }
-    if (o == op.OP_LE) { int b = pop(); int x = pop(); push(boolInt(x <= b)); return o; }
-    if (o == op.OP_GT) { int b = pop(); int x = pop(); push(boolInt(x > b)); return o; }
-    if (o == op.OP_GE) { int b = pop(); int x = pop(); push(boolInt(x >= b)); return o; }
+    if (o == SLSleelaOpcode_OP_EQ) { int b = pop(); int x = pop(); push(boolInt(x == b)); return o; }
+    if (o == SLSleelaOpcode_OP_NE) { int b = pop(); int x = pop(); push(boolInt(x != b)); return o; }
+    if (o == SLSleelaOpcode_OP_LT) { int b = pop(); int x = pop(); push(boolInt(x < b)); return o; }
+    if (o == SLSleelaOpcode_OP_LE) { int b = pop(); int x = pop(); push(boolInt(x <= b)); return o; }
+    if (o == SLSleelaOpcode_OP_GT) { int b = pop(); int x = pop(); push(boolInt(x > b)); return o; }
+    if (o == SLSleelaOpcode_OP_GE) { int b = pop(); int x = pop(); push(boolInt(x >= b)); return o; }
 
-    if (o == op.OP_AND) { int b = pop(); int x = pop(); push(boolInt(x != 0 && b != 0)); return o; }
-    if (o == op.OP_OR)  { int b = pop(); int x = pop(); push(boolInt(x != 0 || b != 0)); return o; }
-    if (o == op.OP_NOT) { push(boolInt(pop() == 0)); return o; }
+    if (o == SLSleelaOpcode_OP_AND) { int b = pop(); int x = pop(); push(boolInt(x != 0 && b != 0)); return o; }
+    if (o == SLSleelaOpcode_OP_OR)  { int b = pop(); int x = pop(); push(boolInt(x != 0 || b != 0)); return o; }
+    if (o == SLSleelaOpcode_OP_NOT) { push(boolInt(pop() == 0)); return o; }
 
-    if (o == op.OP_JMP)  { ip = a; return o; }
+    if (o == SLSleelaOpcode_OP_JMP)  { ip = a; return o; }
     < jump if false >
-    if (o == op.OP_JMPF) { if (pop() == 0) { ip = a; } return o; }
+    if (o == SLSleelaOpcode_OP_JMPF) { if (pop() == 0) { ip = a; } return o; }
 
-    if (o == op.OP_PRINT) {
+    if (o == SLSleelaOpcode_OP_PRINT) {
       int v = pop();
       lastPrint = v;
       if (hosted == 1) { parkExit(o, a, v); } else { printValue(v); }
       return o;
     }
-    if (o == op.OP_HALT) { halted = 1; return o; }
+    if (o == SLSleelaOpcode_OP_HALT) { halted = 1; return o; }
 
     < Service / I/O opcodes (PRINT handled above, FILE*, SOCK*, etc.): under a >
     < hypervisor these are VM-exits the host routes to the device model; bare, >
@@ -206,7 +234,7 @@ class SLSleelaVM {
   }
 
   int boolInt(boolean b) { if (b) { return 1; } return 0; }
-  void printValue(int v) { native sleela_vm_print_int(v); }
+  void printValue(int v) { print(v); }
 
   < Run until HALT, a pending VM-exit (hosted mode), or budget exhausted. >
   int run(int budget) {

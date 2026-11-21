@@ -34,3 +34,5 @@ the model, clocks it, verifies it and injects faults to show each check fails
 when it should.
 
 The model stays at functional-block level. It is not a transistor netlist.
+
+Circuit grade: **B** (7/10), from `circuitScore()` in `SLCircuitModel`. `SLZ80CPU.circuitModel()` returns this circuit. Checking the recalled figures named in the class header against a primary source raises the grade.

@@ -56,6 +56,10 @@ class SLRISCVCPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local copies of inherited or field-owned constants: the checker does not >
+  < see statics through inheritance or a field, so they are repeated here. >
+  static final int SLALU_OP_ADD = 0;
+  static final int SLALU_OP_SUB = 1;
   static final int ADD  = 1;
   static final int SUB  = 2;
   static final int ADDI = 3;
@@ -101,9 +105,9 @@ class SLRISCVCPU extends SLCPURuntime {
     int opcode = opOf(word);
     int rd = rdOf(word); int rs1 = rs1Of(word); int rs2 = rs2ImmOf(word);
 
-    if (opcode == ADD)  { setX(rd, aluOp(x(rs1), x(rs2), alu.OP_ADD)); return; }
-    if (opcode == SUB)  { setX(rd, aluOp(x(rs1), x(rs2), alu.OP_SUB)); return; }
-    if (opcode == ADDI) { setX(rd, aluOp(x(rs1), immediate(word), alu.OP_ADD)); return; }
+    if (opcode == ADD)  { setX(rd, aluOp(x(rs1), x(rs2), SLALU_OP_ADD)); return; }
+    if (opcode == SUB)  { setX(rd, aluOp(x(rs1), x(rs2), SLALU_OP_SUB)); return; }
+    if (opcode == ADDI) { setX(rd, aluOp(x(rs1), immediate(word), SLALU_OP_ADD)); return; }
     if (opcode == LW)   { setX(rd, readMem(x(rs1) + immediate(word))); return; }
     if (opcode == SW)   { writeMem(x(rs1) + immediate(word), x(rd)); return; }
     if (opcode == BEQ)  { if (x(rd) == x(rs1)) { setEntryPoint(programCounter() + immediate(word)); } return; }
@@ -130,4 +134,19 @@ class SLRISCVCPU extends SLCPURuntime {
   int csr(int i)   { return readReg(i); }
   int registerWidth(){ return xlen; }
   String extensions(){ return isaExtensions; }
+
+  < The physical circuit model of this processor: logic family, supply, clock, >
+  < blocks, timing paths, nets and semaphores (see SLRISCVCircuit). It is built, clocked >
+  < for 16 cycles and returned ready for verifyAll() and circuitGrade(). >
+  SLRISCVCircuit circuitModel() {
+    SLRISCVCircuit c = new SLRISCVCircuit();
+    c.build();
+    c.runCycles(16);
+    return c;
+  }
+
+  String circuitGrade() {
+    SLRISCVCircuit c = circuitModel();
+    return c.circuitGrade();
+  }
 }

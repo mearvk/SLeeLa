@@ -64,6 +64,13 @@ class SLTuringBridge {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLFrontend_LANG_C = 1;
+  static final int SLFrontend_LANG_CPP = 2;
+  static final int SLFrontend_LANG_JAVA = 3;
+  static final int SLFrontend_LANG_SLEELA = 0;
   SLInstructionSet isa;
   SLInstructionDecoder decoder;
   SLSystemCall sys;
@@ -116,10 +123,10 @@ class SLTuringBridge {
   }
 
   < Language-id helpers (mirror SLFrontend constants without an instance). >
-  int SLFrontend_LANG_SLEELA() { SLFrontend f = new SLFrontend(); return f.LANG_SLEELA; }
-  int SLFrontend_LANG_C() { SLFrontend f = new SLFrontend(); return f.LANG_C; }
-  int SLFrontend_LANG_CPP() { SLFrontend f = new SLFrontend(); return f.LANG_CPP; }
-  int SLFrontend_LANG_JAVA() { SLFrontend f = new SLFrontend(); return f.LANG_JAVA; }
+  int SLFrontend_LANG_SLEELA() { SLFrontend f = new SLFrontend(); return SLFrontend_LANG_SLEELA; }
+  int SLFrontend_LANG_C() { SLFrontend f = new SLFrontend(); return SLFrontend_LANG_C; }
+  int SLFrontend_LANG_CPP() { SLFrontend f = new SLFrontend(); return SLFrontend_LANG_CPP; }
+  int SLFrontend_LANG_JAVA() { SLFrontend f = new SLFrontend(); return SLFrontend_LANG_JAVA; }
 
   int runCount() { return runs; }
 }

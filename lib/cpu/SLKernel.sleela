@@ -55,6 +55,12 @@ class SLKernel {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLSystemCall_SYS_EXIT = 4;
+  static final int SLSystemCall_SYS_WRITE = 0;
+  static final int SLSystemCall_SYS_YIELD = 6;
   SLCPU cpu;
   SLRAM memory;
   SLScheduler scheduler;
@@ -121,13 +127,13 @@ class SLKernel {
   < SYS_EXIT terminates the process; SYS_YIELD gives up the rest of the quantum. >
   void serviceSyscall(SLCore core, SLProcess proc, int number) {
     syscalls.count();
-    if (number == syscalls.SYS_WRITE) {
+    if (number == SLSystemCall_SYS_WRITE) {
       < convention: r2 holds the char >
       int ch = core.registers().read(2);
       if (drivers.consoleDriver() != null) { drivers.consoleDriver().putChar(ch); }
-    } else if (number == syscalls.SYS_EXIT) {
+    } else if (number == SLSystemCall_SYS_EXIT) {
       proc.terminate();
-    } else if (number == syscalls.SYS_YIELD) {
+    } else if (number == SLSystemCall_SYS_YIELD) {
       proc.markReady();
     }
   }

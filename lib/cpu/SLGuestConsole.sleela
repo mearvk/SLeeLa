@@ -3,8 +3,7 @@
    Definition: Defines SLGuestConsole — a virtual console/serial device for the
      guest. Writing a character to its data register emits it (the guest's
      dmesg / stdout path); it is how a guest kernel prints its boot log. The
-     hypervisor forwards characters to the host console across the explicit
-     VM/OS bridge.
+     hypervisor forwards characters to the host console through SLConsoleSink.
    
    MMIO registers: 0 = data (write a char code), 1 = status (RO, ready).
    
@@ -69,6 +68,10 @@ class SLGuestConsole extends SLGuestDevice {
     if (r == 0) { charsOut = charsOut + 1; emit(value); }
   }
 
-  void emit(int code) { native sleela_console_putc(code); }
+  void emit(int code) {
+    if (sink == null) { sink = new SLConsoleSink(); sink.configure(); }
+    sink.put(code);
+  }
+  SLConsoleSink sink;
   int charsWritten() { return charsOut; }
 }

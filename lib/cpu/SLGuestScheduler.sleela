@@ -56,6 +56,11 @@ class SLGuestScheduler {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLGuestTask_DONE = 3;
+  static final int SLGuestTask_RUNNING = 1;
   static final int MAX = 8;
   SLGuestTask t0; SLGuestTask t1; SLGuestTask t2; SLGuestTask t3;
   SLGuestTask t4; SLGuestTask t5; SLGuestTask t6; SLGuestTask t7;
@@ -87,7 +92,7 @@ class SLGuestScheduler {
     int i = 0;
     while (i < count) {
       SLGuestTask t = at(i);
-      if (i != current && t != null && t.taskState() == t.DONE && t.reapedYet()) { return i; }
+      if (i != current && t != null && t.taskState() == SLGuestTask_DONE && t.reapedYet()) { return i; }
       i = i + 1;
     }
     return -1;
@@ -207,7 +212,7 @@ class SLGuestScheduler {
     tickAccum = 0;
     if (current >= 0) {
       SLGuestTask prev = at(current);
-      if (prev != null && prev.taskState() == prev.RUNNING) { prev.markReady(); }
+      if (prev != null && prev.taskState() == SLGuestTask_RUNNING) { prev.markReady(); }
     }
     int next = pickNext();
     if (next < 0) { return null; }
@@ -226,7 +231,7 @@ class SLGuestScheduler {
     if (slot < 0 || slot >= count) { return; }
     if (current >= 0 && current != slot) {
       SLGuestTask prev = at(current);
-      if (prev != null && prev.taskState() == prev.RUNNING) { prev.markReady(); }
+      if (prev != null && prev.taskState() == SLGuestTask_RUNNING) { prev.markReady(); }
     }
     current = slot;
     SLGuestTask sel = at(slot);

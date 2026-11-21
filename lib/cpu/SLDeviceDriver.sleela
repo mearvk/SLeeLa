@@ -75,7 +75,7 @@ class SLDeviceDriver {
   boolean probe() { return io != null && io.port(portNumber) != null; }
   void attach() { if (probe()) { state = STATE_ATTACHED; } }
   void open() { if (state == STATE_ATTACHED) { state = STATE_OPEN; } }
-  void close() { if (state == STATE_OPEN) { state = STATE_ATTACHED; } }
+  void closeDevice() { if (state == STATE_OPEN) { state = STATE_ATTACHED; } }
   void detach() { state = STATE_UNLOADED; }
 
   < Default transfer: byte/word through the bound port. Concrete drivers >

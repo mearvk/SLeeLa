@@ -57,6 +57,10 @@ class SLZ80CPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local copies of inherited or field-owned constants: the checker does not >
+  < see statics through inheritance or a field, so they are repeated here. >
+  static final int SLALU_OP_ADD = 0;
+  static final int SLALU_OP_SUB = 1;
   static final int R_A = 0; static final int R_B = 1; static final int R_C = 2;
   static final int R_D = 3; static final int R_E = 4; static final int R_H = 5;
   static final int R_L = 6; static final int R_SP = 7; static final int R_R = 8;
@@ -112,9 +116,9 @@ class SLZ80CPU extends SLCPURuntime {
     if (opcode == LD_R_N)  { int reg = arg % 16; int n = arg / 16; writeReg(reg, n); return; }
     if (opcode == LD_A_NN) { int v = readMem(arg); writeReg(R_A, v); return; }
     if (opcode == ST_NN_A) { writeMem(arg, readReg(R_A)); return; }
-    if (opcode == ADD_A_N) { int r = aluOp(readReg(R_A), arg, alu.OP_ADD); writeReg(R_A, r); return; }
-    if (opcode == SUB_N)   { int r = aluOp(readReg(R_A), arg, alu.OP_SUB); writeReg(R_A, r); return; }
-    if (opcode == INC_R)   { int r = aluOp(readReg(arg), 1, alu.OP_ADD); writeReg(arg, r); return; }
+    if (opcode == ADD_A_N) { int r = aluOp(readReg(R_A), arg, SLALU_OP_ADD); writeReg(R_A, r); return; }
+    if (opcode == SUB_N)   { int r = aluOp(readReg(R_A), arg, SLALU_OP_SUB); writeReg(R_A, r); return; }
+    if (opcode == INC_R)   { int r = aluOp(readReg(arg), 1, SLALU_OP_ADD); writeReg(arg, r); return; }
     if (opcode == OUT_N_A) { ioCycleWrite(arg, readReg(R_A)); return; }
     if (opcode == IN_A_N)  { writeReg(R_A, ioCycleRead(arg)); return; }
     if (opcode == JP_NN)   { setEntryPoint(arg); return; }
@@ -132,4 +136,19 @@ class SLZ80CPU extends SLCPURuntime {
 
   int accumulator() { return readReg(R_A); }
   int refreshRegister() { return rCounter; }
+
+  < The physical circuit model of this processor: logic family, supply, clock, >
+  < blocks, timing paths, nets and semaphores (see SLZ80Circuit). It is built, clocked >
+  < for 16 cycles and returned ready for verifyAll() and circuitGrade(). >
+  SLZ80Circuit circuitModel() {
+    SLZ80Circuit c = new SLZ80Circuit();
+    c.build();
+    c.runCycles(16);
+    return c;
+  }
+
+  String circuitGrade() {
+    SLZ80Circuit c = circuitModel();
+    return c.circuitGrade();
+  }
 }

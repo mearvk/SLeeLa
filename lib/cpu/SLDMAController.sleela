@@ -87,7 +87,7 @@ class SLDMAController {
     transfersDone = 0; wordsMoved = 0;
   }
 
-  void enable()  { enabled = 1; }
+  void activate() { enabled = 1; }
   void disable() { enabled = 0; }
   boolean isEnabled() { return enabled == 1; }
 

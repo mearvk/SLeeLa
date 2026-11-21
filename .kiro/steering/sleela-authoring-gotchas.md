@@ -213,3 +213,26 @@ refuse (do not clamp or wrap) inputs that could push it past. See
   syntax error in a library unit.
 - **A subnormal double literal is rejected** ("floating-point literal '5.3e-315'
   is out of range"); the smallest normal, `2.2250738585072014e-308`, is accepted.
+
+## Found while making lib/cpu run (2026-11-21, working-binaries sleela 1.0121)
+
+- **No virtual dispatch.** A call binds to the declared type of the receiver.
+  `SLFrontend f = new SLFrontendC(); f.lower();` runs `SLFrontend.lower()`, and a
+  base-class method that calls `decode()` runs the base `decode()`, not the
+  subclass override. Call overridden methods on a variable of the concrete type.
+- **Inherited statics are invisible.** A subclass cannot read a `static final`
+  declared in its parent (`use of undeclared variable`), and `obj.CONST` /
+  `Class.CONST` on another class fails (`struct ... has no field`). Redeclare the
+  constant locally (lib/cpu uses `Owner_NAME` mirrors) or pass the literal.
+- **More reserved built-in names:** `enable()` with no argument and `connect(x)`
+  with one argument collide with Munction verbs; a method named `main()` that
+  returns non-void collides with the entry point. Also `native` is a keyword, so
+  `native sleela_*()` bridge calls no longer parse; keep `lib/cpu` pure SLeeLa.
+- **`String` has no `length()`/`substring()`** in this build, as methods or as
+  free functions.
+- **Ambiguous names:** lib/cpu shares class names with lib/decompiler, lib/runtime,
+  lib/core, lib/process and others (SLIR, SLInstruction, SLClock, SLSemaphore...).
+  A runnable lib/cpu demo needs `import cpu;` right after the `#sleela` line.
+- `field access on a non-struct value` at runtime usually means a null object
+  reached a method call. In lib/cpu it came from `SLWorkload.compiled()` being
+  true before any program existed.

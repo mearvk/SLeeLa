@@ -66,6 +66,19 @@ class SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLSleelaOpcode_OP_ADD = 8;
+  static final int SLSleelaOpcode_OP_CONST = 1;
+  static final int SLSleelaOpcode_OP_HALT = 48;
+  static final int SLSleelaOpcode_OP_JMP = 23;
+  static final int SLSleelaOpcode_OP_JMPF = 24;
+  static final int SLSleelaOpcode_OP_LOADG = 4;
+  static final int SLSleelaOpcode_OP_MUL = 10;
+  static final int SLSleelaOpcode_OP_PRINT = 27;
+  static final int SLSleelaOpcode_OP_STOREG = 5;
+  static final int SLSleelaOpcode_OP_SUB = 9;
   String archName;
   < data path width in bits >
   int width;
@@ -174,7 +187,7 @@ class SLCPURuntime {
     dmaOption = 1;
     if (dma == null) { dma = new SLDMAController(); }
     dma.configure(mem);
-    dma.enable();
+    dma.activate();
   }
   void disableDMA() { dmaOption = 0; if (dma != null) { dma.disable(); } }
   boolean dmaEnabled() { return dmaOption == 1; }
@@ -194,7 +207,7 @@ class SLCPURuntime {
     gpuOption = 1;
     if (gpu == null) { gpu = new SLGPUDevice(); }
     gpu.configure(name, units, lanes, core, vramMiB);
-    gpu.enable();
+    gpu.activate();
   }
   void disableGPU() { gpuOption = 0; if (gpu != null) { gpu.disable(); } }
   boolean gpuEnabled() { return gpuOption == 1; }
@@ -333,16 +346,16 @@ class SLCPURuntime {
 
   < --- lowering surface: emit canonical opcodes onto the secondary VM --- >
   void enableLowering() { lowering = 1; substrate.setHosted(); }
-  int emitConst(int v)        { return substrate.emit(op.OP_CONST, v); }
-  int emitLoadGlobal(int slot){ return substrate.emit(op.OP_LOADG, slot); }
-  int emitStoreGlobal(int slot){ return substrate.emit(op.OP_STOREG, slot); }
-  int emitAdd()  { return substrate.emit(op.OP_ADD, 0); }
-  int emitSub()  { return substrate.emit(op.OP_SUB, 0); }
-  int emitMul()  { return substrate.emit(op.OP_MUL, 0); }
-  int emitPrint(){ return substrate.emit(op.OP_PRINT, 0); }
-  int emitHalt() { return substrate.emit(op.OP_HALT, 0); }
-  int emitJump(int target)      { return substrate.emit(op.OP_JMP, target); }
-  int emitJumpIfFalse(int target){ return substrate.emit(op.OP_JMPF, target); }
+  int emitConst(int v)        { return substrate.emit(SLSleelaOpcode_OP_CONST, v); }
+  int emitLoadGlobal(int slot){ return substrate.emit(SLSleelaOpcode_OP_LOADG, slot); }
+  int emitStoreGlobal(int slot){ return substrate.emit(SLSleelaOpcode_OP_STOREG, slot); }
+  int emitAdd()  { return substrate.emit(SLSleelaOpcode_OP_ADD, 0); }
+  int emitSub()  { return substrate.emit(SLSleelaOpcode_OP_SUB, 0); }
+  int emitMul()  { return substrate.emit(SLSleelaOpcode_OP_MUL, 0); }
+  int emitPrint(){ return substrate.emit(SLSleelaOpcode_OP_PRINT, 0); }
+  int emitHalt() { return substrate.emit(SLSleelaOpcode_OP_HALT, 0); }
+  int emitJump(int target)      { return substrate.emit(SLSleelaOpcode_OP_JMP, target); }
+  int emitJumpIfFalse(int target){ return substrate.emit(SLSleelaOpcode_OP_JMPF, target); }
 
   < Execute the lowered program on the substrate (the "run on top of the >
   < secondary VM" path). Returns opcodes retired on the substrate. >

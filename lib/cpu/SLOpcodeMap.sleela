@@ -61,6 +61,61 @@ class SLOpcodeMap {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLInstructionSet_ADD = 10;
+  static final int SLInstructionSet_AND = 16;
+  static final int SLInstructionSet_CALL = 28;
+  static final int SLInstructionSet_CMP = 22;
+  static final int SLInstructionSet_DIV = 13;
+  static final int SLInstructionSet_HALT = 1;
+  static final int SLInstructionSet_JMP = 23;
+  static final int SLInstructionSet_JNZ = 25;
+  static final int SLInstructionSet_JZ = 24;
+  static final int SLInstructionSet_MOD = 14;
+  static final int SLInstructionSet_MOV = 2;
+  static final int SLInstructionSet_MOVR = 3;
+  static final int SLInstructionSet_MUL = 12;
+  static final int SLInstructionSet_NEG = 15;
+  static final int SLInstructionSet_NOP = 0;
+  static final int SLInstructionSet_OR = 17;
+  static final int SLInstructionSet_POP = 31;
+  static final int SLInstructionSet_PUSH = 30;
+  static final int SLInstructionSet_RET = 29;
+  static final int SLInstructionSet_SUB = 11;
+  static final int SLInstructionSet_SYSCALL = 34;
+  static final int SLInstructionSet_XOR = 18;
+  static final int SLSleelaOpcode_OP_ADD = 8;
+  static final int SLSleelaOpcode_OP_AND = 20;
+  static final int SLSleelaOpcode_OP_CALL = 25;
+  static final int SLSleelaOpcode_OP_CONST = 1;
+  static final int SLSleelaOpcode_OP_DIV = 11;
+  static final int SLSleelaOpcode_OP_FILECLOSE = 46;
+  static final int SLSleelaOpcode_OP_FILEOPEN = 43;
+  static final int SLSleelaOpcode_OP_FILEREAD = 44;
+  static final int SLSleelaOpcode_OP_HALT = 48;
+  static final int SLSleelaOpcode_OP_JMP = 23;
+  static final int SLSleelaOpcode_OP_JMPF = 24;
+  static final int SLSleelaOpcode_OP_LOADG = 4;
+  static final int SLSleelaOpcode_OP_MOD = 12;
+  static final int SLSleelaOpcode_OP_MUL = 10;
+  static final int SLSleelaOpcode_OP_NE = 15;
+  static final int SLSleelaOpcode_OP_NEG = 13;
+  static final int SLSleelaOpcode_OP_NOP = 0;
+  static final int SLSleelaOpcode_OP_NOT = 22;
+  static final int SLSleelaOpcode_OP_OR = 21;
+  static final int SLSleelaOpcode_OP_PRINT = 27;
+  static final int SLSleelaOpcode_OP_RET = 26;
+  static final int SLSleelaOpcode_OP_STOREG = 5;
+  static final int SLSleelaOpcode_OP_SUB = 9;
+  static final int SLSystemCall_SYS_CLOSE = 3;
+  static final int SLSystemCall_SYS_EXIT = 4;
+  static final int SLSystemCall_SYS_OPEN = 2;
+  static final int SLSystemCall_SYS_READ = 1;
+  static final int SLSystemCall_SYS_SPAWN = 5;
+  static final int SLSystemCall_SYS_WRITE = 0;
+  static final int SLSystemCall_SYS_YIELD = 6;
   SLInstructionSet isa;
   SLSystemCall sys;
   SLSleelaOpcode sop;
@@ -84,78 +139,78 @@ class SLOpcodeMap {
   void mapInstruction(int op, int rd, int rs, int imm) {
     mappedInstr = mappedInstr + 1;
 
-    if (op == isa.NOP)  { op0(sop.OP_NOP); return; }
-    if (op == isa.HALT) { op0(sop.OP_HALT); return; }
+    if (op == SLInstructionSet_NOP)  { op0(SLSleelaOpcode_OP_NOP); return; }
+    if (op == SLInstructionSet_HALT) { op0(SLSleelaOpcode_OP_HALT); return; }
 
     < rd <- imm :  CONST imm ; STOREG rd >
-    if (op == isa.MOV)  { op1(sop.OP_CONST, imm); op1(sop.OP_STOREG, rd); return; }
+    if (op == SLInstructionSet_MOV)  { op1(SLSleelaOpcode_OP_CONST, imm); op1(SLSleelaOpcode_OP_STOREG, rd); return; }
     < rd <- rs  :  LOADG rs ; STOREG rd >
-    if (op == isa.MOVR) { op1(sop.OP_LOADG, rs); op1(sop.OP_STOREG, rd); return; }
+    if (op == SLInstructionSet_MOVR) { op1(SLSleelaOpcode_OP_LOADG, rs); op1(SLSleelaOpcode_OP_STOREG, rd); return; }
 
     < Binary arithmetic rd = rd (op) rs :  LOADG rd ; LOADG rs ; <ALU> ; STOREG rd >
-    if (op == isa.ADD || op == isa.SUB || op == isa.MUL || op == isa.DIV ||
-        op == isa.MOD || op == isa.AND || op == isa.OR  || op == isa.XOR) {
-      op1(sop.OP_LOADG, rd);
-      op1(sop.OP_LOADG, rs);
+    if (op == SLInstructionSet_ADD || op == SLInstructionSet_SUB || op == SLInstructionSet_MUL || op == SLInstructionSet_DIV ||
+        op == SLInstructionSet_MOD || op == SLInstructionSet_AND || op == SLInstructionSet_OR  || op == SLInstructionSet_XOR) {
+      op1(SLSleelaOpcode_OP_LOADG, rd);
+      op1(SLSleelaOpcode_OP_LOADG, rs);
       op0(aluToSleela(op));
-      op1(sop.OP_STOREG, rd);
+      op1(SLSleelaOpcode_OP_STOREG, rd);
       return;
     }
-    if (op == isa.NEG) { op1(sop.OP_LOADG, rd); op0(sop.OP_NEG); op1(sop.OP_STOREG, rd); return; }
+    if (op == SLInstructionSet_NEG) { op1(SLSleelaOpcode_OP_LOADG, rd); op0(SLSleelaOpcode_OP_NEG); op1(SLSleelaOpcode_OP_STOREG, rd); return; }
 
     < CMP rd, rs : LOADG rd ; LOADG rs ; SUB  (leaves difference; zero <=> equal) >
-    if (op == isa.CMP) { op1(sop.OP_LOADG, rd); op1(sop.OP_LOADG, rs); op0(sop.OP_SUB); return; }
+    if (op == SLInstructionSet_CMP) { op1(SLSleelaOpcode_OP_LOADG, rd); op1(SLSleelaOpcode_OP_LOADG, rs); op0(SLSleelaOpcode_OP_SUB); return; }
 
     < Branches map onto OP_JMP / OP_JMPF (jump-if-false) against a pushed test. >
-    if (op == isa.JMP) { op1(sop.OP_JMP, imm); return; }
+    if (op == SLInstructionSet_JMP) { op1(SLSleelaOpcode_OP_JMP, imm); return; }
     < top==0 (false) => take >
-    if (op == isa.JZ)  { op1(sop.OP_JMPF, imm); return; }
-    if (op == isa.JNZ) { op1(sop.OP_NOT, 0); op1(sop.OP_JMPF, imm); return; }
+    if (op == SLInstructionSet_JZ)  { op1(SLSleelaOpcode_OP_JMPF, imm); return; }
+    if (op == SLInstructionSet_JNZ) { op1(SLSleelaOpcode_OP_NOT, 0); op1(SLSleelaOpcode_OP_JMPF, imm); return; }
 
     < CALL / RET map directly to the substrate's call/return. >
-    if (op == isa.CALL) { op1(sop.OP_CALL, imm); return; }
-    if (op == isa.RET)  { op0(sop.OP_RET); return; }
+    if (op == SLInstructionSet_CALL) { op1(SLSleelaOpcode_OP_CALL, imm); return; }
+    if (op == SLInstructionSet_RET)  { op0(SLSleelaOpcode_OP_RET); return; }
 
     < PUSH rs / POP rd map onto global<->stack moves. >
-    if (op == isa.PUSH) { op1(sop.OP_LOADG, rs); return; }
-    if (op == isa.POP)  { op1(sop.OP_STOREG, rd); return; }
+    if (op == SLInstructionSet_PUSH) { op1(SLSleelaOpcode_OP_LOADG, rs); return; }
+    if (op == SLInstructionSet_POP)  { op1(SLSleelaOpcode_OP_STOREG, rd); return; }
 
     < SYSCALL imm : the OS service dispatch (see mapSyscall). >
-    if (op == isa.SYSCALL) { mapSyscall(imm, rs); return; }
+    if (op == SLInstructionSet_SYSCALL) { mapSyscall(imm, rs); return; }
 
     < Unknown / unmodeled: NOP in the substrate. >
-    op0(sop.OP_NOP);
+    op0(SLSleelaOpcode_OP_NOP);
   }
 
   < Map a register-ISA ALU opcode to the Sleela stack-arithmetic opcode. >
   int aluToSleela(int op) {
-    if (op == isa.ADD) { return sop.OP_ADD; }
-    if (op == isa.SUB) { return sop.OP_SUB; }
-    if (op == isa.MUL) { return sop.OP_MUL; }
-    if (op == isa.DIV) { return sop.OP_DIV; }
-    if (op == isa.MOD) { return sop.OP_MOD; }
-    if (op == isa.AND) { return sop.OP_AND; }
-    if (op == isa.OR)  { return sop.OP_OR; }
+    if (op == SLInstructionSet_ADD) { return SLSleelaOpcode_OP_ADD; }
+    if (op == SLInstructionSet_SUB) { return SLSleelaOpcode_OP_SUB; }
+    if (op == SLInstructionSet_MUL) { return SLSleelaOpcode_OP_MUL; }
+    if (op == SLInstructionSet_DIV) { return SLSleelaOpcode_OP_DIV; }
+    if (op == SLInstructionSet_MOD) { return SLSleelaOpcode_OP_MOD; }
+    if (op == SLInstructionSet_AND) { return SLSleelaOpcode_OP_AND; }
+    if (op == SLInstructionSet_OR)  { return SLSleelaOpcode_OP_OR; }
     < bitwise XOR modeled as logical NE on the substrate >
-    if (op == isa.XOR) { return sop.OP_NE; }
-    return sop.OP_NOP;
+    if (op == SLInstructionSet_XOR) { return SLSleelaOpcode_OP_NE; }
+    return SLSleelaOpcode_OP_NOP;
   }
 
   < Map ONE OS system call onto Sleela service opcodes. The syscall argument >
   < convention: argReg holds the register whose value is the primary argument. >
   void mapSyscall(int number, int argReg) {
     < SYS_WRITE -> push the arg and PRINT it. >
-    if (number == sys.SYS_WRITE) { op1(sop.OP_LOADG, argReg); op0(sop.OP_PRINT); return; }
+    if (number == SLSystemCall_SYS_WRITE) { op1(SLSleelaOpcode_OP_LOADG, argReg); op0(SLSleelaOpcode_OP_PRINT); return; }
     < SYS_READ  -> FILEREAD service opcode (stdin modeled as fd 0). >
-    if (number == sys.SYS_READ)  { op1(sop.OP_CONST, 0); op0(sop.OP_FILEREAD); return; }
-    if (number == sys.SYS_OPEN)  { op0(sop.OP_FILEOPEN); return; }
-    if (number == sys.SYS_CLOSE) { op0(sop.OP_FILECLOSE); return; }
+    if (number == SLSystemCall_SYS_READ)  { op1(SLSleelaOpcode_OP_CONST, 0); op0(SLSleelaOpcode_OP_FILEREAD); return; }
+    if (number == SLSystemCall_SYS_OPEN)  { op0(SLSleelaOpcode_OP_FILEOPEN); return; }
+    if (number == SLSystemCall_SYS_CLOSE) { op0(SLSleelaOpcode_OP_FILECLOSE); return; }
     < SYS_EXIT  -> HALT the substrate. >
-    if (number == sys.SYS_EXIT)  { op0(sop.OP_HALT); return; }
+    if (number == SLSystemCall_SYS_EXIT)  { op0(SLSleelaOpcode_OP_HALT); return; }
     < SYS_SPAWN -> OP_SPAWN ; SYS_YIELD -> NOP (cooperative point). >
-    if (number == sys.SYS_SPAWN) { op0(sop.OP_NOP); return; }
-    if (number == sys.SYS_YIELD) { op0(sop.OP_NOP); return; }
-    op0(sop.OP_NOP);
+    if (number == SLSystemCall_SYS_SPAWN) { op0(SLSleelaOpcode_OP_NOP); return; }
+    if (number == SLSystemCall_SYS_YIELD) { op0(SLSleelaOpcode_OP_NOP); return; }
+    op0(SLSleelaOpcode_OP_NOP);
   }
 
   < Translate a whole SLProgram (register-ISA image) into the Sleela substrate. >

@@ -56,7 +56,7 @@ class SLLatch {
   int enabled;
 
   void reset() { q = 0; enabled = 0; }
-  void enable() { enabled = 1; }
+  void activate() { enabled = 1; }
   void disable() { enabled = 0; }
 
   < Gated-D behavior: capture D only while enabled, otherwise hold. >

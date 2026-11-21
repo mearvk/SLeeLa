@@ -17,6 +17,7 @@
          int main()                      {...}
        } >>
 #sleela 2.5
+import cpu;
 material;
 class MemoryTiersDispatchExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
@@ -60,6 +61,13 @@ class MemoryTiersDispatchExample {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLMemoryTierPolicy_MOD_ACCURATEMEM = 65536;
+  static final int SLMemoryTierPolicy_MOD_USUALMEM = 32768;
+  static final int SLMemoryTierPolicy_TIER_ACCURATE = 2;
+  static final int SLMemoryTierPolicy_TIER_INHERIT = 0;
 
   void main() {
     SLComponentCatalog parts = new SLComponentCatalog();
@@ -76,15 +84,15 @@ class MemoryTiersDispatchExample {
     < DDR5 -> accurate (base) >
     build.installAccurateTier(parts.ddr5_6400(65536));
     < document default = DDR5 >
-    build.setMainTier(policy.TIER_ACCURATE);
+    build.setMainTier(SLMemoryTierPolicy_TIER_ACCURATE);
     build.installBus(parts.pcieGen5x16());
     build.assemble();
     print("two-tier memory = " + build.twoTierMemory() +
-          ", main tier = " + build.tierRouter().tierName(policy.TIER_INHERIT));
+          ", main tier = " + build.tierRouter().tierName(SLMemoryTierPolicy_TIER_INHERIT));
 
     < 2. WHOLE-DOCUMENT default, as the top-level class modifier would set it. >
     < accuratemem on the class -> document default accurate (DDR5). >
-    int classMods = policy.MOD_ACCURATEMEM;
+    int classMods = SLMemoryTierPolicy_MOD_ACCURATEMEM;
     SLProgram prog = new SLProgram();
     prog.configure("order-pipeline", 256);
     prog.setDocumentTier(policy.documentTierFromModifiers(classMods));
@@ -94,10 +102,10 @@ class MemoryTiersDispatchExample {
     < logActivity: usualmem ; settleLedger: accuratemem ; mainFn: unflagged. >
     SLVMMethod logActivity = new SLVMMethod();
     logActivity.configure("logActivity", "()V", 0, 3, 0, 1, true, false);
-    logActivity.setMemTier(policy.methodTierFromModifiers(policy.MOD_USUALMEM));
+    logActivity.setMemTier(policy.methodTierFromModifiers(SLMemoryTierPolicy_MOD_USUALMEM));
     SLVMMethod settleLedger = new SLVMMethod();
     settleLedger.configure("settleLedger", "()I", 3, 5, 0, 2, true, false);
-    settleLedger.setMemTier(policy.methodTierFromModifiers(policy.MOD_ACCURATEMEM));
+    settleLedger.setMemTier(policy.methodTierFromModifiers(SLMemoryTierPolicy_MOD_ACCURATEMEM));
     SLVMMethod mainFn = new SLVMMethod();
     < no tier modifier >
     mainFn.configure("main", "()I", 8, 6, 0, 2, true, false);

@@ -1,0 +1,118 @@
+<< lib/cpu/pdp15/SLPDP15Circuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLPDP15Circuit, the circuit model of the DEC PDP-15
+     (PDP-15 TTL M-series). It states the logic family and its voltage thresholds, the
+     supply rail, the clock and its phases, the functional blocks with width,
+     depth, gate and transistor counts, two timing paths, four monitored nets
+     and three semaphores.
+
+   Provenance of the figures:
+     clock      1 MHz, taken from the existing SLPDP15CPU model; not checked here.
+     recalled   transistor count unknown; feature size unknown; supply 5000 mV.
+                Recalled figures come from general knowledge and were not checked
+                against a primary source in this session.
+     derived    thresholds (TTL-compatible input and output levels); gate delay 10000 ps (standard TTL about 10 ns); edge time, fanout,
+                block gate and transistor counts and depths, and both timing
+                paths. Derived numbers are planning figures, not measurements.
+   The model stays at functional-block level. It is not a transistor netlist.
+
+   Family: cpu. Extends SLCircuitModel. >>
+#sleela 2.5
+material;
+class SLPDP15Circuit extends SLCircuitModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39619;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "Digital Equipment Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  void build() {
+    SLLogicFamily f = new SLLogicFamily();
+    f.configure("TTL", 0, 5000, 250);
+    f.setThresholds(800, 2000, 400, 2400);
+    f.setSpeed(10000, 15000, 10);
+    f.setProvenance("thresholds TTL-compatible input and output levels; speed standard TTL about 10 ns");
+
+    SLVoltageRail rail = new SLVoltageRail();
+    rail.configure("supply", 5000, 4750, 5250);
+
+    configure("DEC PDP-15", f, rail, 1000, 1);
+    setWidths(18, 17);
+    setTransistors(0);
+    setKnown(0, 0, 1, 0);
+    setProvenance("recalled: PDP-15 TTL M-series; transistor count unknown");
+
+    SLCircuitBlock alu = addBlock("alu", "alu", 18, 7, 162, 648);
+    alu.setProvenance("derived: parallel-prefix carry adder and logic unit, 4 transistors per gate");
+    SLCircuitBlock regs = addBlock("register-file", "regfile", 72, 4, 72, 432);
+    regs.setProvenance("derived: 4 registers of 18 bits at 6 transistors per bit");
+    SLCircuitBlock dec = addBlock("instruction-decode", "decode", 18, 6, 288, 1152);
+    dec.setProvenance("derived: decode and control sized at 16 gates per data bit");
+    SLCircuitBlock bus = addBlock("bus-interface", "bus", 35, 3, 70, 280);
+    bus.setProvenance("derived: address and data latches and drivers");
+    SLCircuitBlock clk = addBlock("clock", "clock", 1, 4, 8, 32);
+    clk.setProvenance("derived: clock buffer and phase generation");
+    SLCircuitBlock rest = addRemainder("other");
+
+    SLCircuitPath add = addPath("alu-add", 50000);
+    add.setPeriod(1000000);
+    add.describe("derived: operand latch, 18-bit prefix carry, result latch in one clock phase");
+    add.addStage("operand-latch", 10000);
+    add.addStage("carry-18-bits", 70000);
+    add.addStage("result-latch", 10000);
+    add.constrain(10000, 2500, 20000);
+
+    SLCircuitPath rf = addPath("register-read-bypass", 50000);
+    rf.setPeriod(1000000);
+    rf.describe("derived: register-file read, bypass mux, ALU input latch");
+    rf.addStage("register-read", 40000);
+    rf.addStage("bypass-mux", 20000);
+    rf.addStage("input-latch", 10000);
+    rf.constrain(10000, 2500, 20000);
+
+    SLSignalQuality n0 = addNet("CLK");
+    n0.setEdgeLimit(60000);
+    SLSignalQuality n1 = addNet("A0");
+    SLSignalQuality n2 = addNet("D0");
+    SLSignalQuality n3 = addNet("RESET");
+
+    SLCircuitSemaphore latchSem = addSemaphore("latch", 1, 2);
+    SLCircuitSemaphore abus = addSemaphore("address-bus", 1, 2);
+    SLCircuitSemaphore dbus = addSemaphore("data-bus", 1, 2);
+  }
+}

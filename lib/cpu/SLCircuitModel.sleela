@@ -88,6 +88,12 @@ class SLCircuitModel {
   int cyclesRun;
   int phaseHandoffs;
   int phaseRefusals;
+  < 2 when the figure was checked against a source, 1 when recalled but not checked, >
+  < 0 when derived or unknown >
+  int knownTransistors;
+  int knownNode;
+  int knownSupply;
+  int knownClock;
 
   void configure(String name, SLLogicFamily fam, SLVoltageRail supply, int kHz, int phaseCount) {
     cpuName = name; family = fam; rail = supply;
@@ -98,6 +104,13 @@ class SLCircuitModel {
     nets = new SLSignalQuality[16]; netCount = 0;
     sems = new SLCircuitSemaphore[8]; semCount = 0;
     cyclesRun = 0; phaseHandoffs = 0; phaseRefusals = 0;
+    knownTransistors = 0; knownNode = 0; knownSupply = 0; knownClock = 0;
+  }
+
+  < Declare how each of the four headline figures is backed: 2 checked, 1 recalled, 0 derived. >
+  void setKnown(int transistorsKnown, int nodeKnown, int supplyKnown, int clockKnown) {
+    knownTransistors = transistorsKnown; knownNode = nodeKnown;
+    knownSupply = supplyKnown; knownClock = clockKnown;
   }
 
   < Override in each CPU circuit class to populate blocks, paths, nets and semaphores. >
@@ -263,6 +276,51 @@ class SLCircuitModel {
     }
   }
 
+  << Circuit grade. Ten points, from two sources:
+       data (4 points): one each for a transistor count, feature size, supply
+         voltage and clock that was checked against a source. A recalled
+         figure that was not checked scores 0 here and is counted by
+         recalledFigures() instead, so checking it raises the grade;
+       structure and checks (6 points): blocks present (1), at least two
+         timing paths (1), at least three monitored nets (1), at least two
+         semaphores (1), every timing path honored (1), and a clean
+         verifyAll after runCycles, meaning no signal, rail, family or
+         semaphore violation (1).
+     The letter is A for 9 or 10, B for 7 or 8, C for 5 or 6, D for 3 or 4,
+     and F below 3. The grade measures how well the model is sourced and how
+     cleanly it verifies. It does not rank the processor itself. >>
+  int sourced(int level) { if (level == 2) { return 1; } return 0; }
+
+  < How many of the four headline figures are recalled but not yet checked. >
+  int recalledFigures() {
+    int n = 0;
+    if (knownTransistors == 1) { n = n + 1; }
+    if (knownNode == 1) { n = n + 1; }
+    if (knownSupply == 1) { n = n + 1; }
+    if (knownClock == 1) { n = n + 1; }
+    return n;
+  }
+
+  int circuitScore() {
+    int score = sourced(knownTransistors) + sourced(knownNode) + sourced(knownSupply) + sourced(knownClock);
+    if (blockCount > 0) { score = score + 1; }
+    if (pathCount >= 2) { score = score + 1; }
+    if (netCount >= 3) { score = score + 1; }
+    if (semCount >= 2) { score = score + 1; }
+    if (timingViolations() == 0) { score = score + 1; }
+    if (cyclesRun > 0 && verifyAll() == 0) { score = score + 1; }
+    return score;
+  }
+
+  String circuitGrade() {
+    int s = circuitScore();
+    if (s >= 9) { return "A"; }
+    if (s >= 7) { return "B"; }
+    if (s >= 5) { return "C"; }
+    if (s >= 3) { return "D"; }
+    return "F";
+  }
+
   String name() { return cpuName; }
   SLLogicFamily logicFamily() { return family; }
   SLVoltageRail supplyRail() { return rail; }
@@ -309,5 +367,6 @@ class SLCircuitModel {
       i = i + 1;
     }
     print("  verifyAll violations = " + verifyAll());
+    print("  circuit grade = " + circuitGrade() + " (" + circuitScore() + "/10), recalled figures awaiting a check = " + recalledFigures());
   }
 }

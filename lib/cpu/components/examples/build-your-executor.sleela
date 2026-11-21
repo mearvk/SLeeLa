@@ -45,6 +45,11 @@ class BuildYourExecutorExample {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLCPUResource_PRIORITY_NORMAL = 1;
+  static final int SLWorkload_LANG_C = 1;
   int result;
 
   void main() {
@@ -80,9 +85,9 @@ class BuildYourExecutorExample {
 
     < Run a C program on the assembled executor via the Creator -> SLVM stack. >
     SLCPUResource grant = new SLCPUResource();
-    grant.configure(4096, 100000, grant.PRIORITY_NORMAL);
+    grant.configure(4096, 100000, SLCPUResource_PRIORITY_NORMAL);
     SLWorkload job = new SLWorkload();
-    job.configure("hello", "examples/hello.c", job.LANG_C, grant);
+    job.configure("hello", "examples/hello.c", SLWorkload_LANG_C, grant);
 
     SleelaVMCreator creator = new SleelaVMCreator();
     creator.configure();

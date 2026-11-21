@@ -55,6 +55,10 @@ class SLFrontend {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLIRInstruction_IR_HALT = 21;
   static final int LANG_SLEELA = 0;
   static final int LANG_C      = 1;
   static final int LANG_CPP    = 2;
@@ -84,7 +88,7 @@ class SLFrontend {
   }
 
   < Helper so subclasses can reference the IR_HALT constant without an instance. >
-  int SLIRInstructionConst() { SLIRInstruction t = new SLIRInstruction(); return t.IR_HALT; }
+  int SLIRInstructionConst() { SLIRInstruction t = new SLIRInstruction(); return SLIRInstruction_IR_HALT; }
 
   SLIR intermediate() { return ir; }
   String languageName() { return language; }

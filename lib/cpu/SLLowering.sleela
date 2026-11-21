@@ -57,6 +57,46 @@ class SLLowering {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLIRInstruction_IR_ADD = 2;
+  static final int SLIRInstruction_IR_AND = 7;
+  static final int SLIRInstruction_IR_CALL = 18;
+  static final int SLIRInstruction_IR_CMP = 10;
+  static final int SLIRInstruction_IR_CONST = 0;
+  static final int SLIRInstruction_IR_DIV = 5;
+  static final int SLIRInstruction_IR_HALT = 21;
+  static final int SLIRInstruction_IR_JNZ = 14;
+  static final int SLIRInstruction_IR_JUMP = 12;
+  static final int SLIRInstruction_IR_JZ = 13;
+  static final int SLIRInstruction_IR_LABEL = 11;
+  static final int SLIRInstruction_IR_LOAD = 15;
+  static final int SLIRInstruction_IR_MOD = 6;
+  static final int SLIRInstruction_IR_MOVE = 1;
+  static final int SLIRInstruction_IR_MUL = 4;
+  static final int SLIRInstruction_IR_OR = 8;
+  static final int SLIRInstruction_IR_PARAM = 17;
+  static final int SLIRInstruction_IR_RET = 19;
+  static final int SLIRInstruction_IR_STORE = 16;
+  static final int SLIRInstruction_IR_SUB = 3;
+  static final int SLIRInstruction_IR_SYSCALL = 20;
+  static final int SLIRInstruction_IR_XOR = 9;
+  static final int SLInstructionSet_ADD = 10;
+  static final int SLInstructionSet_AND = 16;
+  static final int SLInstructionSet_CALL = 28;
+  static final int SLInstructionSet_DIV = 13;
+  static final int SLInstructionSet_LOADR = 5;
+  static final int SLInstructionSet_MOD = 14;
+  static final int SLInstructionSet_MOVR = 3;
+  static final int SLInstructionSet_MUL = 12;
+  static final int SLInstructionSet_OR = 17;
+  static final int SLInstructionSet_PUSH = 30;
+  static final int SLInstructionSet_RET = 29;
+  static final int SLInstructionSet_STORER = 8;
+  static final int SLInstructionSet_SYSCALL = 34;
+  static final int SLInstructionSet_SUB = 11;
+  static final int SLInstructionSet_XOR = 18;
   SLInstructionSet isa;
   SLAssembler asm;
   SLProgram program;
@@ -84,7 +124,7 @@ class SLLowering {
     int i = 0;
     while (i < ir.size()) {
       SLIRInstruction n = ir.at(i);
-      if (n.operation() == n.IR_LABEL) {
+      if (n.operation() == SLIRInstruction_IR_LABEL) {
         labelAddr.writeWord(n.immediate(), addr);
       } else {
         addr = addr + opcodeFootprint(n);
@@ -96,14 +136,14 @@ class SLLowering {
   < How many machine instructions a given IR node expands to. >
   int opcodeFootprint(SLIRInstruction n) {
     int op = n.operation();
-    if (op == n.IR_LABEL) { return 0; }
-    if (op == n.IR_CONST) { return 1; }
-    if (op == n.IR_MOVE)  { return 1; }
-    if (op == n.IR_CALL)  { return 1; }
-    if (op == n.IR_PARAM) { return 1; }
+    if (op == SLIRInstruction_IR_LABEL) { return 0; }
+    if (op == SLIRInstruction_IR_CONST) { return 1; }
+    if (op == SLIRInstruction_IR_MOVE)  { return 1; }
+    if (op == SLIRInstruction_IR_CALL)  { return 1; }
+    if (op == SLIRInstruction_IR_PARAM) { return 1; }
     < binary ops: move a into dst reg, then op with b >
-    if (op == n.IR_ADD || op == n.IR_SUB || op == n.IR_MUL || op == n.IR_DIV ||
-        op == n.IR_MOD || op == n.IR_AND || op == n.IR_OR || op == n.IR_XOR) { return 2; }
+    if (op == SLIRInstruction_IR_ADD || op == SLIRInstruction_IR_SUB || op == SLIRInstruction_IR_MUL || op == SLIRInstruction_IR_DIV ||
+        op == SLIRInstruction_IR_MOD || op == SLIRInstruction_IR_AND || op == SLIRInstruction_IR_OR || op == SLIRInstruction_IR_XOR) { return 2; }
     return 1;
   }
 
@@ -125,30 +165,31 @@ class SLLowering {
     int ra = reg(n.sourceA());
     int rb = reg(n.sourceB());
 
-    if (op == n.IR_LABEL) { return; }
-    if (op == n.IR_CONST) { asm.mov(dst, n.immediate()); emitted = emitted + 1; return; }
-    if (op == n.IR_MOVE)  { asm.emit(isa.MOVR, dst, ra, 0); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_LABEL) { return; }
+    if (op == SLIRInstruction_IR_CONST) { asm.mov(dst, n.immediate()); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_MOVE)  { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); emitted = emitted + 1; return; }
 
-    if (op == n.IR_ADD) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.ADD, dst, rb, 0); emitted = emitted + 2; return; }
-    if (op == n.IR_SUB) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.SUB, dst, rb, 0); emitted = emitted + 2; return; }
-    if (op == n.IR_MUL) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.MUL, dst, rb, 0); emitted = emitted + 2; return; }
-    if (op == n.IR_DIV) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.DIV, dst, rb, 0); emitted = emitted + 2; return; }
-    if (op == n.IR_MOD) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.MOD, dst, rb, 0); emitted = emitted + 2; return; }
-    if (op == n.IR_AND) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.AND, dst, rb, 0); emitted = emitted + 2; return; }
-    if (op == n.IR_OR)  { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.OR,  dst, rb, 0); emitted = emitted + 2; return; }
-    if (op == n.IR_XOR) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.XOR, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == SLIRInstruction_IR_ADD) { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); asm.emit(SLInstructionSet_ADD, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == SLIRInstruction_IR_SUB) { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); asm.emit(SLInstructionSet_SUB, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == SLIRInstruction_IR_MUL) { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); asm.emit(SLInstructionSet_MUL, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == SLIRInstruction_IR_DIV) { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); asm.emit(SLInstructionSet_DIV, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == SLIRInstruction_IR_MOD) { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); asm.emit(SLInstructionSet_MOD, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == SLIRInstruction_IR_AND) { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); asm.emit(SLInstructionSet_AND, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == SLIRInstruction_IR_OR)  { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); asm.emit(SLInstructionSet_OR,  dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == SLIRInstruction_IR_XOR) { asm.emit(SLInstructionSet_MOVR, dst, ra, 0); asm.emit(SLInstructionSet_XOR, dst, rb, 0); emitted = emitted + 2; return; }
 
-    if (op == n.IR_CMP)   { asm.cmp(ra, rb); emitted = emitted + 1; return; }
-    if (op == n.IR_JUMP)  { asm.jmp(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
-    if (op == n.IR_JZ)    { asm.jz(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
-    if (op == n.IR_JNZ)   { asm.jnz(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
-    if (op == n.IR_LOAD)  { asm.emit(isa.LOADR, dst, ra, 0); emitted = emitted + 1; return; }
-    if (op == n.IR_STORE) { asm.emit(isa.STORER, ra, rb, 0); emitted = emitted + 1; return; }
-    if (op == n.IR_PARAM) { asm.emit(isa.PUSH, 0, ra, 0); emitted = emitted + 1; return; }
-    if (op == n.IR_CALL)  { asm.emit(isa.CALL, 0, 0, labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
-    if (op == n.IR_RET)   { asm.emit(isa.RET, 0, 0, 0); emitted = emitted + 1; return; }
-    if (op == n.IR_SYSCALL){ asm.syscall(n.immediate()); emitted = emitted + 1; return; }
-    if (op == n.IR_HALT)  { asm.halt(); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_CMP)   { asm.cmp(ra, rb); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_JUMP)  { asm.jmp(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_JZ)    { asm.jz(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_JNZ)   { asm.jnz(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_LOAD)  { asm.emit(SLInstructionSet_LOADR, dst, ra, 0); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_STORE) { asm.emit(SLInstructionSet_STORER, ra, rb, 0); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_PARAM) { asm.emit(SLInstructionSet_PUSH, 0, ra, 0); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_CALL)  { asm.emit(SLInstructionSet_CALL, 0, 0, labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_RET)   { asm.emit(SLInstructionSet_RET, 0, 0, 0); emitted = emitted + 1; return; }
+    < The argument register travels in rs so SYS_WRITE prints the right value. >
+    if (op == SLIRInstruction_IR_SYSCALL){ asm.emit(SLInstructionSet_SYSCALL, 0, ra, n.immediate()); emitted = emitted + 1; return; }
+    if (op == SLIRInstruction_IR_HALT)  { asm.halt(); emitted = emitted + 1; return; }
   }
 
   int emittedCount() { return emitted; }

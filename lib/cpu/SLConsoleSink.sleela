@@ -1,0 +1,180 @@
+<< lib/cpu/SLConsoleSink.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLConsoleSink, the host end of a CPU console. SLeeLa has
+     no character-output call, only print, which writes a whole line. The sink
+     therefore keeps a table of the printable ASCII glyphs (codes 32 to 126),
+     appends each character code to the line being built, and prints the line
+     when code 10 (newline) arrives. Codes outside 32 to 126 add no text.
+
+   Family: cpu. Pure SLeeLa; replaces the former native console bridge. >>
+#sleela 2.5
+material;
+class SLConsoleSink {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39544;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < glyphs for codes 32 to 126 >
+  String[] table;
+  < text of the line being built >
+  String line;
+  int chars;
+  int lines;
+
+  void configure() {
+    table = new String[95];
+    table[0] = " ";
+    table[1] = "!";
+    table[2] = "\"";
+    table[3] = "#";
+    table[4] = "$";
+    table[5] = "%";
+    table[6] = "&";
+    table[7] = "'";
+    table[8] = "(";
+    table[9] = ")";
+    table[10] = "*";
+    table[11] = "+";
+    table[12] = ",";
+    table[13] = "-";
+    table[14] = ".";
+    table[15] = "/";
+    table[16] = "0";
+    table[17] = "1";
+    table[18] = "2";
+    table[19] = "3";
+    table[20] = "4";
+    table[21] = "5";
+    table[22] = "6";
+    table[23] = "7";
+    table[24] = "8";
+    table[25] = "9";
+    table[26] = ":";
+    table[27] = ";";
+    table[28] = "<";
+    table[29] = "=";
+    table[30] = ">";
+    table[31] = "?";
+    table[32] = "@";
+    table[33] = "A";
+    table[34] = "B";
+    table[35] = "C";
+    table[36] = "D";
+    table[37] = "E";
+    table[38] = "F";
+    table[39] = "G";
+    table[40] = "H";
+    table[41] = "I";
+    table[42] = "J";
+    table[43] = "K";
+    table[44] = "L";
+    table[45] = "M";
+    table[46] = "N";
+    table[47] = "O";
+    table[48] = "P";
+    table[49] = "Q";
+    table[50] = "R";
+    table[51] = "S";
+    table[52] = "T";
+    table[53] = "U";
+    table[54] = "V";
+    table[55] = "W";
+    table[56] = "X";
+    table[57] = "Y";
+    table[58] = "Z";
+    table[59] = "[";
+    table[60] = "\\";
+    table[61] = "]";
+    table[62] = "^";
+    table[63] = "_";
+    table[64] = "`";
+    table[65] = "a";
+    table[66] = "b";
+    table[67] = "c";
+    table[68] = "d";
+    table[69] = "e";
+    table[70] = "f";
+    table[71] = "g";
+    table[72] = "h";
+    table[73] = "i";
+    table[74] = "j";
+    table[75] = "k";
+    table[76] = "l";
+    table[77] = "m";
+    table[78] = "n";
+    table[79] = "o";
+    table[80] = "p";
+    table[81] = "q";
+    table[82] = "r";
+    table[83] = "s";
+    table[84] = "t";
+    table[85] = "u";
+    table[86] = "v";
+    table[87] = "w";
+    table[88] = "x";
+    table[89] = "y";
+    table[90] = "z";
+    table[91] = "{";
+    table[92] = "|";
+    table[93] = "}";
+    table[94] = "~";
+    line = ""; chars = 0; lines = 0;
+  }
+
+  < The glyph for a character code, or the empty string when not printable. >
+  String glyph(int code) {
+    if (code < 32 || code > 126) { return ""; }
+    return table[code - 32];
+  }
+
+  < Accept one character code. Code 10 ends the line and prints it. >
+  int put(int code) {
+    chars = chars + 1;
+    if (code == 10) { flush(); return 0; }
+    line = line + glyph(code);
+    return 0;
+  }
+
+  void flush() { print(line); line = ""; lines = lines + 1; }
+
+  int charCount() { return chars; }
+  int lineCount() { return lines; }
+  String pending() { return line; }
+}

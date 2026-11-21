@@ -1,0 +1,118 @@
+<< lib/cpu/ns32000/SLNS32000Circuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLNS32000Circuit, the circuit model of the NS 32000
+     (NS32016). It states the logic family and its voltage thresholds, the
+     supply rail, the clock and its phases, the functional blocks with width,
+     depth, gate and transistor counts, two timing paths, four monitored nets
+     and three semaphores.
+
+   Provenance of the figures:
+     clock      15 MHz, taken from the existing SLNS32000CPU model; not checked here.
+     recalled   transistor count 60000; feature size unknown; supply 5000 mV.
+                Recalled figures come from general knowledge and were not checked
+                against a primary source in this session.
+     derived    thresholds (TTL-compatible input and output levels); gate delay 2777 ps (derived from the rated clock, 24 gate levels per clock phase); edge time, fanout,
+                block gate and transistor counts and depths, and both timing
+                paths. Derived numbers are planning figures, not measurements.
+   The model stays at functional-block level. It is not a transistor netlist.
+
+   Family: cpu. Extends SLCircuitModel. >>
+#sleela 2.5
+material;
+class SLNS32000Circuit extends SLCircuitModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39610;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "National Semiconductor";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  void build() {
+    SLLogicFamily f = new SLLogicFamily();
+    f.configure("NMOS", 0, 5000, 250);
+    f.setThresholds(800, 2000, 400, 2400);
+    f.setSpeed(2777, 4165, 4);
+    f.setProvenance("thresholds TTL-compatible input and output levels; speed derived from the rated clock, 24 gate levels per clock phase");
+
+    SLVoltageRail rail = new SLVoltageRail();
+    rail.configure("supply", 5000, 4750, 5250);
+
+    configure("NS 32000", f, rail, 15000, 1);
+    setWidths(32, 24);
+    setTransistors(60000);
+    setKnown(1, 0, 1, 0);
+    setProvenance("recalled: NS32016; 60000 transistors");
+
+    SLCircuitBlock alu = addBlock("alu", "alu", 32, 7, 288, 1152);
+    alu.setProvenance("derived: parallel-prefix carry adder and logic unit, 4 transistors per gate");
+    SLCircuitBlock regs = addBlock("register-file", "regfile", 256, 5, 256, 1536);
+    regs.setProvenance("derived: 8 registers of 32 bits at 6 transistors per bit");
+    SLCircuitBlock dec = addBlock("instruction-decode", "decode", 32, 6, 512, 2048);
+    dec.setProvenance("derived: decode and control sized at 16 gates per data bit");
+    SLCircuitBlock bus = addBlock("bus-interface", "bus", 56, 3, 112, 448);
+    bus.setProvenance("derived: address and data latches and drivers");
+    SLCircuitBlock clk = addBlock("clock", "clock", 1, 4, 8, 32);
+    clk.setProvenance("derived: clock buffer and phase generation");
+    SLCircuitBlock rest = addRemainder("other");
+
+    SLCircuitPath add = addPath("alu-add", 3333);
+    add.setPeriod(66666);
+    add.describe("derived: operand latch, 32-bit prefix carry, result latch in one clock phase");
+    add.addStage("operand-latch", 2777);
+    add.addStage("carry-32-bits", 19439);
+    add.addStage("result-latch", 2777);
+    add.constrain(2777, 694, 1333);
+
+    SLCircuitPath rf = addPath("register-read-bypass", 3333);
+    rf.setPeriod(66666);
+    rf.describe("derived: register-file read, bypass mux, ALU input latch");
+    rf.addStage("register-read", 13885);
+    rf.addStage("bypass-mux", 5554);
+    rf.addStage("input-latch", 2777);
+    rf.constrain(2777, 694, 1333);
+
+    SLSignalQuality n0 = addNet("CLK");
+    n0.setEdgeLimit(16660);
+    SLSignalQuality n1 = addNet("A0");
+    SLSignalQuality n2 = addNet("D0");
+    SLSignalQuality n3 = addNet("RESET");
+
+    SLCircuitSemaphore latchSem = addSemaphore("latch", 1, 2);
+    SLCircuitSemaphore abus = addSemaphore("address-bus", 1, 2);
+    SLCircuitSemaphore dbus = addSemaphore("data-bus", 1, 2);
+  }
+}

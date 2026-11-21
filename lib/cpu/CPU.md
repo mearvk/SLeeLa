@@ -36,9 +36,15 @@ that bottoms out at Boolean logic.
 | `SLCircuitBlock` | One functional block: width, depth, gates, transistors, derived delay and area. |
 | `SLCircuitModel` | The per-CPU circuit: family, rail, clock phases, blocks, paths, nets, semaphores, `runCycles()` and `verifyAll()`. |
 
-Per-CPU subclasses (`SL6502Circuit`, `SLZ80Circuit`, `SLIntel4004Circuit`) fill the model with that
-processor figures. Each figure is labelled published, cited, recalled or derived; unknown figures are
-left out, never invented. Rolling this out to the remaining CPUs is in progress.
+Every CPU folder has a circuit subclass (`SL6502Circuit`, `SLZ80Circuit`, `SLIntel4004Circuit`, and
+one generated per remaining CPU) that fills the model with that processor figures. Each figure is
+labelled published, cited, recalled or derived; unknown figures are left at zero, never invented. Every
+`SL<Name>CPU` class exposes `circuitModel()` and `circuitGrade()`.
+
+The circuit grade (`SLCircuitModel.circuitScore()`, 0 to 10, letter A to F) rewards sourced transistor
+count, feature size, supply and clock (4 points) and structure plus clean verification (6 points). It
+measures how well the model is sourced and how cleanly it verifies, not how good the processor is.
+`examples/circuit-grades.sleela` prints the grade of every CPU.
 
 ### Layer 1 — Storage
 | Class | Role |

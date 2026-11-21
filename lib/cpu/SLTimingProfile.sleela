@@ -193,7 +193,7 @@ class SLTimingProfile {
   int adjustRail(SLVoltageRail rail, int deltaMv) {
     < no raising below Advanced >
     if (deltaMv > 0 && !tier.allowsKnob()) { return rail.effectiveMv(); }
-    if (tier.allowsUnlock()) { /* expert may push to window edges */ }
+    < an expert tier may push the rail to the window edges >
     rail.adjust(deltaMv);
     return rail.effectiveMv();
   }

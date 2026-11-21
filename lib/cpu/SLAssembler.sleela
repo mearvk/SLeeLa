@@ -53,6 +53,20 @@ class SLAssembler {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLInstructionSet_ADD = 10;
+  static final int SLInstructionSet_CMP = 22;
+  static final int SLInstructionSet_HALT = 1;
+  static final int SLInstructionSet_JMP = 23;
+  static final int SLInstructionSet_JNZ = 25;
+  static final int SLInstructionSet_JZ = 24;
+  static final int SLInstructionSet_LOAD = 4;
+  static final int SLInstructionSet_MOV = 2;
+  static final int SLInstructionSet_STORE = 7;
+  static final int SLInstructionSet_SUB = 11;
+  static final int SLInstructionSet_SYSCALL = 34;
   SLInstructionSet isa;
   SLProgram program;
 
@@ -68,17 +82,17 @@ class SLAssembler {
   }
 
   < Convenience emitters for the common instructions. >
-  int mov(int rd, int imm) { return emit(isa.MOV, rd, 0, imm); }
-  int add(int rd, int rs) { return emit(isa.ADD, rd, rs, 0); }
-  int sub(int rd, int rs) { return emit(isa.SUB, rd, rs, 0); }
-  int cmp(int rd, int rs) { return emit(isa.CMP, rd, rs, 0); }
-  int load(int rd, int addr) { return emit(isa.LOAD, rd, 0, addr); }
-  int store(int rs, int addr) { return emit(isa.STORE, 0, rs, addr); }
-  int jmp(int addr) { return emit(isa.JMP, 0, 0, addr); }
-  int jz(int addr) { return emit(isa.JZ, 0, 0, addr); }
-  int jnz(int addr) { return emit(isa.JNZ, 0, 0, addr); }
-  int syscall(int number) { return emit(isa.SYSCALL, 0, 0, number); }
-  int halt() { return emit(isa.HALT, 0, 0, 0); }
+  int mov(int rd, int imm) { return emit(SLInstructionSet_MOV, rd, 0, imm); }
+  int add(int rd, int rs) { return emit(SLInstructionSet_ADD, rd, rs, 0); }
+  int sub(int rd, int rs) { return emit(SLInstructionSet_SUB, rd, rs, 0); }
+  int cmp(int rd, int rs) { return emit(SLInstructionSet_CMP, rd, rs, 0); }
+  int load(int rd, int addr) { return emit(SLInstructionSet_LOAD, rd, 0, addr); }
+  int store(int rs, int addr) { return emit(SLInstructionSet_STORE, 0, rs, addr); }
+  int jmp(int addr) { return emit(SLInstructionSet_JMP, 0, 0, addr); }
+  int jz(int addr) { return emit(SLInstructionSet_JZ, 0, 0, addr); }
+  int jnz(int addr) { return emit(SLInstructionSet_JNZ, 0, 0, addr); }
+  int syscall(int number) { return emit(SLInstructionSet_SYSCALL, 0, 0, number); }
+  int halt() { return emit(SLInstructionSet_HALT, 0, 0, 0); }
 
   SLProgram assembled() { return program; }
 }

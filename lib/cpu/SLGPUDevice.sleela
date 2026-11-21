@@ -91,7 +91,7 @@ class SLGPUDevice {
     enabled = 0; nativeAvailable = 0; kernelsRun = 0; lastResult = 0;
   }
 
-  void enable()  {
+  void activate() {
     enabled = 1;
     < 256K words/MiB >
     vram = new SLRAM(); vram.configure(vramMiB * 262144, 32); vram.allocate();
@@ -105,9 +105,9 @@ class SLGPUDevice {
   < Total parallel lanes across the device. >
   int totalLanes() { return computeUnits * lanesPerUnit; }
 
-  < Ask the host whether a real GPU is present (bridge). Falls back to the >
-  < modelled SIMT engine when none is available, so GPU code always runs. >
-  void probeNative() { nativeAvailable = native sleela_gpu_available(); }
+  < Ask whether a real host GPU is reachable. This runtime has no GPU bridge, >
+  < so the answer is no and the modelled SIMT engine always runs the kernel. >
+  void probeNative() { nativeAvailable = 0; }
   boolean nativeAccess() { return nativeAvailable == 1; }
 
   < --- VRAM access (host<->device copies are typically via DMA) --- >
@@ -123,12 +123,8 @@ class SLGPUDevice {
   < by the native path); the native path offloads to the host GPU. >
   int dispatch(int gridLanes, int budget) {
     if (enabled == 0) { return -1; }
-    if (nativeAvailable == 1) {
-      lastResult = native sleela_gpu_dispatch(gridLanes, budget);
-    } else {
-      kernelVM.run(budget);
-      lastResult = kernelVM.printed();
-    }
+    kernelVM.run(budget);
+    lastResult = kernelVM.printed();
     kernelsRun = kernelsRun + 1;
     return lastResult;
   }

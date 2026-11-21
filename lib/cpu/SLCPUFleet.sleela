@@ -56,6 +56,10 @@ class SLCPUFleet {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLCPUResource_PRIORITY_NORMAL = 1;
   static final int MAX = 128;
 
   SLCPUCatalog catalog;
@@ -134,7 +138,7 @@ class SLCPUFleet {
     for (int i = 0; i < size; i = i + 1) {
       SLCPURuntime cpu = member[i];
       SLCPUResource grant = new SLCPUResource();
-      grant.configure(words, budget, grant.PRIORITY_NORMAL);
+      grant.configure(words, budget, SLCPUResource_PRIORITY_NORMAL);
       SLWorkload job = new SLWorkload();
       job.configure("fleet-job", path, lang, grant);
       int out = cpu.runWorkload(job);

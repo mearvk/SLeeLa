@@ -55,6 +55,15 @@ class ExtensibleNetworkAccessExample {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLAccessSemantics_MOD_PRIVATE = 4;
+  static final int SLAccessSemantics_MOD_PROTECTED = 2;
+  static final int SLAccessSemantics_MOD_PUBLIC = 1;
+  static final int SLAccessSemantics_ROLE_EXPOSED = 1;
+  static final int SLAccessSemantics_ROLE_GUARDED = 3;
+  static final int SLAccessSemantics_ROLE_LOCAL = 2;
 
   void main() {
     SLExtensibleNetwork net = new SLExtensibleNetwork();
@@ -64,15 +73,15 @@ class ExtensibleNetworkAccessExample {
     < Register each file's surface member under its access modifier. >
     < Three public members -> the ordered hop chain doc1 -> doc2 -> doc3. >
     < doc 1 : intake endpoint (hop 1) >
-    net.registerMember(sem.MOD_PUBLIC);
+    net.registerMember(SLAccessSemantics_MOD_PUBLIC);
     < doc 2 : process endpoint (hop 2) >
-    net.registerMember(sem.MOD_PUBLIC);
+    net.registerMember(SLAccessSemantics_MOD_PUBLIC);
     < doc 3 : dispatch endpoint (hop 3) >
-    net.registerMember(sem.MOD_PUBLIC);
+    net.registerMember(SLAccessSemantics_MOD_PUBLIC);
     < admin/backup concern (local) >
-    net.registerMember(sem.MOD_PRIVATE);
+    net.registerMember(SLAccessSemantics_MOD_PRIVATE);
     < integrity-guarded intake check >
-    net.registerMember(sem.MOD_PROTECTED);
+    net.registerMember(SLAccessSemantics_MOD_PROTECTED);
 
     < Dynamite Connector lifecycle: resolve -> load (fail-closed). >
     print("state after initialize: " + net.state());
@@ -115,13 +124,13 @@ class ExtensibleNetworkAccessExample {
 
     < public -> exposed hop (role 1) >
     SLVMMethod intake = new SLVMMethod();
-    intake.configureAccess("intake", "(I)I", 0, 4, 1, 2, true, false, sem.ROLE_EXPOSED);
+    intake.configureAccess("intake", "(I)I", 0, 4, 1, 2, true, false, SLAccessSemantics_ROLE_EXPOSED);
     < private -> local only (role 2) >
     SLVMMethod backup = new SLVMMethod();
-    backup.configureAccess("backup", "()V", 4, 3, 0, 1, true, false, sem.ROLE_LOCAL);
+    backup.configureAccess("backup", "()V", 4, 3, 0, 1, true, false, SLAccessSemantics_ROLE_LOCAL);
     < protected -> integrity-guarded (role 3) >
     SLVMMethod verify = new SLVMMethod();
-    verify.configureAccess("verify", "(I)Z", 7, 5, 1, 2, true, false, sem.ROLE_GUARDED);
+    verify.configureAccess("verify", "(I)Z", 7, 5, 1, 2, true, false, SLAccessSemantics_ROLE_GUARDED);
     svc.addMethod(intake); svc.addMethod(backup); svc.addMethod(verify);
 
     SLVMModuleLoader loader = new SLVMModuleLoader();
@@ -140,9 +149,9 @@ class ExtensibleNetworkAccessExample {
     print("network sees backup (private) -> " + (netBackup != null) + " [must be false]");
 
     < A LOCAL (in-system) caller can reach the private/protected members: >
-    SLVMMethod locBackup = mod.resolveMethodForCaller(1, "backup", sem.ROLE_LOCAL);
-    SLVMMethod locVerify = mod.resolveMethodForCaller(1, "verify", sem.ROLE_LOCAL);
-    SLVMMethod extBackup = mod.resolveMethodForCaller(1, "backup", sem.ROLE_EXPOSED);
+    SLVMMethod locBackup = mod.resolveMethodForCaller(1, "backup", SLAccessSemantics_ROLE_LOCAL);
+    SLVMMethod locVerify = mod.resolveMethodForCaller(1, "verify", SLAccessSemantics_ROLE_LOCAL);
+    SLVMMethod extBackup = mod.resolveMethodForCaller(1, "backup", SLAccessSemantics_ROLE_EXPOSED);
     print("local caller -> backup reachable=" + (locBackup != null) +
           ", verify(guarded) reachable=" + (locVerify != null));
     print("external/network caller -> backup reachable=" + (extBackup != null) +

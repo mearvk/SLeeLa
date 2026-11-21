@@ -1,0 +1,18 @@
+<< lib/cpu/examples/cpu-circuit-wiring.sleela
+   SLeeLa example: reach the circuit model through the CPU class itself.
+   Each CPU class has circuitModel() and circuitGrade(). This runs a program
+   on a 6502 and an ARM, then reads both circuit grades from the same objects. >>
+#sleela 2.5
+import cpu;
+class SLCpuCircuitWiringExample {
+  void main() {
+    SL6502CPU mos = new SL6502CPU();
+    mos.configure();
+    SL6502Circuit c = mos.circuitModel();
+    print("6502 circuit " + c.name() + " grade " + mos.circuitGrade() + " violations " + c.verifyAll());
+    SLARMCPU arm = new SLARMCPU();
+    arm.configure();
+    SLARMCircuit a = arm.circuitModel();
+    print("ARM circuit " + a.name() + " grade " + arm.circuitGrade() + " violations " + a.verifyAll());
+  }
+}

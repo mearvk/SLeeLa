@@ -57,6 +57,16 @@ class SLFrontendJava extends SLFrontend {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local copies of inherited or field-owned constants: the checker does not >
+  < see statics through inheritance or a field, so they are repeated here. >
+  static final int LANG_JAVA = 3;
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLIRInstruction_IR_ADD = 2;
+  static final int SLIRInstruction_IR_CONST = 0;
+  static final int SLIRInstruction_IR_HALT = 21;
+  static final int SLIRInstruction_IR_SYSCALL = 20;
 
   void init(String path) { configure("java", LANG_JAVA, path); }
 
@@ -77,15 +87,15 @@ class SLFrontendJava extends SLFrontend {
     < iadd -> istore_1 (local var x) >
     int x  = m.allocTemp();
 
-    m.emit(k.IR_CONST, s2, -1, -1, 2);
-    m.emit(k.IR_CONST, s3, -1, -1, 3);
+    m.emit(SLIRInstruction_IR_CONST, s2, -1, -1, 2);
+    m.emit(SLIRInstruction_IR_CONST, s3, -1, -1, 3);
     < iadd; istore_1 >
-    m.emit(k.IR_ADD,   x,  s2, s3, 0);
+    m.emit(SLIRInstruction_IR_ADD,   x,  s2, s3, 0);
     < iload_1; invokevirtual write >
-    m.emit(k.IR_SYSCALL, -1, x, -1, 0);
+    m.emit(SLIRInstruction_IR_SYSCALL, -1, x, -1, 0);
     < return -> SYS_EXIT >
-    m.emit(k.IR_SYSCALL, -1, -1, -1, 4);
-    m.emit(k.IR_HALT, -1, -1, -1, 0);
+    m.emit(SLIRInstruction_IR_SYSCALL, -1, -1, -1, 4);
+    m.emit(SLIRInstruction_IR_HALT, -1, -1, -1, 0);
     return m;
   }
 }

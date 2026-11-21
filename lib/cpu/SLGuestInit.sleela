@@ -54,6 +54,13 @@ class SLGuestInit {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLGuestSyscall_SYS_EXECVE = 59;
+  static final int SLGuestSyscall_SYS_EXIT = 60;
+  static final int SLGuestSyscall_SYS_FORK = 57;
+  static final int SLGuestSyscall_SYS_WAIT = 61;
   SLGuestLinux kernel;
   SLSleelaVM substrate;
   int nextPid;
@@ -177,7 +184,7 @@ class SLGuestInit {
     sched.onTimerTick();
 
     < fork() >
-    int childTid = sys.dispatch(sys.SYS_FORK, 0, 0, 0);
+    int childTid = sys.dispatch(SLGuestSyscall_SYS_FORK, 0, 0, 0);
     if (childTid < 0) { return childTid; }
 
     < execve() the child onto a new image, then let the CHILD itself issue the >
@@ -187,17 +194,17 @@ class SLGuestInit {
     int childSlot = sched.slotOfTid(childTid);
     sched.markRunningSlot(childSlot);
     < execve() >
-    int entry = sys.dispatch(sys.SYS_EXECVE, 1, 1, childLang);
+    int entry = sys.dispatch(SLGuestSyscall_SYS_EXECVE, 1, 1, childLang);
     if (entry < 0) { return entry; }
     < child is current >
     sched.markRunningSlot(childSlot);
     < child exit(42) >
-    sys.dispatch(sys.SYS_EXIT, 42, 0, 0);
+    sys.dispatch(SLGuestSyscall_SYS_EXIT, 42, 0, 0);
 
     < Back in the parent, wait() reaps the finished child and reports status 42. >
     sched.markRunningSlot(sched.slotOfTid(parent.taskId()));
     < wait() >
-    int reaped = sys.dispatch(sys.SYS_WAIT, 0, 0, 0);
+    int reaped = sys.dispatch(SLGuestSyscall_SYS_WAIT, 0, 0, 0);
     return reaped;
   }
 

@@ -60,6 +60,13 @@ class SLGuestLinux {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLSleelaOpcode_OP_ADD = 8;
+  static final int SLSleelaOpcode_OP_CONST = 1;
+  static final int SLSleelaOpcode_OP_HALT = 48;
+  static final int SLSleelaOpcode_OP_PRINT = 27;
   < A small, Linux-like syscall ABI (numbers chosen for the model). >
   static final int LINUX_READ   = 0;
   static final int LINUX_WRITE  = 1;
@@ -200,11 +207,11 @@ class SLGuestLinux {
     }
     SLSleelaOpcode op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
     < Fallback inline "init": print 2 + 3 (a boot heartbeat), then halt. >
-    vm.loadOpcode(op.OP_CONST, 2);
-    vm.loadOpcode(op.OP_CONST, 3);
-    vm.loadOpcode(op.OP_ADD, 0);
-    vm.loadOpcode(op.OP_PRINT, 0);
-    vm.loadOpcode(op.OP_HALT, 0);
+    vm.loadOpcode(SLSleelaOpcode_OP_CONST, 2);
+    vm.loadOpcode(SLSleelaOpcode_OP_CONST, 3);
+    vm.loadOpcode(SLSleelaOpcode_OP_ADD, 0);
+    vm.loadOpcode(SLSleelaOpcode_OP_PRINT, 0);
+    vm.loadOpcode(SLSleelaOpcode_OP_HALT, 0);
   }
 
   < Translate a guest Linux syscall number to the host SleelaOS syscall the >

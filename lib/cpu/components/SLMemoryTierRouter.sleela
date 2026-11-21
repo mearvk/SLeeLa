@@ -112,6 +112,6 @@ class SLMemoryTierRouter {
 
   boolean hasUsual()    { return usual != null; }
   boolean hasAccurate() { return accurate != null; }
-  int main()            { return mainTier; }
+  int mainMemoryTier()  { return mainTier; }
   boolean twoTier()     { return usual != null && accurate != null; }
 }

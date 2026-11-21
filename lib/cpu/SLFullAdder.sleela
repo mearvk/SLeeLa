@@ -53,6 +53,10 @@ class SLFullAdder {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLGate_OR = 1;
   SLHalfAdder h1;
   SLHalfAdder h2;
   SLGate orGate;
@@ -62,7 +66,7 @@ class SLFullAdder {
   void build() {
     h1 = new SLHalfAdder(); h1.build();
     h2 = new SLHalfAdder(); h2.build();
-    orGate = new SLGate(); orGate.configure(SLGate.OR);
+    orGate = new SLGate(); orGate.configure(SLGate_OR);
   }
 
   void add(int a, int b, int carryIn) {

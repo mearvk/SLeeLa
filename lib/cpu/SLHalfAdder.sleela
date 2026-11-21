@@ -52,14 +52,19 @@ class SLHalfAdder {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLGate_AND = 0;
+  static final int SLGate_XOR = 5;
   SLGate xorGate;
   SLGate andGate;
   int sum;
   int carry;
 
   void build() {
-    xorGate = new SLGate(); xorGate.configure(SLGate.XOR);
-    andGate = new SLGate(); andGate.configure(SLGate.AND);
+    xorGate = new SLGate(); xorGate.configure(SLGate_XOR);
+    andGate = new SLGate(); andGate.configure(SLGate_AND);
   }
 
   void add(int a, int b) {

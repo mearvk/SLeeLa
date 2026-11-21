@@ -59,6 +59,14 @@ class SLMachine {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLHardDrive_MEDIA_SSD = 1;
+  static final int SLIOPort_DIR_INOUT = 2;
+  static final int SLSleelaOpcode_OP_HALT = 48;
+  static final int SLSleelaOpcode_OP_JOINALL = 29;
+  static final int SLSleelaOpcode_OP_SPAWN = 28;
   SLRAM memory;
   SLHardDrive drive;
   SLCPU cpu;
@@ -75,7 +83,7 @@ class SLMachine {
   void buildHardware(String vendor, String model, int cores, int bits, int mhz) {
     < 1M words >
     memory = new SLRAM(); memory.configure(1048576, bits); memory.allocate();
-    drive = new SLHardDrive(); drive.configure("boot0", 65536, 4096, SLHardDrive.MEDIA_SSD);
+    drive = new SLHardDrive(); drive.configure("boot0", 65536, 4096, SLHardDrive_MEDIA_SSD);
     drive.mount("boot0.img");
     cpu = new SLCPU(); cpu.configure(vendor, model, cores, bits, mhz);
     cpu.power(memory);
@@ -286,31 +294,31 @@ class SLMachine {
     < A parent task must be the running task for fork()/wait() to have a caller. >
     SLGuestProgram parentProg = new SLGuestProgram(); parentProg.configure("parent", 64);
     < (modeled parent body) >
-    parentProg.append(op.OP_SPAWN, 0);
+    parentProg.append(SLSleelaOpcode_OP_SPAWN, 0);
     SLGuestTask parent = init.spawn(parentProg);
     < parent becomes running >
     sched.onTimerTick();
 
     < OP_SPAWN arg 0 -> fork() >
-    int childTid = vm.serviceOpcode(op.OP_SPAWN, 0, 0);
+    int childTid = vm.serviceOpcode(SLSleelaOpcode_OP_SPAWN, 0, 0);
     if (childTid < 0) { return childTid; }
 
     < Child exits via OP_HALT (-> SYS_EXIT) while it is the running task. >
     sched.markRunningSlot(sched.slotOfTid(childTid));
     < child exit(0) >
-    vm.serviceOpcode(op.OP_HALT, 0, 0);
+    vm.serviceOpcode(SLSleelaOpcode_OP_HALT, 0, 0);
 
     < Parent reaps the child via OP_JOINALL (-> wait()). >
     sched.markRunningSlot(sched.slotOfTid(parent.taskId()));
     < OP_JOINALL -> wait() >
-    return vm.serviceOpcode(op.OP_JOINALL, 0, 0);
+    return vm.serviceOpcode(SLSleelaOpcode_OP_JOINALL, 0, 0);
   }
 
   < The bootloader needs a disk driver before the OS driver manager exists; >
   < build a minimal one bound to the boot drive. >
   SLDiskDriver buildBootDiskDriver() {
     SLIOBus bus = new SLIOBus(); bus.configure();
-    SLIOPort port = new SLIOPort(); port.configure(1, SLIOPort.DIR_INOUT); bus.registerPort(1, port);
+    SLIOPort port = new SLIOPort(); port.configure(1, SLIOPort_DIR_INOUT); bus.registerPort(1, port);
     SLDMAController dmaEngine = new SLDMAController(); dmaEngine.configure(memory);
     SLDiskDriver d = new SLDiskDriver(); d.init(bus, 1, drive, dmaEngine);
     return d;

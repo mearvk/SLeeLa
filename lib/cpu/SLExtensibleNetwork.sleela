@@ -71,6 +71,12 @@ class SLExtensibleNetwork {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLAccessSemantics_ROLE_EXPOSED = 1;
+  static final int SLAccessSemantics_ROLE_GUARDED = 3;
+  static final int SLAccessSemantics_ROLE_LOCAL = 2;
   < --- Dynamite Connector contract --- >
   < the System this network fronts >
   String referenceName;
@@ -152,15 +158,15 @@ class SLExtensibleNetwork {
     int i = 0;
     while (i < memberCount) {
       int role = roleAt(i);
-      if (role == sem.ROLE_EXPOSED) {
+      if (role == SLAccessSemantics_ROLE_EXPOSED) {
         hopChainLength = hopChainLength + 1;
         < 1-based position in the hop chain >
         setHopAt(i, hopChainLength);
         exposedCount = exposedCount + 1;
       } else {
         setHopAt(i, 0);
-        if (role == sem.ROLE_LOCAL)   { localCount = localCount + 1; }
-        if (role == sem.ROLE_GUARDED) { guardedCount = guardedCount + 1; }
+        if (role == SLAccessSemantics_ROLE_LOCAL)   { localCount = localCount + 1; }
+        if (role == SLAccessSemantics_ROLE_GUARDED) { guardedCount = guardedCount + 1; }
       }
       i = i + 1;
     }

@@ -58,6 +58,13 @@ class SLSwitchCPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local copies of inherited or field-owned constants: the checker does not >
+  < see statics through inheritance or a field, so they are repeated here. >
+  static final int SLALU_OP_ADD = 0;
+  static final int SLALU_OP_AND = 2;
+  static final int SLALU_OP_MUL = 10;
+  static final int SLALU_OP_OR = 3;
+  static final int SLALU_OP_SUB = 1;
   static final int R_ZERO = 0;
   static final int R_SP = 31;
   static final int R_LINK = 30;
@@ -110,12 +117,12 @@ class SLSwitchCPU extends SLCPURuntime {
     if (opc == I_MOVE)  { setGpr(dst, gpr(src)); setZN(gpr(dst)); return; }
     if (opc == I_LOAD)  { setGpr(dst, readMem(src)); setZN(gpr(dst)); return; }
     if (opc == I_STORE) { writeMem(src, gpr(dst)); return; }
-    if (opc == I_ADD)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_ADD)); return; }
-    if (opc == I_SUB)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_SUB)); return; }
-    if (opc == I_MUL)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_MUL)); return; }
-    if (opc == I_AND)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_AND)); return; }
-    if (opc == I_OR)    { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_OR)); return; }
-    if (opc == I_CMP)   { aluOp(gpr(dst), gpr(src), alu.OP_SUB); return; }
+    if (opc == I_ADD)   { setGpr(dst, aluOp(gpr(dst), gpr(src), SLALU_OP_ADD)); return; }
+    if (opc == I_SUB)   { setGpr(dst, aluOp(gpr(dst), gpr(src), SLALU_OP_SUB)); return; }
+    if (opc == I_MUL)   { setGpr(dst, aluOp(gpr(dst), gpr(src), SLALU_OP_MUL)); return; }
+    if (opc == I_AND)   { setGpr(dst, aluOp(gpr(dst), gpr(src), SLALU_OP_AND)); return; }
+    if (opc == I_OR)    { setGpr(dst, aluOp(gpr(dst), gpr(src), SLALU_OP_OR)); return; }
+    if (opc == I_CMP)   { aluOp(gpr(dst), gpr(src), SLALU_OP_SUB); return; }
     if (opc == I_JMP)   { setEntryPoint(src); return; }
     if (opc == I_JZ)    { if (zero() == 1) { setEntryPoint(src); } return; }
     if (opc == I_HALT)  { halted = 1; return; }
@@ -128,4 +135,19 @@ class SLSwitchCPU extends SLCPURuntime {
 
   int reg(int i) { return gpr(i); }
   int registers() { return registerCount(); }
+
+  < The physical circuit model of this processor: logic family, supply, clock, >
+  < blocks, timing paths, nets and semaphores (see SLSwitchCircuit). It is built, clocked >
+  < for 16 cycles and returned ready for verifyAll() and circuitGrade(). >
+  SLSwitchCircuit circuitModel() {
+    SLSwitchCircuit c = new SLSwitchCircuit();
+    c.build();
+    c.runCycles(16);
+    return c;
+  }
+
+  String circuitGrade() {
+    SLSwitchCircuit c = circuitModel();
+    return c.circuitGrade();
+  }
 }

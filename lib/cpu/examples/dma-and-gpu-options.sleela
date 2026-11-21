@@ -48,6 +48,10 @@ class DmaAndGpuOptionsExample {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLDMAController_MODE_MEM_TO_MEM = 0;
   int moved;
   int gpuOut;
 
@@ -70,7 +74,7 @@ class DmaAndGpuOptionsExample {
     SLDMAController dma = cpu.dmaEngine();
     cpu.writeMem(0, 11); cpu.writeMem(1, 22); cpu.writeMem(2, 33); cpu.writeMem(3, 44);
     < src=0 dst=100 len=4 >
-    moved = dma.transfer(0, 0, 100, 4, dma.MODE_MEM_TO_MEM);
+    moved = dma.transfer(0, 0, 100, 4, SLDMAController_MODE_MEM_TO_MEM);
     print("DMA moved " + moved + " words; mem[100]=" + cpu.readMem(100) +
           " mem[103]=" + cpu.readMem(103));
 

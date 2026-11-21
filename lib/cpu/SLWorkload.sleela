@@ -109,7 +109,9 @@ class SLWorkload {
   String source()          { return sourcePath; }
   int runState()           { return state; }
   int output()             { return result; }
-  boolean compiled()       { return state >= STATE_COMPILED; }
+  < Compiled means a program image exists. The state alone cannot say so, because >
+  < admission (STATE_ADMITTED) can happen before compilation. >
+  boolean compiled()       { return program != null; }
   boolean finished()       { return state == STATE_DONE; }
   boolean rejected()       { return state == STATE_REJECTED; }
 

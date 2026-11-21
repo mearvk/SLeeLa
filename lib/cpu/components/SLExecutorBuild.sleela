@@ -58,6 +58,10 @@ class SLExecutorBuild {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLMemoryTierRouter_TIER_USUAL = 1;
   String buildName;
   SLCPURuntime cpu;
   SLMotherboard board;
@@ -133,7 +137,7 @@ class SLExecutorBuild {
     < physical modules have backing a dispatched function can bind to. (The >
     < accurate tier is `memory`, already mounted above.) >
     if (tiers != null && tiers.hasUsual()) {
-      SLMemoryModule u = tiers.moduleFor(tiers.TIER_USUAL);
+      SLMemoryModule u = tiers.moduleFor(SLMemoryTierRouter_TIER_USUAL);
       if (u != null && u != memory) { u.mount(cpu.dataWidth()); }
     }
     assembled = 1;

@@ -136,4 +136,19 @@ class SLPDP8CPU extends SLCPURuntime {
     }
     Integer getAccumulator() { return accumulator; }
     Integer getLink() { return link; }
+
+  < The physical circuit model of this processor: logic family, supply, clock, >
+  < blocks, timing paths, nets and semaphores (see SLPDP8Circuit). It is built, clocked >
+  < for 16 cycles and returned ready for verifyAll() and circuitGrade(). >
+  SLPDP8Circuit circuitModel() {
+    SLPDP8Circuit c = new SLPDP8Circuit();
+    c.build();
+    c.runCycles(16);
+    return c;
+  }
+
+  String circuitGrade() {
+    SLPDP8Circuit c = circuitModel();
+    return c.circuitGrade();
+  }
 }

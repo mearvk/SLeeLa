@@ -54,6 +54,10 @@ class SLCore {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLInterruptController_IRQ_TIMER = 0;
   int id;
   int width;
   SLClock clock;
@@ -87,7 +91,7 @@ class SLCore {
 
     l1 = new SLCache(); l1.configure("L1", 32768, 64, 8); l1.attachBacking(sharedMemory);
     irq = new SLInterruptController(); irq.configure(0);
-    irq.enable(irq.IRQ_TIMER);
+    irq.enable(SLInterruptController_IRQ_TIMER);
 
     control = new SLControlUnit();
     control.configure(isa, decoder, regs, alu, pc, status, sharedMemory, stack);
@@ -100,7 +104,7 @@ class SLCore {
   int tick() { clock.toggle(); return control.step(); }
 
   < Raise the timer interrupt (the OS uses this for preemptive scheduling). >
-  void timerTick() { irq.raise(irq.IRQ_TIMER); }
+  void timerTick() { irq.raise(SLInterruptController_IRQ_TIMER); }
 
   boolean halted() { return control.isHalted(); }
   int pendingSyscall() { return control.pendingSyscall(); }

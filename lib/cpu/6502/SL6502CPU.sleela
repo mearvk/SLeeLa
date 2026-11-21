@@ -59,6 +59,10 @@ class SL6502CPU extends SLCPURuntime {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local copies of inherited or field-owned constants: the checker does not >
+  < see statics through inheritance or a field, so they are repeated here. >
+  static final int SLALU_OP_ADD = 0;
+  static final int SLALU_OP_SUB = 1;
   < Register file indices (into the inherited SLRAM register store). >
   < accumulator >
   static final int R_A  = 0;
@@ -108,10 +112,10 @@ class SL6502CPU extends SLCPURuntime {
     if (opcode == LDY_IMM) { writeReg(R_Y, arg); setZN(arg); return; }
     if (opcode == STA_ABS) { writeMem(arg, readReg(R_A)); return; }
     if (opcode == LDA_ABS) { int v = readMem(arg); writeReg(R_A, v); setZN(v); return; }
-    if (opcode == ADC_IMM) { int r = aluOp(readReg(R_A), arg, alu.OP_ADD); writeReg(R_A, r); return; }
-    if (opcode == SBC_IMM) { int r = aluOp(readReg(R_A), arg, alu.OP_SUB); writeReg(R_A, r); return; }
-    if (opcode == INX)     { int r = aluOp(readReg(R_X), 1, alu.OP_ADD); writeReg(R_X, r); return; }
-    if (opcode == INY)     { int r = aluOp(readReg(R_Y), 1, alu.OP_ADD); writeReg(R_Y, r); return; }
+    if (opcode == ADC_IMM) { int r = aluOp(readReg(R_A), arg, SLALU_OP_ADD); writeReg(R_A, r); return; }
+    if (opcode == SBC_IMM) { int r = aluOp(readReg(R_A), arg, SLALU_OP_SUB); writeReg(R_A, r); return; }
+    if (opcode == INX)     { int r = aluOp(readReg(R_X), 1, SLALU_OP_ADD); writeReg(R_X, r); return; }
+    if (opcode == INY)     { int r = aluOp(readReg(R_Y), 1, SLALU_OP_ADD); writeReg(R_Y, r); return; }
     if (opcode == TAX)     { int v = readReg(R_A); writeReg(R_X, v); setZN(v); return; }
     if (opcode == TAY)     { int v = readReg(R_A); writeReg(R_Y, v); setZN(v); return; }
     if (opcode == JMP_ABS) { setEntryPoint(arg); return; }
@@ -139,4 +143,19 @@ class SL6502CPU extends SLCPURuntime {
   < The 6502 leaves a computation's result in the accumulator, so the opcode >
   < path's observable (used by the inherited runs-by-both basis check) is A. >
   int opcodeObservable() { return readReg(R_A); }
+
+  < The physical circuit model of this processor: logic family, supply, clock, >
+  < blocks, timing paths, nets and semaphores (see SL6502Circuit). It is built, clocked >
+  < for 16 cycles and returned ready for verifyAll() and circuitGrade(). >
+  SL6502Circuit circuitModel() {
+    SL6502Circuit c = new SL6502Circuit();
+    c.build();
+    c.runCycles(16);
+    return c;
+  }
+
+  String circuitGrade() {
+    SL6502Circuit c = circuitModel();
+    return c.circuitGrade();
+  }
 }

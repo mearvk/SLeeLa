@@ -62,6 +62,11 @@ class SLHypervisor {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLMMU_PERM_EXEC = 4;
+  static final int SLMMU_PERM_WRITE = 2;
   SLCPU host;
   SLRAM hostMemory;
   < host-backed drive the guest block device uses >
@@ -90,7 +95,7 @@ class SLHypervisor {
     int pageSize = 256;
     int pages = (size / pageSize) + 1;
     mmu.configure(pageSize, pages);
-    mmu.identityMap(pages, base / pageSize, mmu.PERM_WRITE + mmu.PERM_EXEC);
+    mmu.identityMap(pages, base / pageSize, SLMMU_PERM_WRITE + SLMMU_PERM_EXEC);
     vm.attachMMU(mmu);
 
     < Guest device model (step 3): timer (IRQ0), console, block device (IRQ2), >

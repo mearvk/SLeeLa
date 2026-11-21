@@ -6,11 +6,11 @@
      and a 4-bit ALU that processes each 8-bit operation in two passes.
 
    Provenance of the figures:
-     published  5 V supply, original clock 2.5 MHz (Z80A 4 MHz), single-phase
-                clock input, TTL-compatible levels, introduced 1976.
-     cited      about 8500 transistors and a 4 micrometre feature size are the
-                commonly quoted secondary-source figures. They were not checked
-                against a primary source here.
+     checked    original clock 2.5 MHz, with 4, 6 and 8 MHz later parts, against
+                a Z80 manual listing found in this session.
+     recalled   5 V supply, single-phase clock input, TTL-compatible levels,
+                about 8500 transistors and a 4 micrometre feature size. These
+                are commonly quoted figures that were not checked here.
      derived    gate delay, edge time, fanout, block counts and depths. They are
                 planning figures from the SLeeLa gate structure, not die
                 measurements. The block named other is the cited transistor
@@ -67,7 +67,7 @@ class SLZ80Circuit extends SLCircuitModel {
     f.configure("NMOS-depletion-load", 4000, 5000, 250);
     f.setThresholds(800, 2000, 400, 2400);
     f.setSpeed(8000, 15000, 4);
-    f.setProvenance("supply and levels published; feature size cited; speed derived");
+    f.setProvenance("supply, levels and feature size recalled; speed derived");
 
     SLVoltageRail vcc = new SLVoltageRail();
     vcc.configure("Vcc", 5000, 4750, 5250);
@@ -75,7 +75,8 @@ class SLZ80Circuit extends SLCircuitModel {
     configure("Zilog Z80", f, vcc, 2500, 1);
     setWidths(8, 16);
     setTransistors(8500);
-    setProvenance("cited: about 8500 transistors, 4 um NMOS; unverified against primary source");
+    setKnown(1, 1, 1, 2);
+    setProvenance("recalled: about 8500 transistors, 4 um NMOS; not checked against a primary source");
 
     SLCircuitBlock alu = addBlock("alu-4bit", "alu", 4, 10, 36, 144);
     alu.setCellFactor(60);

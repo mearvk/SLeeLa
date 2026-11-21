@@ -7,6 +7,7 @@
    language (C, C++, Sleela) and regardless of which architecture it runs on,
    because each CPU maps the compiled image onto the canonical opcode substrate. >>
 #sleela 2.5
+import cpu;
 material;
 class RunWorkloadsExample {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
@@ -50,39 +51,44 @@ class RunWorkloadsExample {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
-  int cOut;
-  int sleelaOut;
-  int crossArchOut;
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLCPUResource_PRIORITY_HIGH = 2;
+  static final int SLCPUResource_PRIORITY_NORMAL = 1;
+  static final int SLWorkload_LANG_C = 1;
+  static final int SLWorkload_LANG_CPP = 2;
+  static final int SLWorkload_LANG_SLEELA = 0;
 
   void main() {
     < A normal-priority grant: 4096 words of memory, a 100k-instruction slice. >
     SLCPUResource grant = new SLCPUResource();
-    grant.configure(4096, 100000, grant.PRIORITY_NORMAL);
+    grant.configure(4096, 100000, SLCPUResource_PRIORITY_NORMAL);
 
     < 1) Run a C workload on a 6502. >
     SLWorkload cJob = new SLWorkload();
-    cJob.configure("hello-c", "examples/hello.c", cJob.LANG_C, grant);
+    cJob.configure("hello-c", "examples/hello.c", SLWorkload_LANG_C, grant);
     SL6502CPU mos = new SL6502CPU(); mos.configure();
-    cOut = mos.runWorkload(cJob);
+    int cOut = mos.runWorkload(cJob);
     print("C on 6502 -> " + cOut);
 
     < 2) Run the equivalent Sleela workload on an ARM, fresh grant. >
     SLCPUResource grant2 = new SLCPUResource();
-    grant2.configure(4096, 100000, grant2.PRIORITY_NORMAL);
+    grant2.configure(4096, 100000, SLCPUResource_PRIORITY_NORMAL);
     SLWorkload sJob = new SLWorkload();
-    sJob.configure("hello-sl", "examples/hello.sleela", sJob.LANG_SLEELA, grant2);
+    sJob.configure("hello-sl", "examples/hello.sleela", SLWorkload_LANG_SLEELA, grant2);
     SLARMCPU arm = new SLARMCPU(); arm.configure();
-    sleelaOut = arm.runWorkload(sJob);
+    int sleelaOut = arm.runWorkload(sJob);
     print("Sleela on ARM -> " + sleelaOut);
 
     < 3) Same C++ workload on a RISC-V and a PowerPC: cross-architecture, same >
     < observable result (1:1 Turing effect). >
     SLCPUResource grant3 = new SLCPUResource();
-    grant3.configure(4096, 100000, grant3.PRIORITY_HIGH);
+    grant3.configure(4096, 100000, SLCPUResource_PRIORITY_HIGH);
     SLWorkload cppJob = new SLWorkload();
-    cppJob.configure("compute-cpp", "examples/compute.cpp", cppJob.LANG_CPP, grant3);
+    cppJob.configure("compute-cpp", "examples/compute.cpp", SLWorkload_LANG_CPP, grant3);
     SLRISCVCPU rv = new SLRISCVCPU(); rv.configure("IM");
-    crossArchOut = rv.runWorkload(cppJob);
+    int crossArchOut = rv.runWorkload(cppJob);
     print("C++ on RISC-V -> " + crossArchOut +
           " (used " + grant3.used() + "/" + grant3.budget() + " instructions)");
   }

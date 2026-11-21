@@ -54,6 +54,12 @@ class SLOperatingSystem {
   void setScienceRating(int v) { metaScienceRating = v; }
   String getNationalSchedule() { return metaNationalSchedule; }
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  < Local mirrors of constants owned by other classes. The checker does not >
+  < resolve cross-class statics reached transitively, so the values are repeated >
+  < here under the owner class name. Keep them equal to the owner. >
+  static final int SLIOPort_DIR_IN = 0;
+  static final int SLIOPort_DIR_INOUT = 2;
+  static final int SLIOPort_DIR_OUT = 1;
   String name;
   SLCPU cpu;
   SLRAM memory;
@@ -85,10 +91,10 @@ class SLOperatingSystem {
 
     < I/O + drivers >
     io = new SLIOBus(); io.configure();
-    SLIOPort consolePort = new SLIOPort(); consolePort.configure(0, SLIOPort.DIR_OUT); io.registerPort(0, consolePort);
-    SLIOPort diskPort = new SLIOPort(); diskPort.configure(1, SLIOPort.DIR_INOUT); io.registerPort(1, diskPort);
-    SLIOPort kbdPort = new SLIOPort(); kbdPort.configure(2, SLIOPort.DIR_IN); io.registerPort(2, kbdPort);
-    SLIOPort netPort = new SLIOPort(); netPort.configure(3, SLIOPort.DIR_INOUT); io.registerPort(3, netPort);
+    SLIOPort consolePort = new SLIOPort(); consolePort.configure(0, SLIOPort_DIR_OUT); io.registerPort(0, consolePort);
+    SLIOPort diskPort = new SLIOPort(); diskPort.configure(1, SLIOPort_DIR_INOUT); io.registerPort(1, diskPort);
+    SLIOPort kbdPort = new SLIOPort(); kbdPort.configure(2, SLIOPort_DIR_IN); io.registerPort(2, kbdPort);
+    SLIOPort netPort = new SLIOPort(); netPort.configure(3, SLIOPort_DIR_INOUT); io.registerPort(3, netPort);
 
     dma = new SLDMAController(); dma.configure(memory);
 

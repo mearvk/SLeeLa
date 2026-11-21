@@ -6,7 +6,7 @@
      8-bit datapath and a 16-bit address bus.
 
    Provenance of the figures, block by block:
-     published  8 micrometre process, 16.6 square millimetre die, 4528 transistors
+     checked    8 micrometre process, 16.6 square millimetre die, 4528 transistors
                 (3510 enhancement and 1018 depletion pull-ups), 5 V supply,
                 1 MHz first-generation clock, phase width at least 470 ns.
      recalled   bus timing tADS 300 ns, tACC 575 ns, tDSU 100 ns, tHR 10 ns, taken
@@ -80,6 +80,7 @@ class SL6502Circuit extends SLCircuitModel {
     configure("MOS 6502", f, vcc, 1000, 2);
     setWidths(8, 16);
     setTransistors(4528);
+    setKnown(2, 2, 2, 2);
     setProvenance("published: 8 um NMOS, 4528 transistors, 16.6 mm2 die, 5 V");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 8, 18, 56, 224);
