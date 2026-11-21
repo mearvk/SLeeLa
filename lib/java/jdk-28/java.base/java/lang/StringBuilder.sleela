@@ -113,6 +113,8 @@ class StringBuilder {
   }
   public StringBuilder append(int i) { return appendText("" + i); }
   public StringBuilder append(long lng) { return appendText("" + lng); }
+  < append(double) appends Double.toString(d) (JLS 5.1.11). A float argument is passed as its Java text by the converter, because SLeeLa stores a float as a double >
+  public StringBuilder append(double d) { return appendText(Double.toString(d)); }
   public StringBuilder append(boolean b) {
     if (b) { return appendText("true"); }
     return appendText("false");

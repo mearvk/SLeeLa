@@ -50815,7 +50815,7 @@
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Double.sleela",
-      "sha256": "bd3bc5808767e3d5ed37eae250562a44e61b392f7a24b7ca15153570371edbbd"
+      "sha256": "9abb170aac8953bf1bf489646acc5f8818c42861666720d9b48c9fec838a3475"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Enum.EnumDesc.sleela",
@@ -50843,7 +50843,7 @@
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Float.sleela",
-      "sha256": "bc7cf52ae341726598a25a56f9a0d0c4ab5c14134004a6bc2beeabf1e0711ecc"
+      "sha256": "4d8aa87b17fd88be74c48d0997fbe956a7cecaf92bf82b839e9096bc17021794"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/FunctionalInterface.sleela",
@@ -51123,11 +51123,11 @@
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/StringBuffer.sleela",
-      "sha256": "f5633f2473557039b74a6bba32fe6808bcb010a545fba4825d68b1e6bee20569"
+      "sha256": "59eb03febeeac22e0d955d5033857346c20ff37faa018b4947fa738c4ee9bd84"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/StringBuilder.sleela",
-      "sha256": "aa513829b39eb9e6d7ac94cda3d1185e3116efdc37f08a919758b1893be62ae9"
+      "sha256": "2b1f1c5ce37ea8bd44a1601faf9d61c2db159100f0e309c560ff34b788c45fe6"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/StringIndexOutOfBoundsException.sleela",

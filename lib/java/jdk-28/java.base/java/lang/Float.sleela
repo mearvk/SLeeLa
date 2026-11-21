@@ -430,8 +430,14 @@ class Float extends Number {
     if (e >= -1022) { return (ddH + ddL) * pow2(e); }
     int sh = e + 1074;
     if (sh < -1) { return 0.0; }
-    double x = ddH * pow2(sh) + ddL * pow2(sh);
-    return rintD(x) * pow2(-1074);
+    << Round high and low parts separately, as scaledRound does: their sum near 2^52 would be
+       rounded to a double (resolution 1/2) before rintD and could pick the wrong neighbour. >>
+    double sh2 = pow2(sh);
+    double h = ddH * sh2;
+    double lo = ddL * sh2;
+    double hi = rintD(h);
+    double adj = rintD((h - hi) + lo);
+    return (hi + adj) * pow2(-1074);
   }
   << The integer nearest a * 10^shift for finite a > 0 (shift may be large). >>
   long scaledRound(double a, int shift) {
@@ -568,9 +574,9 @@ class Float extends Number {
 
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
-  static double POSITIVE_INFINITY = 0.0;
-  static double NEGATIVE_INFINITY = 0.0;
-  static double NaN = 0.0;
+  static final double POSITIVE_INFINITY = 1.0 / 0.0;
+  static final double NEGATIVE_INFINITY = -1.0 / 0.0;
+  static final double NaN = 0.0 / 0.0;
   static Any TYPE = null;
   < ---- END java declarations ---- >
 

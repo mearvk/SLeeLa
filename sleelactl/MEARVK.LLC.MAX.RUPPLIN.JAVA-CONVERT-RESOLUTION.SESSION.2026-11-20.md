@@ -215,3 +215,21 @@ on objects. `char` and `float` are stored as an int and a double and cannot be t
 into `Object` is refused (`[boxed-reference]`). Tests `BoxedObjectText` (10 lines identical to the JDK) and
 `reject/BoxedCharObject`. `lib/java/JavaFormat.sleela` edited, gate manifest regenerated (one entry). Differential
 suite 140 of 140.
+
+## 12. Iteration: Double and Float constants, subnormal text, append(double), negation
+
+- `/lib` `Double` had no `MIN_VALUE`, and `Double`/`Float` `POSITIVE_INFINITY`, `NEGATIVE_INFINITY` and `NaN` were
+  `0.0` placeholders, so reads were refused `[library-stub]`. `MIN_VALUE` is now an exact product
+  (`(1/2^52) * 2^-1022`), and the others are `static final` expressions (`1.0 / 0.0`, `0.0 / 0.0`). The model gained
+  22 hand `field` rows for these constants with their Java types: `/lib` declares the `Float` ones as `double`.
+- `Double.toString` printed subnormals too short (`1.112536929253601E-308` for 2^-1023), because the round-trip test
+  `decimalToDouble` rounded the sum of a double-double to a double before `rintD`. It now rounds the high and low
+  parts separately, as `scaledRound` already did (fixed in `Double` and `Float`).
+- `StringBuilder.append(double)` and `StringBuffer.append(double)` were not in `/lib`, and the call fell through to
+  another overload that throws. The `/lib` member check compares only arity, so the converter did not refuse it.
+  Both now append `Double.toString(d)`. A `float` argument is passed as its Java text through the 9c `chartext`
+  rows, because SLeeLa stores a float as a double.
+- Floating negation was `0.0 - x` in the model, which gives `+0.0` for `0.0`. It is now `-1.0 * x` (JLS 15.15.4).
+
+Test `DoubleConstants` (10 lines identical to the JDK). Four `lib/**` files edited, gate manifest regenerated
+(four entries). Differential suite 141 of 141.

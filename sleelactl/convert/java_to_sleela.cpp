@@ -2391,10 +2391,12 @@ private:
                     const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
                     const MethodSig* im = pickMethod(recvType, name, args, 0, -1, &e.ty, expected);
                     args = adaptArgs(im, args);
-                    // model 9c: a library parameter that takes a char as text
+                    // model 9c: a library parameter that takes a char (or a float) as text. append(float) is
+                    // append(String.valueOf(f)) in Java; SLeeLa stores a float as a double, so it has no float overload.
                     for (size_t ai = 0; ai < args.size(); ai++) {
                         const std::string idx = std::to_string(ai);
-                        if (args[ai].ty.dims == 0 && args[ai].ty.n == "char" && cm_find(&M, "chartext", recvType.c_str(), name.c_str(), idx.c_str())) {
+                        if (args[ai].ty.dims == 0 && !args[ai].ty.boxed && (args[ai].ty.n == "char" || args[ai].ty.n == "float") &&
+                            cm_find(&M, "chartext", recvType.c_str(), name.c_str(), idx.c_str())) {
                             args[ai].code = strOf(args[ai]);
                             args[ai].ty = mk("String");
                         }

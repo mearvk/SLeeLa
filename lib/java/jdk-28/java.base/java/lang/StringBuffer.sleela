@@ -113,6 +113,8 @@ class StringBuffer {
   }
   public synchronized StringBuffer append(int i) { return appendText("" + i); }
   public synchronized StringBuffer append(long lng) { return appendText("" + lng); }
+  < append(double) appends Double.toString(d) (JLS 5.1.11). A float argument is passed as its Java text by the converter, because SLeeLa stores a float as a double >
+  public synchronized StringBuffer append(double d) { return appendText(Double.toString(d)); }
   public synchronized StringBuffer append(boolean b) {
     if (b) { return appendText("true"); }
     return appendText("false");

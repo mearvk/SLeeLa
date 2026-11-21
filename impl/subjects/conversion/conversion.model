@@ -180,15 +180,17 @@ binop reference == ($a == $b)
 binop reference != ($a != $b)
 
 # ---- 6. Unary operators.
+#         Floating negation flips the sign (JLS 15.15.4): it is not 0.0 - x, which gives +0.0 for 0.0.
+#         -1.0 * x is exact, keeps NaN and flips infinities and zeros (1.7.0; was 0.0 - x).
 unop int - JavaOperands.negInt($a)
 unop int + $a
 unop int ~ (~$a)
 unop long - (0 - $a)
 unop long + $a
 unop long ~ (~$a)
-unop double - (0.0 - $a)
+unop double - (-1.0 * $a)
 unop double + $a
-unop float - JavaFloat.f32((0.0 - $a))
+unop float - (-1.0 * $a)
 unop float + $a
 unop boolean ! (!$a)
 
@@ -301,7 +303,7 @@ tostr char JavaText.plainIfRepresentable(JavaText.codePointU($a))
 #          (StringBuilder#0). The call dispatches at run time (SLEELA.syntax 43.7).
 tostr reference JavaFormat.objectText($a)
 
-# ---- 9c. Library parameters that take a char AS TEXT. A char value is an integer
+# ---- 9c. Library parameters that take a char (or, since 1.7.0, a float) AS TEXT. A char value is an integer
 #          at run time in SLeeLa, so a library member overloaded on char would
 #          receive the code (append('x') appended 120). The argument at the given
 #          index is passed through the tostr char row when its static type is char.
@@ -580,6 +582,28 @@ field Integer MAX_VALUE int
 field Integer MIN_VALUE int
 field Long MAX_VALUE long
 field Long MIN_VALUE long
+field Double MAX_VALUE double
+field Double MIN_VALUE double
+field Double MIN_NORMAL double
+field Double POSITIVE_INFINITY double
+field Double NEGATIVE_INFINITY double
+field Double NaN double
+field Double MAX_EXPONENT int
+field Double MIN_EXPONENT int
+field Double SIZE int
+field Double PRECISION int
+field Double BYTES int
+field Float MAX_VALUE float
+field Float MIN_VALUE float
+field Float MIN_NORMAL float
+field Float POSITIVE_INFINITY float
+field Float NEGATIVE_INFINITY float
+field Float NaN float
+field Float MAX_EXPONENT int
+field Float MIN_EXPONENT int
+field Float SIZE int
+field Float PRECISION int
+field Float BYTES int
 
 # ---- BEGIN 10b generated ret rows (generate_ret_rows.py; do not edit by hand) ----
 # Result types reflected from the public API of OpenJDK 25.0.2
