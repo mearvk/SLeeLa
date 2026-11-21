@@ -103,6 +103,8 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
+- Status (2026-11-21): differential suite **142 of 142**; all of `java.base` **871 of 3344**. Member types resolve by
+  scope (JLS 6.4.1) before the project-wide nested-name index; `[nested-ambiguous]` 3,165 -> 184 sites.
 - Status (2026-11-20, later, model 1.7.0): differential suite **138 of 138**; all of `java.base` **864 of 3344**;
   `[syntax]` refusals 435 -> 33 and `[model]` 304 -> 0 since 1.6.0. Type-pattern switches, multi-part `for` loops,
   hex floating literals, class literals (`Class.ofLiteral`), statement/parameter annotations, floating `%` via

@@ -44,12 +44,12 @@ Recent additions to the language, drivers, and standard library:
 - **The Java tier and the Java → SLeeLa converter.** `sleelactl java-convert`
   converts Java source to SLeeLa source and refuses (writes nothing) on any
   construct it cannot convert exactly. A differential suite runs each program on
-  a JDK and, converted, on the SLeeLa VM: **138 of 138** checks pass against
+  a JDK and, converted, on the SLeeLa VM: **142 of 142** checks pass against
   Corretto 25.0.5.1 (65 byte-identical programs, 48 fail-closed refusals, 9
   multi-file projects, 9 project-level refusals, and 7 infrastructure checks;
   measured 2026-11-20, model 1.7.0), gated in CI by
   [`java-convert.yml`](.github/workflows/java-convert.yml). Of JDK 25 `java.base`,
-  **262 of 884** files of the `lang`/`util`/`math`/`text` subset and **864 of
+  **262 of 884** files of the `lang`/`util`/`math`/`text` subset and **871 of
   3,344** files overall convert; the rest fail closed with a located reason. Of
   the emitted files, about 94% pass the linked semantic check (last measured on
   an earlier generation). Release status: **HOLD**

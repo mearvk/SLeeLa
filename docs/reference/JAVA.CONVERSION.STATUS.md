@@ -2,6 +2,19 @@
 
 # Java to SLeeLa Conversion: Overall Status
 
+## Update — 2026-11-21 iterations (Linux x86-64, GCC 11.5, Corretto 25.0.5.1)
+
+Differential suite **142 of 142**. All of `java.base`: **871 of 3344** converted (894 SLeeLa files), none newly
+failing. The 894 emitted files link with 109 semantic errors. Changes:
+- boxed primitives held as Object print as in Java (`JavaFormat.objectText`);
+- `/lib` `Double`/`Float` constants (`MIN_VALUE`, infinities, `NaN`), exact subnormal `Double.toString`, and
+  `StringBuilder`/`StringBuffer.append(double)`;
+- floating negation keeps the sign of zero;
+- member types resolve by scope (JLS 6.4.1): `[nested-ambiguous]` sites 3,165 -> 184.
+
+Record: `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT-RESOLUTION.SESSION.2026-11-20.md`, sections 11 to 14.
+Release decision: **HOLD**.
+
 ## Measured verification — 2026-11-20, later (model 1.7.0, Linux x86-64, GCC 11.5, Corretto 25.0.5.1)
 
 This section is the current status; the one below it is the earlier measurement of the same day.

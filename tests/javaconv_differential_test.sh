@@ -101,25 +101,29 @@ else
 fi
 
 # generic recovery: a member refused while a '>>' token is half consumed (Iterator<Provider<S>>
-# with an ambiguous nested name) must not leave a pending closer for the next member's List<S>.
-mkdir -p "$tmp/generic-recovery/src/p" "$tmp/generic-recovery/out"
-cat > "$tmp/generic-recovery/src/p/A.java" <<'JAVA'
+# where Provider is a project-wide ambiguous simple name) must not leave a pending closer for the
+# next member's List<S>: G.java reports only the type-ambiguous refusal.
+mkdir -p "$tmp/generic-recovery/src/p" "$tmp/generic-recovery/src/q" "$tmp/generic-recovery/out"
+cat > "$tmp/generic-recovery/src/p/Provider.java" <<'JAVA'
 package p;
-public class A { public interface Provider<T> { } }
+public interface Provider<T> { }
+JAVA
+cat > "$tmp/generic-recovery/src/q/Provider.java" <<'JAVA'
+package q;
+public interface Provider<T> { }
 JAVA
 cat > "$tmp/generic-recovery/src/p/G.java" <<'JAVA'
 package p;
 import java.util.*;
 public class G<S> {
-    public interface Provider<T> { }
     private Iterator<Provider<S>> it1;
     private final List<S> xs = new ArrayList<>();
     public static void main(String[] a) { }
 }
 JAVA
 "$conv" --jdk "$tmp/generic-recovery/src" --out "$tmp/generic-recovery/out" --quiet
-gr_kinds="$(python3 -c 'import json,sys; print(" ".join(x["construct"] for x in json.load(open(sys.argv[1]))["failures"]))' "$tmp/generic-recovery/out/CONVERSION-REPORT.json" 2>/dev/null)"
-if [ "$gr_kinds" = "nested-ambiguous" ]; then
+gr_kinds="$(python3 -c 'import json,sys; print(" ".join(x["construct"] for x in json.load(open(sys.argv[1]))["failures"] if x["file"].endswith("G.java")))' "$tmp/generic-recovery/out/CONVERSION-REPORT.json" 2>/dev/null)"
+if [ "$gr_kinds" = "type-ambiguous" ]; then
   printf 'PASS  %-12s a member refused inside a split >> leaves no pending closer for the next member\n' "generic-recovery"; pass=$((pass+1))
 else
   printf 'FAIL  generic-recovery (kinds=%s)\n' "$gr_kinds"; fail=$((fail+1))

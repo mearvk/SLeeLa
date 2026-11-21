@@ -244,3 +244,16 @@ different inherited member types of that name at one level are still refused. `n
 `Outer` by scope and imports, then its member `Inner`, like a type in a declaration. Check `scoped-nested` (a
 three-file project, output identical to the JDK) in `tests/javaconv_differential_test.sh`. Pushed before the full
 differential suite completed; its result is recorded in the next section.
+
+## 14. Results of the scoped member-type iteration
+
+Full differential suite after the push of section 13: one check failed, `generic-recovery`. Its project used two
+nested `Provider` types to cause a refusal inside a split `>>`, and that refusal is now gone, because the name
+resolves by scope. The check now uses two top-level `Provider` interfaces in different packages, which is still
+`[type-ambiguous]` (flat namespace). It was confirmed to fail on a build without the pending-closer reset
+(`[syntax]` on the next line). Differential suite **142 of 142**.
+
+All of `java.base`: **871 of 3344** converted (894 SLeeLa files), up from 864, none newly failing.
+`[nested-ambiguous]` sites 3,165 -> 184. The 894 emitted files link with 109 semantic errors (unchanged count, no new
+message). Largest first refusals now: `type-ambiguous` 499 files, `library-type` 310, `library-stub` 205,
+`library-member` 191.
