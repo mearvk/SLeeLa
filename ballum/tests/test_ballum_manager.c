@@ -120,11 +120,22 @@ static ballum_status_t mock_release_surface(void *ctx, uint32_t id) {
     (void)ctx; (void)id; g_release_calls++; g_surface_claimed = 0; return BALLUM_STATUS_OK;
 }
 
+static int g_grab_state = -1;
+static ballum_status_t mock_poll_key_event(void *ctx, ballum_key_event_t *out) {
+    (void)ctx;
+    out->symbol = 'k'; out->code = 45; out->pressed = 1; out->modifiers = BALLUM_MOD_CTRL;
+    return BALLUM_STATUS_OK;
+}
+static ballum_status_t mock_set_input_grab(void *ctx, int on) {
+    (void)ctx; g_grab_state = on; return BALLUM_STATUS_OK;
+}
+
 static const ballum_backend_t g_mock = {
     "mock", mock_enumerate, mock_set_pixel, mock_get_pixel, mock_blit,
     mock_set_brightness, mock_set_warmth, mock_set_gamma, mock_poll_event,
     mock_poll_key,
-    mock_claim_surface, mock_present, mock_release_surface
+    mock_claim_surface, mock_present, mock_release_surface,
+    mock_poll_key_event, mock_set_input_grab
 };
 
 int main(void) {
@@ -266,6 +277,30 @@ int main(void) {
     int no_key = -1;
     assert(ballum_manager_poll_key(&u, &no_key) == BALLUM_STATUS_UNSUPPORTED);
     assert(no_key == BALLUM_KEY_NONE);
+
+    /* ---- full key events and input grab ---------------------------------- */
+    assert(ballum_manager_has_key_events(&m) == 1);
+    ballum_key_event_t kev;
+    assert(ballum_manager_poll_key_event(&m, &kev) == BALLUM_STATUS_OK);
+    assert(kev.symbol == 'k' && kev.code == 45 && kev.pressed == 1 && kev.modifiers == BALLUM_MOD_CTRL);
+    assert(ballum_manager_set_input_grab(&m, 7) == BALLUM_STATUS_OK && g_grab_state == 1);   /* normalized to 0/1 */
+    assert(ballum_manager_set_input_grab(&m, 0) == BALLUM_STATUS_OK && g_grab_state == 0);
+    assert(ballum_manager_poll_key_event(&m, NULL) == BALLUM_STATUS_INVALID_ARGUMENT);
+    assert(ballum_manager_poll_key_event(NULL, &kev) == BALLUM_STATUS_INVALID_ARGUMENT);
+    assert(ballum_manager_set_input_grab(NULL, 1) == BALLUM_STATUS_INVALID_ARGUMENT);
+    assert(ballum_manager_has_key_events(NULL) == -1);
+    /* the fallback has neither: UNSUPPORTED, and `out` stays well-defined (code 0) */
+    assert(ballum_manager_has_key_events(&u) == 0);
+    kev.code = 99;
+    assert(ballum_manager_poll_key_event(&u, &kev) == BALLUM_STATUS_UNSUPPORTED && kev.code == 0 && kev.symbol == 0);
+    assert(ballum_manager_set_input_grab(&u, 1) == BALLUM_STATUS_UNSUPPORTED);
+    /* uninitialized manager fails closed */
+    { ballum_manager_t raw; memset(&raw, 0, sizeof(raw));
+      assert(ballum_manager_poll_key_event(&raw, &kev) == BALLUM_STATUS_NOT_INITIALIZED);
+      assert(ballum_manager_set_input_grab(&raw, 1) == BALLUM_STATUS_NOT_INITIALIZED); }
+    /* wheel buttons extend the button vocabulary without disturbing the old values */
+    assert(BALLUM_BUTTON_LEFT == 1 && BALLUM_BUTTON_RIGHT == 3 &&
+           BALLUM_BUTTON_WHEEL_UP == 4 && BALLUM_BUTTON_WHEEL_RIGHT == 7);
 
     /* ---- status text is never NULL --------------------------------------- */
     assert(ballum_status_name(BALLUM_STATUS_OK) != NULL);

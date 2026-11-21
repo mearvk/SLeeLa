@@ -118,3 +118,14 @@ to SLeeLa by `SLBallumEffect` (ids + `uiBallumFxName`/`uiBallumFxByName`/
 
 Runnable demonstrator: `lib/ballum/session-demo.sleela` (lists every effect and
 runs one; `FX=iris-in LOGO_FILE=/path/logo.jpg` to pick an effect and a logo).
+
+## 10. Program host
+
+Ballum can host a real program (a terminal, an admin interface) on its fullscreen
+surface: the program runs on a private X display, Ballum captures its pixels and
+routes keyboard and pointer input to it 1:1, with entry/exit transitions
+(`disintegrate`, `slide-*`, `pixelize`, `fade`, and the catalog), APP NAME and
+DATE TIME slots above the program, sibling components, application remapping
+and a sandboxed child. The backend gains full key events (`poll_key_event`),
+scroll-wheel buttons 4-7 and a revocable input grab (`set_input_grab`). See
+`HOST.md`.

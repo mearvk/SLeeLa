@@ -67,7 +67,10 @@ static const ballum_backend_t k_unavailable = {
     0,
     /* claim_surface / present / release_surface = NULL: no fullscreen surface,
      * so has_surface()==0 and the three surface calls return UNSUPPORTED. */
-    0, 0, 0
+    0, 0, 0,
+    /* poll_key_event / set_input_grab = NULL: no full key events, no input
+     * grab; the host layer reports UNSUPPORTED and never fabricates input. */
+    0, 0
 };
 
 const ballum_backend_t *ballum_backend_unavailable(void) { return &k_unavailable; }

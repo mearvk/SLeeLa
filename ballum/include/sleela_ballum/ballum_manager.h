@@ -110,7 +110,14 @@ typedef enum {
     BALLUM_BUTTON_NONE = 0,
     BALLUM_BUTTON_LEFT = 1,
     BALLUM_BUTTON_MIDDLE = 2,
-    BALLUM_BUTTON_RIGHT = 3
+    BALLUM_BUTTON_RIGHT = 3,
+    /* Scroll wheel notches, reported as a DOWN followed by an UP with the same
+     * button (X11 core protocol convention). Added for the program host so a
+     * hosted application receives wheel input 1:1. */
+    BALLUM_BUTTON_WHEEL_UP = 4,
+    BALLUM_BUTTON_WHEEL_DOWN = 5,
+    BALLUM_BUTTON_WHEEL_LEFT = 6,
+    BALLUM_BUTTON_WHEEL_RIGHT = 7
 } ballum_pointer_button_t;
 
 /* Where the event came from. */
@@ -138,6 +145,20 @@ typedef struct {
     uint32_t                contact_id;   /* touch contact id (0 for mouse)   */
     uint32_t                modifiers;    /* BALLUM_MOD_* bitmask             */
 } ballum_pointer_event_t;
+
+/* One raw keyboard event (press or release), as opposed to the edge-only
+ * ballum_key_t poll used for the ESC/Enter/Space session controls. `symbol` is
+ * the unshifted key symbol in the backend's native vocabulary (an X11 keysym on
+ * Linux/X11; printable Latin-1 keys equal their ASCII code). `code` is the
+ * backend's physical key code (an X11 keycode on Linux/X11). `modifiers` is the
+ * BALLUM_MOD_* state in effect when the event occurred. Key repeat arrives as
+ * release+press pairs, exactly as the X server reports it. */
+typedef struct {
+    uint32_t symbol;
+    uint32_t code;
+    int      pressed;     /* 1 = key down, 0 = key up */
+    uint32_t modifiers;   /* BALLUM_MOD_* bitmask     */
+} ballum_key_event_t;
 
 /* ---- value types --------------------------------------------------------- */
 
@@ -242,6 +263,17 @@ typedef struct ballum_backend {
     ballum_status_t (*claim_surface)(void *context, uint32_t display_id);
     ballum_status_t (*present)(void *context, uint32_t display_id);
     ballum_status_t (*release_surface)(void *context, uint32_t display_id);
+
+    /* ---- Program-host input (full keyboard fidelity) ---------------------
+     * poll_key_event : dequeue one raw press/release without blocking. On OK,
+     *                  out->code == 0 means nothing was pending. NULL when the
+     *                  backend cannot deliver full key events.
+     * set_input_grab : while a surface is claimed, route ALL keyboard and
+     *                  pointer input to it (on != 0) or stop doing so (== 0), so
+     *                  a hosted program behaves as if Ballum were the native
+     *                  GUI stack. Always revocable; NULL when unsupported. */
+    ballum_status_t (*poll_key_event)(void *context, ballum_key_event_t *out);
+    ballum_status_t (*set_input_grab)(void *context, int on);
 } ballum_backend_t;
 
 /* The backend compiled in for this build (never NULL; may be the unavailable
@@ -342,6 +374,19 @@ ballum_status_t ballum_manager_poll_key(ballum_manager_t *manager, int *out);
 
 /* Does the backend provide keyboard input at all? 1 yes, 0 no, <0 on bad args. */
 int ballum_manager_has_keyboard(const ballum_manager_t *manager);
+
+/* Poll one raw key press/release, non-blocking. On success *out is filled;
+ * out->code == 0 means nothing was pending (real keycodes are never 0). UNSUPPORTED when the backend has
+ * no full key-event queue. */
+ballum_status_t ballum_manager_poll_key_event(ballum_manager_t *manager,
+                                              ballum_key_event_t *out);
+
+/* Does the backend deliver full key events? 1 yes, 0 no, <0 on bad args. */
+int ballum_manager_has_key_events(const ballum_manager_t *manager);
+
+/* Route all keyboard/pointer input to the claimed surface (on != 0) or release
+ * the routing (on == 0). UNSUPPORTED when the backend cannot grab. */
+ballum_status_t ballum_manager_set_input_grab(ballum_manager_t *manager, int on);
 
 /* ---- helpers ------------------------------------------------------------- */
 

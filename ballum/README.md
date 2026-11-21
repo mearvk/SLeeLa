@@ -100,6 +100,19 @@ capability (`ballum_capability_t`) and bounds **before** the backend is called.
 `PERMISSION_DENIED`, `NOT_INITIALIZED`. A control the backend or display cannot
 perform returns `UNSUPPORTED` — never a silent/false success.
 
+## Program host: run a terminal or admin UI inside Ballum
+
+Ballum can host a real program. The white surface becomes that program's screen,
+Ballum receives its pixels, and every key and mouse event is routed to it 1:1.
+Entry and exit use effects such as `disintegrate`, `slide-*`, `pixelize` and
+`fade`; the APP NAME and DATE TIME slots sit above the program; sibling
+components attach to the edges; the hosted program runs sandboxed. See
+**[HOST.md](HOST.md)**.
+
+```sh
+make host && build/ballum-host --profile sleela-terminal   # leave with Ctrl+Alt+Esc
+```
+
 ## Build and test
 
 ```sh

@@ -68,10 +68,10 @@ else
   BALLUM_X11_SHM ?= 1
   ifeq ($(BALLUM_X11_SHM),1)
     BACKEND_DEFINE := -DBALLUM_BACKEND_X11 -DBALLUM_X11_USE_SHM
-    BACKEND_LIBS   := -lX11 -lXrandr -lXext -lm
+    BACKEND_LIBS   := -lX11 -lXrandr -lXext -lm -ldl
   else
     BACKEND_DEFINE := -DBALLUM_BACKEND_X11
-    BACKEND_LIBS   := -lX11 -lXrandr -lm
+    BACKEND_LIBS   := -lX11 -lXrandr -lm -ldl
   endif
   BACKEND_IS_CPP := 0
 endif
@@ -102,6 +102,24 @@ $(BUILD)/ballum_effects.o: src/ballum_effects.c | $(BUILD)
 $(BUILD)/ballum_image.o: src/ballum_image.c | $(BUILD)
 	$(CC) $(CFLAGS) -I$(NANOJPEG_DIR) -c $< -o $@
 
+# Program host: transitions, process protection, compositor, starter profiles,
+# and the private-display source (the source needs the backend define so it is
+# real on X11 and a fail-closed stub everywhere else).
+$(BUILD)/ballum_transition.o: src/ballum_transition.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD)/ballum_sandbox.o: src/ballum_sandbox.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD)/ballum_host.o: src/ballum_host.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD)/ballum_host_profiles.o: src/ballum_host_profiles.c | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD)/ballum_host_x11.o: src/ballum_host_x11.c | $(BUILD)
+	$(CC) $(CFLAGS) $(BACKEND_DEFINE) -c $< -o $@
+
 ifeq ($(BACKEND_IS_CPP),1)
 $(BUILD)/ballum_backend_os.o: $(BACKEND_SRC) | $(BUILD)
 	$(CXX) $(OBJCXXFLAGS) $(BACKEND_DEFINE) -c $< -o $@
@@ -112,7 +130,9 @@ endif
 
 LIB_OBJS := $(BUILD)/ballum_manager.o $(BUILD)/ballum_backend_select.o \
             $(BUILD)/ballum_backend_unavailable.o $(BUILD)/ballum_backend_os.o \
-            $(BUILD)/ballum_effects.o $(BUILD)/ballum_image.o
+            $(BUILD)/ballum_effects.o $(BUILD)/ballum_image.o \
+            $(BUILD)/ballum_transition.o $(BUILD)/ballum_sandbox.o $(BUILD)/ballum_host.o \
+            $(BUILD)/ballum_host_profiles.o $(BUILD)/ballum_host_x11.o
 
 $(BUILD)/libsleela_ballum.a: $(LIB_OBJS)
 	$(AR) rcs $@ $(LIB_OBJS)
@@ -158,6 +178,20 @@ endif
 demo: check-deps $(BUILD)/libsleela_ballum.a
 	$(LINKER) $(CFLAGS) src/ballum_demo.c $(BUILD)/libsleela_ballum.a $(BACKEND_LIBS) -o $(BUILD)/ballum-demo$(EXE)
 	@echo "ballum: linked $(BUILD)/ballum-demo$(EXE) against libsleela_ballum.a $(BACKEND_LIBS)"
+
+# ---- ballum-host: put a program inside the Ballum environment ---------------
+# Real executable. At run time it needs Xvfb and libXtst.so.6 plus the program
+# to host (see HOST.md); without them it fails closed and says what is missing.
+host: check-deps $(BUILD)/libsleela_ballum.a
+	$(LINKER) $(CFLAGS) src/ballum_host_cli.c $(BUILD)/libsleela_ballum.a $(BACKEND_LIBS) -o $(BUILD)/ballum-host$(EXE)
+	@echo "ballum: linked $(BUILD)/ballum-host$(EXE)  (run: $(BUILD)/ballum-host --list)"
+
+# Real-environment test of the private-display source: launches Xvfb + xterm
+# (or $$BALLUM_TEST_X11_PROGRAM), captures it and drives it with keys. Reports
+# SKIPPED, leaving nothing behind, when Xvfb / libXtst / the program are absent.
+test-x11: check-deps $(BUILD)/libsleela_ballum.a
+	$(CC) $(CFLAGS) tests/test_ballum_host_x11.c $(BUILD)/libsleela_ballum.a $(BACKEND_LIBS) -o $(BUILD)/ballum-host-x11-test$(EXE)
+	./$(BUILD)/ballum-host-x11-test$(EXE)
 
 # ---- per-OS dependency provisioning --------------------------------------
 # `check-deps` verifies the OS-centric libraries this PLATFORM needs. On Linux
@@ -247,6 +281,23 @@ test: | $(BUILD)
 	  src/ballum_effects.c src/ballum_image.c $(NANOJPEG_DIR)/nanojpeg.c \
 	  tests/test_ballum_effects.c -o $(BUILD)/ballum-effects-test$(EXE) -lm
 	./$(BUILD)/ballum-effects-test$(EXE)
+	$(CC) $(CFLAGS) \
+	  src/ballum_transition.c src/ballum_effects.c src/ballum_manager.c \
+	  src/ballum_backend_select.c src/ballum_backend_unavailable.c \
+	  tests/test_ballum_transition.c -o $(BUILD)/ballum-transition-test$(EXE) -lm
+	./$(BUILD)/ballum-transition-test$(EXE)
+	$(CC) $(CFLAGS) \
+	  src/ballum_host.c src/ballum_transition.c src/ballum_effects.c src/ballum_manager.c \
+	  src/ballum_backend_select.c src/ballum_backend_unavailable.c \
+	  tests/test_ballum_host.c -o $(BUILD)/ballum-host-test$(EXE) -lm
+	./$(BUILD)/ballum-host-test$(EXE)
+ifneq ($(PLATFORM),windows)
+	$(CC) $(CFLAGS) \
+	  src/ballum_sandbox.c src/ballum_manager.c \
+	  src/ballum_backend_select.c src/ballum_backend_unavailable.c \
+	  tests/test_ballum_sandbox.c -o $(BUILD)/ballum-sandbox-test$(EXE)
+	cd $(BUILD) && ./ballum-sandbox-test$(EXE)
+endif
 	@echo "ballum: all tests passed"
 
 # ---- install / uninstall --------------------------------------------------
@@ -258,6 +309,10 @@ install: all
 	$(INSTALL) -m 0644 include/sleela_ballum/ballum_manager.h "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_manager.h"
 	$(INSTALL) -m 0644 include/sleela_ballum/ballum_effects.h "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_effects.h"
 	$(INSTALL) -m 0644 include/sleela_ballum/ballum_image.h   "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_image.h"
+	$(INSTALL) -m 0644 include/sleela_ballum/ballum_transition.h "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_transition.h"
+	$(INSTALL) -m 0644 include/sleela_ballum/ballum_sandbox.h "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_sandbox.h"
+	$(INSTALL) -m 0644 include/sleela_ballum/ballum_host.h    "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_host.h"
+	$(INSTALL) -m 0644 include/sleela_ballum/ballum_host_profiles.h "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_host_profiles.h"
 	$(INSTALL) -d "$(DESTDIR)$(LIBDIR)/pkgconfig"
 	$(INSTALL) -m 0644 $(BUILD)/sleela_ballum.pc "$(DESTDIR)$(LIBDIR)/pkgconfig/sleela_ballum.pc"
 	@echo "ballum: installed libsleela_ballum.a, headers and sleela_ballum.pc to $(DESTDIR)$(PREFIX)"
@@ -267,7 +322,11 @@ uninstall:
 	rm -f "$(DESTDIR)$(LIBDIR)/libsleela_ballum.a"
 	rm -f "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_manager.h" \
 	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_effects.h" \
-	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_image.h"
+	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_image.h" \
+	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_transition.h" \
+	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_sandbox.h" \
+	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_host.h" \
+	      "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum/ballum_host_profiles.h"
 	rm -f "$(DESTDIR)$(LIBDIR)/pkgconfig/sleela_ballum.pc"
 	-rmdir "$(DESTDIR)$(INCLUDEDIR)/sleela_ballum" 2>/dev/null || true
 	@echo "ballum: uninstalled from $(DESTDIR)$(PREFIX)"
@@ -283,8 +342,10 @@ help:
 	@echo "  make demo        Link a real build/ballum-demo$(EXE) executable against the lib + this OS's libs"
 	@echo "  make pc          Generate the pkg-config manifest (build/sleela_ballum.pc)"
 	@echo "  make test        Build and run the portable tests (no display libraries required)"
+	@echo "  make host        Link build/ballum-host: run a program inside the Ballum environment"
+	@echo "  make test-x11    Real-environment test of the private-display program source"
 	@echo "  make install     Install the library + headers + sleela_ballum.pc to \$$(PREFIX) [default $(PREFIX)]"
 	@echo "  make uninstall   Remove the installed library + headers"
 	@echo "  make clean       Remove the build/ directory"
 
-.PHONY: all test clean install uninstall help check-deps deps demo pc
+.PHONY: all test test-x11 host clean install uninstall help check-deps deps demo pc

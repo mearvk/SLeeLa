@@ -308,3 +308,29 @@ ballum_status_t ballum_manager_poll_key(ballum_manager_t *manager, int *out) {
         return BALLUM_STATUS_UNSUPPORTED;
     return manager->backend->poll_key(manager->backend_context, out);
 }
+
+/* ---- program-host input -------------------------------------------------- */
+
+int ballum_manager_has_key_events(const ballum_manager_t *manager) {
+    if (!manager) return -1;
+    return (manager->backend && manager->backend->poll_key_event) ? 1 : 0;
+}
+
+ballum_status_t ballum_manager_poll_key_event(ballum_manager_t *manager,
+                                              ballum_key_event_t *out) {
+    if (!manager || !out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    if (!manager->initialized) return BALLUM_STATUS_NOT_INITIALIZED;
+    /* Always leave `out` well-defined: code 0 == nothing pending. */
+    memset(out, 0, sizeof(*out));
+    if (!manager->backend || !manager->backend->poll_key_event)
+        return BALLUM_STATUS_UNSUPPORTED;
+    return manager->backend->poll_key_event(manager->backend_context, out);
+}
+
+ballum_status_t ballum_manager_set_input_grab(ballum_manager_t *manager, int on) {
+    if (!manager) return BALLUM_STATUS_INVALID_ARGUMENT;
+    if (!manager->initialized) return BALLUM_STATUS_NOT_INITIALIZED;
+    if (!manager->backend || !manager->backend->set_input_grab)
+        return BALLUM_STATUS_UNSUPPORTED;
+    return manager->backend->set_input_grab(manager->backend_context, on ? 1 : 0);
+}

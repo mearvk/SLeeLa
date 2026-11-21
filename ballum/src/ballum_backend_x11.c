@@ -9,6 +9,11 @@
  * - set_warmth      : builds a per-channel gamma ramp approximating a black-body
  *                     white point at the requested kelvin (XRRSetCrtcGamma).
  * - set_gamma       : sets an exponent gamma ramp on the CRTC.
+ * - poll_event / poll_key_event : one event pump drains the X queue into two
+ *                     bounded ring queues (pointer, key) so neither consumer
+ *                     can starve or discard the other's events.
+ * - set_input_grab  : XGrabKeyboard/XGrabPointer on the claimed surface, so a
+ *                     hosted program receives every input event (revocable).
  *
  * This file is only meaningful when built with BALLUM_BACKEND_X11 (the Makefile
  * adds -lX11 -lXrandr on Linux). Without that define it compiles to an empty
@@ -250,7 +255,14 @@ static int output_geometry(Display *dpy, uint32_t id,
     return found;
 }
 
+static int g_input_grabbed;
+
 static void surface_teardown(Display *dpy) {
+    if (g_input_grabbed) {
+        XUngrabPointer(dpy, CurrentTime);
+        XUngrabKeyboard(dpy, CurrentTime);
+        g_input_grabbed = 0;
+    }
 #if defined(BALLUM_X11_USE_SHM)
     if (g_ctx.shm_active) {
         XShmDetach(dpy, &g_ctx.shm);
@@ -288,12 +300,18 @@ static ballum_status_t x11_claim_surface(void *ctx, uint32_t id) {
     memset(&swa, 0, sizeof(swa));
     swa.override_redirect = True;
     swa.background_pixel = BlackPixel(dpy, g_ctx.screen);
-    swa.event_mask = ButtonPressMask | ButtonReleaseMask | PointerMotionMask | KeyPressMask;
+    swa.event_mask = ButtonPressMask | ButtonReleaseMask | PointerMotionMask |
+                     KeyPressMask | KeyReleaseMask;
     Window win = XCreateWindow(dpy, g_ctx.root, ox, oy, ow, oh, 0,
                                depth, InputOutput, vis,
                                CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
     if (!win) return BALLUM_STATUS_BACKEND_ERROR;
     XMapRaised(dpy, win);
+    /* The window is override-redirect, so no window manager will focus it.
+     * XSync makes the map take effect first (SetInputFocus on an unviewable
+     * window is a BadMatch, which Xlib's default handler turns into exit()). */
+    XSync(dpy, False);
+    XSetInputFocus(dpy, win, RevertToParent, CurrentTime);
 
     g_ctx.surface_win = win;
     g_ctx.surface_gc = XCreateGC(dpy, win, 0, NULL);
@@ -450,16 +468,54 @@ static ballum_status_t x11_set_gamma(void *ctx, uint32_t id, uint32_t gamma_scal
     return apply_ramp(id, 1.0, 1.0, 1.0, 1.0 / gamma);
 }
 
-/* Pointer input: select button/motion events on the root window (once), then
- * drain one queued event per poll. Mouse buttons 1/2/3 map to LEFT/MIDDLE/RIGHT;
- * X11 core input does not distinguish touch, so contacts arrive as mouse. */
-static int g_input_selected;
+/* Input: one pump drains the X queue into two bounded ring queues. Pointer
+ * motion is coalesced (a MOVE replaces a MOVE at the tail), so a slow consumer
+ * sees the latest position instead of an unbounded backlog. When a queue is
+ * full a new MOVE is dropped, and any other event evicts the oldest entry. */
+#define BALLUM_X11_QCAP 256u
 
+static int g_input_selected;
+static ballum_pointer_event_t g_pq[BALLUM_X11_QCAP];
+static unsigned g_pq_head, g_pq_n;
+static ballum_key_event_t g_kq[BALLUM_X11_QCAP];
+static unsigned g_kq_head, g_kq_n;
+
+static void pq_push(const ballum_pointer_event_t *e) {
+    if (e->type == BALLUM_EVENT_POINTER_MOVE && g_pq_n > 0) {
+        unsigned last = (g_pq_head + g_pq_n - 1u) % BALLUM_X11_QCAP;
+        if (g_pq[last].type == BALLUM_EVENT_POINTER_MOVE) { g_pq[last] = *e; return; }
+    }
+    if (g_pq_n == BALLUM_X11_QCAP) {
+        if (e->type == BALLUM_EVENT_POINTER_MOVE) return;
+        g_pq_head = (g_pq_head + 1u) % BALLUM_X11_QCAP;
+        g_pq_n--;
+    }
+    g_pq[(g_pq_head + g_pq_n) % BALLUM_X11_QCAP] = *e;
+    g_pq_n++;
+}
+
+static void kq_push(const ballum_key_event_t *e) {
+    if (g_kq_n == BALLUM_X11_QCAP) {
+        g_kq_head = (g_kq_head + 1u) % BALLUM_X11_QCAP;
+        g_kq_n--;
+    }
+    g_kq[(g_kq_head + g_kq_n) % BALLUM_X11_QCAP] = *e;
+    g_kq_n++;
+}
+
+/* Mouse buttons 1/2/3 map to LEFT/MIDDLE/RIGHT, 4..7 to the wheel notches; X11
+ * core input does not distinguish touch, so contacts arrive as mouse. */
 static ballum_pointer_button_t map_button(unsigned int xbutton) {
-    if (xbutton == Button1) return BALLUM_BUTTON_LEFT;
-    if (xbutton == Button2) return BALLUM_BUTTON_MIDDLE;
-    if (xbutton == Button3) return BALLUM_BUTTON_RIGHT;
-    return BALLUM_BUTTON_NONE;
+    switch (xbutton) {
+    case Button1: return BALLUM_BUTTON_LEFT;
+    case Button2: return BALLUM_BUTTON_MIDDLE;
+    case Button3: return BALLUM_BUTTON_RIGHT;
+    case Button4: return BALLUM_BUTTON_WHEEL_UP;
+    case Button5: return BALLUM_BUTTON_WHEEL_DOWN;
+    case 6:       return BALLUM_BUTTON_WHEEL_LEFT;
+    case 7:       return BALLUM_BUTTON_WHEEL_RIGHT;
+    default:      return BALLUM_BUTTON_NONE;
+    }
 }
 
 static uint32_t map_mods(unsigned int state) {
@@ -471,41 +527,105 @@ static uint32_t map_mods(unsigned int state) {
     return m;
 }
 
+/* Root coordinates -> display coordinates. With a claimed surface the display
+ * origin is the surface origin (non-zero on a secondary monitor). */
+static int32_t to_display_x(int xroot) { return g_ctx.surface_active ? xroot - g_ctx.surface_x : xroot; }
+static int32_t to_display_y(int yroot) { return g_ctx.surface_active ? yroot - g_ctx.surface_y : yroot; }
+
+static void pump_events(Display *dpy) {
+    if (!g_input_selected) {
+        XSelectInput(dpy, g_ctx.root,
+                     ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
+        g_input_selected = 1;
+    }
+    while (XPending(dpy) > 0) {
+        XEvent ev;
+        XNextEvent(dpy, &ev);
+        ballum_pointer_event_t pe;
+        memset(&pe, 0, sizeof(pe));
+        pe.source = BALLUM_POINTER_MOUSE;
+        pe.display_id = g_ctx.surface_active ? g_ctx.surface_output : 0u;
+        if (ev.type == ButtonPress || ev.type == ButtonRelease) {
+            pe.type = (ev.type == ButtonPress) ? BALLUM_EVENT_POINTER_DOWN
+                                               : BALLUM_EVENT_POINTER_UP;
+            pe.x = to_display_x(ev.xbutton.x_root);
+            pe.y = to_display_y(ev.xbutton.y_root);
+            pe.button = map_button(ev.xbutton.button);
+            pe.modifiers = map_mods(ev.xbutton.state);
+            pq_push(&pe);
+        } else if (ev.type == MotionNotify) {
+            pe.type = BALLUM_EVENT_POINTER_MOVE;
+            pe.x = to_display_x(ev.xmotion.x_root);
+            pe.y = to_display_y(ev.xmotion.y_root);
+            pe.button = BALLUM_BUTTON_NONE;
+            pe.modifiers = map_mods(ev.xmotion.state);
+            pq_push(&pe);
+        } else if (ev.type == KeyPress || ev.type == KeyRelease) {
+            ballum_key_event_t ke;
+            ke.symbol = (uint32_t)XLookupKeysym(&ev.xkey, 0);
+            ke.code = ev.xkey.keycode;
+            ke.pressed = (ev.type == KeyPress);
+            ke.modifiers = map_mods(ev.xkey.state);
+            kq_push(&ke);
+        }
+    }
+}
+
 static ballum_status_t x11_poll_event(void *ctx, ballum_pointer_event_t *out) {
     (void)ctx;
     if (!out) return BALLUM_STATUS_INVALID_ARGUMENT;
     out->type = BALLUM_EVENT_NONE;
     Display *dpy = ensure_display();
     if (!dpy) return BALLUM_STATUS_BACKEND_UNAVAILABLE;
+    pump_events(dpy);
+    if (g_pq_n == 0) return BALLUM_STATUS_OK;          /* none pending -> NONE */
+    *out = g_pq[g_pq_head];
+    g_pq_head = (g_pq_head + 1u) % BALLUM_X11_QCAP;
+    g_pq_n--;
+    return BALLUM_STATUS_OK;
+}
 
-    if (!g_input_selected) {
-        XSelectInput(dpy, g_ctx.root,
-                     ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
-        g_input_selected = 1;
+static ballum_status_t x11_poll_key_event(void *ctx, ballum_key_event_t *out) {
+    (void)ctx;
+    if (!out) return BALLUM_STATUS_INVALID_ARGUMENT;
+    memset(out, 0, sizeof(*out));
+    Display *dpy = ensure_display();
+    if (!dpy) return BALLUM_STATUS_BACKEND_UNAVAILABLE;
+    pump_events(dpy);
+    if (g_kq_n == 0) return BALLUM_STATUS_OK;          /* code 0 -> nothing */
+    *out = g_kq[g_kq_head];
+    g_kq_head = (g_kq_head + 1u) % BALLUM_X11_QCAP;
+    g_kq_n--;
+    return BALLUM_STATUS_OK;
+}
+
+static ballum_status_t x11_set_input_grab(void *ctx, int on) {
+    (void)ctx;
+    Display *dpy = ensure_display();
+    if (!dpy) return BALLUM_STATUS_BACKEND_UNAVAILABLE;
+    if (!g_ctx.surface_active) return BALLUM_STATUS_UNSUPPORTED;
+    if (!on) {
+        if (g_input_grabbed) {
+            XUngrabPointer(dpy, CurrentTime);
+            XUngrabKeyboard(dpy, CurrentTime);
+            g_input_grabbed = 0;
+            XFlush(dpy);
+        }
+        return BALLUM_STATUS_OK;
     }
-
-    if (XPending(dpy) <= 0) return BALLUM_STATUS_OK;   /* none pending -> NONE */
-
-    XEvent ev;
-    XNextEvent(dpy, &ev);
-    out->source = BALLUM_POINTER_MOUSE;
-    out->contact_id = 0;
-    if (ev.type == ButtonPress) {
-        out->type = BALLUM_EVENT_POINTER_DOWN;
-        out->x = ev.xbutton.x_root; out->y = ev.xbutton.y_root;
-        out->button = map_button(ev.xbutton.button);
-        out->modifiers = map_mods(ev.xbutton.state);
-    } else if (ev.type == ButtonRelease) {
-        out->type = BALLUM_EVENT_POINTER_UP;
-        out->x = ev.xbutton.x_root; out->y = ev.xbutton.y_root;
-        out->button = map_button(ev.xbutton.button);
-        out->modifiers = map_mods(ev.xbutton.state);
-    } else if (ev.type == MotionNotify) {
-        out->type = BALLUM_EVENT_POINTER_MOVE;
-        out->x = ev.xmotion.x_root; out->y = ev.xmotion.y_root;
-        out->button = BALLUM_BUTTON_NONE;
-        out->modifiers = map_mods(ev.xmotion.state);
+    if (g_input_grabbed) return BALLUM_STATUS_OK;
+    if (XGrabKeyboard(dpy, g_ctx.surface_win, True, GrabModeAsync, GrabModeAsync,
+                      CurrentTime) != GrabSuccess)
+        return BALLUM_STATUS_PERMISSION_DENIED;
+    if (XGrabPointer(dpy, g_ctx.surface_win, True,
+                     ButtonPressMask | ButtonReleaseMask | PointerMotionMask,
+                     GrabModeAsync, GrabModeAsync, g_ctx.surface_win, None,
+                     CurrentTime) != GrabSuccess) {
+        XUngrabKeyboard(dpy, CurrentTime);
+        return BALLUM_STATUS_PERMISSION_DENIED;
     }
+    g_input_grabbed = 1;
+    XFlush(dpy);
     return BALLUM_STATUS_OK;
 }
 
@@ -548,7 +668,8 @@ static const ballum_backend_t k_x11 = {
     x11_enumerate, x11_set_pixel, x11_get_pixel, x11_blit,
     x11_set_brightness, x11_set_warmth, x11_set_gamma, x11_poll_event,
     x11_poll_key,
-    x11_claim_surface, x11_present, x11_release_surface
+    x11_claim_surface, x11_present, x11_release_surface,
+    x11_poll_key_event, x11_set_input_grab
 };
 
 const ballum_backend_t *ballum_backend_x11(void) { return &k_x11; }
