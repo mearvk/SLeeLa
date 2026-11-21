@@ -6,9 +6,11 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    xt: 25000000000 (gist.github.com/kellyshephard/0396fb29bbb2282dc87fe22ba32ddc6e)
+     checked    node: 3 (same gist (N3B))
      clock      4000 MHz, taken from the existing SLAppleM3CPU model; not checked here.
-     recalled   transistor count 25000000000; feature size 3 nm; supply not sourced.
+     recalled   supply not sourced.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    supply 800 mV from the node or clock era; thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 5 ps (derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm); edge time, fanout,
@@ -74,7 +76,7 @@ class SLAppleM3Circuit extends SLCircuitModel {
     configure("Apple M3 (ARM64)", f, rail, 4000000, 1);
     setWidths(64, 48);
     setTransistors(25000000000);
-    setKnown(1, 1, 0, 0);
+    setKnown(2, 2, 0, 0);
     setProvenance("recalled: M3; 25000000000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 64, 8, 576, 3456);

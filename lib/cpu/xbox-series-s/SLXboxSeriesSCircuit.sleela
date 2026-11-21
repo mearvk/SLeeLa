@@ -6,8 +6,9 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      3600 MHz, taken from the existing SLXboxSeriesSCPU model; not checked here.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    clk: 3600 (tomshardware.com/news/xbox-series-s-specs-reveal)
+     clock      3600 MHz, taken from the existing SLXboxSeriesSCPU model.
      recalled   transistor count 8000000000; feature size 7 nm; supply not sourced.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
@@ -74,7 +75,7 @@ class SLXboxSeriesSCircuit extends SLCircuitModel {
     configure("Xbox Series S (x86-64 Zen 2)", f, rail, 3600000, 1);
     setWidths(64, 48);
     setTransistors(8000000000);
-    setKnown(1, 1, 0, 0);
+    setKnown(1, 1, 0, 2);
     setProvenance("recalled: AMD Zen 2 APU; 8000000000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 64, 8, 576, 3456);

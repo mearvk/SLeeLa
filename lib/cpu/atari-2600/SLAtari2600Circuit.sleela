@@ -6,9 +6,11 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    xt: 4528 (righto.com/2013/01/a-small-part-of-6502-chip-explained.html (6502 die, which the 6507 shares))
+     checked    node: 8000 (6502 8 micrometre process (6507 uses the 6502 die))
      clock      1 MHz, taken from the existing SLAtari2600CPU model; not checked here.
-     recalled   transistor count 4528; feature size 8000 nm; supply 5000 mV.
+     recalled   supply 5000 mV.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 14400 ps (derived, 1.8 ps per nm for depletion-load NMOS); edge time, fanout,
@@ -74,7 +76,7 @@ class SLAtari2600Circuit extends SLCircuitModel {
     configure("Atari 2600 (6507 / 6502)", f, rail, 1000, 2);
     setWidths(8, 13);
     setTransistors(4528);
-    setKnown(1, 1, 1, 0);
+    setKnown(2, 2, 1, 0);
     setProvenance("recalled: MOS 6507, a 6502 die in a 28-pin package; 4528 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 8, 18, 72, 288);

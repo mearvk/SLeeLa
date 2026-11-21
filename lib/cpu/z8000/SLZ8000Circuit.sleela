@@ -6,9 +6,10 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    xt: 17500 (en.wikipedia.org/wiki/Zilog_Z8000)
      clock      6 MHz, taken from the existing SLZ8000CPU model; not checked here.
-     recalled   transistor count 17500; feature size unknown; supply 5000 mV.
+     recalled   feature size unknown; supply 5000 mV.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 6944 ps (derived from the rated clock, 24 gate levels per clock phase); edge time, fanout,
@@ -74,7 +75,7 @@ class SLZ8000Circuit extends SLCircuitModel {
     configure("Zilog Z8000", f, rail, 6000, 1);
     setWidths(16, 23);
     setTransistors(17500);
-    setKnown(1, 0, 1, 0);
+    setKnown(2, 0, 1, 0);
     setProvenance("recalled: Z8000; 17500 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 16, 6, 144, 576);

@@ -6,9 +6,12 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      100 MHz, taken from the existing SLIntelPentiumCPU model; not checked here.
-     recalled   transistor count 3300000; feature size 600 nm; supply 3300 mV.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    node: 600 (Microprocessor Report 1994-03-07, ardent-tool.com/CPU/docs/MPR/19940307/080301.pdf)
+     checked    vdd: 3300 (A Brief History of the Pentium Processor Family, scribd.com/document/19073803)
+     checked    clk: 100 (Microprocessor Report 1994-03-07 (up to 100 MHz))
+     clock      100 MHz, taken from the existing SLIntelPentiumCPU model.
+     recalled   transistor count 3300000.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 150 ps (derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm); edge time, fanout,
@@ -74,7 +77,7 @@ class SLIntelPentiumCircuit extends SLCircuitModel {
     configure("Intel Pentium", f, rail, 100000, 1);
     setWidths(32, 32);
     setTransistors(3300000);
-    setKnown(1, 1, 1, 0);
+    setKnown(1, 2, 2, 2);
     setProvenance("recalled: Pentium P54C; 3300000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 32, 7, 288, 1728);

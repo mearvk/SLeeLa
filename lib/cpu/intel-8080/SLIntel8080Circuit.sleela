@@ -6,9 +6,12 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      2 MHz, taken from the existing SLIntel8080CPU model; not checked here.
-     recalled   transistor count 4500; feature size 6000 nm; supply 12000 mV.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    node: 6000 (electronics.stackexchange.com/questions/21879)
+     checked    vdd: 12000 (electronics.stackexchange.com/questions/21879 (+12 V logic supply, with +5 V and -5 V))
+     checked    clk: 2 (treasures.scss.tcd.ie/hardware/TCD-SCSS-T.20250918.003)
+     clock      2 MHz, taken from the existing SLIntel8080CPU model.
+     recalled   transistor count 4500.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 10800 ps (derived, 1.8 ps per nm for depletion-load NMOS); edge time, fanout,
@@ -74,7 +77,7 @@ class SLIntel8080Circuit extends SLCircuitModel {
     configure("Intel 8080", f, rail, 2000, 2);
     setWidths(8, 16);
     setTransistors(4500);
-    setKnown(1, 1, 1, 0);
+    setKnown(1, 2, 2, 2);
     setProvenance("recalled: 8080, +12 V with +5 V and -5 V; 4500 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 8, 18, 72, 288);

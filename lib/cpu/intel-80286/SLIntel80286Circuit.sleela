@@ -6,9 +6,10 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    xt: 134000 (wikiwand.com/en/Intel_80286; weblio.jp/content/Intel+80286)
      clock      12 MHz, taken from the existing SLIntel80286CPU model; not checked here.
-     recalled   transistor count 134000; feature size 1500 nm; supply 5000 mV.
+     recalled   feature size 1500 nm; supply 5000 mV.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 2700 ps (derived, 1.8 ps per nm for depletion-load NMOS); edge time, fanout,
@@ -74,7 +75,7 @@ class SLIntel80286Circuit extends SLCircuitModel {
     configure("Intel 80286", f, rail, 12000, 1);
     setWidths(16, 24);
     setTransistors(134000);
-    setKnown(1, 1, 1, 0);
+    setKnown(2, 1, 1, 0);
     setProvenance("recalled: 80286 HMOS; 134000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 16, 6, 144, 576);

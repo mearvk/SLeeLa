@@ -6,9 +6,10 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    vdd: 5000 (MC68000P8 data, allaboutcircuits.com (same MC68000 part))
      clock      13 MHz, taken from the existing SLMegaCDCPU model; not checked here.
-     recalled   transistor count 68000; feature size 3500 nm; supply 5000 mV.
+     recalled   transistor count 68000; feature size 3500 nm.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 6300 ps (derived, 1.8 ps per nm for depletion-load NMOS); edge time, fanout,
@@ -74,7 +75,7 @@ class SLMegaCDCircuit extends SLCircuitModel {
     configure("Sega Mega-CD (68000)", f, rail, 13000, 1);
     setWidths(32, 24);
     setTransistors(68000);
-    setKnown(1, 1, 1, 0);
+    setKnown(1, 1, 2, 0);
     setProvenance("recalled: Motorola 68000; 68000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 32, 7, 288, 1152);

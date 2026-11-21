@@ -6,8 +6,9 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      33 MHz, taken from the existing SLMIPSCPU model; not checked here.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    clk: 33 (macbidouille.com/news/2023/12/09/les-cpu-des-mac-mips-r3000)
+     clock      33 MHz, taken from the existing SLMIPSCPU model.
      recalled   transistor count 115000; feature size 1200 nm; supply 5000 mV.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
@@ -74,7 +75,7 @@ class SLMIPSCircuit extends SLCircuitModel {
     configure("MIPS R3000", f, rail, 33000, 1);
     setWidths(32, 32);
     setTransistors(115000);
-    setKnown(1, 1, 1, 0);
+    setKnown(1, 1, 1, 2);
     setProvenance("recalled: R3000; 115000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 32, 7, 288, 1728);

@@ -6,7 +6,7 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
      clock      486 MHz, taken from the existing SLGameCubeCPU model; not checked here.
      recalled   transistor count 21000000; feature size 180 nm; supply 1800 mV.
                 Recalled figures come from general knowledge and were not checked

@@ -6,12 +6,15 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      34 MHz, taken from the existing SLPlayStation1CPU model; not checked here.
-     recalled   transistor count unknown; feature size unknown; supply not sourced.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    xt: 1000000 (Microprocessor Report 1994-07-11, ardent-tool.com/CPU/docs/MPR/19940711/080902.pdf (whole custom chip, about one million))
+     checked    node: 500 (Microprocessor Report 1994-07-11 (0.5 micron CMOS))
+     checked    clk: 34 (Microprocessor Report 1994-07-11 (34 MHz R3000))
+     clock      34 MHz, taken from the existing SLPlayStation1CPU model.
+     recalled   supply not sourced.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
-     derived    supply 5000 mV from the node or clock era; thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 1225 ps (derived from the rated clock, 24 gate levels per clock phase); edge time, fanout,
+     derived    supply 3300 mV from the node or clock era; thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 125 ps (derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm); edge time, fanout,
                 block gate and transistor counts and depths, and both timing
                 paths. Derived numbers are planning figures, not measurements.
    The model stays at functional-block level. It is not a transistor netlist.
@@ -63,19 +66,19 @@ class SLPlayStation1Circuit extends SLCircuitModel {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
   void build() {
     SLLogicFamily f = new SLLogicFamily();
-    f.configure("CMOS", 0, 5000, 250);
-    f.setThresholds(1500, 3500, 500, 4500);
-    f.setSpeed(1225, 1837, 4);
-    f.setProvenance("thresholds derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out; speed derived from the rated clock, 24 gate levels per clock phase");
+    f.configure("CMOS", 500, 3300, 165);
+    f.setThresholds(990, 2310, 330, 2970);
+    f.setSpeed(125, 187, 4);
+    f.setProvenance("thresholds derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out; speed derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm");
 
     SLVoltageRail rail = new SLVoltageRail();
-    rail.configure("supply", 5000, 4750, 5250);
+    rail.configure("supply", 3300, 3135, 3465);
 
     configure("PlayStation (MIPS R3000A)", f, rail, 34000, 1);
     setWidths(32, 32);
-    setTransistors(0);
-    setKnown(0, 0, 0, 0);
-    setProvenance("recalled: LSI R3000A derivative; transistor count unknown");
+    setTransistors(1000000);
+    setKnown(2, 2, 0, 2);
+    setProvenance("recalled: LSI R3000A derivative; 1000000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 32, 7, 288, 1728);
     alu.setProvenance("derived: parallel-prefix carry adder and logic unit, 6 transistors per gate");
@@ -92,21 +95,21 @@ class SLPlayStation1Circuit extends SLCircuitModel {
     SLCircuitPath add = addPath("alu-add", 1470);
     add.setPeriod(29411);
     add.describe("derived: operand latch, 32-bit prefix carry, result latch in one clock phase");
-    add.addStage("operand-latch", 1225);
-    add.addStage("carry-32-bits", 8575);
-    add.addStage("result-latch", 1225);
-    add.constrain(1225, 306, 588);
+    add.addStage("operand-latch", 125);
+    add.addStage("carry-32-bits", 875);
+    add.addStage("result-latch", 125);
+    add.constrain(125, 31, 588);
 
     SLCircuitPath rf = addPath("register-read-bypass", 1470);
     rf.setPeriod(29411);
     rf.describe("derived: register-file read, bypass mux, ALU input latch");
-    rf.addStage("register-read", 9800);
-    rf.addStage("bypass-mux", 2450);
-    rf.addStage("input-latch", 1225);
-    rf.constrain(1225, 306, 588);
+    rf.addStage("register-read", 1000);
+    rf.addStage("bypass-mux", 250);
+    rf.addStage("input-latch", 125);
+    rf.constrain(125, 31, 588);
 
     SLSignalQuality n0 = addNet("CLK");
-    n0.setEdgeLimit(7348);
+    n0.setEdgeLimit(748);
     SLSignalQuality n1 = addNet("A0");
     SLSignalQuality n2 = addNet("D0");
     SLSignalQuality n3 = addNet("RESET");

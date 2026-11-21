@@ -6,7 +6,7 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
      clock      1240 MHz, taken from the existing SLWiiUCPU model; not checked here.
      recalled   transistor count unknown; feature size 45 nm; supply not sourced.
                 Recalled figures come from general knowledge and were not checked

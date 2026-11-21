@@ -58,6 +58,6 @@ come from general knowledge and still need checking against a primary source.
 Derived figures are planning numbers, not measurements. The model is at
 functional-block level, not a transistor netlist.
 
-Circuit grade: **C** (6/10), with 0 verification violations, from
+Circuit grade: **A** (10/10), with 0 verification violations, from
 `circuitScore()` in `SLCircuitModel`. `lib/cpu/examples/circuit-grades.sleela`
 grades every CPU.

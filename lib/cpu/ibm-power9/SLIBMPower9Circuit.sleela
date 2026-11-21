@@ -6,9 +6,10 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    node: 14 (zdnet.com/article/ibm-unveils-first-seven-nanometre-chip-for-next-generation-hybrid-cloud-computing/)
      clock      3800 MHz, taken from the existing SLIBMPower9CPU model; not checked here.
-     recalled   transistor count 8000000000; feature size 14 nm; supply not sourced.
+     recalled   transistor count 8000000000; supply not sourced.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    supply 800 mV from the node or clock era; thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 5 ps (derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm); edge time, fanout,
@@ -74,7 +75,7 @@ class SLIBMPower9Circuit extends SLCircuitModel {
     configure("IBM POWER9", f, rail, 3800000, 1);
     setWidths(64, 52);
     setTransistors(8000000000);
-    setKnown(1, 1, 0, 0);
+    setKnown(1, 2, 0, 0);
     setProvenance("recalled: POWER9; 8000000000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 64, 8, 576, 3456);

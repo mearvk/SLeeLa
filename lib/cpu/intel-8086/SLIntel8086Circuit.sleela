@@ -6,9 +6,13 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      5 MHz, taken from the existing SLIntel8086CPU model; not checked here.
-     recalled   transistor count 29000; feature size 3000 nm; supply 5000 mV.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    xt: 29000 (Bell et al., Computer Structures, research.microsoft.com/en-us/um/people/gbell/Computer_Structures_Principles_and_Examples/csp0654.htm)
+     checked    node: 3000 (cpu-galerie.de/html/intel8086hmos-p8086.html)
+     checked    vdd: 5000 (cpu-galerie.de/html/intel8086hmos-p8086.html (5 V plus or minus 10 percent))
+     checked    clk: 5 (Intel 8086 data sheet, inf.pucrs.br/calazans/undergrad/orgcomp_EC/mat_microproc/intel-8086_datasheet.pdf)
+     clock      5 MHz, taken from the existing SLIntel8086CPU model.
+     recalled   none; every headline figure above was checked.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 5400 ps (derived, 1.8 ps per nm for depletion-load NMOS); edge time, fanout,
@@ -74,7 +78,7 @@ class SLIntel8086Circuit extends SLCircuitModel {
     configure("Intel 8086", f, rail, 5000, 1);
     setWidths(16, 20);
     setTransistors(29000);
-    setKnown(1, 1, 1, 0);
+    setKnown(2, 2, 2, 2);
     setProvenance("recalled: 8086 HMOS; 29000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 16, 6, 144, 576);

@@ -6,14 +6,22 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    vdd: 5000 (gunkies.org/wiki/PDP-11/20 (KA11 built from SSI TTL, a 5 V logic family))
      clock      15 MHz, taken from the existing SLPDP11CPU model; not checked here.
-     recalled   transistor count unknown; feature size unknown; supply 5000 mV.
+     recalled   transistor count unknown; feature size unknown.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 10000 ps (standard TTL about 10 ns); edge time, fanout,
                 block gate and transistor counts and depths, and both timing
                 paths. Derived numbers are planning figures, not measurements.
+   Known inconsistency: the existing SLPDP11CPU model states 15 MHz. No source
+   found supports that. The PDP-11/20 KA11 was SSI TTL and not microcoded, and
+   its core memory had a 1.2 microsecond cycle and 500 ns access (DEC PDP-11/20
+   Handbook, 1969, via retrotechnology.com/pdp11/11_20_components.html). A
+   16-bit TTL add does not fit a 15 MHz clock, so the alu-add and register
+   paths fail. That failure is a true finding about the stated clock; fix the
+   clock in SLPDP11CPU once a source gives the KA11 timing.
    The model stays at functional-block level. It is not a transistor netlist.
 
    Family: cpu. Extends SLCircuitModel. >>
@@ -74,7 +82,7 @@ class SLPDP11Circuit extends SLCircuitModel {
     configure("DEC PDP-11", f, rail, 15000, 1);
     setWidths(16, 16);
     setTransistors(0);
-    setKnown(0, 0, 1, 0);
+    setKnown(0, 0, 2, 0);
     setProvenance("recalled: PDP-11/20 TTL; transistor count unknown");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 16, 6, 144, 576);

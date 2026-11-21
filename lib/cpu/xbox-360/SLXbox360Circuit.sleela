@@ -6,9 +6,12 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      3200 MHz, taken from the existing SLXbox360CPU model; not checked here.
-     recalled   transistor count 165000000; feature size 90 nm; supply not sourced.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    xt: 165000000 (ign.com/articles/2005/05/13/pre-e3-2005-xbox-360-the-hardware)
+     checked    node: 90 (electronics.alibaba.com xbox-360-cpu-guide-xenon-specs)
+     checked    clk: 3200 (videogameconsolelibrary.com/ps3-vs-xbox-360/)
+     clock      3200 MHz, taken from the existing SLXbox360CPU model.
+     recalled   supply not sourced.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    supply 1100 mV from the node or clock era; thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 22 ps (derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm); edge time, fanout,
@@ -74,7 +77,7 @@ class SLXbox360Circuit extends SLCircuitModel {
     configure("Xbox 360 (Xenon / PowerPC)", f, rail, 3200000, 1);
     setWidths(64, 42);
     setTransistors(165000000);
-    setKnown(1, 1, 0, 0);
+    setKnown(2, 2, 0, 2);
     setProvenance("recalled: IBM Xenon; 165000000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 64, 8, 576, 3456);

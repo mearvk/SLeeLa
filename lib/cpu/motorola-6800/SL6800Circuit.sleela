@@ -6,9 +6,12 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      1 MHz, taken from the existing SL6800CPU model; not checked here.
-     recalled   transistor count 4100; feature size 6000 nm; supply 5000 mV.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    node: 6000 (st.rim.or.jp/~nkomatsu/mc680x/MC6800.html)
+     checked    vdd: 5000 (Motorola MC6800 data sheet, unixarchive.net/Documents/Motorola/Motorola_MC6800.pdf)
+     checked    clk: 1 (st.rim.or.jp/~nkomatsu/mc680x/MC6800.html (standard 1 MHz))
+     clock      1 MHz, taken from the existing SL6800CPU model.
+     recalled   transistor count 4100.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 10800 ps (derived, 1.8 ps per nm for depletion-load NMOS); edge time, fanout,
@@ -74,7 +77,7 @@ class SL6800Circuit extends SLCircuitModel {
     configure("Motorola 6800", f, rail, 1000, 2);
     setWidths(8, 16);
     setTransistors(4100);
-    setKnown(1, 1, 1, 0);
+    setKnown(1, 2, 2, 2);
     setProvenance("recalled: MC6800; 4100 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 8, 18, 72, 288);

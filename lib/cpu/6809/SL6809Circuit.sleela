@@ -6,9 +6,11 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
-     clock      1 MHz, taken from the existing SL6809CPU model; not checked here.
-     recalled   transistor count 9000; feature size unknown; supply 5000 mV.
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    vdd: 5000 (fr.scribd.com/document/811315518 (single 5 V supply))
+     checked    clk: 1 (fr.scribd.com/document/554782181 (1 MHz and 2 MHz versions))
+     clock      1 MHz, taken from the existing SL6809CPU model.
+     recalled   transistor count 9000; feature size unknown.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    thresholds (TTL-compatible input and output levels); gate delay 20833 ps (derived from the rated clock, 24 gate levels per clock phase); edge time, fanout,
@@ -74,7 +76,7 @@ class SL6809Circuit extends SLCircuitModel {
     configure("Motorola 6809", f, rail, 1000, 2);
     setWidths(8, 16);
     setTransistors(9000);
-    setKnown(1, 0, 1, 0);
+    setKnown(1, 0, 2, 2);
     setProvenance("recalled: MC6809, E and Q clocks; 9000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 8, 18, 72, 288);

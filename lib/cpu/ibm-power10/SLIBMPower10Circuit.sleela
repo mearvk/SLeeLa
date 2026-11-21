@@ -6,9 +6,11 @@
      depth, gate and transistor counts, two timing paths, four monitored nets
      and three semaphores.
 
-   Provenance of the figures:
+   Provenance of the figures (checked means a source found on 2026-11-21 states it):
+     checked    xt: 18000000000 (encyclopedia.pub/entry/history/show/71179)
+     checked    node: 7 (hpcwire.com/2020/08/17/ibm-debuts-power10-touts-new-memory-scheme-security-and-inferencing/)
      clock      4000 MHz, taken from the existing SLIBMPower10CPU model; not checked here.
-     recalled   transistor count 18000000000; feature size 7 nm; supply not sourced.
+     recalled   supply not sourced.
                 Recalled figures come from general knowledge and were not checked
                 against a primary source in this session.
      derived    supply 800 mV from the node or clock era; thresholds (derived CMOS convention, 30 and 70 percent of supply in, 10 and 90 percent out); gate delay 5 ps (derived, FO4 about 360 ps per um of effective channel, effective channel about 0.7 of the drawn node, so about 0.25 ps per drawn nm); edge time, fanout,
@@ -74,7 +76,7 @@ class SLIBMPower10Circuit extends SLCircuitModel {
     configure("IBM POWER10", f, rail, 4000000, 1);
     setWidths(64, 52);
     setTransistors(18000000000);
-    setKnown(1, 1, 0, 0);
+    setKnown(2, 2, 0, 0);
     setProvenance("recalled: POWER10; 18000000000 transistors");
 
     SLCircuitBlock alu = addBlock("alu", "alu", 64, 8, 576, 3456);
