@@ -233,3 +233,14 @@ suite 140 of 140.
 
 Test `DoubleConstants` (10 lines identical to the JDK). Four `lib/**` files edited, gate manifest regenerated
 (four entries). Differential suite 141 of 141.
+
+## 13. Iteration: member types resolved by scope (JLS 6.4.1)
+
+A simple type name was looked up in one project-wide index of nested-type names. A name such as `Entry` that several
+classes declare as a member type was refused everywhere (`[nested-ambiguous]`, the first refusal in 175 files of
+`java.base`), even inside the class that declares it. `resolveTypeName` now first checks the member types in scope:
+those of the current class, of its enclosing classes, and of their supertypes. The nearest wins, as in Java. Two
+different inherited member types of that name at one level are still refused. `new Outer.Inner()` now resolves
+`Outer` by scope and imports, then its member `Inner`, like a type in a declaration. Check `scoped-nested` (a
+three-file project, output identical to the JDK) in `tests/javaconv_differential_test.sh`. Pushed before the full
+differential suite completed; its result is recorded in the next section.

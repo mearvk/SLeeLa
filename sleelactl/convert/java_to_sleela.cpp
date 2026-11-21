@@ -242,7 +242,49 @@ private:
         return simple;
     }
 
+    // JLS 6.4.1 / 8.5: inside a class, the simple name of a member type of that class, of an
+    // enclosing class, or of a supertype of either is in scope and shadows imports. Returns the
+    // hoisted name, "" when no such member type exists, and fails closed when two different member
+    // types of the same name are reachable at the same nesting level (javac reports that too).
+    std::string scopedMemberType(const std::string& n) const {
+        std::vector<std::string> enclosing;
+        for (std::string c = curClass; !c.empty() && enclosing.size() < 32; ) {
+            enclosing.push_back(c);
+            auto ci = classes.find(c);
+            std::string next = ci != classes.end() ? ci->second.enclosingType : "";
+            if (next.empty()) { const size_t sep = c.rfind("__"); if (sep != std::string::npos) next = c.substr(0, sep); }
+            if (next == c) break;
+            c = next;
+        }
+        for (const auto& a : anonStack_) if (!a.outerClass.empty()) enclosing.push_back(a.outerClass);
+        for (const std::string& level : enclosing) {
+            std::set<std::string> found, seen;
+            std::vector<std::string> work{level};
+            while (!work.empty() && seen.size() < 256) {
+                const std::string t = work.back();
+                work.pop_back();
+                if (t.empty() || !seen.insert(t).second) continue;
+                auto ci = classes.find(t);
+                if (ci == classes.end()) continue;
+                if (classes.count(t + "__" + n)) { found.insert(t + "__" + n); continue; }   // nearest declaration wins on this path
+                if (!ci->second.super.empty()) work.push_back(ci->second.super);
+                for (const auto& i : ci->second.ifaces) work.push_back(i);
+            }
+            if (found.size() == 1) {
+                auto hit = classes.find(*found.begin());
+                if (hit->second.ambiguous)
+                    throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the member type '" + *found.begin() + "' has duplicate declarations"};
+                return *found.begin();
+            }
+            if (found.size() > 1)
+                throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' names several inherited member types here"};
+        }
+        return "";
+    }
+
     std::string resolveTypeName(const std::string& n) const {
+        // A member type in scope shadows imports and the other lookups (JLS 6.4.1).
+        { const std::string m = scopedMemberType(n); if (!m.empty()) return m; }
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
             throw ConvErr{cur().line, cur().col, "import-ambiguous", "the simple type name '" + n + "' is imported from more than one package"};
@@ -2923,9 +2965,23 @@ private:
                 break;
             }
         }
-        if (!isOp("[") && !typeVars.count(name))
-            name = qualifiedName.find('.') == std::string::npos
-                ? resolveTypeName(name) : resolveQualifiedTypeName(qualifiedName);
+        if (!isOp("[") && !typeVars.count(name)) {
+            if (qualifiedName.find('.') == std::string::npos) name = resolveTypeName(name);
+            else if (std::isupper(static_cast<unsigned char>(qualifiedName[0]))) {
+                // Outer.Inner: a type-qualified member type, resolved like parseType does (the first
+                // segment by scope and imports, then Outer__Inner), not as a package-qualified name.
+                std::string q;
+                size_t a = 0;
+                for (;;) {
+                    const size_t b = qualifiedName.find('.', a);
+                    const std::string seg = qualifiedName.substr(a, b == std::string::npos ? std::string::npos : b - a);
+                    q = q.empty() ? resolveTypeName(seg) : q + "__" + seg;
+                    if (b == std::string::npos) break;
+                    a = b + 1;
+                }
+                name = q;
+            } else name = resolveQualifiedTypeName(qualifiedName);
+        }
         if (diamond) {
             if (isOp("[")) fail("syntax", "'<>' is not allowed in array creation");
             // A library class keeps erased type arguments (the variable declared

@@ -348,6 +348,53 @@ else
   "$conv" --jdk "$tmp/project-implicit-public/src" --out "$tmp/project-implicit-public/sl" | sed 's/^/      /'; fail=$((fail+1))
 fi
 
+# scoped member types (JLS 6.4.1, 8.5): two classes each declare a member type Entry; inside each
+# class the simple name is its own member type, a member type inherited from an interface is in
+# scope, and new Outer.Inner() names the member type of Outer.
+mkdir -p "$tmp/scoped-nested/src/p" "$tmp/scoped-nested/cls" "$tmp/scoped-nested/sl"
+cat > "$tmp/scoped-nested/src/p/Outer.java" <<'JAVA'
+package p;
+public class Outer {
+    public static class Entry { public String k() { return "outer-entry"; } }
+    public static class Node { Entry e = new Entry(); }
+    public String go() { Entry x = new Entry(); return x.k() + " " + new Node().e.k(); }
+}
+JAVA
+cat > "$tmp/scoped-nested/src/p/Other.java" <<'JAVA'
+package p;
+public class Other {
+    public static class Entry { public String k() { return "other-entry"; } }
+    public interface Base { class Item { public String v() { return "base-item"; } } }
+    public static class Impl implements Base { public String go() { Item i = new Item(); return i.v(); } }
+    public String go() { Entry x = new Entry(); return x.k(); }
+}
+JAVA
+cat > "$tmp/scoped-nested/src/p/Main.java" <<'JAVA'
+package p;
+public class Main {
+    public static void main(String[] a) {
+        System.out.println(new Outer().go());
+        System.out.println(new Other().go());
+        System.out.println(new Other.Impl().go());
+        Outer.Entry q = new Outer.Entry();
+        System.out.println(q.k());
+    }
+}
+JAVA
+if javac -d "$tmp/scoped-nested/cls" "$tmp/scoped-nested/src/p/"*.java 2> "$tmp/scoped-nested/javac.err" &&
+   java -cp "$tmp/scoped-nested/cls" p.Main > "$tmp/scoped-nested/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/scoped-nested/src" --out "$tmp/scoped-nested/sl" --quiet; then
+  (cd "$tmp/scoped-nested/sl" && run_project p/Main.sleela 2>&1 | filter) > "$tmp/scoped-nested/actual.out"
+  if diff -u "$tmp/scoped-nested/expected.out" "$tmp/scoped-nested/actual.out" > "$tmp/scoped-nested/diff"; then
+    printf 'PASS  %-12s member types resolved by scope, not by a global simple name, identical to the JDK\n' "scoped-nested"; pass=$((pass+1))
+  else
+    printf 'FAIL  scoped-nested\n'; head -40 "$tmp/scoped-nested/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  scoped-nested (project build or conversion failed)\n'; cat "$tmp/scoped-nested/javac.err"
+  "$conv" --jdk "$tmp/scoped-nested/src" --out "$tmp/scoped-nested/sl" | sed 's/^/      /'; fail=$((fail+1))
+fi
+
 # package identity and wildcard/nested imports across source packages.
 mkdir -p "$tmp/project-package/src/fixture/alpha" "$tmp/project-package/src/fixture/use" "$tmp/project-package/cls" "$tmp/project-package/sl"
 cat > "$tmp/project-package/src/fixture/alpha/AlphaBase.java" <<'JAVA'
