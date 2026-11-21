@@ -220,8 +220,43 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   a bound method reference on an expression that is not a local, and a target interface whose SAM signature
   is not known. Tests: `Anon`, `Functional`, `Refs`, `reject/LambdaUse`, `reject/NestedLambda`.
 - Pattern matching. `x instanceof T v` declares `v` before the statement and tests
-  `(x instanceof T) && ((v = (T) x) != null)`; an impure subject is held in a temporary. `case Type t ->`
-  patterns and record patterns are refused. Test: `Refs`.
+  `(x instanceof T) && ((v = (T) x) != null)`; an impure subject is held in a temporary. Test: `Refs`.
+- Pattern switches (JLS 14.11, 14.30; 2026-11-20). A switch with type-pattern labels, statement or expression,
+  is lowered to an `instanceof` chain in source order inside a loop that runs once, so `break` and `yield` leave
+  it. The selector is evaluated once. A null selector runs `case null`, or throws `NullPointerException` when there
+  is none; no match without `default` throws `MatchException`. Unnamed bindings (`case T _`), `case null, default`
+  and constant labels beside patterns are converted. Refused (`[switch-pattern]`): `when` guards, record
+  patterns, `:` pattern groups, boxed or array type patterns, a case label after `default`, and an unlabeled
+  `continue` inside an arm (it would restart the wrapper loop). Tests: `PatternSwitch`, `reject/SwitchPattern`,
+  `reject/SwitchRecordPattern`, `reject/SwitchPatternContinue`.
+- Other lowerings added 2026-11-20 (model 1.7.0):
+  - `for` loops with several declarators, initializers or updates (JLS 14.14.1): the inits become statements
+    before the loop; several updates become a loop whose first pass skips them, so `continue` still runs them.
+    A label stays on the loop. Test `ForLoops`.
+  - floating remainder `%` and `%=` on `double` and `float` go through `JavaOperands.remDouble` (JLS 15.17.3),
+    because the VM `%` traps on a zero divisor where Java gives NaN. Test `FloatRemainder`.
+  - control characters other than newline, tab and carriage return are written `\u00XX` in string literals;
+    NUL is refused (`[string-nul]`), because a SLeeLa string ends at it (the C lexer used to drop the rest of
+    the literal silently). Tests `StringControl`, `reject/StringNul`.
+  - a boxing cast to the operand's own wrapper (`(Integer) i`) is the identity on primitive storage and keeps
+    the wrapper type for overload resolution. Test `BoxingCast`.
+  - hexadecimal floating literals (JLS 3.10.2) are decoded exactly (`strtod`, `strtof` for `f`) and written with
+    17 significant digits. A subnormal double, which has no SLeeLa literal spelling, is written
+    `(m / 2^52) * 2^-1022`, exact in binary64. Test `HexFloats`.
+  - class literals (JLS 15.8.2) become `Class.ofLiteral(binary name, kind)`, the `lib/java` form shared with the
+    SLeeLa-native converter (rule 8e). The package of a `/lib` type is taken from an explicit import, or from
+    the selected `lib/java/jdk-28` unit when that package is `java.lang` or wildcard-imported; otherwise the
+    literal is refused (`[class-literal]`). Tests `ClassLiterals`, `reject/ClassLiteralPackage`.
+  - annotations on statements, locals and parameters, with dotted names and array values, are dropped like
+    member annotations (JLS 9.7: metadata). Test `Annotated`.
+  - an element of an array of arrays may be an array expression or `null`. Test `ArrayOfArrays`.
+  - nested enum constructors and `private` enum constructors are recognized. Test `EnumConstructors`.
+  - new refusal kinds instead of `[syntax]`, `[model]` or unchecked output: `unboxing-cast` (`(int) obj`),
+    `print-stream` (`System.out.print`, `System.err`), `intersection-cast` (`(A & B) expr`), `string-surrogate`
+    (an unpaired surrogate), and `string-static` for `String.X` static fields.
+  - recovery after a refused member skips exactly that member (braces inside an annotation value no longer end
+    it) and clears a half-consumed `>>`, so the next member reports its own refusal rather than a syntax error.
+    Checks `member-recovery` and `generic-recovery` in `tests/javaconv_differential_test.sh`.
 - Records (JLS 8.10). A record is a class with one field per component, the canonical constructor
   (a compact constructor runs its body first), an accessor per component, `toString()` as
   `Name[a=1, b=2]`, `equals` when every component is a primitive (not float/double) or a String, and
@@ -302,7 +337,7 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | A lambda or method reference whose target is a JDK interface not in the collected tree and not in the seeded list | the abstract method is unknown | collect the JDK interfaces (convert the JDK tree) |
 | Lambda or anonymous class inside another generated class | nested capture chains | capture through the enclosing generated class |
 | `outer.new Inner()`, local classes | enclosing-instance expressions and lexical capture scopes are not implemented | lower qualified inner allocation and hoist local declarations with a separate capture environment (`[local-type]`) |
-| `case Type t ->` patterns, record patterns, sealed exhaustiveness | binding scope in a switch | per-arm cast declaration |
+| Record patterns, `when` guards, `:` pattern groups (`[switch-pattern]`; type patterns are converted since 2026-11-20) | deconstruction and guards in a switch | record accessor calls per pattern component; guards as chained conditions |
 | Records: `equals`/`hashCode` for double/float/reference components | Java's rules for those | `Double.compare` and `Objects.equals` lowering |
 | Nullable boxed values and boxed arrays | non-null scalar wrappers use primitive storage, which cannot preserve Java null or reference-array identity | introduce nullable wrapper storage and wrapper-array representation; current null paths fail closed (`[boxed-null]`) and arrays refuse (`[boxed]`) |
 | An object held in an erased generic shown as text | its run-time kind (object or primitive) is unknown at conversion | a run-time text helper that recognises primitives |
@@ -393,9 +428,11 @@ measures what still fails at link time.
 
 ## 7. Verification
 
-Current (2026-11-20, master `7126f6c6c`, Corretto 25.0.5.1): `bash tests/javaconv_differential_test.sh` passes
-**116 of 116** checks. It runs the 55 programs of `sleelactl/convert/tests/java/` on a JDK and, converted, on the
-SLeeLa VM, and requires byte-identical output. It requires the 38 programs of `tests/reject/` to be refused with
+Current (2026-11-20, later; model 1.7.0, Corretto 25.0.5.1): `bash tests/javaconv_differential_test.sh` passes
+**138 of 138** checks: 65 programs, 48 refusal fixtures, 9 multi-file projects, 9 project-level refusals, and the
+stale-output, provenance, repeat-run, transaction, model-registry, member-recovery and generic-recovery checks.
+Earlier the same day (master `7126f6c6c`) it passed 116 of 116. It runs the programs of `sleelactl/convert/tests/java/` on a JDK and, converted, on the
+SLeeLa VM, and requires byte-identical output. It requires the programs of `tests/reject/` to be refused with
 their `// expect:` construct and no output. It converts and runs 9 multi-file projects (cross-file generics,
 packages, imports, access, static imports, implicitly public members), checks 9 project-level refusals (access,
 duplicate names, cascades), and checks stale output, provenance,
@@ -404,7 +441,8 @@ repeat-run mtimes, transactional publication and the model refusal registry (`mo
 or the compiler/VM.
 
 Whole-tree status (2026-11-20, `java.base` of Corretto 25.0.5.1): the `lang`/`util`/`math`/`text` subset converts
-262 of 884 files, and all of `java.base` 862 of 3,344. Full status: `docs/reference/JAVA.CONVERSION.STATUS.md`. The
+262 of 884 files, and all of `java.base` 864 of 3,344 (862 before the model 1.7.0 work). The 881 emitted files
+link with 109 semantic errors in total (`sleela run` of a stub with every emitted file). Full status: `docs/reference/JAVA.CONVERSION.STATUS.md`. The
 report of a run is the status; see `sleelactl/convert/README.md`.
 
 `bash examples/java/differential/run-differential.sh` is the older hand-converted suite.

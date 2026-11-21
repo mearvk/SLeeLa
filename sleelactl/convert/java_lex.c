@@ -41,6 +41,7 @@ static int push(jtokens *t, jt_kind k, char *text, long long iv, int line, int c
     t->v[t->n].ival = iv;
     t->v[t->n].line = line;
     t->v[t->n].col = col;
+    t->v[t->n].has_nul = 0;
     t->n++;
     return 0;
 }
@@ -114,6 +115,47 @@ static int lex_number(lx *x, jtokens *t, int line, int col) {
     if (peekc(x, 0) == '0' && (peekc(x, 1) == 'x' || peekc(x, 1) == 'X')) { base = 16; adv(x); adv(x); }
     else if (peekc(x, 0) == '0' && (peekc(x, 1) == 'b' || peekc(x, 1) == 'B')) { base = 2; adv(x); adv(x); }
 
+    if (base == 16) {
+        /* Hexadecimal floating-point literal (JLS 3.10.2): 0x<hex digits>[.<hex digits>]p<signed
+           decimal exponent>[fFdD]. Look ahead without consuming: a hex integer stays an integer. */
+        size_t k = 0;
+        int sawDot = 0, sawDigit = 0;
+        for (;;) {
+            int h = peekc(x, k);
+            if (h == '_' || isxdigit(h)) { if (h != '_') sawDigit = 1; k++; continue; }
+            if (h == '.' && !sawDot) { sawDot = 1; k++; continue; }
+            break;
+        }
+        if (sawDigit && (peekc(x, k) == 'p' || peekc(x, k) == 'P')) {
+            char hb[160];
+            size_t hl = 0;
+            int isF = 0;
+            double dv;
+            hb[hl++] = '0'; hb[hl++] = 'x';
+            for (;;) {
+                int h = peekc(x, 0);
+                if (h == '_') { adv(x); continue; }
+                if (isxdigit(h) || h == '.') { if (hl < sizeof hb - 24) hb[hl++] = (char)h; adv(x); continue; }
+                break;
+            }
+            hb[hl++] = 'p'; adv(x);
+            if (peekc(x, 0) == '+' || peekc(x, 0) == '-') { hb[hl++] = (char)peekc(x, 0); adv(x); }
+            if (!isdigit(peekc(x, 0))) return lerr(x, "malformed hexadecimal floating literal");
+            while (isdigit(peekc(x, 0)) || peekc(x, 0) == '_') {
+                if (peekc(x, 0) != '_' && hl < sizeof hb - 2) hb[hl++] = (char)peekc(x, 0);
+                adv(x);
+            }
+            hb[hl] = '\0';
+            if (peekc(x, 0) == 'f' || peekc(x, 0) == 'F') { adv(x); isF = 1; }
+            else if (peekc(x, 0) == 'd' || peekc(x, 0) == 'D') adv(x);
+            /* strtof rounds once to binary32; strtod to binary64. The decimal spelling below has
+               17 significant digits, so it denotes the same binary64 value exactly. */
+            dv = isF ? (double)strtof(hb, NULL) : strtod(hb, NULL);
+            if (dv != dv || dv - dv != 0.0) return lerr(x, "hexadecimal floating literal out of range");
+            snprintf(buf, sizeof buf, "%.16e", dv);
+            return push(t, isF ? JT_FLOAT : JT_DOUBLE, dupn(buf, strlen(buf)), 0, line, col);
+        }
+    }
     if (base != 10) {
         int any = 0;
         for (;;) {
@@ -236,6 +278,7 @@ int jlex(const char *src, size_t len, jtokens *out, char *err, size_t errlen) {
         if (c == '"') {
             char *buf;
             size_t bl = 0, cap;
+            int nul = 0;
             if (peekc(&x, 1) == '"' && peekc(&x, 2) == '"') {
                 /* text block: strip the incidental indentation per JLS 3.10.6 (simplified:
                    common leading whitespace of non-blank lines, trailing space removal) */
@@ -327,6 +370,7 @@ int jlex(const char *src, size_t len, jtokens *out, char *err, size_t errlen) {
             adv(&x);
             cap = 64;
             buf = (char *)malloc(cap);
+            nul = 0;
             for (;;) {
                 int ch = peekc(&x, 0);
                 if (ch == -1 || ch == '\n') { free(buf); return lerr(&x, "unterminated string literal"); }
@@ -345,11 +389,13 @@ int jlex(const char *src, size_t len, jtokens *out, char *err, size_t errlen) {
                         if (lo >= 0xDC00 && lo <= 0xDFFF) v = 0x10000 + ((v - 0xD800) << 10) + (lo - 0xDC00);
                         else { free(buf); return lerr(&x, "unpaired surrogate escape"); }
                     } else if (v >= 0xD800 && v <= 0xDFFF) { free(buf); return lerr(&x, "unpaired surrogate escape"); }
-                    bl += put_utf8(buf + bl, (unsigned long)v);
+                    if (v == 0) nul = 1;   /* kept out of the C string; the translator refuses it */
+                    else bl += put_utf8(buf + bl, (unsigned long)v);
                 } else { buf[bl++] = (char)ch; adv(&x); }
             }
             buf[bl] = '\0';
             if (push(out, JT_STRING, buf, 0, line, col)) return -1;
+            out->v[out->n - 1].has_nul = nul;
             continue;
         }
         if (c == '\'') {

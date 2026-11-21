@@ -32,6 +32,7 @@ typedef struct jtoken {
     char   *text;
     long long ival;
     int     line, col;
+    int     has_nul; /* string literal: its decoded value contains U+0000 (text stops there) */
 } jtoken;
 
 typedef struct jtokens {

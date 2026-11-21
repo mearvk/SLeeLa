@@ -140,3 +140,68 @@ in 60 s on one core with 54 MB peak; one small file takes 0.8 s, mostly fixed se
 exactly the JDK output. Each run takes about 3.5 s on the SLeeLa VM against about 0.05 s on the JDK, and that time is
 start-up: a hand-written SLeeLa program takes 3.56 s, 1.89 s of it the SHA-256 execution gate. Steady-state compute
 speed was not measured: the larger-workload run was interrupted.
+
+## 10. Statements, model lowering and parser gaps (model 1.7.0)
+
+Worked in that order, measured on all of `java.base` against the start of the round (model 1.6.0, 862 of 3344).
+
+**Statements.** Type-pattern switches (41 sites in 22 files, all `case T v ->`, one `case null`, one `case T _`)
+are lowered to an `instanceof` chain in source order, inside a loop that runs once so `break` and `yield` leave it.
+The lowering covers JLS null handling (`case null` or `NullPointerException`) and `MatchException` when there is no
+match. Guards, record patterns, `:` groups and an unlabeled `continue` in an arm stay refused. Tests `PatternSwitch`,
+`reject/SwitchPattern` (now a `when` guard), `reject/SwitchRecordPattern`, `reject/SwitchPatternContinue`.
+
+**Model lowering** (304 `[model]` sites):
+- `for` loops with several declarators, initializers or updates (228 sites);
+- control characters in strings (53 sites), written `\u00XX`;
+- `double %` and `%=`, and the existing `float %` row, through a new `JavaOperands.remDouble`. The VM `%` traps on a
+  zero divisor where Java gives NaN; 17 edge cases are checked against the JDK. This is the only `lib/**` edit, and
+  the gate manifest changed in that one entry;
+- boxing casts to the own wrapper.
+
+The rest now has real refusal kinds: `unboxing-cast`, `print-stream`, `string-nul`, `string-static`, and the
+intersection casts below.
+
+**Parser gaps** (435 `[syntax]` sites):
+- annotations on statements, locals and parameters, with dotted names and array values (197 sites), through one
+  skipper;
+- hexadecimal floating literals (70), decoded exactly. Subnormal doubles become an exact expression, because SLeeLa
+  has no literal spelling for them;
+- class literals (66), as `Class.ofLiteral`. The package of a `/lib` type comes from an explicit import, `java.lang`
+  or a wildcard-imported package, else the literal is refused;
+- nested and `private` enum constructors;
+- arrays of array expressions;
+- unpaired surrogates (`string-surrogate`);
+- intersection casts (`intersection-cast`), with the bitwise `(x & y) + 1` kept as an expression.
+
+**Defects found and fixed:**
+1. `"a\0b"` was converted to `"a"`. The C lexer stored decoded literals NUL-terminated. Now refused, `[string-nul]`.
+2. `System.out.print` and `System.err` calls were emitted unchanged, as code that does not parse or run. Now refused,
+   `[print-stream]`.
+3. Recovery after a refused member stopped inside braces of an annotation value, and left a half-consumed `>>`
+   pending. Every later member of the class was then parsed out of step and reported as `[syntax]`. Now exact,
+   checks `member-recovery` and `generic-recovery`. Most of the remaining 33 `[syntax]` sites were already
+   `[syntax]` at the start of the session; they are cascades of `nested-ambiguous`/`type-ambiguous` at the same
+   locations.
+
+**Found, not fixed** (outside these three areas):
+- printing an `Object` that holds a boxed primitive stops the VM in `JavaFormat.objectText` (`JAVA.SPEC.md` 5);
+- `/lib` `ArrayList` does not declare that it implements `List`, so `List<String> xs = new ArrayList<>()` converts
+  but fails the SLeeLa checker;
+- `/lib` `Double` has no `MIN_VALUE`;
+- `/lib` `Double.toString` prints subnormals with too few digits (`1.112536929253601E-308` for Java
+  `1.1125369292536007E-308`).
+
+**Results:**
+
+| Measure | Model 1.6.0 | Model 1.7.0 |
+|---|---|---|
+| differential suite | 116 of 116 | **138 of 138** |
+| `java.base` subset | 262 of 884 | 262 of 884 |
+| all of `java.base` | 862 of 3344 | **864 of 3344**, none newly failing |
+| `[syntax]` / `[model]` / `switch-pattern` sites | 435 / 304 / 41 | **33 / 0 / 11** |
+| linked semantic errors, emitted files | 148 (intermediate generation) | 109 (881 files) |
+
+The converted count barely moves because these files have other blockers behind the ones fixed (largest first
+refusals: `type-ambiguous` 496 files, `library-type` 292, `library-member` 225). `working-binaries/javaconv` was
+rebuilt as `JAVACONV-BIN-1.0122`. The APML binary set was not refreshed.

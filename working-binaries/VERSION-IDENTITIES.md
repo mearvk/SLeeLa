@@ -62,7 +62,8 @@ The concrete identities for every inventoried payload are recorded in `binary-id
 - `SLEELA-BIN-1.0121` — the 2026-11-19 `working-binaries/sleela` payload (`1.0121`, syntax 1.0 – 3.2), SHA-256 `7608bd9cc3a85628ec28c81f490c38c876003349447281c286cc19788ae70483`; superseded.
 - `SLEELAVC-BIN-1.0121` — next source-built Sleelvac compiler artifact (`impl/build/sleelvac`).
 - `NORDSHRIFT-BIN-1.0121` — current `working-binaries/nordshrift`, built from `impl/` (`2.7.1-dev`, drives syntax up to 3.2), SHA-256 `21f3740dd6d4a18f4e5506346a62a4e23418063a8f617c96b96607f2d4199507`.
-- `JAVACONV-BIN-1.0121` — `working-binaries/javaconv`, the Java to SLeeLa converter (`sleelactl/convert`), added 2026-11-20 from `3679be471`; it had no prior version identity, so it takes the initial identity 1.0121. SHA-256 `66db79f3345137d57527d21a7dfb29392e9ee7e25a179b54ded9bbb2e12aaf22`.
+- `JAVACONV-BIN-1.0122` — current `working-binaries/javaconv`, rebuilt 2026-11-20 (later) for conversion model 1.7.0, SHA-256 `87dae9cbff1411c5e04f894f949461a2a09c3c0dc8388215f3539fcebcf7d45d`.
+- `JAVACONV-BIN-1.0121` — superseded `working-binaries/javaconv`, the Java to SLeeLa converter (`sleelactl/convert`), added 2026-11-20 from `3679be471`; it had no prior version identity, so it takes the initial identity 1.0121. SHA-256 `66db79f3345137d57527d21a7dfb29392e9ee7e25a179b54ded9bbb2e12aaf22`.
 - `SLEELA-TERMINAL-GUI-BIN-1.0121` — next GUI executable (`sleela-terminal/build/SleelaTerminal`).
 - `SLEELA-TERMINAL-SHELL-BIN-1.0121` — shell executable (`sleela-terminal/build/slsh`), exposed by `slsh --version`.
 - `SLEELA-UNVERSIONED-BIN-1.0121` — reserved initial identity for any

@@ -91,7 +91,7 @@ Run: `sleelactl build java-convert`, then
   `/lib` units once for the merged unit, so a library class used by several files is loaded once.
 - Refused today (see JAVA.SPEC.md section 5): `==` on Strings/boxed values, `native`, operands of unknown
   type (no generics inference), lambdas whose target interface is unknown, lambdas or anonymous classes
-  nested in other generated classes, `outer.new Inner()`, local classes, `case Type t ->` patterns,
+  nested in other generated classes, `outer.new Inner()`, local classes, record patterns and `when` guards,
   non-literal `String.format`, `static { }` blocks, `Object.equals/hashCode/getClass` on a user type that does
   not declare them. Converted since the first version: `float`, `synchronized`/`volatile`
   (only with `--single-thread`), `++`/assignment as values, nested/inner/anonymous classes, lambdas and
@@ -103,6 +103,11 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
+- Status (2026-11-20, later, model 1.7.0): differential suite **138 of 138**; all of `java.base` **864 of 3344**;
+  `[syntax]` refusals 435 -> 33 and `[model]` 304 -> 0 since 1.6.0. Type-pattern switches, multi-part `for` loops,
+  hex floating literals, class literals (`Class.ofLiteral`), statement/parameter annotations, floating `%` via
+  `JavaOperands.remDouble`, and member recovery after a refusal are converted; see `lib/java/JAVA.SPEC.md` 4.7.
+  NUL in a string literal is refused (`string-nul`): the C lexer cut the literal at it before.
 - Status (2026-11-20, final, model 1.6.0): differential suite **116 of 116**; `java.base` subset **262 of 884**; all of `java.base`
   **862 of 3344**. Implicitly public members (interface methods, record members, enum methods) are public across
   packages. A call that reaches `/lib` indirectly (project receiver, unqualified inherited call, static import) gets the

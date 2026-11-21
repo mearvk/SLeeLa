@@ -18,6 +18,7 @@ into the `sleela` runtime: it governs a tool, and its executable half is
 
 | Revision | Change |
 |---|---|
+| 1.7.0 (2026-11-20) | `binop double %` and `compound double %` added; `binop float %` changed: both use `JavaOperands.remDouble` (JLS 15.17.3), because the VM `%` traps on a zero divisor where Java gives NaN. Refusal rows added: `unboxing-cast`, `print-stream`, `string-nul`, `class-literal`, `intersection-cast`, `string-surrogate` (65 rows); `switch-pattern` narrowed (type patterns are converted). Test `FloatRemainder` checks 17 remainder cases against the JDK. |
 | 1.6.0 (2026-11-20) | Section 12 is the registry of refusal kinds: 38 rows added for kinds the translator emitted with their reason only in C++ (`library-stub`, `library-member`, `library-type`, `member-access`, `type-ambiguous`, `nested-ambiguous`, `generic-*`, `overload-*`, `native`, `volatile`, ...). Rows `float`, `enum`, `lambda`, `assign-expr` are marked superseded (not emitted). The translator reports a refusal kind without a row as `[model]`; the report shows each kind's model reason. Header scope narrowed (see below); `chartext` added to the record grammar. No law changed. |
 | 1.5.0 (2026-11-18) | Shared type/rank/promotion laws; `promote float`; binary32 arithmetic, comparisons, unary operations, increment/decrement and text rows; all 49 numeric primitive cast pairs; context-aware `rename` records and built-in qualification consumed by both converters. C++ self-check expanded and `builtin_names.h` retired. New C++ `Floats` cases added; not yet built or differentially verified at the time (verified 2026-11-20: `Floats` passes, 24 lines identical to the JDK). |
 | 1.3.0 (2026-11-13) | Law rows: `tostr reference` (string conversion of an object through `JavaFormat.objectText`), section 9c `chartext` (library parameters that take a char as text: `StringBuilder`/`StringBuffer` `append`, `insert`). Refusal rows `boxed`, `object-text`. |
@@ -67,7 +68,7 @@ come out as `[model]`). `syntax` and `model` are errors, not refusals, and have 
 
 ## Current measurement (2026-11-20, model 1.6.0, Corretto 25.0.5.1)
 
-`tests/javaconv_differential_test.sh`: 116 of 116. `java.base` subset (`lang`, `util`, `math`, `text`; 884 files):
+`tests/javaconv_differential_test.sh`: 116 of 116 (1.6.0); 138 of 138 with 1.7.0, and all of `java.base` 864 of 3344. `java.base` subset (`lang`, `util`, `math`, `text`; 884 files):
 262 converted. All of `java.base` (3344 files): 862 converted. The 1.6.0 change left both runs file-for-file
 identical to 1.5.0, with identical refusal counts and no `[model]` refusals. The measurements below are older.
 

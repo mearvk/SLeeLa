@@ -91,6 +91,13 @@ report lists each kind with its model reason.
 
 ## Status (honest)
 
+**2026-11-20 (latest): statements, model lowering, parser gaps; model 1.7.0.** Differential suite 138 of 138.
+Type-pattern switches, `for` loops with several declarators or updates, hexadecimal floating literals, class
+literals, annotations on statements and parameters, floating `%`, boxing casts and arrays of array expressions are
+converted. Member recovery after a refusal is exact. All of `java.base`: 864 of 3344 (`[syntax]` 435 -> 33, `[model]`
+304 -> 0); 109 linked semantic errors over the 881 emitted files. `working-binaries/javaconv` is `JAVACONV-BIN-1.0122`.
+Record: `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT-RESOLUTION.SESSION.2026-11-20.md`, section 10.
+
 Speed and memory of `javaconv` and of converted programs: [`PERFORMANCE.md`](PERFORMANCE.md) (2026-11-20).
 
 **2026-11-20 (final): access and indirect /lib calls; model 1.6.0.** Differential suite 116 of 116 (adds `model-registry`). Implicitly public interface,

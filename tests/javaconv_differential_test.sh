@@ -89,6 +89,42 @@ else
   printf 'FAIL  model-registry (rc=%s)\n%s\n' "$mr_rc" "$mr_out"; fail=$((fail+1))
 fi
 
+# member recovery: after a refused member, the next member (whose annotation value has braces) is
+# parsed from its start and reports its own refusal, not a syntax error inside the annotation.
+mkdir -p "$tmp/member-recovery"
+"$conv" --file "$tests/reject/RecoveryAfterAnnotation.java" --out "$tmp/member-recovery" --quiet; mrc_rc=$?
+mrc_kinds="$(python3 -c 'import json,sys; print(" ".join(x["construct"] for x in json.load(open(sys.argv[1]))["failures"]))' "$tmp/member-recovery/CONVERSION-REPORT.json" 2>/dev/null)"
+if [ "$mrc_rc" -eq 1 ] && [ "$mrc_kinds" = "unboxing-cast string-identity" ]; then
+  printf 'PASS  %-12s the member after a refused one reports its own refusal\n' "member-recovery"; pass=$((pass+1))
+else
+  printf 'FAIL  member-recovery (rc=%s kinds=%s)\n' "$mrc_rc" "$mrc_kinds"; fail=$((fail+1))
+fi
+
+# generic recovery: a member refused while a '>>' token is half consumed (Iterator<Provider<S>>
+# with an ambiguous nested name) must not leave a pending closer for the next member's List<S>.
+mkdir -p "$tmp/generic-recovery/src/p" "$tmp/generic-recovery/out"
+cat > "$tmp/generic-recovery/src/p/A.java" <<'JAVA'
+package p;
+public class A { public interface Provider<T> { } }
+JAVA
+cat > "$tmp/generic-recovery/src/p/G.java" <<'JAVA'
+package p;
+import java.util.*;
+public class G<S> {
+    public interface Provider<T> { }
+    private Iterator<Provider<S>> it1;
+    private final List<S> xs = new ArrayList<>();
+    public static void main(String[] a) { }
+}
+JAVA
+"$conv" --jdk "$tmp/generic-recovery/src" --out "$tmp/generic-recovery/out" --quiet
+gr_kinds="$(python3 -c 'import json,sys; print(" ".join(x["construct"] for x in json.load(open(sys.argv[1]))["failures"]))' "$tmp/generic-recovery/out/CONVERSION-REPORT.json" 2>/dev/null)"
+if [ "$gr_kinds" = "nested-ambiguous" ]; then
+  printf 'PASS  %-12s a member refused inside a split >> leaves no pending closer for the next member\n' "generic-recovery"; pass=$((pass+1))
+else
+  printf 'FAIL  generic-recovery (kinds=%s)\n' "$gr_kinds"; fail=$((fail+1))
+fi
+
 # stale output: a file that converted on an earlier run and now fails closed must leave no output behind
 mkdir -p "$tmp/stale/src"
 printf 'public class Stale { public static void main(String[] a) { System.out.println(1); } }\n' > "$tmp/stale/src/Stale.java"

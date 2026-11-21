@@ -74,6 +74,7 @@ struct ClassInfo {
     bool isStaticNested = false;       // distinguishes static member types from non-static inner classes
     bool isInterface = false;          // an interface (its bodiless methods are the functional-interface candidates)
     bool isEnum = false;               // an enum type (constants are static fields of the class)
+    bool isRecord = false;             // a record class (JLS 8.10)
     std::string super;                 // simple name of the superclass, "" if none
     Ty superType;                       // parameterized superclass type, when declared
     std::vector<std::string> ifaces;   // simple names of implemented / extended interfaces
@@ -112,6 +113,7 @@ struct LibUnit {
     bool declaresCtor = false;
     std::vector<LibMember> members;
     std::vector<LibField> fields;
+    std::string javaKind;         // "class", "interface", "enum", "record", "annotation" from the unit header, "" if absent
 };
 struct LibraryIndex {
     std::set<std::string> units;                  // file stems under lib/java (e.g. "Objects", "Map.Entry")

@@ -9443,7 +9443,7 @@
     },
     {
       "path": "lib/java/JavaOperands.sleela",
-      "sha256": "70037cf564a034bfd14e07f4fbd558ccc005cd50c884321c4a178e131bf3063c"
+      "sha256": "128909aeab52055ba5efed4a9c08b5c97e73306857860143dd1f611b77e6e612"
     },
     {
       "path": "lib/java/JavaType.sleela",

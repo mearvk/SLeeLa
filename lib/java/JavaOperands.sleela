@@ -90,6 +90,18 @@ class JavaOperands {
     return x % y;
   }
 
+  < ---- Floating remainder (JLS 15.17.3): truncating, sign of the dividend; never traps ---- >
+  << The VM operator % traps on a zero divisor, where Java gives NaN. NaN operands, an infinite
+     dividend or a zero divisor give NaN; an infinite divisor or a zero dividend give the dividend
+     (so -0.0 stays -0.0); everything else is the VM remainder of two finite values. >>
+  static double remDouble(double x, double y) {
+    double zero = 0.0;
+    if (x != x || y != y) { return zero / zero; }
+    if (x - x != x - x || y == 0.0) { return zero / zero; }
+    if (y - y != y - y || x == 0.0) { return x; }
+    return x % y;
+  }
+
   < ---- Shifts (JLS 15.19): int masks the count to 5 bits, long to 6 bits ---- >
   static int shlInt(int x, int n) { return toInt(x << (n & 31)); }
   static int shrInt(int x, int n) { return x >> (n & 31); }

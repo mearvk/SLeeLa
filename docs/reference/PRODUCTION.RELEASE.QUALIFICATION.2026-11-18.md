@@ -1,5 +1,13 @@
 # SLeeLa Production Release Qualification Report
 
+## Addendum — later on 2026-11-20 (model 1.7.0), measured
+
+Gate 5 is now **138 of 138** (65 programs, 48 refusal fixtures, 9 projects, 9 project-level refusals, 7
+infrastructure checks), and gate 4 self-checks model 1.7.0 (65 refusal rows). For gate 7, all of `java.base` converts
+864 of 3,344 files with no file newly failing, and the 881 emitted files link with 109 semantic errors. The four files
+whose output changed have none of their own. The per-file leave-one-out was not completed. The closure assessment below
+is unchanged, so the decision stays **HOLD**. Details: `docs/reference/JAVA.CONVERSION.STATUS.md`.
+
 ## Verification refresh — 2026-11-20 (master `7126f6c6c`), measured
 
 **Decision remains: HOLD.** Unlike the refreshes below, this one records commands that were actually run, in a full

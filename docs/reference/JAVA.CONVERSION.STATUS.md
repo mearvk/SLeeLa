@@ -2,10 +2,32 @@
 
 # Java to SLeeLa Conversion: Overall Status
 
-## Measured verification — 2026-11-20, current (master `7126f6c6c`, Linux x86-64, GCC 11.5, Corretto 25.0.5.1)
+## Measured verification — 2026-11-20, later (model 1.7.0, Linux x86-64, GCC 11.5, Corretto 25.0.5.1)
+
+This section is the current status; the one below it is the earlier measurement of the same day.
+
+| Gate | Result |
+|---|---|
+| `javaconv --self-check` | PASS, model `java-to-sleela` **1.7.0** (65 refusal rows) |
+| `tests/javaconv_differential_test.sh` | **138 pass, 0 fail**: 65 programs, 48 refusal fixtures, 9 multi-file projects, 9 project-level refusals, stale-output, provenance, repeat-run, transaction, model-registry, member-recovery, generic-recovery |
+| `java.base` subset (884 files) | 262 converted (270 SLeeLa files), unchanged |
+| All of `java.base` (3,344 files) | **864 converted** (881 SLeeLa files); no file newly failing |
+| Refusals since model 1.6.0 (all of `java.base`) | `[syntax]` 435 -> 33, `[model]` 304 -> 0, `switch-pattern` 41 -> 11; the rest now carry their real kind (`string-nul` 62, `print-stream` 50, `string-static` 28, `unboxing-cast` 14, `intersection-cast` 13, `class-literal` 4, `string-surrogate` 2) |
+| Link check (stub plus all 881 emitted files, `sleela run`) | 109 semantic errors (148 on the intermediate generation of earlier today); the 4 files whose output changed have none of their own. The per-file leave-one-out of `tests/javaconv_check_tree.sh` was not completed |
+| `working-binaries/javaconv` | rebuilt, `JAVACONV-BIN-1.0122` |
+
+Converted since model 1.6.0: type-pattern switches, multi-part `for` loops, hex floating literals, class literals,
+statement and parameter annotations, floating `%` (`JavaOperands.remDouble`), boxing casts, arrays of array
+expressions, nested and `private` enum constructors. Defects fixed: a NUL in a string literal cut the literal
+silently; `System.out.print` and `System.err` calls were emitted unchecked; a refused member could misalign the
+parse of the following members (annotation braces, a half-consumed `>>`). Details: `lib/java/JAVA.SPEC.md` 4.7.
+
+Release decision: **HOLD** (unchanged).
+
+## Measured verification — 2026-11-20 (master `7126f6c6c`, Linux x86-64, GCC 11.5, Corretto 25.0.5.1)
 
 Run in a full checkout; the committed SHA-256 manifest matches it (`make check-manifest` OK, execution gate PASS).
-This section is the current status. The sections below it are earlier and kept as history.
+This section was the current status until the later measurement above. The sections below it are earlier history.
 
 | Gate | Result |
 |---|---|

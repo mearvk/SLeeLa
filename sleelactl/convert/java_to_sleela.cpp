@@ -14,10 +14,12 @@ extern "C" {
 }
 
 #include <cctype>
+#include <cmath>
 #include <algorithm>
 #include <cstdio>
 #include <functional>
 #include <cstdlib>
+#include <cstring>
 #include <map>
 #include <set>
 #include <sstream>
@@ -57,6 +59,7 @@ struct Tok {
     std::string text;
     long long ival = 0;
     int line = 0, col = 0;
+    bool hasNul = false;   // string literal whose Java value contains U+0000
 };
 
 bool isIdentTok(const Tok& t) { return t.kind == JT_IDENT; }
@@ -485,7 +488,8 @@ private:
                 // The remaining close is consumed by the caller's generic parser.
                 if (d < 0) return i;
             }
-            if (isOpAt(i, ".") && isIdentTok(at(i + 1))) { i += 2; continue; }
+            // `.class` ends the type: it is a class literal, not a qualified name
+            if (isOpAt(i, ".") && isIdentTok(at(i + 1)) && !isKwAt(i + 1, "class")) { i += 2; continue; }
             break;
         }
         while (isOpAt(i, "[") && isOpAt(i + 1, "]")) i += 2;
@@ -524,22 +528,37 @@ private:
         consumeGenericClose();
         return args;
     }
+    // Skips annotations (`@Name`, `@a.b.Name`, `@Name(...)` with any nested (), {} or []) at the
+    // current token. Annotations have no run-time effect in converted code (JLS 9.7: they are
+    // metadata), and annotation interface declarations (`@interface`) are not skipped.
+    void skipAnnotations() {
+        while (isOp("@") && !isKwAt(p + 1, "interface")) {
+            p++;
+            if (isIdentTok(cur())) p++;
+            while (isOp(".") && isIdentTok(at(p + 1))) p += 2;
+            if (isOp("(")) {
+                int d = 0;
+                do {
+                    if (isOp("(") || isOp("{") || isOp("[")) d++;
+                    else if (isOp(")") || isOp("}") || isOp("]")) d--;
+                    p++;
+                } while (d > 0 && !atEof());
+            }
+        }
+    }
+
     Ty parseType() {
         size_t end = scanType(p);
         if (end == (size_t)-1) fail("syntax", "expected a type but found '" + descr() + "'");
-        while (isOp("@")) {  // skip type annotations
-            p++; p++;
-            while (isOp(".")) p += 2;
-            if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); }
-        }
+        skipAnnotations();   // type annotations
         std::string name = ident();
         // A package-qualified type such as a.b.Widget is resolved by its full
         // source identity before nested member-type segments are hoisted.
         std::string qual;
         bool resolvedQualifiedBase = false;
-        if (!name.empty() && std::islower((unsigned char)name[0])) {
+        if (!name.empty() && std::islower((unsigned char)name[0]) && !isPrimitiveName(name) && name != "boolean" && name != "void") {
             std::string packagePrefix = name;
-            while (isOp(".") && isIdentTok(at(p + 1))) {
+            while (isOp(".") && isIdentTok(at(p + 1)) && !isKwAt(p + 1, "class")) {
                 const std::string next = at(p + 1).text;
                 if (!next.empty() && std::isupper((unsigned char)next[0])) {
                     p++;
@@ -558,7 +577,7 @@ private:
             if (isOp("<")) {
                 genericArgs = parseGenericArguments();
             }
-            if (isOp(".") && isIdentTok(at(p + 1))) {
+            if (isOp(".") && isIdentTok(at(p + 1)) && !isKwAt(p + 1, "class")) {
                 if (!name.empty() && std::isupper((unsigned char)name[0])) {
                     qual = qual.empty() ? (resolvedQualifiedBase ? name : resolveTypeName(name)) : qual + "__" + name;
                     resolvedQualifiedBase = false;
@@ -833,6 +852,19 @@ private:
     }
 
     // ------------------------------------------------------- literals ----
+    // SLeeLa spelling of a Java double literal (negated for a unary minus in front of it). A
+    // subnormal has no SLeeLa literal spelling (the lexer reports it out of range). It is
+    // m * 2^-1074 with an integer m < 2^52, so (m / 2^52) * 2^-1022 gives it exactly.
+    static std::string doubleLiteral(const std::string& text, bool negate) {
+        const double dv = std::strtod(text.c_str(), nullptr);
+        if (dv != 0.0 && std::fabs(dv) < 2.2250738585072014e-308) {
+            char buf[96];
+            std::snprintf(buf, sizeof buf, "(%s(%.1f / 4503599627370496.0) * 2.2250738585072014e-308)",
+                          (dv < 0) != negate ? "-" : "", std::ldexp(std::fabs(dv), 1074));
+            return buf;
+        }
+        return negate ? "-" + text : text;
+    }
     static std::string quote(const std::string& s, const Tok& where, bool* bad) {
         std::string o = "\"";
         for (unsigned char c : s) {
@@ -843,8 +875,11 @@ private:
                 case '\t': o += "\\t"; break;
                 case '\r': o += "\\r"; break;
                 default:
-                    if (c < 0x20) { *bad = true; (void)where; }
-                    o += (char)c;
+                    // Other control characters are written as \u00XX (the SLeeLa lexer reads it).
+                    // NUL is refused: the VM ends a string at it.
+                    if (c == 0) { *bad = true; (void)where; o += (char)c; }
+                    else if (c < 0x20) { char u[8]; std::snprintf(u, sizeof u, "\\u%04x", (unsigned)c); o += u; }
+                    else o += (char)c;
             }
         }
         return o + "\"";
@@ -1054,6 +1089,9 @@ private:
             std::string source = a.ty.n, boxed;
             if (modelBoxed(source, &boxed)) source = boxed;
             const cm_rec* c = cm_find(&M, "cast", source.c_str(), to.n.c_str(), nullptr);
+            if (!c && from == "reference")
+                fail("unboxing-cast", "a cast from the reference type '" + a.ty.n + "' to " + to.n +
+                     " needs a checked unboxing (ClassCastException for another type), which primitive storage does not provide");
             if (!c) fail("model", "the conversion model has no cast from '" + from + "' to '" + to.n + "'");
             if (std::string(c->f[2]) == "=") {
                 r.code = a.code;
@@ -1063,14 +1101,40 @@ private:
             } else r.code = subst(c->f[2], paren(a.code), "");
             return r;
         }
-        // reference cast; boxing casts like (Integer) x are not modelled
+        // Boxing cast (JLS 5.5): (Integer) i with i an int is boxing conversion. A wrapper uses
+        // primitive storage, so the value is unchanged and only its static type becomes the wrapper.
+        // Java allows boxing only to the operand's own wrapper (or a supertype of it, which needs
+        // reference storage and is refused like any boxed-to-reference conversion).
         std::string prim;
-        if (a.ty.dims == 0 && isPrimTy(a.ty) && to.dims == 0) fail("model", "boxing cast (" + to.n + ") of a primitive is not modelled");
+        if (a.ty.dims == 0 && isPrimTy(a.ty) && to.dims == 0) {
+            if (modelBoxed(to.n, &prim) && prim == a.ty.n) {
+                r.code = a.code;
+                r.ty.boxed = true;
+                return r;
+            }
+            fail("boxed-reference", "a " + a.ty.n + " value cast to the reference type '" + to.n + "' cannot be held by primitive storage");
+        }
         r.code = "(" + emitType(to) + ") " + paren(a.code);
         return r;
     }
 
     // Are the tokens at p a cast "(Type) operand" ?
+    // (A & B) expr: an intersection cast (JLS 15.16), at least one '&' between types before ')'.
+    bool intersectionCastAhead() const {
+        if (!isOp("(")) return false;
+        size_t e = scanType(p + 1);
+        if (e == (size_t)-1 || !isOpAt(e, "&")) return false;
+        while (isOpAt(e, "&")) {
+            e = scanType(e + 1);
+            if (e == (size_t)-1) return false;
+        }
+        if (!isOpAt(e, ")")) return false;
+        // A cast is followed by its operand (JLS 15.16): (x & y) + 1 is a bitwise and.
+        const Tok& nx = at(e + 1);
+        if (nx.kind == JT_IDENT) return nx.text != "instanceof";
+        return nx.kind == JT_OP && (nx.text == "(" || nx.text == "!" || nx.text == "~");
+    }
+
     bool looksLikeCast() const {
         if (!isOp("(")) return false;
         size_t e = scanType(p + 1);
@@ -1124,9 +1188,18 @@ private:
             if (isOp("{")) {
                 if (arrayTy.dims < 2) fail("syntax", "nested array initializer inside a one-dimensional array");
                 el = parseArrayInit(mk(arrayTy.n, arrayTy.dims - 1));
+            } else if (arrayTy.dims > 1) {
+                // An element of an array of arrays may be an array expression (JLS 10.6): its
+                // reference is stored, so later writes through it show through the outer array.
+                E v = parseExpr();
+                if (!v.isNull) {
+                    if (!v.ty.known()) unsup("untyped");
+                    if (v.ty.dims != arrayTy.dims - 1 || v.ty.n != arrayTy.n)
+                        fail("generic-array", "an array initializer element of type " + emitType(v.ty) +
+                             " for an element type " + emitType(mk(arrayTy.n, arrayTy.dims - 1)) + " (SLeeLa arrays are invariant)");
+                }
+                el = v.code;
             } else {
-                if (arrayTy.dims > 1) fail("syntax", "array of arrays needs a nested initializer for each element");
-                
                 el = coerce(parseExpr(), mk(arrayTy.n)).code;
             }
             code += (first ? "" : ", ") + el;
@@ -1293,7 +1366,7 @@ private:
                 }
                 if (op == "-" && nx.kind == JT_DOUBLE) {
                     p += 2;
-                    return lit("-" + std::string(nx.text), mk("double"));
+                    return lit(doubleLiteral(nx.text, true), mk("double"));
                 }
                 p++;
                 E a = parseUnary();
@@ -1307,7 +1380,8 @@ private:
             }
             if (o == "(" ) {
                 if (isLambdaAhead()) return parseLambda();
-                
+                if (intersectionCastAhead())
+                    fail("intersection-cast", "an intersection cast (A & B) gives the value extra interface types (Serializable, a marker), which a SLeeLa value cannot carry");
                 if (looksLikeCast()) {
                     p++;
                     Ty t = parseType();
@@ -2276,6 +2350,11 @@ private:
                             e = r;
                             continue;
                         }
+                        // System.out / System.err are a qualifier, not an object: only the members with a
+                        // model call row (println) have a SLeeLa form. SLeeLa print always ends the line and
+                        // writes stdout, so print, printf, write and anything on System.err are refused.
+                        if (e.code == "System.out" || e.code == "System.err")
+                            fail("print-stream", "'" + full + "' has no SLeeLa form: only System.out.println is modelled");
                         std::string owner = e.code;
                         size_t dot = owner.rfind('.');
                         if (dot != std::string::npos) owner = owner.substr(dot + 1);
@@ -2411,8 +2490,95 @@ private:
         return e;
     }
 
+    // A class literal T.class, a.b.T.class, int.class, void.class or T[].class (JLS 15.8.2) is
+    // written Class.ofLiteral(binary name, kind), the lib/java Class form (shared with the
+    // SLeeLa-native converter, rule 8e): one Class object per name, so == between literals holds.
+    // kind: 1 class, 2 interface, 3 enum, 4 record, 5 annotation, 6 primitive or void, 7 array.
+    bool classLiteralAhead() const {
+        if (!isIdentTok(cur())) return false;
+        if (isKw("void")) return isOpAt(p + 1, ".") && isKwAt(p + 2, "class");
+        const size_t e = scanType(p);
+        return e != (size_t)-1 && isOpAt(e, ".") && isKwAt(e + 1, "class");
+    }
+    std::string libPackageOf(const std::string& spelled) const {
+        if (!opt.library) return "";
+        auto it = opt.library->jdkPath.find(spelled);
+        if (it == opt.library->jdkPath.end()) return "";
+        const std::string& path = it->second;
+        const size_t root = path.find("/jdk-28/");
+        if (root == std::string::npos) return "";
+        const size_t mod = path.find('/', root + 8);
+        const size_t file = path.rfind('/');
+        if (mod == std::string::npos || file == std::string::npos || file <= mod) return "";
+        std::string pkg = path.substr(mod + 1, file - mod - 1);
+        std::replace(pkg.begin(), pkg.end(), '/', '.');
+        return pkg;
+    }
+    E parseClassLiteral() {
+        Ty t;
+        if (acceptKw("void")) t = mk("void");
+        else t = parseType();
+        expectOp("."); expectKw("class");
+        std::string elem, name;
+        int kind = 1;
+        const std::string n = t.n;
+        auto dollars = [](std::string x) { for (size_t q; (q = x.find("__")) != std::string::npos; ) x.replace(q, 2, "$"); return x; };
+        if (n == "void" || isPrimitiveName(n) > 0 || n == "boolean") {
+            if (t.boxed) {
+                elem = "java.lang." + n;
+            } else {
+                static const std::map<std::string, std::string> code = {{"int","I"},{"long","J"},{"short","S"},{"byte","B"},{"char","C"},{"boolean","Z"},{"float","F"},{"double","D"}};
+                if (t.dims == 0) { E r; r.code = useTypeName("Class") + ".ofLiteral(\"" + n + "\", 6)"; r.ty = mk("Class"); r.pure = true; return r; }
+                if (n == "void") fail("syntax", "void[].class is not Java");
+                name = std::string((size_t)t.dims, '[') + code.at(n);
+                E r; r.code = useTypeName("Class") + ".ofLiteral(\"" + name + "\", 7)"; r.ty = mk("Class"); r.pure = true; return r;
+            }
+        } else if (n == "String" || n == "Object") {
+            elem = "java.lang." + n;
+        } else if (isProjectType(n)) {
+            const ClassInfo& ci = classes.at(n);
+            elem = (ci.packageName.empty() ? "" : ci.packageName + ".") + dollars(n);
+            kind = ci.isInterface ? 2 : ci.isEnum ? 3 : ci.isRecord ? 4 : 1;
+        } else if (t.known() && n.rfind("$", 0) != 0 && n.rfind("type:", 0) != 0) {
+            const std::string spelled = spellTypeName(n);
+            const std::string outer = spelled.substr(0, spelled.find('.'));
+            std::string pkg;
+            auto im = importedTypes_.find(outer);
+            if (im != importedTypes_.end() && im->second != "\x01") {
+                pkg = im->second.substr(0, im->second.rfind('.'));
+            } else {
+                pkg = libPackageOf(spelled);
+                // The /lib unit is chosen by simple name; accept its package only where Java would
+                // find the type without an import: java.lang or a wildcard-imported package.
+                const bool reachable = pkg == "java.lang" ||
+                    std::find(wildcardTypeImports_.begin(), wildcardTypeImports_.end(), pkg) != wildcardTypeImports_.end();
+                if (!reachable) pkg.clear();
+            }
+            if (pkg.empty())
+                fail("class-literal", "the package of '" + spelled + "' in a class literal cannot be determined from the imports and lib/java");
+            std::string nested = spelled;
+            std::replace(nested.begin(), nested.end(), '.', '$');
+            elem = pkg + "." + nested;
+            kind = 0;
+            if (opt.library) if (const LibUnit* u = opt.library->unit(spelled)) {
+                const std::string& k = u->javaKind;
+                kind = k == "class" ? 1 : k == "interface" ? 2 : k == "enum" ? 3 : k == "record" ? 4 : k == "annotation" ? 5 : 0;
+            }
+        } else {
+            fail("class-literal", "a class literal of a type variable or unknown type is not Java or not resolvable");
+        }
+        if (t.dims > 0) { name = std::string((size_t)t.dims, '[') + "L" + elem + ";"; kind = 7; }
+        else name = elem;
+        E r;
+        r.code = useTypeName("Class") + ".ofLiteral(\"" + name + "\", " + std::to_string(kind) + ")";
+        r.ty = mk("Class");
+        r.pure = true;
+        return r;
+    }
+
     E parsePrimary() {
         if (isLambdaAhead()) return parseLambda();
+        if (classLiteralAhead()) return parseClassLiteral();
         const Tok& t = cur();
         switch (t.kind) {
             case JT_INT: {
@@ -2427,7 +2593,7 @@ private:
                 p++;
                 return r;
             }
-            case JT_DOUBLE: { E r = lit(t.text, mk("double")); p++; return r; }
+            case JT_DOUBLE: { E r = lit(doubleLiteral(t.text, false), mk("double")); p++; return r; }
             case JT_FLOAT: {
                 // the float nearest the decimal literal, printed with enough digits to read back exactly
                 char buf[64];
@@ -2441,8 +2607,9 @@ private:
             case JT_STRING:
             case JT_TEXTBLOCK: {
                 bool bad = false;
+                if (t.hasNul) fail("string-nul", "a string literal contains NUL (U+0000), and a SLeeLa string ends at NUL");
                 std::string q = quote(t.text, t, &bad);
-                if (bad) fail("model", "string contains a control character with no SLeeLa escape");
+                if (bad) fail("string-nul", "a string literal contains NUL (\\0), and a SLeeLa string ends at NUL");
                 p++;
                 return lit(q, mk("String"));
             }
@@ -3013,7 +3180,7 @@ private:
 
     void parseLocalDecl(bool inFor, std::string* forInit) {
         while (isKw("final") || isOp("@")) {
-            if (isOp("@")) { p += 2; while (isOp(".")) p += 2; if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); } }
+            if (isOp("@")) skipAnnotations();
             else p++;
         }
         bool isVar = isKw("var") && isIdentTok(at(p + 1));
@@ -3053,13 +3220,16 @@ private:
             else line(emitType(ty) + " " + en + ";");
         } while (acceptOp(","));
         if (inFor) {
-            if (pieces.size() != 1) fail("model", "for-loop initializer declaring several variables has no single SLeeLa form");
+            // Several declarators (`int i = 0, j = n`): parseFor emits them as statements before the loop.
             *forInit = pieces[0];
+            for (size_t i = 1; i < pieces.size(); i++) *forInit += "\x1f" + pieces[i];
         }
     }
 
     void parseStatement() {
         allowHoist_ = true; hoistTy_ = mk("?"); lambdaTarget_ = Ty();
+        // Annotations on a local variable or local class declaration (JLS 14.4, 14.3).
+        if (isOp("@") && !isKwAt(p + 1, "interface")) skipAnnotations();
         const Tok& t = cur();
         if (t.kind == JT_OP) {
             if (t.text == "{") {
@@ -3147,6 +3317,12 @@ private:
                 p++;
                 if (isIdentTok(cur())) { std::string lab = safeName(ident()); expectOp(";"); line("continue " + lab + ";"); return; }
                 expectOp(";");
+                // A lowered pattern switch is a loop that runs once; an unlabeled continue inside it
+                // would restart that loop instead of continuing the enclosing Java loop.
+                for (auto it = breakCtx.rbegin(); it != breakCtx.rend(); ++it) {
+                    if (*it == 'L') break;
+                    if (*it == 'P') fail("switch-pattern", "an unlabeled continue inside a pattern switch arm is not converted");
+                }
                 line("continue;");
                 return;
             }
@@ -3247,23 +3423,66 @@ private:
                 return;
             }
         }
-        std::string init, cond, upd;
+        // A label written just before this loop (line "name:") must stay on the loop itself
+        // when declarations are emitted in front of it.
+        std::string label;
+        if (!out.empty()) {
+            const std::string last = out.back();
+            const size_t a = last.find_first_not_of(' ');
+            if (a != std::string::npos && last.back() == ':' && last.find_first_of(" ;(){}=", a) == std::string::npos) label = last.substr(a);
+        }
+        const size_t labelAt = out.size() - (label.empty() ? 0 : 1);
+        std::vector<std::string> inits, upds;
+        std::string cond;
         if (!isOp(";")) {
-            if (looksLikeDecl()) parseLocalDecl(true, &init);
-            else {
-                init = parseStatementExpr();
-                if (isOp(",")) fail("model", "for-loop with several initializer expressions has no single SLeeLa form");
+            if (looksLikeDecl()) {
+                std::string joined;
+                parseLocalDecl(true, &joined);
+                for (size_t a = 0;;) {
+                    const size_t b = joined.find('\x1f', a);
+                    inits.push_back(joined.substr(a, b == std::string::npos ? std::string::npos : b - a));
+                    if (b == std::string::npos) break;
+                    a = b + 1;
+                }
+            } else {
+                do { inits.push_back(parseStatementExpr()); } while (acceptOp(","));
             }
         }
         expectOp(";");
         if (!isOp(";")) cond = parseExpr().code;
         expectOp(";");
         if (!isOp(")")) {
-            upd = parseStatementExpr();
-            if (isOp(",")) fail("model", "for-loop with several update expressions has no single SLeeLa form");
+            do { upds.push_back(parseStatementExpr()); } while (acceptOp(","));
         }
         expectOp(")");
-        line("for (" + init + "; " + cond + "; " + upd + ") {");
+        if (inits.size() <= 1 && upds.size() <= 1) {
+            line("for (" + (inits.empty() ? std::string() : inits[0]) + "; " + cond + "; " + (upds.empty() ? std::string() : upds[0]) + ") {");
+        } else {
+            // JLS 14.14.1: the init list runs once, in order; each iteration tests the condition, runs
+            // the body, then every update in order. SLeeLa's for takes one init and one update, so the
+            // inits become statements before the loop. Several updates become a loop whose first pass
+            // skips them, so `continue` still runs the updates and then the condition.
+            if (!label.empty()) out.erase(out.begin() + labelAt);
+            for (const auto& i : inits) line(i + ";");
+            if (!label.empty()) line(label);
+            if (upds.size() <= 1) {
+                line("for (; " + cond + "; " + (upds.empty() ? std::string() : upds[0]) + ") {");
+            } else {
+                const std::string first = freshTmp("forfirst");
+                usedNames.insert(first);
+                if (!label.empty()) { out.pop_back(); line("boolean " + first + " = true;"); line(label); }
+                else line("boolean " + first + " = true;");
+                line("while (true) {");
+                ind++;
+                line("if (" + first + ") { " + first + " = false; } else {");
+                ind++;
+                for (const auto& u : upds) line(u + ";");
+                ind--;
+                line("}");
+                if (!cond.empty()) line("if (!(" + cond + ")) { break; }");
+                ind--;
+            }
+        }
         breakCtx.push_back('L');
         parseBody();
         breakCtx.pop_back();
@@ -3397,6 +3616,8 @@ private:
         p++;                       // String
         expectOp(".");
         std::string name = ident();
+        if (!isOp("("))
+            fail("string-static", "String." + name + " is a static field of String, which is a keyword type in SLeeLa");
         std::vector<E> args = parseArgs();
         E r;
         r.pure = false;
@@ -3404,7 +3625,7 @@ private:
         if (name == "valueOf" && args.size() == 1) {
             const E& a = args[0];
             if (!a.ty.known() && !a.isNull) unsup("untyped");
-            if (a.ty.dims == 1 && a.ty.n == "char") fail("model", "String.valueOf(char[]) is not converted");
+            if (a.ty.dims == 1 && a.ty.n == "char") fail("string-static", "String.valueOf(char[]) is not converted");
             E empty = lit("\"\"", mk("String"));
             E v = emitBinary("+", empty, a);
             v.pure = a.pure;
@@ -3418,7 +3639,7 @@ private:
             }
             std::string body;
             for (size_t i = 1; i < args.size(); i++) {
-                if (!(args[i].ty.dims == 0 && args[i].ty.n == "String")) fail("model", "String.join over something other than Strings or a String[] is not converted");
+                if (!(args[i].ty.dims == 0 && args[i].ty.n == "String")) fail("string-static", "String.join over something other than Strings or a String[] is not converted");
                 body += (i > 1 ? ", " : "") + args[i].code;
             }
             r.code = args.size() == 1 ? "JavaFormat.joinArray(" + sep + ", new String[0])" : "JavaFormat.joinArray(" + sep + ", new String[]{" + body + "})";
@@ -3440,7 +3661,10 @@ private:
             char c = f.code[i];
             if (c == '\\' && i + 2 < f.code.size()) {
                 char n = f.code[++i];
-                fmt += (n == 'n') ? '\n' : (n == 't') ? '\t' : (n == 'r') ? '\r' : n;
+                if (n == 'u' && i + 4 < f.code.size()) {   // \u00XX written by quote()
+                    fmt += (char)std::strtol(f.code.substr(i + 1, 4).c_str(), nullptr, 16);
+                    i += 4;
+                } else fmt += (n == 'n') ? '\n' : (n == 't') ? '\t' : (n == 'r') ? '\r' : n;
             } else fmt += c;
         }
         std::vector<std::string> parts;
@@ -3451,6 +3675,7 @@ private:
             bool bad = false;
             Tok none;
             parts.push_back(quote(lit, none, &bad));
+            if (bad) fail("string-nul", "a format string contains NUL (\\0), and a SLeeLa string ends at NUL");
             lit.clear();
         };
         for (size_t i = 0; i < fmt.size(); i++) {
@@ -3966,7 +4191,7 @@ private:
             if (!ci.sourceName.empty()) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
-            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false; ci.enclosingType = nested ? outerName : ""; ci.isStaticNested = nested && nestedStatic;
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.typeParamBounds = classTparamBounds; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false; ci.isRecord = true; ci.enclosingType = nested ? outerName : ""; ci.isStaticNested = nested && nestedStatic;
             // JLS 8.10.3/8.10.4: accessors, toString/equals/hashCode are public; the implicit
             // canonical constructor has the access of the record class.
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ms.visibility = "public"; ci.methods.push_back(ms); }
@@ -4122,6 +4347,8 @@ private:
         const std::string simpleName = ident();
         std::string name = nestPrefix + simpleName;
         curClass = name;
+        // A nested enum's constructor is written with its simple name, not the hoisted one.
+        curSimple_ = nestPrefix.empty() ? "" : simpleName;
         if (!nestPrefix.empty()) {
             auto it = nestedMap_.find(simpleName);
             if (pass == 1) { if (it == nestedMap_.end()) nestedMap_[simpleName] = name; else if (it->second != name) it->second = "\x01"; }
@@ -4157,7 +4384,7 @@ private:
         std::vector<Const> consts;
         scopes.clear(); usedNames.clear(); pushScope(); curRet = mk("void"); tmpCounter = 0;
         while (isIdentTok(cur()) || isOp("@")) {
-            while (isOp("@")) { p++; ident(); while (acceptOp(".")) ident(); if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); } }
+            skipAnnotations();
             Const c;
             c.name = ident();
             if (isOp("(")) c.args = parseArgs();
@@ -4204,7 +4431,16 @@ private:
             if (acceptOp(";")) continue;
             size_t start = p;
             out.clear(); ind = 1;
-            if (isIdentTok(cur()) && cur().text == name && isOpAt(p + 1, "(")) ctorSeen = true;
+            {
+                // a constructor, after any modifiers or annotations, named with the hoisted or simple name
+                size_t i = p;
+                while ((isIdentTok(at(i)) && kModifiers.count(at(i).text)) || isOpAt(i, "@")) {
+                    if (isOpAt(i, "@")) { i++; if (isIdentTok(at(i))) i++; while (isOpAt(i, ".") && isIdentTok(at(i + 1))) i += 2;
+                        if (isOpAt(i, "(")) { int d = 0; do { if (isOpAt(i, "(")) d++; else if (isOpAt(i, ")")) d--; i++; } while (d > 0 && at(i).kind != JT_EOF); } }
+                    else i++;
+                }
+                if (isIdentTok(at(i)) && (at(i).text == name || (!curSimple_.empty() && at(i).text == curSimple_)) && isOpAt(i + 1, "(")) ctorSeen = true;
+            }
             try { parseMember(name, false, ci, &instanceFields); for (auto& l : out) memberLines.push_back(l); }
             catch (const ConvErr& e) { diag(e); skipMember(start); }
         }
@@ -4480,6 +4716,155 @@ private:
         popScope();
     }
 
+    // ---- pattern switches (JLS 14.11, 14.30) ----------------------------------------------
+    // True when the switch block starting at token index `open` ('{') has a pattern label
+    // (`case T v`, `case T _`, a record pattern) or `case null`.
+    bool switchHasPatterns(size_t open) const {
+        int depth = 0;
+        for (size_t i = open; at(i).kind != JT_EOF; i++) {
+            const Tok& t = at(i);
+            if (t.kind == JT_OP && (t.text == "{" || t.text == "(" || t.text == "[")) depth++;
+            else if (t.kind == JT_OP && (t.text == "}" || t.text == ")" || t.text == "]")) { if (--depth == 0) return false; }
+            else if (depth == 1 && t.kind == JT_IDENT && t.text == "case") {
+                for (size_t j = i + 1;;) {
+                    if (isKwAt(j, "null")) return true;
+                    if (isKwAt(j, "final")) j++;
+                    const size_t e = scanType(j);
+                    if (e != (size_t)-1 && ((isIdentTok(at(e)) && (isOpAt(e + 1, "->") || isOpAt(e + 1, ":") || isOpAt(e + 1, ",") || isKwAt(e + 1, "when"))) || isOpAt(e, "(")))
+                        return true;
+                    // next label of the same case (`case A, B`)
+                    int d = 0; size_t k = j;
+                    for (; at(k).kind != JT_EOF; k++) {
+                        if (isOpAt(k, "(") || isOpAt(k, "[") || isOpAt(k, "{")) d++;
+                        else if (isOpAt(k, ")") || isOpAt(k, "]") || isOpAt(k, "}")) d--;
+                        else if (d == 0 && (isOpAt(k, ",") || isOpAt(k, "->") || isOpAt(k, ":"))) break;
+                    }
+                    if (!isOpAt(k, ",")) break;
+                    j = k + 1;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Lowers a switch with pattern labels to an instanceof chain inside a loop that runs once,
+    // so `break` and `yield` leave it as they leave the switch. Cases are tested in source order
+    // (javac has already checked dominance). A null selector runs `case null` or throws
+    // NullPointerException (JLS 14.11.3); no match without default throws MatchException.
+    // resultVar non-empty => switch expression (arms assign it).
+    void parsePatternSwitchBody(const E& sel, const std::string& resultVar) {
+        const std::string selVar = freshTmp("swsel");
+        usedNames.insert(selVar);
+        line("Any " + selVar + " = " + sel.code + ";");
+        line("while (true) {");
+        ind++;
+        expectOp("{");
+        pushScope();
+        breakCtx.push_back('P');
+        const size_t savedYieldBase = yieldBase_;
+        if (!resultVar.empty()) yieldBase_ = breakCtx.size();
+        bool first = true, sawDefault = false, sawNull = false;
+        // Arms are emitted into `out` directly; the null guard goes in front once all labels are seen,
+        // so remember where the chain starts.
+        const size_t guardAt = out.size();
+        while (!isOp("}")) {
+            if (atEof()) fail("syntax", "unexpected end of file in switch");
+            std::vector<std::string> conds;
+            struct Bind { Ty ty; std::string java; };
+            std::vector<Bind> binds;
+            bool isDefault = false;
+            if (acceptKw("default")) isDefault = true;
+            else {
+                expectKw("case");
+                for (;;) {
+                    if (sawDefault) fail("switch-pattern", "a case label after default is not converted");
+                    if (acceptKw("null")) {
+                        sawNull = true;
+                        conds.push_back(selVar + " == null");
+                    } else if (acceptKw("default")) {
+                        // `case null, default`: null fails every other test, so this is the final else
+                        isDefault = true;
+                    } else {
+                        acceptKw("final");
+                        const size_t e = scanType(p);
+                        const bool isPattern = e != (size_t)-1 && (isIdentTok(at(e)) && !isOpAt(e + 1, ".")) &&
+                            (isOpAt(e + 1, "->") || isOpAt(e + 1, ":") || isOpAt(e + 1, ",") || isKwAt(e + 1, "when"));
+                        if (e != (size_t)-1 && isOpAt(e, "(")) fail("switch-pattern", "record patterns are not converted");
+                        if (isPattern) {
+                            Ty t = parseType();
+                            const std::string v = ident();
+                            if (isKw("when")) fail("switch-pattern", "guarded patterns (when) are not converted");
+                            if (t.boxed) fail("switch-pattern", "a boxed type pattern cannot be tested on primitive storage");
+                            if (t.dims) fail("switch-pattern", "array type patterns are not converted");
+                            if (!t.known() || t.n.rfind("$", 0) == 0) fail("switch-pattern", "a type pattern of a type variable or unknown type is not converted");
+                            conds.push_back("(" + selVar + " instanceof " + emitType(t) + ")");
+                            if (v != "_") binds.push_back({t, v});
+                        } else {
+                            Ty selTy = sel.ty;
+                            const std::string lab = parseCaseLabel(selTy);
+                            conds.push_back("(" + selVar + " == " + lab + ")");
+                        }
+                    }
+                    if (!acceptOp(",")) break;
+                }
+                if (binds.size() > 1 || (!binds.empty() && conds.size() > 1))
+                    fail("switch-pattern", "a case with several patterns binds no single variable");
+            }
+            if (!acceptOp("->")) fail("switch-pattern", "pattern switches with ':' case groups are not converted");
+            std::string cond;
+            for (size_t i = 0; i < conds.size(); i++) cond += (i ? " || " : "") + conds[i];
+            if (isDefault) {
+                sawDefault = true;
+                line(first ? "if (true) {" : "} else {");
+            } else {
+                line((first ? "if (" : "} else if (") + cond + ") {");
+            }
+            first = false;
+            ind++;
+            pushScope();
+            for (const Bind& b : binds) {
+                const std::string en = declare(b.java, b.ty);
+                line(emitType(b.ty) + " " + en + " = (" + emitType(b.ty) + ") " + selVar + ";");
+            }
+            if (isOp("{")) {
+                parseBlockInto();
+            } else if (isKw("throw")) {
+                parseStatement();
+            } else if (!resultVar.empty()) {
+                E v = parseExpr();
+                noteYieldType(v.ty);
+                v = coerce(v, yieldTyKnown_ ? yieldTy_ : v.ty);
+                line(resultVar + " = " + v.code + ";");
+                expectOp(";");
+            } else {
+                std::string st = parseStatementExpr();
+                line(st + ";");
+                expectOp(";");
+            }
+            popScope();
+            ind--;
+        }
+        expectOp("}");
+        if (!sawDefault) {
+            line(first ? "if (true) {" : "} else {");
+            ind++;
+            line("throw new " + useTypeName("MatchException") + "(null, null);");
+            ind--;
+        }
+        line("}");
+        if (!sawNull) {
+            // JLS 14.11.3: a null selector throws NullPointerException unless a case null matches it
+            out.insert(out.begin() + guardAt, std::string((size_t)ind * 2, ' ') + "if (" + selVar + " == null) { throw new " +
+                       useTypeName("NullPointerException") + "(); }");
+        }
+        line("break;");
+        breakCtx.pop_back();
+        yieldBase_ = savedYieldBase;
+        popScope();
+        ind--;
+        line("}");
+    }
+
     void noteYieldType(const Ty& t) {
         if (!yieldTyKnown_ && t.known() && t.n != "null") { yieldTy_ = t; yieldTyKnown_ = true; }
     }
@@ -4489,6 +4874,12 @@ private:
         allowHoist_ = false;
         E sel = parseExpr();
         expectOp(")");
+        if (switchHasPatterns(p)) {
+            std::string savedYield = yieldVar_; yieldVar_.clear();
+            parsePatternSwitchBody(sel, "");
+            yieldVar_ = savedYield;
+            return;
+        }
         std::string cls = classOf(sel.ty);
         if (cls == "unknown" || cls == "double" || cls == "long" || cls == "boolean") unsup("untyped");
         line("switch (" + sel.code + ") {");
@@ -4504,8 +4895,9 @@ private:
         allowHoist_ = false;
         E sel = parseExpr();
         expectOp(")");
+        const bool patterns = switchHasPatterns(p);
         std::string cls = classOf(sel.ty);
-        if (cls == "unknown" || cls == "double" || cls == "long" || cls == "boolean") unsup("untyped");
+        if (!patterns && (cls == "unknown" || cls == "double" || cls == "long" || cls == "boolean")) unsup("untyped");
         std::string tmp = freshTmp("swv");
         // result type: the declared target when the statement gives one, else the first arm
         const std::string savedVar = yieldVar_; const Ty savedTy = yieldTy_; const bool savedKnown = yieldTyKnown_; const size_t savedBase = yieldBase_; const size_t savedIdx = yieldDeclIdx_;
@@ -4513,10 +4905,14 @@ private:
         yieldTy_ = hoistTy_; yieldTyKnown_ = hoistTy_.known() && hoistTy_.n != "void";
         yieldDeclIdx_ = out.size();
         line("<TYPE> " + tmp + ";");
-        line("switch (" + sel.code + ") {");
-        yieldBase_ = breakCtx.size() + 1;   // parseSwitchBody pushes one 'W'
-        parseSwitchBody(sel.ty, tmp);
-        line("}");
+        if (patterns) {
+            parsePatternSwitchBody(sel, tmp);   // sets yieldBase_ for its own wrapper loop
+        } else {
+            line("switch (" + sel.code + ") {");
+            yieldBase_ = breakCtx.size() + 1;   // parseSwitchBody pushes one 'W'
+            parseSwitchBody(sel.ty, tmp);
+            line("}");
+        }
         Ty resTy = yieldTyKnown_ ? yieldTy_ : mk("?");
         std::string decl = emitType(resTy) + " " + tmp + ";";
         out[yieldDeclIdx_] = std::string((size_t)ind * 2, ' ') + decl;
@@ -4540,12 +4936,7 @@ private:
     Mods parseModifiers() {
         Mods m;
         for (;;) {
-            if (isOp("@") && !isKwAt(p + 1, "interface")) {
-                p++; ident();
-                while (isOp(".")) { p++; ident(); }
-                if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); }
-                continue;
-            }
+            if (isOp("@") && !isKwAt(p + 1, "interface")) { skipAnnotations(); continue; }
             if (isIdentTok(cur()) && kModifiers.count(cur().text)) {
                 // 'default' as a modifier only inside interfaces and only when followed by a type
                 if (cur().text == "default" && !curIsInterface) break;
@@ -4601,10 +4992,17 @@ private:
     }
 
     void skipMember(size_t start) {
+        // A member abandoned inside a split '>>' leaves a closer pending; the next member starts clean.
+        pendingGenericClosers_ = 0;
         size_t i = start;
-        int braces = 0;
+        int braces = 0, parens = 0;
         while (at(i).kind != JT_EOF) {
             const Tok& t = at(i);
+            // Braces and ';' inside parentheses (an annotation value such as @A({"x"}), a lambda
+            // argument) do not end the member.
+            if (t.kind == JT_OP && t.text == "(") { parens++; i++; continue; }
+            if (t.kind == JT_OP && t.text == ")") { if (parens > 0) parens--; i++; continue; }
+            if (parens > 0) { i++; continue; }
             if (t.kind == JT_OP) {
                 if (t.text == "{") braces++;
                 else if (t.text == "}") {
@@ -5170,7 +5568,7 @@ private:
         if (!isOp(")")) {
             do {
                 while (isKw("final") || isOp("@")) {
-                    if (isOp("@")) { p++; ident(); if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); } }
+                    if (isOp("@")) skipAnnotations();
                     else p++;
                 }
                 Ty t = parseType();
@@ -5213,6 +5611,8 @@ bool lexInto(const std::string& src, std::vector<Tok>& v, Diagnostic* d) {
     if (jlex(src.c_str(), src.size(), &toks, err, sizeof err) != 0) {
         d->construct = "syntax";
         d->message = err;
+        // Java strings may hold an unpaired UTF-16 surrogate; a SLeeLa string is UTF-8 and cannot.
+        if (std::strstr(err, "unpaired surrogate")) d->construct = "string-surrogate";
         sscanf(err, "%d:%d", &d->line, &d->col);
         jtokens_free(&toks);
         return false;
@@ -5220,7 +5620,7 @@ bool lexInto(const std::string& src, std::vector<Tok>& v, Diagnostic* d) {
     for (size_t i = 0; i < toks.n; i++) {
         Tok t;
         t.kind = toks.v[i].kind; t.text = toks.v[i].text ? toks.v[i].text : "";
-        t.ival = toks.v[i].ival; t.line = toks.v[i].line; t.col = toks.v[i].col;
+        t.ival = toks.v[i].ival; t.line = toks.v[i].line; t.col = toks.v[i].col; t.hasNul = toks.v[i].has_nul != 0;
         v.push_back(t);
     }
     jtokens_free(&toks);
@@ -5244,7 +5644,15 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
     std::string line;
     bool inBlock = false, inStubs = false, inClass = false, inDecls = false, isInterface = false;
     while (std::getline(in, line)) {
-        if (!inClass && line.find("Java kind: interface") != std::string::npos) isInterface = true;
+        if (!inClass && u.javaKind.empty()) {
+            const size_t jk = line.find("Java kind: ");
+            if (jk != std::string::npos) {
+                size_t a = jk + 11, b = a;
+                while (b < line.size() && std::isalpha(static_cast<unsigned char>(line[b]))) b++;
+                u.javaKind = line.substr(a, b - a);
+                if (u.javaKind == "interface") isInterface = true;
+            }
+        }
         if (inBlock) { if (line.find(">>") != std::string::npos) inBlock = false; continue; }
         size_t first = line.find_first_not_of(" \t");
         if (first == std::string::npos) continue;

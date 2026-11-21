@@ -39,12 +39,15 @@
     },
     {
       "path": "working-binaries/javaconv",
-      "identity": "JAVACONV-BIN-1.0121",
-      "artifact_version": "1.0121",
+      "identity": "JAVACONV-BIN-1.0122",
+      "artifact_version": "1.0122",
       "product_version": null,
-      "status": "added_2026-11-20 from master 3679be471 (model java-to-sleela 1.6.0); self-check and 116/116 javaconv differential checks passed with this copy",
-      "sha256": "66db79f3345137d57527d21a7dfb29392e9ee7e25a179b54ded9bbb2e12aaf22",
-      "previous": null
+      "status": "rebuilt_2026-11-20 (later) for model java-to-sleela 1.7.0 (pattern switches, multi-part for loops, hex floating literals, class literals, statement annotations, member recovery); self-check and 138/138 javaconv differential checks passed with this build",
+      "sha256": "87dae9cbff1411c5e04f894f949461a2a09c3c0dc8388215f3539fcebcf7d45d",
+      "previous": {
+        "identity": "JAVACONV-BIN-1.0121",
+        "sha256": "66db79f3345137d57527d21a7dfb29392e9ee7e25a179b54ded9bbb2e12aaf22"
+      }
     },
     {
       "path": "ide/sleela-intellij/.intellijPlatform/sandbox/sleela-intellij/IU-2025.3.6.1/plugins/sleela-intellij/lib/sleela-intellij-0.3.0-dev.jar",
