@@ -212,8 +212,17 @@ class JavaFormat {
   << Java string conversion of a reference (JLS 5.1.11): null is the text null, any other object
      its toString(), found at run time (SLEELA.syntax 43.7). Used by the conversion model row
      tostr reference. >>
+  << Text of a value held as Object (JLS 5.1.11). A boxed primitive is stored as the primitive itself,
+     so it is recognised at run time: boolean and double by their kind (a double through Double.toString,
+     so 3.0 prints as 3.0), an integer kind (Integer, Long, Short, Byte) as its decimal. Only an object
+     gets toString(). The converter does not box a char or float into Object, because the VM keeps them
+     as an int and a double, and their text would differ. >>
   static String objectText(Any x) {
     if (x == null) { return "null"; }
+    if (x instanceof String) { String s = (String) x; return s; }
+    if (x instanceof boolean) { boolean b = (boolean) x; if (b) { return "true"; } return "false"; }
+    if (x instanceof double) { double d = (double) x; return Double.toString(d); }
+    if (x instanceof int) { int i = (int) x; return "" + i; }
     return x.toString();
   }
 

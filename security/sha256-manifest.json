@@ -9427,7 +9427,7 @@
     },
     {
       "path": "lib/java/JavaFormat.sleela",
-      "sha256": "7db75dd09fd70821859e48e8a0c2cdafb68c4d3e5b85ae52de05f5b8d44ab02a"
+      "sha256": "4f4a8d39397fc59afeedef656812b7f7c3978f921d9779b99023d755dac40ae9"
     },
     {
       "path": "lib/java/JavaInvocation.sleela",

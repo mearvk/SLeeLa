@@ -205,3 +205,13 @@ intersection casts below.
 The converted count barely moves because these files have other blockers behind the ones fixed (largest first
 refusals: `type-ambiguous` 496 files, `library-type` 292, `library-member` 225). `working-binaries/javaconv` was
 rebuilt as `JAVACONV-BIN-1.0122`. The APML binary set was not refreshed.
+
+## 11. Iteration: boxed primitives held as Object
+
+`System.out.println(o)` with `Object o = 42` stopped the VM: `JavaFormat.objectText` called `toString()` on a
+primitive. The VM supports `instanceof int/double/boolean/String` on an `Any`, so `objectText` now returns the Java
+text for null, String, boolean, double (through `Double.toString`) and the integer kinds, and calls `toString()` only
+on objects. `char` and `float` are stored as an int and a double and cannot be told apart at run time, so boxing them
+into `Object` is refused (`[boxed-reference]`). Tests `BoxedObjectText` (10 lines identical to the JDK) and
+`reject/BoxedCharObject`. `lib/java/JavaFormat.sleela` edited, gate manifest regenerated (one entry). Differential
+suite 140 of 140.

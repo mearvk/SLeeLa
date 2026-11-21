@@ -904,6 +904,15 @@ private:
             target.n != "null" && target.n != "Any" && classOf(target) == "reference")
             fail("boxed-reference", "a " + v.ty.n + " value converted to the reference type '" + target.n +
                  "': boxed values use primitive storage, which only Object (not a SLeeLa class type) can hold");
+        // A char or float boxed into Object is stored as an int or a double, so its run-time text
+        // (JavaFormat.objectText, string concatenation) would be a number or a double, not Java's.
+        if (v.ty.dims == 0 && target.dims == 0 && target.n == "Object" && !v.isNull) {
+            std::string prim = v.ty.n;
+            if (v.ty.boxed) modelBoxed(v.ty.n, &prim);
+            if (prim == "char" || prim == "float")
+                fail("boxed-reference", "a " + v.ty.n + " value held as Object is stored as " + std::string(prim == "char" ? "an int" : "a double") +
+                     ", so its text would differ from Java");
+        }
         // An Any result of a /lib member reaching a typed reference slot needs the
         // cast back (the Java call returns the type argument). Arrays cannot be cast.
         if (v.libAny && !v.ty.known() && target.known() && target.dims == 0 && !target.boxed && !target.wildcard &&
