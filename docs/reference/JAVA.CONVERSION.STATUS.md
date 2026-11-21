@@ -4,15 +4,17 @@
 
 ## Update — 2026-11-21 iterations (Linux x86-64, GCC 11.5, Corretto 25.0.5.1)
 
-Differential suite **142 of 142**. All of `java.base`: **871 of 3344** converted (894 SLeeLa files), none newly
-failing. The 894 emitted files link with 109 semantic errors. Changes:
+Differential suite **144 of 144**. All of `java.base`: **869 of 3344** converted (891 SLeeLa files). The 891 emitted
+files link with 102 semantic errors. The count is 2 below the 871 measured before the parameter-type check: both
+files were refused correctly, because their earlier output did not link. Changes:
 - boxed primitives held as Object print as in Java (`JavaFormat.objectText`);
 - `/lib` `Double`/`Float` constants (`MIN_VALUE`, infinities, `NaN`), exact subnormal `Double.toString`, and
   `StringBuilder`/`StringBuffer.append(double)`;
 - floating negation keeps the sign of zero;
-- member types resolve by scope (JLS 6.4.1): `[nested-ambiguous]` sites 3,165 -> 184.
+- member types resolve by scope (JLS 6.4.1): `[nested-ambiguous]` sites 3,165 -> 184;
+- the `/lib` member check compares parameter types, not only the argument count.
 
-Record: `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT-RESOLUTION.SESSION.2026-11-20.md`, sections 11 to 14.
+Record: `sleelactl/MEARVK.LLC.MAX.RUPPLIN.JAVA-CONVERT-RESOLUTION.SESSION.2026-11-20.md`, sections 11 to 16.
 Release decision: **HOLD**.
 
 ## Measured verification — 2026-11-20, later (model 1.7.0, Linux x86-64, GCC 11.5, Corretto 25.0.5.1)

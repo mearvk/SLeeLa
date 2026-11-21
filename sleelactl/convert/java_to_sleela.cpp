@@ -5865,7 +5865,15 @@ const LibUnit* LibraryIndex::unit(const std::string& stem) const {
                 while (ps >> x) if (x != "final") w.push_back(x);
                 std::string ty;
                 if (w.size() >= 2) { for (size_t k = 0; k + 1 < w.size(); k++) ty += w[k]; }
-                if (ty.rfind("java.lang.", 0) == 0) ty = ty.substr(10);
+                // The units erase a package-qualified reference type to Any; java.lang.String is String.
+                {
+                    size_t dims = 0; std::string base = ty;
+                    while (base.size() > 2 && base.compare(base.size() - 2, 2, "[]") == 0) { base.resize(base.size() - 2); dims++; }
+                    if (base == "java.lang.String") base = "String";
+                    else if (base.find('.') != std::string::npos) base = "Any";
+                    ty = base;
+                    for (size_t k = 0; k < dims; k++) ty += "[]";
+                }
                 m.params.push_back(ty);
             };
             for (; i < line.size(); i++) {

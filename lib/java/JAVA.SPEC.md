@@ -367,7 +367,8 @@ library type is written `Outer.Inner`, the spelling the SLeeLa loader resolves.
 
 For a type with a `lib/java/jdk-28` unit, the converter reads the unit the loader selects (java.base first,
 then the package order of `impl/frontend/java/java_handler.cpp`) and checks every static call, instance call,
-constructor, `super(...)` and unqualified inherited call by name and arity, walking the unit `extends` chain:
+constructor, `super(...)` and unqualified inherited call by name, arity and declared parameter types
+(since 2026-11-21: a package-qualified parameter type in a unit is `Any`; clear mismatches rule a member out), walking the unit `extends` chain:
 
 - a real member converts. A Java static method that the unit implements as an instance method (the tier
   convention, for example `Arrays.fill`) is called as `new Arrays().fill(...)` when the unit has a

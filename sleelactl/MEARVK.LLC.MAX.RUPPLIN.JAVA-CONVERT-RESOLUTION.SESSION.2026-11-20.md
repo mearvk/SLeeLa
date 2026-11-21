@@ -270,3 +270,16 @@ other than Object (String is a SLeeLa keyword type). Unknown or generic argument
 which argument types no overload takes. Applied to static, instance, inherited, statically imported and
 constructor calls. Tests `LibraryOverloads`, `reject/LibraryParameterTypes`. Differential suite 144 of 144.
 Pushed before the `java.base` re-measurement finished (recorded in the next section).
+
+## 16. Parameter-type check: measurement and one correction
+
+The first `java.base` run with the check refused 4 files that converted before. Three of them had link errors of
+their own in their earlier output (leave-one-out): `SHA3Parallel` (`Arrays.fill(long[], long)`), `BaseVirtualThread`
+(no `Thread` constructor of those types) and `StringWriter`. The fourth, `reflect.Modifier` (`new StringJoiner(" ")`),
+had none: SLeeLa accepts that call. The `/lib` units erase a package-qualified parameter type
+(`java.lang.CharSequence`) to `Any`, and only `java.lang.String` becomes `String`. The parser had stripped the
+`java.lang.` prefix instead. Fixed; `LibraryOverloads` now also covers `StringJoiner`. Differential suite 144 of 144.
+
+All of `java.base`: 869 of 3344 converted (891 SLeeLa files). The only two files newly failing are `SHA3Parallel` and
+`BaseVirtualThread`, both correct refusals of output that did not link. Linked semantic errors 109 -> 102, no new
+message.
