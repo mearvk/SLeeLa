@@ -83086,6 +83086,7 @@
 <tr><td><code>javaSuper</code></td><td><span class="sig">String javaSuper = &quot;java.lang.Number&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>MAX_VALUE</code></td><td><span class="sig">static final double MAX_VALUE = 1.7976931348623157E308</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>MIN_NORMAL</code></td><td><span class="sig">static final double MIN_NORMAL = 2.2250738585072014E-308</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MIN_VALUE</code></td><td><span class="sig">static final double MIN_VALUE = (1.0 / 4503599627370496.0) * 2.2250738585072014E-308</span></td><td class="desc">MIN_VALUE is 2^-1074, written as an exact product because a subnormal literal is out of range for the lexer</td></tr>
 <tr><td><code>MAX_EXPONENT</code></td><td><span class="sig">static final int MAX_EXPONENT = 1023</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>MIN_EXPONENT</code></td><td><span class="sig">static final int MIN_EXPONENT = -1022</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>SIZE</code></td><td><span class="sig">static final int SIZE = 64</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -83101,9 +83102,9 @@
 <tr><td><code>exp10Out</code></td><td><span class="sig">int exp10Out = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>JAVA_TYPE_PARAMETERS</code></td><td><span class="sig">static final String JAVA_TYPE_PARAMETERS = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>genericTypeArguments</code></td><td><span class="sig">String[] genericTypeArguments = new String[0]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>POSITIVE_INFINITY</code></td><td><span class="sig">static double POSITIVE_INFINITY = 0.0</span></td><td class="desc">---- BEGIN java declarations (from the JDK 28 API) ---- constants and static fields (values reflected from the JDK)</td></tr>
-<tr><td><code>NEGATIVE_INFINITY</code></td><td><span class="sig">static double NEGATIVE_INFINITY = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>NaN</code></td><td><span class="sig">static double NaN = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>POSITIVE_INFINITY</code></td><td><span class="sig">static final double POSITIVE_INFINITY = 1.0 / 0.0</span></td><td class="desc">---- BEGIN java declarations (from the JDK 28 API) ---- constants and static fields (values reflected from the JDK)</td></tr>
+<tr><td><code>NEGATIVE_INFINITY</code></td><td><span class="sig">static final double NEGATIVE_INFINITY = -1.0 / 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>NaN</code></td><td><span class="sig">static final double NaN = 0.0 / 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>TYPE</code></td><td><span class="sig">static Any TYPE = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
@@ -104021,9 +104022,9 @@
 <tr><td><code>exp10Out</code></td><td><span class="sig">int exp10Out = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>JAVA_TYPE_PARAMETERS</code></td><td><span class="sig">static final String JAVA_TYPE_PARAMETERS = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>genericTypeArguments</code></td><td><span class="sig">String[] genericTypeArguments = new String[0]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>POSITIVE_INFINITY</code></td><td><span class="sig">static double POSITIVE_INFINITY = 0.0</span></td><td class="desc">---- BEGIN java declarations (from the JDK 28 API) ---- constants and static fields (values reflected from the JDK)</td></tr>
-<tr><td><code>NEGATIVE_INFINITY</code></td><td><span class="sig">static double NEGATIVE_INFINITY = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>NaN</code></td><td><span class="sig">static double NaN = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>POSITIVE_INFINITY</code></td><td><span class="sig">static final double POSITIVE_INFINITY = 1.0 / 0.0</span></td><td class="desc">---- BEGIN java declarations (from the JDK 28 API) ---- constants and static fields (values reflected from the JDK)</td></tr>
+<tr><td><code>NEGATIVE_INFINITY</code></td><td><span class="sig">static final double NEGATIVE_INFINITY = -1.0 / 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>NaN</code></td><td><span class="sig">static final double NaN = 0.0 / 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>TYPE</code></td><td><span class="sig">static Any TYPE = null</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
@@ -301862,7 +301863,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-21 01:58 UTC.
+<code>/lib</code> tree on 2026-11-21 02:18 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
