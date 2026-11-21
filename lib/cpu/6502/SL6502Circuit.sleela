@@ -1,0 +1,134 @@
+<< lib/cpu/6502/SL6502Circuit.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SL6502Circuit, the physical circuit model of the MOS
+     Technology 6502: NMOS depletion-load logic at an 8 micrometre feature size,
+     a single 5 V supply, TTL-compatible levels, a two-phase clock at 1 MHz, an
+     8-bit datapath and a 16-bit address bus.
+
+   Provenance of the figures, block by block:
+     published  8 micrometre process, 16.6 square millimetre die, 4528 transistors
+                (3510 enhancement and 1018 depletion pull-ups), 5 V supply,
+                1 MHz first-generation clock, phase width at least 470 ns.
+     recalled   bus timing tADS 300 ns, tACC 575 ns, tDSU 100 ns, tHR 10 ns, taken
+                from the MOS 6500 data sheet from memory; check before relying.
+     derived    gate delay, edge time, fanout, block gate counts and depths. They
+                are planning figures built from the SLeeLa gate structure, not
+                die measurements. The cell factor 57 is the published die area divided by
+                the published transistor count, in squared feature sizes. The
+                block named other is the published
+                transistor total minus the modelled blocks.
+   The model stays at functional-block level. Transistor-level netlists need die
+   analysis and are not claimed here.
+
+   Family: cpu. Extends SLCircuitModel. >>
+#sleela 2.5
+material;
+class SL6502Circuit extends SLCircuitModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39541;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "MOS Technology";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "United States";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void build() {
+    SLLogicFamily f = new SLLogicFamily();
+    f.configure("NMOS-depletion-load", 8000, 5000, 250);
+    < TTL-compatible levels: VIH 2.0 V, VIL 0.8 V, VOL 0.4 V, VOH 2.4 V >
+    f.setThresholds(800, 2000, 400, 2400);
+    f.setSpeed(15000, 25000, 4);
+    f.setProvenance("process and supply published; thresholds TTL-compatible convention; speed derived");
+
+    SLVoltageRail vcc = new SLVoltageRail();
+    vcc.configure("Vcc", 5000, 4750, 5250);
+
+    configure("MOS 6502", f, vcc, 1000, 2);
+    setWidths(8, 16);
+    setTransistors(4528);
+    setProvenance("published: 8 um NMOS, 4528 transistors, 16.6 mm2 die, 5 V");
+
+    SLCircuitBlock alu = addBlock("alu", "alu", 8, 18, 56, 224);
+    alu.setCellFactor(57);
+    alu.setProvenance("derived: 8 full adders (5 gates each) plus logic unit");
+    SLCircuitBlock regs = addBlock("registers", "regfile", 56, 2, 56, 336);
+    regs.setCellFactor(57);
+    regs.setProvenance("derived: A X Y S PCL PCH P as dynamic latch bits");
+    SLCircuitBlock addr = addBlock("address-path", "bus", 16, 3, 32, 128);
+    addr.setCellFactor(57);
+    addr.setProvenance("derived: ADL ADH ABL ABH latches and output drivers");
+    SLCircuitBlock data = addBlock("data-path", "bus", 8, 3, 24, 96);
+    data.setCellFactor(57);
+    data.setProvenance("derived: DL DOR and bidirectional data buffer");
+    SLCircuitBlock pla = addBlock("decode-pla", "decode", 8, 5, 130, 520);
+    pla.setCellFactor(57);
+    pla.setProvenance("derived: opcode decode and timing control logic");
+    SLCircuitBlock clk = addBlock("clock-phases", "clock", 1, 4, 8, 32);
+    clk.setCellFactor(57);
+    clk.setProvenance("derived: phi1 phi2 non-overlap generator");
+    SLCircuitBlock rest = addRemainder("other");
+    if (rest != null) { rest.setCellFactor(57); }
+
+    < Read path: the CPU drives the address, memory answers, the CPU captures data >
+    < at the end of phi2. Period is the full 1 MHz cycle. >
+    SLCircuitPath rd = addPath("address-to-data-read", 50000);
+    rd.describe("address valid after phi1 falls, memory access, data captured at phi2 falls");
+    rd.addStage("address-drive-tADS", 300000);
+    rd.addStage("memory-access-remainder", 275000);
+    rd.constrain(100000, 10000, 0);
+
+    < Worst internal path: operand latch, 8-bit ripple carry, result latch. >
+    SLCircuitPath add = addPath("alu-ripple-add", 0);
+    add.setPeriod(phasePs());
+    add.describe("derived upper bound assuming a ripple-carry chain of 16 gate levels");
+    add.addStage("operand-latch", 15000);
+    add.addStage("carry-chain-8-bits", 240000);
+    add.addStage("result-latch", 15000);
+    add.constrain(20000, 5000, 0);
+
+    int i = 0;
+    SLSignalQuality n0 = addNet("phi2");
+    n0.setEdgeLimit(100000);
+    SLSignalQuality n1 = addNet("A0");
+    SLSignalQuality n2 = addNet("D0");
+    SLSignalQuality n3 = addNet("RDY");
+
+    SLCircuitSemaphore latch = addSemaphore("latch", 1, 2);
+    SLCircuitSemaphore abus = addSemaphore("address-bus", 1, 2);
+    SLCircuitSemaphore dbus = addSemaphore("data-bus", 1, 2);
+  }
+}

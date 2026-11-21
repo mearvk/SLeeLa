@@ -1,0 +1,47 @@
+<< lib/cpu/intel4004/circuit-demo.sleela
+   SLeeLa example: build the Intel 4004 circuit model, clock it, verify it, then
+   inject faults to prove each check can fail. The clean model must report 0
+   violations. Each injected fault must raise the matching check. >>
+#sleela 2.5
+class SLIntel4004CircuitDemo {
+  int fails;
+
+  void expect(String what, boolean ok) {
+    if (ok) { print("PASS " + what); } else { print("FAIL " + what); fails = fails + 1; }
+  }
+
+  void main() {
+    fails = 0;
+    SLIntel4004Circuit c = new SLIntel4004Circuit();
+    c.build();
+    c.runCycles(100);
+    c.report();
+    expect("clean model has no violations", c.verifyAll() == 0);
+    expect("family has positive noise margins", c.logicFamily().sound());
+    expect("modelled transistors equal the published total", c.blocksTransistors() == c.publishedTransistors());
+    expect("latch handed off every phase", c.phaseHandoffs == 100 * c.phaseCount() && c.phaseRefusals == 0);
+
+    < Fault 1: a timing path squeezed far below its delay. >
+    SLCircuitPath p = c.paths[0];
+    p.setPeriod(1000);
+    expect("squeezed period violates timing", c.timingViolations() >= 1);
+
+    < Fault 2: the supply sags under a heavy load line, so HIGH leaves its window. >
+    SLVoltageRail r = c.supplyRail();
+    r.setLoadLine(1000000);
+    r.setLoad(3000);
+    c.runCycles(10);
+    expect("heavy droop breaks signal quality", c.signalViolations() >= 1);
+    expect("heavy droop leaves the rail window", c.railViolations() == 1);
+
+    < Fault 3: a non-holder releases the shared latch, and a second owner is refused. >
+    SLCircuitSemaphore l = c.semaphore("latch");
+    l.tryAcquire("owner-a");
+    boolean refused = !l.tryAcquire("owner-b");
+    l.release("owner-b");
+    expect("second owner refused", refused);
+    expect("misuse raises a semaphore violation", c.semaphoreViolations() >= 1);
+
+    print("failures: " + fails);
+  }
+}

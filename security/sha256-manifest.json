@@ -4818,6 +4818,14 @@
       "sha256": "228a340356984d0257bc89c882c6a61af34c87b2d3b189c40896d6cbed39f00d"
     },
     {
+      "path": "lib/cpu/6502/SL6502Circuit.sleela",
+      "sha256": "fd4e6a453cc4dce0a4c6508d3f6bbea321076afea925c9b72f5ac4fa85f8381b"
+    },
+    {
+      "path": "lib/cpu/6502/circuit-demo.sleela",
+      "sha256": "bcb82dfaedfb37139e28e51ef17846c5859213a776a7f725ced5801a81481fb2"
+    },
+    {
       "path": "lib/cpu/68020/SL68020CPU.sleela",
       "sha256": "8d1dc83ffef2dd8a6dbc7ee1aa3ad525a5a3eb40406ee3ddc6be9086da961aab"
     },
@@ -4904,6 +4912,22 @@
     {
       "path": "lib/cpu/SLCircuit.sleela",
       "sha256": "f7ebf942af80b0a303d539546aba3f042d77590c894f635eb1dcdd583990a3aa"
+    },
+    {
+      "path": "lib/cpu/SLCircuitBlock.sleela",
+      "sha256": "3201cc9c897c4d686bcb38ac446dea221628b8685e934cd26b545dc04816d895"
+    },
+    {
+      "path": "lib/cpu/SLCircuitModel.sleela",
+      "sha256": "234922ec0f508be797b8b7a6c14e69dc3a2e26eab4f1e8cbb90fed092114d176"
+    },
+    {
+      "path": "lib/cpu/SLCircuitPath.sleela",
+      "sha256": "3bfb6725edda4bcde8219771290ba98249d671220c9c5460054846b36bf187f7"
+    },
+    {
+      "path": "lib/cpu/SLCircuitSemaphore.sleela",
+      "sha256": "9b194c88197f8d550feaf2253e65eea9f3645c0ec94ed0b40711509bdc335b88"
     },
     {
       "path": "lib/cpu/SLClock.sleela",
@@ -5130,6 +5154,10 @@
       "sha256": "b9368e1f0a9727e58ee2f0afd78666dd24db813eee73bb8e0b10421aa03719d8"
     },
     {
+      "path": "lib/cpu/SLLogicFamily.sleela",
+      "sha256": "8e63a7703f5863f89e93826e69c7da3689c2ed603fdb068d4c7b12c2c17b698c"
+    },
+    {
       "path": "lib/cpu/SLLowering.sleela",
       "sha256": "4835b1ae13196dadf56a0d807860d7e5b9f039283c0ee1bad288227982bc43f7"
     },
@@ -5198,6 +5226,10 @@
       "sha256": "7f148984c72a6457b19993b52388384125fd991323ce354358db1b50b5c96612"
     },
     {
+      "path": "lib/cpu/SLSignalQuality.sleela",
+      "sha256": "4ca948192815298e027f01415852ccdc58aafccdf9003c5e80f94aab9ec16424"
+    },
+    {
       "path": "lib/cpu/SLSleelaOpcode.sleela",
       "sha256": "f2a192ba0aa58f403584b909eb9854cd67f0123c3d2e6949668424f157d4b52c"
     },
@@ -5216,6 +5248,10 @@
     {
       "path": "lib/cpu/SLSystemCall.sleela",
       "sha256": "c1b8b545635fce0375768ab7c6e43876db9e1eb6a58b35cad87dcbf5398c781f"
+    },
+    {
+      "path": "lib/cpu/SLTimedGate.sleela",
+      "sha256": "b36fdbd71412f4a1711edcdc92a8ee9a61904c37f5fb489e0ffa7d67d211cf3e"
     },
     {
       "path": "lib/cpu/SLTiming.sleela",
@@ -5490,6 +5526,10 @@
       "sha256": "f70ebe90caee7641ef10b65a327754a206dbfcb4ecd2232254c8ce918a1d460f"
     },
     {
+      "path": "lib/cpu/examples/circuit-primitives.sleela",
+      "sha256": "5fe4a1f578b8e9f57bab6c8d1b137a77f314c8d4fd2d6af0996312dfc0a36f20"
+    },
+    {
       "path": "lib/cpu/examples/dma-and-gpu-options.sleela",
       "sha256": "a9fe8b79694f36d34c87b4ed98ec4a7296b66cb540bc455c2d64692e1864a551"
     },
@@ -5572,6 +5612,14 @@
     {
       "path": "lib/cpu/intel4004/SLIntel4004CPU.sleela",
       "sha256": "fe9ca74cbaa82a56f87a123e202d8dc3d0318161b2c65f4bf264c2cd7c20402a"
+    },
+    {
+      "path": "lib/cpu/intel4004/SLIntel4004Circuit.sleela",
+      "sha256": "dc5525df3eeeacf956e5564fb0e55376e5b1008eec03c34d70a9e368e0bb6be6"
+    },
+    {
+      "path": "lib/cpu/intel4004/circuit-demo.sleela",
+      "sha256": "5150d73b70cb6ae2b2b2f820c624a791124bcdad23a13f2710970db0ae7218f2"
     },
     {
       "path": "lib/cpu/itanium/SLItaniumCPU.sleela",
@@ -5884,6 +5932,14 @@
     {
       "path": "lib/cpu/z80/SLZ80CPU.sleela",
       "sha256": "c58dc48637a2de75f15548f2a9dc781957397a5de8c588197a40ae54ac685466"
+    },
+    {
+      "path": "lib/cpu/z80/SLZ80Circuit.sleela",
+      "sha256": "d66082cf720ddbc3da43d71b3ecf407dc0d00e51b701944dc2e793bb6d2b8279"
+    },
+    {
+      "path": "lib/cpu/z80/circuit-demo.sleela",
+      "sha256": "b4afdd7cd94534d09c2c9eeaaeaa6c3c5cd55fd05b4fe95c6f8d21d3263f94b3"
     },
     {
       "path": "lib/cpu/z8000/SLZ8000CPU.sleela",

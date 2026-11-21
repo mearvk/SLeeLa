@@ -59,3 +59,16 @@ Gate-level or transistor-level work should be added only from sufficiently relia
 Sources:
 - https://tinymachines.ai/6502/archive/wiki/6502_datapath.html
 - https://github.com/mamedev/mame/blob/master/docs/source/techspecs/m6502.rst
+
+## Executable circuit model
+
+`SL6502Circuit.sleela` carries this circuit in source: NMOS depletion-load, 8 um, 5 V, two-phase 1 MHz. It states the
+logic family and voltage thresholds, the supply rail, the functional blocks with
+width, depth, gate and transistor counts and derived area, the timing paths with
+stage delays, the monitored nets with signal-quality checks, and the semaphores
+that arbitrate the shared latch and buses. Every figure is marked published,
+cited, recalled or derived in the class header. `circuit-demo.sleela` builds
+the model, clocks it, verifies it and injects faults to show each check fails
+when it should.
+
+The model stays at functional-block level. It is not a transistor netlist.

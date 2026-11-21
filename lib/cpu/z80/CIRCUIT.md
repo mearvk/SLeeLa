@@ -21,3 +21,16 @@ This is a functional circuit model, not an asserted transistor-level reconstruct
 SLeeLa uses SLCoupler objects between these blocks so the architecture can expose register-to-ALU movement, address-to-bus movement, data-bus-to-register movement, interrupt acknowledge, external WAIT, and bus request/acknowledge.
 
 The Z80's internal transistor organization is not claimed here unless supported by a validated die-level source.
+
+## Executable circuit model
+
+`SLZ80Circuit.sleela` carries this circuit in source: NMOS depletion-load, 5 V, single-phase clock, 4-bit ALU. It states the
+logic family and voltage thresholds, the supply rail, the functional blocks with
+width, depth, gate and transistor counts and derived area, the timing paths with
+stage delays, the monitored nets with signal-quality checks, and the semaphores
+that arbitrate the shared latch and buses. Every figure is marked published,
+cited, recalled or derived in the class header. `circuit-demo.sleela` builds
+the model, clocks it, verifies it and injects faults to show each check fails
+when it should.
+
+The model stays at functional-block level. It is not a transistor netlist.

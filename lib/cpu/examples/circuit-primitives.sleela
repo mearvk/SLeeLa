@@ -1,0 +1,89 @@
+<< lib/cpu/examples/circuit-primitives.sleela
+   SLeeLa example: exercise the circuit primitives on their own.
+   Covers SLLogicFamily thresholds for a positive and a negative supply,
+   SLSignalQuality, SLTimedGate inertial delay, SLCircuitSemaphore arbitration
+   and SLCircuitPath timing. Every check prints PASS or FAIL and the program
+   ends with the failure count, which must be 0. >>
+#sleela 2.5
+class SLCircuitPrimitivesExample {
+  int fails;
+
+  void check(String what, boolean ok) {
+    if (ok) { print("PASS " + what); } else { print("FAIL " + what); fails = fails + 1; }
+  }
+
+  void main() {
+    fails = 0;
+
+    SLLogicFamily ttl = new SLLogicFamily();
+    ttl.configure("TTL-compatible", 8000, 5000, 250);
+    ttl.setThresholds(800, 2000, 400, 2400);
+    ttl.setSpeed(15000, 25000, 4);
+    check("positive family sound", ttl.sound());
+    check("0.2V is LOW", ttl.classify(200) == 0);
+    check("3.0V is HIGH", ttl.classify(3000) == 1);
+    check("1.4V is FORBIDDEN", ttl.classify(1400) == 2);
+    check("6.0V is out of window", ttl.classify(6000) == 3);
+
+    SLLogicFamily pmos = new SLLogicFamily();
+    pmos.configure("PMOS", 10000, -15000, 750);
+    pmos.setThresholds(-5000, -10000, -2000, -12000);
+    check("negative family sound", pmos.sound());
+    check("-12V is HIGH", pmos.classify(-12000) == 1);
+    check("-1V is LOW", pmos.classify(-1000) == 0);
+    check("-7V is FORBIDDEN", pmos.classify(-7000) == 2);
+    check("-20V is out of window", pmos.classify(-20000) == 3);
+
+    SLLogicFamily bad = new SLLogicFamily();
+    bad.configure("zero-margin", 8000, 5000, 250);
+    bad.setThresholds(800, 2400, 400, 2400);
+    check("zero noise margin is not sound", !bad.sound());
+
+    SLSignalQuality q = new SLSignalQuality();
+    q.configure("D0", ttl);
+    q.sample(3000); q.sample(200);
+    check("clean samples healthy", q.healthy());
+    q.sample(1400);
+    check("forbidden sample counted", q.violations() == 1 && !q.healthy());
+    check("slow edge rejected", !q.edge(500000, 10000));
+    check("overshoot rejected", !q.overshoot(900));
+
+    SLTimedGate g = new SLTimedGate();
+    g.configure(0, ttl);
+    g.setDelays(20000, 30000);
+    check("AND starts low", g.eval(0, 0, 0) == 0);
+    check("output not yet risen at 10ns", g.eval(1, 1, 10000) == 0);
+    check("output risen after 20ns", g.eval(1, 1, 30000) == 1);
+    int before = g.glitchCount();
+    g.eval(0, 1, 40000);
+    g.eval(1, 1, 45000);
+    check("short pulse swallowed", g.glitchCount() == before + 1 && g.eval(1, 1, 200000) == 1);
+    g.setLoad(9);
+    check("overload flagged", !g.fanoutOk());
+
+    SLCircuitSemaphore s = new SLCircuitSemaphore();
+    s.configure("bus", 1, 2);
+    check("first acquire", s.tryAcquire("phi1"));
+    check("second acquire refused", !s.tryAcquire("phi2"));
+    check("contention counted", s.contention() == 1);
+    check("wrong owner cannot release", !s.release("phi2"));
+    check("underflow counted", s.violations() == 1);
+    s.tick(); s.tick(); s.tick();
+    check("stuck permit detected", s.violations() == 2);
+    check("owner releases", s.release("phi1"));
+    check("balanced after release", s.balanced());
+
+    SLCircuitPath p = new SLCircuitPath();
+    p.configure("demo", 1000000, 0);
+    p.addStage("a", 300000);
+    p.addStage("b", 500000);
+    p.constrain(100000, 0, 0);
+    check("path fits 1us", p.honored());
+    check("critical stage is b", p.criticalStage() == "b");
+    p.addStage("c", 300000);
+    check("path fails when slower", !p.honored());
+    check("violation counted", p.violations() == 1);
+
+    print("failures: " + fails);
+  }
+}

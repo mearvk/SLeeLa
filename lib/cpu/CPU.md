@@ -25,6 +25,21 @@ that bottoms out at Boolean logic.
 | `SLAdder` | N-bit ripple-carry adder over a machine word. |
 | `SLALU` | Arithmetic Logic Unit: add/sub/and/or/xor/not/shift/compare with status flags. |
 
+### Layer 0.5 — Circuit physics (per-CPU circuit models)
+| Class | Role |
+|---|---|
+| `SLLogicFamily` | Process, supply, VIL/VIH/VOL/VOH thresholds, gate delay, edge time, fanout. Polarity-aware `classify()` for positive and negative supplies. |
+| `SLSignalQuality` | Per-net monitor: forbidden-zone samples, out-of-window samples, slow edges, overshoot. |
+| `SLTimedGate` | An `SLGate` with rise/fall delay, fanout loading, output voltage and inertial glitch rejection. |
+| `SLCircuitSemaphore` | Counting semaphore for latch and bus arbitration, with contention, misuse and stuck-permit counts. |
+| `SLCircuitPath` | Named stage delays summed into an `SLTiming` budget; reports slack, critical stage and maximum frequency. |
+| `SLCircuitBlock` | One functional block: width, depth, gates, transistors, derived delay and area. |
+| `SLCircuitModel` | The per-CPU circuit: family, rail, clock phases, blocks, paths, nets, semaphores, `runCycles()` and `verifyAll()`. |
+
+Per-CPU subclasses (`SL6502Circuit`, `SLZ80Circuit`, `SLIntel4004Circuit`) fill the model with that
+processor figures. Each figure is labelled published, cited, recalled or derived; unknown figures are
+left out, never invented. Rolling this out to the remaining CPUs is in progress.
+
 ### Layer 1 — Storage
 | Class | Role |
 |---|---|

@@ -11,3 +11,15 @@ Conceptual blocks:
 - external chipset and I/O control
 
 Shared SLeeLa gates, latches, flip-flops, adders, and bus abstractions may support visualization. Label inferred relationships as derived; do not present them as verified silicon schematics.
+## Executable circuit model
+
+`SLIntel4004Circuit.sleela` carries this circuit in source: PMOS silicon gate, 10 um, negative 15 V supply, two-phase 740 kHz. It states the
+logic family and voltage thresholds, the supply rail, the functional blocks with
+width, depth, gate and transistor counts and derived area, the timing paths with
+stage delays, the monitored nets with signal-quality checks, and the semaphores
+that arbitrate the shared latch and buses. Every figure is marked published,
+cited, recalled or derived in the class header. `circuit-demo.sleela` builds
+the model, clocks it, verifies it and injects faults to show each check fails
+when it should.
+
+The model stays at functional-block level. It is not a transistor netlist.

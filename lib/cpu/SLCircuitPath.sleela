@@ -1,0 +1,111 @@
+<< lib/cpu/SLCircuitPath.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCircuitPath, one timing path through a CPU circuit made
+     of named stages. Each stage has a delay in picoseconds, so a path such as
+     address-latch, decode, bus-driver reads as a list a reader can follow.
+     The stage delays add up to the path propagation delay, which is handed to
+     an SLTiming budget together with setup, hold, jitter and guardband. The
+     budget then says whether the path fits its clock period.
+
+   The class names the critical stage (the slowest one) and reports the highest
+   frequency the path supports, so a designer can see what to speed up.
+
+   Family: cpu. Pure Sleela timing path over SLTiming. >>
+#sleela 2.5
+material;
+class SLCircuitPath {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39538;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLTiming timing;
+  String[] stageName;
+  int[] stageDelay;
+  int stages;
+
+  void configure(String pathName, int periodPs, int guardbandPs) {
+    timing = new SLTiming(); timing.configure(pathName, periodPs, guardbandPs);
+    stageName = new String[16]; stageDelay = new int[16]; stages = 0;
+  }
+
+  void describe(String why) { timing.describe(why); }
+
+  < Set the electrical constraints that apply to the end of the path. >
+  void constrain(int setupPs, int holdPs, int jitterPs) {
+    timing.setSetup(setupPs); timing.setHold(holdPs); timing.setJitter(jitterPs);
+  }
+
+  < Append one stage. Returns false when the path is full. >
+  boolean addStage(String stage, int delayPs) {
+    if (stages >= 16 || delayPs < 0) { return false; }
+    stageName[stages] = stage; stageDelay[stages] = delayPs;
+    stages = stages + 1;
+    return true;
+  }
+
+  int totalDelayPs() {
+    int sum = 0; int i = 0;
+    while (i < stages) { sum = sum + stageDelay[i]; i = i + 1; }
+    return sum;
+  }
+
+  < Push the summed stage delay into the timing budget. >
+  void apply() { timing.setPropagation(totalDelayPs()); }
+
+  < The slowest stage is the one to optimise first. >
+  int criticalIndex() {
+    int best = 0; int i = 1;
+    while (i < stages) { if (stageDelay[i] > stageDelay[best]) { best = i; } i = i + 1; }
+    return best;
+  }
+
+  String criticalStage() { if (stages == 0) { return "none"; } return stageName[criticalIndex()]; }
+
+  void setPeriod(int periodPs) { timing.setPeriod(periodPs); }
+
+  boolean honored() { apply(); return timing.honored(); }
+  int slackPs() { apply(); return timing.setupSlackPs(); }
+  int holdSlackPs() { apply(); return timing.holdSlackPs(); }
+  int maxMHz() { apply(); return timing.maxFrequencyMHz(); }
+  int stageCount() { return stages; }
+  int violations() { return timing.violationCount(); }
+  String pathName() { return timing.signalName(); }
+}

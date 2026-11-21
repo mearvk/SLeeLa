@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18150
+library-source-files: 18164
 library-packages: 123
 module-facade-symbols: 86
-total-symbol-records: 18236
+total-symbol-records: 18250
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -902,6 +902,8 @@ core	SLUdpTransport.sleela	lib/core/SLUdpTransport.sleela	source
 core	SLValidator.sleela	lib/core/SLValidator.sleela	source
 core	SLVictory.sleela	lib/core/SLVictory.sleela	source
 cpu	SL6502CPU.sleela	lib/cpu/6502/SL6502CPU.sleela	source
+cpu	SL6502Circuit.sleela	lib/cpu/6502/SL6502Circuit.sleela	source
+cpu	circuit-demo.sleela	lib/cpu/6502/circuit-demo.sleela	source
 cpu	SL68020CPU.sleela	lib/cpu/68020/SL68020CPU.sleela	source
 cpu	SL68030CPU.sleela	lib/cpu/68030/SL68030CPU.sleela	source
 cpu	SL68040CPU.sleela	lib/cpu/68040/SL68040CPU.sleela	source
@@ -924,6 +926,10 @@ cpu	SLCPUResource.sleela	lib/cpu/SLCPUResource.sleela	source
 cpu	SLCPURuntime.sleela	lib/cpu/SLCPURuntime.sleela	source
 cpu	SLCache.sleela	lib/cpu/SLCache.sleela	source
 cpu	SLCircuit.sleela	lib/cpu/SLCircuit.sleela	source
+cpu	SLCircuitBlock.sleela	lib/cpu/SLCircuitBlock.sleela	source
+cpu	SLCircuitModel.sleela	lib/cpu/SLCircuitModel.sleela	source
+cpu	SLCircuitPath.sleela	lib/cpu/SLCircuitPath.sleela	source
+cpu	SLCircuitSemaphore.sleela	lib/cpu/SLCircuitSemaphore.sleela	source
 cpu	SLClock.sleela	lib/cpu/SLClock.sleela	source
 cpu	SLClockPolicy.sleela	lib/cpu/SLClockPolicy.sleela	source
 cpu	SLCompilerDriver.sleela	lib/cpu/SLCompilerDriver.sleela	source
@@ -980,6 +986,7 @@ cpu	SLInterruptController.sleela	lib/cpu/SLInterruptController.sleela	source
 cpu	SLKernel.sleela	lib/cpu/SLKernel.sleela	source
 cpu	SLKeyboardDriver.sleela	lib/cpu/SLKeyboardDriver.sleela	source
 cpu	SLLatch.sleela	lib/cpu/SLLatch.sleela	source
+cpu	SLLogicFamily.sleela	lib/cpu/SLLogicFamily.sleela	source
 cpu	SLLowering.sleela	lib/cpu/SLLowering.sleela	source
 cpu	SLMMU.sleela	lib/cpu/SLMMU.sleela	source
 cpu	SLMachine.sleela	lib/cpu/SLMachine.sleela	source
@@ -997,11 +1004,13 @@ cpu	SLRamTiming.sleela	lib/cpu/SLRamTiming.sleela	source
 cpu	SLRegister.sleela	lib/cpu/SLRegister.sleela	source
 cpu	SLRegisterFile.sleela	lib/cpu/SLRegisterFile.sleela	source
 cpu	SLScheduler.sleela	lib/cpu/SLScheduler.sleela	source
+cpu	SLSignalQuality.sleela	lib/cpu/SLSignalQuality.sleela	source
 cpu	SLSleelaOpcode.sleela	lib/cpu/SLSleelaOpcode.sleela	source
 cpu	SLSleelaVM.sleela	lib/cpu/SLSleelaVM.sleela	source
 cpu	SLStack.sleela	lib/cpu/SLStack.sleela	source
 cpu	SLStatusRegister.sleela	lib/cpu/SLStatusRegister.sleela	source
 cpu	SLSystemCall.sleela	lib/cpu/SLSystemCall.sleela	source
+cpu	SLTimedGate.sleela	lib/cpu/SLTimedGate.sleela	source
 cpu	SLTiming.sleela	lib/cpu/SLTiming.sleela	source
 cpu	SLTimingClass.sleela	lib/cpu/SLTimingClass.sleela	source
 cpu	SLTimingManifest.sleela	lib/cpu/SLTimingManifest.sleela	source
@@ -1070,6 +1079,7 @@ cpu	SLCortexMCPU.sleela	lib/cpu/cortex-m/SLCortexMCPU.sleela	source
 cpu	SLCortexRCPU.sleela	lib/cpu/cortex-r/SLCortexRCPU.sleela	source
 cpu	SLDSP56000CPU.sleela	lib/cpu/dsp56000/SLDSP56000CPU.sleela	source
 cpu	SLdsPICCPU.sleela	lib/cpu/dspic/SLdsPICCPU.sleela	source
+cpu	circuit-primitives.sleela	lib/cpu/examples/circuit-primitives.sleela	source
 cpu	dma-and-gpu-options.sleela	lib/cpu/examples/dma-and-gpu-options.sleela	source
 cpu	extensible-network-access.sleela	lib/cpu/examples/extensible-network-access.sleela	source
 cpu	memory-tiers-dispatch.sleela	lib/cpu/examples/memory-tiers-dispatch.sleela	source
@@ -1091,6 +1101,8 @@ cpu	SLIntelCoreCPU.sleela	lib/cpu/intel-core/SLIntelCoreCPU.sleela	source
 cpu	SLIntelPentiumCPU.sleela	lib/cpu/intel-pentium/SLIntelPentiumCPU.sleela	source
 cpu	SLIntelXeonCPU.sleela	lib/cpu/intel-xeon/SLIntelXeonCPU.sleela	source
 cpu	SLIntel4004CPU.sleela	lib/cpu/intel4004/SLIntel4004CPU.sleela	source
+cpu	SLIntel4004Circuit.sleela	lib/cpu/intel4004/SLIntel4004Circuit.sleela	source
+cpu	circuit-demo.sleela	lib/cpu/intel4004/circuit-demo.sleela	source
 cpu	SLItaniumCPU.sleela	lib/cpu/itanium/SLItaniumCPU.sleela	source
 cpu	SLLINC8CPU.sleela	lib/cpu/linc8/SLLINC8CPU.sleela	source
 cpu	SLM88KCPU.sleela	lib/cpu/m88k/SLM88KCPU.sleela	source
@@ -1169,6 +1181,8 @@ cpu	SLXboxCPU.sleela	lib/cpu/xbox/SLXboxCPU.sleela	source
 cpu	SLXtensaCPU.sleela	lib/cpu/xtensa/SLXtensaCPU.sleela	source
 cpu	SLZArchitectureCPU.sleela	lib/cpu/z-architecture/SLZArchitectureCPU.sleela	source
 cpu	SLZ80CPU.sleela	lib/cpu/z80/SLZ80CPU.sleela	source
+cpu	SLZ80Circuit.sleela	lib/cpu/z80/SLZ80Circuit.sleela	source
+cpu	circuit-demo.sleela	lib/cpu/z80/circuit-demo.sleela	source
 cpu	SLZ8000CPU.sleela	lib/cpu/z8000/SLZ8000CPU.sleela	source
 cpu	SLeZ80CPU.sleela	lib/cpu/zilog-ez80/SLeZ80CPU.sleela	source
 crypto	SLAes.sleela	lib/crypto/SLAes.sleela	source

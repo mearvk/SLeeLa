@@ -1,0 +1,109 @@
+<< lib/cpu/SLCircuitBlock.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCircuitBlock, one functional block inside a CPU circuit:
+     an ALU, a PLA, a register file, a latch bank, a bus driver, a clock
+     generator. A block states its shape (how many bits wide, how many gate
+     levels deep), its size (gate and transistor counts) and derives what the
+     SLLogicFamily lets it derive: the delay through the block, and the die area
+     it occupies from the feature size.
+
+   Dimension rules are stated, not hidden. Delay is depth times the family gate
+   delay unless the caller overrides it with a published figure. Area is the
+   transistor count times a cell factor in squared feature sizes (F squared) times
+   F squared. The default factor is a derived planning figure, not a layout
+   measurement. The provenance string records which numbers are published.
+
+   Family: cpu. Pure Sleela dimensional model. >>
+#sleela 2.5
+material;
+class SLCircuitBlock {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39539;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String name;
+  < alu, latch, pla, regfile, bus, clock, decode, io, control, cache, other >
+  String kind;
+  int widthBits;
+  < logic levels from input to output >
+  int depthGates;
+  int gateCount;
+  int transistors;
+  < block delay in picoseconds; 0 means derive from depth and the family >
+  int delayPs;
+  < cell area in squared feature sizes per transistor, derived planning figure >
+  int cellFactorF2;
+  < published, derived, or unknown, plus the citation in words >
+  String provenance;
+
+  void configure(String blockName, String blockKind, int bits, int depth, int gates, int xtors) {
+    name = blockName; kind = blockKind; widthBits = bits; depthGates = depth;
+    gateCount = gates; transistors = xtors; delayPs = 0;
+    cellFactorF2 = 75; provenance = "derived";
+  }
+
+  void setDelay(int ps) { if (ps >= 0) { delayPs = ps; } }
+  void setCellFactor(int f2) { if (f2 > 0) { cellFactorF2 = f2; } }
+  void setProvenance(String p) { provenance = p; }
+
+  < Delay through the block in picoseconds. >
+  int delayThrough(SLLogicFamily fam) {
+    if (delayPs > 0) { return delayPs; }
+    return depthGates * fam.delayPs();
+  }
+
+  < Area in square micrometres: transistors * factor * F^2, F in nanometres. >
+  int areaUm2(SLLogicFamily fam) {
+    int f = fam.nodeNm();
+    return (transistors * cellFactorF2 * f * f) / 1000000;
+  }
+
+  < Transistors per bit of width, a measure of how dense the bit slice is. >
+  int transistorsPerBit() { if (widthBits <= 0) { return 0; } return transistors / widthBits; }
+
+  String blockName() { return name; }
+  String blockKind() { return kind; }
+  int width() { return widthBits; }
+  int depth() { return depthGates; }
+  int gates() { return gateCount; }
+  int transistorCount() { return transistors; }
+  String source() { return provenance; }
+}

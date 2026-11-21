@@ -1,0 +1,140 @@
+<< lib/cpu/SLCircuitSemaphore.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLCircuitSemaphore, a counting semaphore for circuit-level
+     arbitration. A CPU shares scarce things between phases and units: the
+     address bus, the data bus, an internal latch that is written on one clock
+     phase and read on the next, a register-file port. A semaphore with one
+     permit is a mutual-exclusion lock; with more permits it limits concurrent
+     use.
+
+   The class records who holds each permit, counts contention (a refused
+   acquire), counts misuse (a release by a non-holder, which is an underflow),
+   and watches hold time: if a permit stays out longer than the hold limit in
+   ticks, the semaphore is counted as stuck. All of these feed the circuit
+   verification report.
+
+   Family: cpu. Pure Sleela synchronisation primitive. >>
+#sleela 2.5
+material;
+class SLCircuitSemaphore {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39537;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-21";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-21";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String name;
+  int permits;
+  int free;
+  < holder names, one per outstanding permit >
+  String[] owners;
+  int ownerCount;
+  int acquires;
+  int releases;
+  < acquire attempts refused because no permit was free >
+  int contended;
+  < releases by a name that did not hold a permit >
+  int underflows;
+  < ticks since the oldest outstanding acquire >
+  int heldTicks;
+  int holdLimit;
+  int stuck;
+  int peak;
+
+  void configure(String semName, int count, int holdLimitTicks) {
+    name = semName; permits = count; free = count;
+    owners = new String[16]; ownerCount = 0;
+    acquires = 0; releases = 0; contended = 0; underflows = 0;
+    heldTicks = 0; holdLimit = holdLimitTicks; stuck = 0; peak = 0;
+  }
+
+  < Try to take one permit for the named owner. >
+  boolean tryAcquire(String owner) {
+    if (free <= 0 || ownerCount >= 16) { contended = contended + 1; return false; }
+    free = free - 1;
+    owners[ownerCount] = owner;
+    ownerCount = ownerCount + 1;
+    acquires = acquires + 1;
+    if (ownerCount > peak) { peak = ownerCount; }
+    return true;
+  }
+
+  < Return the permit held by the named owner. >
+  boolean release(String owner) {
+    int i = 0;
+    while (i < ownerCount) {
+      if (owners[i] == owner) {
+        owners[i] = owners[ownerCount - 1];
+        ownerCount = ownerCount - 1;
+        free = free + 1;
+        releases = releases + 1;
+        if (ownerCount == 0) { heldTicks = 0; }
+        return true;
+      }
+      i = i + 1;
+    }
+    underflows = underflows + 1;
+    return false;
+  }
+
+  boolean heldBy(String owner) {
+    int i = 0;
+    while (i < ownerCount) {
+      if (owners[i] == owner) { return true; }
+      i = i + 1;
+    }
+    return false;
+  }
+
+  < Advance time by one tick. A permit that stays out too long marks it stuck. >
+  void tick() {
+    if (ownerCount > 0) {
+      heldTicks = heldTicks + 1;
+      if (holdLimit > 0 && heldTicks == holdLimit + 1) { stuck = stuck + 1; }
+    }
+  }
+
+  boolean balanced() { return free == permits && ownerCount == 0; }
+  int violations() { return underflows + stuck; }
+  boolean healthy() { return violations() == 0; }
+  int available() { return free; }
+  int contention() { return contended; }
+  int highWater() { return peak; }
+  String semName() { return name; }
+}
